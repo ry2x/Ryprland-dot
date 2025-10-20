@@ -50,5 +50,6 @@ waybar/.config/waybar/matugen/matugen-waybar.css
 waypaper/.config/waypaper/config.ini
 
 # Cava (audio visualizer): generated user config
-# Path: cava/.config/cava/config
+# Path: cava/.config/cava/~
 cava/.config/cava/config
+cava/.config/cava/themes/*
