@@ -1,0 +1,30 @@
+{
+    "label" : "shutdown",
+    "action" : "systemctl poweroff",
+    "text" : "Shutdown (u)",
+    "keybind" : "u"
+}
+{
+    "label" : "reboot",
+    "action" : "systemctl reboot",
+    "text" : "Reboot (r)",
+    "keybind" : "r"
+}
+{
+    "label" : "logout",
+    "action" : "loginctl kill-session $XDG_SESSION_ID",
+    "text" : "Logout (e)",
+    "keybind" : "e"
+}
+{
+    "label" : "sleep",
+    "action" : "loginctl lock-session && systemctl suspend",
+    "text" : "Sleep (s)",
+    "keybind" : "s"
+}
+{
+    "label" : "lock",
+    "action" : "loginctl lock-session",
+    "text" : "Lock (L)",
+    "keybind" : "l"
+}
