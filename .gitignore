@@ -1,0 +1,15 @@
+gtk-3.0/.config/gtk-3.0/gtk.css
+hypr/.config/hypr/hyprlock/matugen/matugen-hyprlock.conf
+hypr/.config/hypr/matugen/matugen-hyprland.conf
+kitty/.config/kitty/matugen/colors-matugen.conf
+kitty/.config/kitty/matugen/colors-matugen.conf
+Kvantum/.config/Kvantum/matugen/matugen.kvconfig
+qt5ct/.config/qt5ct/colors/matugen-qt5ct.conf
+qt6ct/.config/qt6ct/colors/matugen-qt6ct.conf
+rofi/.config/rofi/images/currentWal.sqre
+rofi/.config/rofi/images/currentWal.thumb
+rofi/.config/rofi/images/currentWalBlur.thumb
+rofi/.config/rofi/images/currentWalQuad.quad
+rofi/.config/rofi/matugen/matugen-rofi.rasi
+swaync/.config/swaync/matugen/matugen-swaync.css
+waybar/.config/waybar/matugen/matugen-waybar.css
