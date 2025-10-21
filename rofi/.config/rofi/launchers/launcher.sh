@@ -13,4 +13,4 @@ style_theme='style-1'
 
 
 # Run
-pkill rofi || true && rofi -show drun -theme ${style_dir}/${style_theme}.rasi
+pkill rofi || true && rofi -x11 -show drun -theme ${style_dir}/${style_theme}.rasi
