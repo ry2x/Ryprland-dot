@@ -27,7 +27,7 @@ window {
     transparency:               "real";
     cursor:                     "default";
     background-color:           @background-alpha;
-    border-color:               @border-color;
+    background-color:            @background-alpha;
     location:                   center;
     anchor:                     center;
     border:                     0px 3px 0px 3px;

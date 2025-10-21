@@ -19,11 +19,14 @@ configuration {
 
 /* Main Window ------------------------------------------------ */
 window {
+    enabled:                     true;
     fullscreen:                  false;
     transparency:                "real";
     cursor:                      "default";
     background-color:            @background-alpha;
-    border:                      0px;
+    spacing:                     0em;
+    border:                      2px solid;
+    border-radius:               15px;
     border-color:                @border-color;
     width:                       60%;
     height:                      80%;

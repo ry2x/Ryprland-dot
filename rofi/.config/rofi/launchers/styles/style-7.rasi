@@ -35,7 +35,7 @@ window {
     padding:                     0em;
     border-radius:               3em;
     border-color:                @border-color;
-    background-color:            @background;
+    background-color:            @background-alpha;
 }
 mainbox {
     enabled:                     true;

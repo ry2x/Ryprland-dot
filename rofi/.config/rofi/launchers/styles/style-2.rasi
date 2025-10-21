@@ -40,7 +40,7 @@ window {
     border:                      3px;
     border-color:                @border-color;
     border-radius:               2em;
-    background-color:            @background;
+    background-color:            @background-alpha;
 }
 
 mainbox {
