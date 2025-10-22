@@ -9,7 +9,7 @@ export EDITOR=nvim
 export BROWSER="brave --enable-wayland-ime --disable-features=WaylandWpColorManagerV1"
 export TERMINAL=kitty
 export PATH="$HOME/.local/bin/:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/cargo/bin:$PATH"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"

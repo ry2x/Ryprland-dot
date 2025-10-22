@@ -6,7 +6,7 @@
 
 # Environment variables and application defaults
 set -e fish_user_paths
-set -U fish_user_paths $HOME/.local/bin $HOME/.local/bin/statusbar $HOME/.local/bin/cron $HOME/Applications /var/lib/flatpak/exports/bin/ $fish_user_paths $HOME/.cargo/bin
+set -U fish_user_paths $HOME/.local/bin $HOME/.local/bin/statusbar $HOME/.local/bin/cron $HOME/Applications /var/lib/flatpak/exports/bin/ $fish_user_paths $HOME/.local/share/cargo/bin
 
 # Supresses fish's intro message
 set fish_greeting ""                               
