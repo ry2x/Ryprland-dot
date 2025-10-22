@@ -3,13 +3,12 @@
 #  ┗┛┗┛  ┗┛┛┗┗┛
 #              
 
-
 # Environment variables and application defaults
 set -e fish_user_paths
 set -U fish_user_paths $HOME/.local/bin $HOME/.local/bin/statusbar $HOME/.local/bin/cron $HOME/Applications /var/lib/flatpak/exports/bin/ $fish_user_paths $HOME/.local/share/cargo/bin
 
 # Supresses fish's intro message
-set fish_greeting ""                               
+set fish_greeting ""
 
 # Default programs
 set -gx EDITOR nvim
@@ -51,7 +50,7 @@ set -gx SQLITE_HISTORY "$XDG_DATA_HOME/sqlite_history"
 set -gx FZF_DEFAULT_OPTS "--style=full --height=90% --pointer '>' --color 'pointer:green:bold,bg+:-1:,fg+:green:bold,info:blue:bold,marker:yellow:bold,hl:gray:bold,hl+:yellow:bold' --input-label ' Search ' --color 'input-border:blue,input-label:blue:bold' --list-label ' Results ' --color 'list-border:green,list-label:green:bold' --preview-label ' Preview ' --color 'preview-border:magenta,preview-label:magenta:bold'"
 
 # Other program settings
-set -gx DICS "/usr/share/stardict/dic/"
+set -gx DICS /usr/share/stardict/dic/
 set -gx SUDO_ASKPASS "$HOME/.local/bin/dmenupass"
 set -gx LESS R
 set -gx LESS_TERMCAP_mb (printf '\e[1;31m')
@@ -62,7 +61,9 @@ set -gx LESS_TERMCAP_se (printf '\e[0m')
 set -gx LESS_TERMCAP_us (printf '\e[1;32m')
 set -gx LESS_TERMCAP_ue (printf '\e[0m')
 set -gx LESSOPEN "| /usr/bin/highlight -O ansi %s 2>/dev/null"
-set -gx QT_QPA_PLATFORMTHEME "gtk2"
+set -gx QT_QPA_PLATFORMTHEME gtk2
 set -gx MOZ_USE_XINPUT2 1
 set -gx AWT_TOOLKIT "MToolkit wmname LG3D"
 set -gx _JAVA_AWT_WM_NONREPARENTING 1
+
+fnm env --use-on-cd --shell fish | source
