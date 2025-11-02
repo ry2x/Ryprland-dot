@@ -53,3 +53,6 @@ waypaper/.config/waypaper/config.ini
 # Path: cava/.config/cava/~
 cava/.config/cava/config
 cava/.config/cava/themes/*
+
+# VSCode: user settings
+.vscode/settings.json
