@@ -18,4 +18,11 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export KODI_DATA="$XDG_DATA_HOME/kodi"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+# pnpm
+export PNPM_HOME="$XDG_DATA_HOME/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 eval "$(fnm env --use-on-cd --shell bash)"

@@ -15,7 +15,7 @@ set -gx EDITOR nvim
 set -gx TERMINAL st
 set -gx TERMINAL_PROG st
 set -gx LOCATION Memari
-set -gx BROWSER zen
+set -gx BROWSER brave\ --enable-wayland-ime\ --disable-features=WaylandWpColorManagerV1
 
 # XDG paths and application config
 set -gx XDG_CONFIG_HOME "$HOME/.config"
@@ -48,6 +48,10 @@ set -gx SQLITE_HISTORY "$XDG_DATA_HOME/sqlite_history"
 
 # Fzf options
 set -gx FZF_DEFAULT_OPTS "--style=full --height=90% --pointer '>' --color 'pointer:green:bold,bg+:-1:,fg+:green:bold,info:blue:bold,marker:yellow:bold,hl:gray:bold,hl+:yellow:bold' --input-label ' Search ' --color 'input-border:blue,input-label:blue:bold' --list-label ' Results ' --color 'list-border:green,list-label:green:bold' --preview-label ' Preview ' --color 'preview-border:magenta,preview-label:magenta:bold'"
+
+# pnpm settings
+set -gx PNPM_HOME "$XDG_DATA_HOME/pnpm"
+set -gx PATH "$PNPM_HOME:$PATH"
 
 # Other program settings
 set -gx DICS /usr/share/stardict/dic/
