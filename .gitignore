@@ -56,3 +56,6 @@ cava/.config/cava/themes/*
 
 # VSCode: user settings
 .vscode/settings.json
+
+# Fish shell: credential file (API keys, tokens, etc)
+fish/.config/fish/conf.d/99-credential.fish
