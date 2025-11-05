@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-#  ┏┓┏┓┓ ┏┓┳┓┏┓┳┏┓┓┏┓┏┓┳┓  
-#  ┃ ┃┃┃ ┃┃┣┫┃┃┃┃ ┃┫ ┣ ┣┫  
-#  ┗┛┗┛┗┛┗┛┛┗┣┛┻┗┛┛┗┛┗┛┛┗  
-#                          
-
+#  ┏┓┏┓┓ ┏┓┳┓┏┓┳┏┓┓┏┓┏┓┳┓
+#  ┃ ┃┃┃ ┃┃┣┫┃┃┃┃ ┃┫ ┣ ┣┫
+#  ┗┛┗┛┗┛┗┛┛┗┣┛┻┗┛┛┗┛┗┛┛┗
+#
 
 #!/bin/bash
 
@@ -11,7 +10,7 @@
 
 # Check if a command exists
 check() {
-  command -v "$1" >/dev/null
+    command -v "$1" >/dev/null
 }
 
 # Setup
@@ -23,14 +22,14 @@ limit=10
 
 # List saved colors
 [[ $# -eq 1 && $1 == "-l" ]] && {
-  cat "$loc/colors"
-  exit
+    cat "$loc/colors"
+    exit
 }
 
 # Dependencies check
 check hyprpicker || {
-  notify-send "Color Picker" "❌ hyprpicker is not installed" -u critical
-  exit 1
+    notify-send "Color Picker" "❌ hyprpicker is not installed" -u critical
+    exit 1
 }
 
 killall -q hyprpicker
@@ -40,8 +39,8 @@ color="$(hyprpicker -a | tr -d '\n')"
 
 # Validate hex color format
 [[ "$color" =~ ^#?[0-9a-fA-F]{6}$ ]] || {
-  notify-send "Color Picker" "❌ Invalid color format: $color" -u critical
-  exit 1
+    notify-send "Color Picker" "❌ Invalid color format: $color" -u critical
+    exit 1
 }
 
 # Ensure leading '#' if missing
@@ -53,9 +52,9 @@ check wl-copy && echo -n "$color" | wl-copy
 # Maintain unique, limited history
 prevColors="$(grep -vFx "$color" "$loc/colors" | head -n $((limit - 1)))"
 {
-  echo "$color"
-  echo "$prevColors"
-} > "$loc/colors"
+    echo "$color"
+    echo "$prevColors"
+} >"$loc/colors"
 
 WALLPAPER=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | xargs)
 WALLPAPER_PATH="${WALLPAPER/#~/$HOME}"

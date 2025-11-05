@@ -21,7 +21,6 @@ CNC=$(tput sgr0)
 FULL=━
 EMPTY=━
 
-
 name=$USER
 host=$(uname -n)
 distro=$(uname -o | awk -F '"' '/PRETTY_NAME/ { print $2 }' /etc/os-release)
@@ -74,7 +73,6 @@ BAR=" ▓▒░"
 OUTT="$CBK$BAR$CRE$BAR$CGR$BAR$CYE$BAR$CBL$BAR$CMA$BAR$CCY$BAR$CWH$BAR$CNC"
 printf "%s%b\n\n" "$PADC" "$OUTT"
 
-
 # greetings
 printf "%s%b\n" "$PADC" "            Hi $CRE$CBD$name$CNC"
 printf "%s%b\n" "$PADC" "      Welcome to $CGR$CBD$host$CNC"
@@ -99,8 +97,8 @@ draw() {
     color="$3"
     for v in $(seq 0 $((size - 1))); do
         test "$v" -le "$inc" &&
-        out="${out}\e[1;${color}m${FULL}" ||
-        out="${out}\e[0;37m${CWH}${EMPTY}"
+            out="${out}\e[1;${color}m${FULL}" ||
+            out="${out}\e[0;37m${CWH}${EMPTY}"
     done
     printf "$out"
 }

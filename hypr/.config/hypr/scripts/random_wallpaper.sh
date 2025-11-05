@@ -21,7 +21,7 @@ rofi_override="element-icon{size:${icon_size}px;}"
 # Detect number of cores and set a sensible number of jobs
 get_optimal_jobs() {
     local cores=$(nproc)
-    (( cores <= 2 )) && echo 2 || echo $(( (cores > 4) ? 4 : cores-1 ))
+    ((cores <= 2)) && echo 2 || echo $(((cores > 4) ? 4 : cores - 1))
 }
 
 PARALLEL_JOBS=$(get_optimal_jobs)
@@ -39,7 +39,7 @@ process_image() {
         flock -x 200
         if [ ! -f "$cache_file" ] || [ ! -f "$md5_file" ] || [ "$current_md5" != "$(cat "$md5_file" 2>/dev/null)" ]; then
             magick "$imagen" -resize 500x500^ -gravity center -extent 500x500 "$cache_file"
-            echo "$current_md5" > "$md5_file"
+            echo "$current_md5" >"$md5_file"
         fi
         # Clean the lock file after processing
         rm -f "$lock_file"
@@ -54,7 +54,7 @@ export wall_dir cacheDir
 rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
 
 # Process files in parallel
-find "$wall_dir" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) -print0 | \
+find "$wall_dir" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) -print0 |
     xargs -0 -P "$PARALLEL_JOBS" -I {} bash -c 'process_image "{}"'
 
 # Clean orphaned cache files and their locks

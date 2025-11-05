@@ -2,9 +2,7 @@
 #  ┏┓┳┳┓┏┓  ┓ ┏┓┳┳┳┓┏┓┓┏┏┓┳┓
 #  ┗┓┃┃┃┣ ━━┃ ┣┫┃┃┃┃┃ ┣┫┣ ┣┫
 #  ┗┛┻┻┛┗┛  ┗┛┛┗┗┛┛┗┗┛┛┗┗┛┛┗
-#                           
-
-
+#
 
 # Dirs
 dir="$HOME/.config/rofi/launchers/sidelaunchers"

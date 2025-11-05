@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
-set -e  # Exit on error
+set -e # Exit on error
 
-if command -v sudo &> /dev/null; then
+if command -v sudo &>/dev/null; then
     # Ask for the password once (will prompt if necessary).
     if sudo -v; then
         # Refresh sudo timestamp every 60 seconds in background until this script exits.
-        ( while true; do sudo -n true; sleep 60; kill -0 "$\$" || exit; done ) 2>/dev/null &
+        (while true; do
+            sudo -n true
+            sleep 60
+            kill -0 "$\$" || exit
+        done) 2>/dev/null &
         SUDO_KEEPALIVE_PID=$!
         # Ensure the background keep-alive is killed when the script exits.
         trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
@@ -24,11 +28,11 @@ NC='\033[0m' # No Color
 update_package_databases() {
     echo -e "${BLUE}[INFO]${NC} パッケージデータベースを更新するね！"
     echo -e "${YELLOW}Official リポジトリ${NC}を更新中..."
-    sudo pacman -Sy &> /dev/null
+    sudo pacman -Sy &>/dev/null
 
-    if command -v paru &> /dev/null; then
+    if command -v paru &>/dev/null; then
         echo -e "${YELLOW}AUR リポジトリ${NC}を更新中..."
-        paru -Sy &> /dev/null
+        paru -Sy &>/dev/null
     fi
 
     echo -e "${GREEN}[INFO]${NC} パッケージデータベースの更新が完了したよ！"
@@ -46,7 +50,7 @@ list_pacman_updates() {
 
 # Function to list upgradable AUR packages (exclude official packages)
 list_paru_updates() {
-    if ! command -v paru &> /dev/null; then
+    if ! command -v paru &>/dev/null; then
         echo "[ERROR] paru is not installed. Please install paru first." >&2
         exit 1
     fi
@@ -213,7 +217,7 @@ update_paru() {
 
 # Get terminal width for formatting
 TERM_WIDTH=$(tput cols)
-HALF_WIDTH=$(( TERM_WIDTH / 2 - 5 ))
+HALF_WIDTH=$((TERM_WIDTH / 2 - 5))
 
 # Update package databases first
 update_package_databases
@@ -235,7 +239,7 @@ truncate_name() {
     local name="$1"
     local max_length="$2"
     if [ ${#name} -gt "$max_length" ]; then
-        echo "${name:0:$((max_length-3))}..."
+        echo "${name:0:$((max_length - 3))}..."
     else
         echo "$name"
     fi
@@ -275,7 +279,7 @@ header=$(
     paste <(echo -e "$left_col") <(echo -e "$right_col") -d "|" | column -t -s "|"
 
     # Count any remaining packages that are not displayed
-    total_hidden=$(( (pacman_count > 15 ? pacman_count - 15 : 0) + (paru_count > 15 ? paru_count - 15 : 0) ))
+    total_hidden=$(((pacman_count > 15 ? pacman_count - 15 : 0) + (paru_count > 15 ? paru_count - 15 : 0)))
     if [ $total_hidden -gt 0 ]; then
         echo -e "\n${YELLOW}... その他 ${total_hidden} パッケージ (表示されていない) ...${NC}"
     fi
@@ -285,27 +289,27 @@ header=$(
 selected=$(echo -e "Official (pacman)\nAUR (paru)\n両方" | fzf --prompt="どちらをアップデートする？ > " --header="$header")
 
 case "$selected" in
-    "Official (pacman)")
-        update_pacman
-        ;;
-    "AUR (paru)")
-        update_paru
-        ;;
-    "両方")
-        echo -e "${BLUE}[INFO]${NC} Officialパッケージのアップデート："
-        update_pacman
-        echo ""
-        echo -e "${BLUE}[INFO]${NC} AURパッケージのアップデート："
-        update_paru
-        ;;
-    "")
-        echo -e "${YELLOW}[INFO]${NC} キャンセルされたよ！"
-        exit 0
-        ;;
-    *)
-        echo -e "${RED}[ERROR]${NC} 無効な選択肢だよ！"
-        exit 1
-        ;;
+"Official (pacman)")
+    update_pacman
+    ;;
+"AUR (paru)")
+    update_paru
+    ;;
+"両方")
+    echo -e "${BLUE}[INFO]${NC} Officialパッケージのアップデート："
+    update_pacman
+    echo ""
+    echo -e "${BLUE}[INFO]${NC} AURパッケージのアップデート："
+    update_paru
+    ;;
+"")
+    echo -e "${YELLOW}[INFO]${NC} キャンセルされたよ！"
+    exit 0
+    ;;
+*)
+    echo -e "${RED}[ERROR]${NC} 無効な選択肢だよ！"
+    exit 1
+    ;;
 esac
 
 echo -e "\n${GREEN}[INFO]${NC} アップデートが完了したよ！"
