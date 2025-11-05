@@ -47,7 +47,7 @@ waybar/.config/waybar/matugen/matugen-waybar.css
 
 # Waypaper: generated config (wallpaper manager)
 # Path: waypaper/.config/waypaper/config.ini
-#waypaper/.config/waypaper/config.ini
+waypaper/.config/waypaper/config.ini
 
 # Cava (audio visualizer): generated user config
 # Path: cava/.config/cava/~
