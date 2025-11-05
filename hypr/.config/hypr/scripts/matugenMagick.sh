@@ -5,19 +5,18 @@
 #                                 
 
 
-
-
 # utility vars
-cache_dir="$HOME/.cache/swww/"
+config_file="$HOME/.config/waypaper/config.ini"
 current_monitor=$(hyprctl monitors | awk '/^Monitor/{name=$2} /focused: yes/{print name}')
-cache_file="$cache_dir$current_monitor"
 
 # Check if cache file exists and extract wallpaper path correctly
-if [ -f "$cache_file" ]; then
+if [ -f "$config_file" ]; then
     # Extract the wallpaper path from binary cache file (skip null bytes and 'Lanczos3')
-    wallpaper_path=$(strings "$cache_file" | grep -E '\.(jpg|jpeg|png|webp|bmp)$' | head -n 1)
+    wallpaper_path=$(grep "wallpaper =" "$config_file" | cut -d '=' -f2- | xargs)
+
+    wallpaper_path="${wallpaper_path/#~/$HOME}"
 else
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Cache file $cache_file not found" -u critical
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Config file $config_file not found" -u critical
     exit 1
 fi
 
@@ -29,14 +28,18 @@ fi
 
 # generate matugen colors
 if [ "$1" == "--light" ]; then
-  matugen image "$wallpaper_path" -m "light"
+    matugen image "$wallpaper_path" -m "light"
 else
-  matugen image "$wallpaper_path" -m "dark"
-fi 
+    matugen image "$wallpaper_path" -m "dark"
+fi
+
+if [ "$2" == "--skip" ]; then
+    exit 0
+fi
 
 # set gtk theme
-gsettings set org.gnome.desktop.interface gtk-theme ""
-gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3
+#gsettings set org.gnome.desktop.interface gtk-theme ""
+#gsettings set org.gnome.desktop.interface gtk-theme Otis
 
 #-------Imagemagick magick 👀--------------#
 
