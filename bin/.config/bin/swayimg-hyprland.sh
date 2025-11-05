@@ -28,7 +28,6 @@ read -r X Y WIDTH HEIGHT MONITOR_ID < <(
         | "\(.at[0]) \(.at[1]) \(.size[0]) \(.size[1]) \(.monitor)"'
 )
 
-
 # Get monitor properties
 read -r MON_X MON_Y < <(
     hyprctl monitors -j | jq -r "
@@ -42,4 +41,3 @@ POS_Y=$((Y - MON_Y))
 
 # Execute swayimg with the adjusted coordinates
 hyprctl dispatch exec "[float; move $POS_X $POS_Y; size $WIDTH $HEIGHT]" swayimg "$IMAGE_PATH"
-

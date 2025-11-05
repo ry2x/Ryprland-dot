@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 #  ┏┓┳┳┓┏┓┓ ┏┓┳┓┏┓┳┳┓┏┓┳┓┏┓
-#  ┣┫┃┣┫┃┃┃ ┣┫┃┃┣ ┃┃┃┃┃┃┃┣ 
+#  ┣┫┃┣┫┃┃┃ ┣┫┃┃┣ ┃┃┃┃┃┃┃┣
 #  ┛┗┻┛┗┣┛┗┛┛┗┛┗┗┛┛ ┗┗┛┻┛┗┛
-#                          
-
+#
 
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
-# Airplane Mode. Turning on or off all wifi using rfkill. 
+# Airplane Mode. Turning on or off all wifi using rfkill.
 
 notifon="$HOME/.config/swaync/icons/airplane-mode-on.png"
 notifoff="$HOME/.config/swaync/icons/airplane-mode-off.png"

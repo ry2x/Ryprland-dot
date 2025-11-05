@@ -2,10 +2,9 @@
 #  ┳┓┏┓┏┓┳  ┓ ┏┓┳┳┳┓┏┓┓┏┏┓┳┓  ┏┓┏┳┓┓┏┓ ┏┓  ┏┓┏┓┓ ┏┓┏┓┏┳┓┏┓┳┓
 #  ┣┫┃┃┣ ┃━━┃ ┣┫┃┃┃┃┃ ┣┫┣ ┣┫━━┗┓ ┃ ┗┫┃ ┣ ━━┗┓┣ ┃ ┣ ┃  ┃ ┃┃┣┫
 #  ┛┗┗┛┻ ┻  ┗┛┛┗┗┛┛┗┗┛┛┗┗┛┛┗  ┗┛ ┻ ┗┛┗┛┗┛  ┗┛┗┛┗┛┗┛┗┛ ┻ ┗┛┛┗
-#                                                           
+#
 
 # Copyright: The Hyde Project
-
 
 # Rofi vars
 rofiStyleDir="$HOME/.config/rofi/launchers/styles"
@@ -52,21 +51,18 @@ done
 IFS=$'\n' style_names=($(sort -V <<<"${style_names[*]}"))
 unset IFS
 
-
-
 # Prepare the list for rofi with previews
 rofi_list=""
 for style_name in "${style_names[@]}"; do
     rofi_list+="${style_name}\x00icon\x1f${rofiAssetDir}/${style_name}\n"
 done
 
-
 # Present the list of styles using rofi and get the selected style
 RofiSel=$(echo -en "$rofi_list" | rofi -dmenu -markup-rows -theme-str "$r_override" -theme "$rofiTheme")
 
-# Set Rofi Style 
-if [ ! -z "${RofiSel}" ] ; then
+# Set Rofi Style
+if [ ! -z "${RofiSel}" ]; then
     RofiSel=$(echo "$RofiSel" | awk -F '.' '{print $1}')
     sed -i "s/style_theme='.*'/style_theme='${RofiSel}'/g" $HOME/.config/rofi/launchers/launcher.sh
-    notify-send -e -h string:x-canonical-private-synchronous:rofi_notif -a "t1" -r 91190 -t 2200 -i "${rofiAssetDir}/${RofiSel}.png" " Rofi style ${RofiSel} applied..." 
+    notify-send -e -h string:x-canonical-private-synchronous:rofi_notif -a "t1" -r 91190 -t 2200 -i "${rofiAssetDir}/${RofiSel}.png" " Rofi style ${RofiSel} applied..."
 fi
