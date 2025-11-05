@@ -22,7 +22,7 @@
     "modules-right": [
         "custom/swaync",
         "tray",
-        //"bluetooth",
+        "bluetooth",
         "network",
         "custom/pacman",
         "custom/colorpicker",
