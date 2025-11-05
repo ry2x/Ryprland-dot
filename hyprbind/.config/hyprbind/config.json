@@ -1,0 +1,14 @@
+{
+  "theme": "Dark",
+  "column_visibility": {
+    "keybind": true,
+    "description": true,
+    "command": false
+  },
+  "search_options": {
+    "keybind": true,
+    "command": true,
+    "description": true
+  },
+  "zen_mode": true
+}
