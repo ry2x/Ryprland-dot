@@ -4,10 +4,20 @@
 #  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛┗┛┗┛ ┻
 #
 
-killall waybar 2>/dev/null
+# kill already running processes
+_ps=(waybar rofi swaync)
+for _prs in "${_ps[@]}"; do
+    if pidof "${_prs}" >/dev/null; then
+        pkill "${_prs}"
+    fi
+done
 
-hyprctl dispatch exec waybar &
+# relaunch waybar
+sleep 1
+waybar &
 
-killall swaync 2>/dev/null
+# relaunch swaync
+sleep 0.5
+swaync >/dev/null 2>&1 &
 
-hyprctl dispatch exec swaync &
+exit 0
