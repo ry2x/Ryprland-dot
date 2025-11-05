@@ -1,58 +1,94 @@
 #!/usr/bin/env bash
-#  ┳┳┓┏┓┏┳┓┳┳┏┓┏┓┳┓  ┳┳┓┏┓┏┓┳┏┓┓┏┓
-#  ┃┃┃┣┫ ┃ ┃┃┃┓┣ ┃┃━━┃┃┃┣┫┃┓┃┃ ┃┫ 
-#  ┛ ┗┛┗ ┻ ┗┛┗┛┗┛┛┗  ┛ ┗┛┗┗┛┻┗┛┛┗┛
-#                                 
 
+# Set dir varialable
+wall_dir="$HOME/Pictures/wallpapers"
+cacheDir="$HOME/.cache/wallcache"
+scriptsDir="$HOME/.config/hypr/scripts"
 
-WALLPAPER=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | xargs)
+[ -d "$cacheDir" ] || mkdir -p "$cacheDir"
 
-WALLPAPER_PATH="${WALLPAPER/#~/$HOME}"
+# Get focused monitor
+focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
 
-if [[ -f "$WALLPAPER_PATH" ]]; then
-  matugen image "$WALLPAPER_PATH" -m "dark"
+# Get monitor width and DPI
+monitor_width=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .width')
+scale_factor=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .scale')
 
-  # Create rofi images directory if it doesn't exist
-  mkdir -p "$HOME/.config/rofi/images"
+# Calculate icon size
+icon_size=$(echo "scale=2; ($monitor_width * 14) / ($scale_factor * 96)" | bc)
+rofi_override="element-icon{size:${icon_size}px;}"
 
-  # convert and resize the current wallpaper & make it image for rofi with blur
-  if ! magick "$WALLPAPER_PATH" -strip -resize 1000 -gravity center -extent 1000 -blur "30x30" -quality 90 "$HOME/.config/rofi/images/currentWalBlur.thumb"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create blurred thumbnail" -u critical
-      exit 1
-  fi
+# Detect number of cores and set a sensible number of jobs
+get_optimal_jobs() {
+    local cores=$(nproc)
+    (( cores <= 2 )) && echo 2 || echo $(( (cores > 4) ? 4 : cores-1 ))
+}
 
-  # convert and resize the current wallpaper & make it image for rofi without blur
-  if ! magick "$WALLPAPER_PATH" -strip -resize 1000 -gravity center -extent 1000 -quality 90 "$HOME/.config/rofi/images/currentWal.thumb"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create normal thumbnail" -u critical
-      exit 1
-  fi
+PARALLEL_JOBS=$(get_optimal_jobs)
 
-  # convert and resize the current wallpaper & make it image for rofi with square format
-  if ! magick "$WALLPAPER_PATH" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$HOME/.config/rofi/images/currentWal.sqre"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create square thumbnail" -u critical
-      exit 1
-  fi
+process_image() {
+    local imagen="$1"
+    local nombre_archivo=$(basename "$imagen")
+    local cache_file="${cacheDir}/${nombre_archivo}"
+    local md5_file="${cacheDir}/.${nombre_archivo}.md5"
+    local lock_file="${cacheDir}/.lock_${nombre_archivo}"
 
-  # convert and resize the square formatted & make it image for rofi with drawing polygon
-  if ! magick "$HOME/.config/rofi/images/currentWal.sqre" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) -alpha Off -compose CopyOpacity -composite "$HOME/.config/rofi/images/currentWalQuad.png"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create polygon thumbnail" -u critical
-      exit 1
-  fi
+    local current_md5=$(xxh64sum "$imagen" | cut -d' ' -f1)
 
-  if ! mv "$HOME/.config/rofi/images/currentWalQuad.png" "$HOME/.config/rofi/images/currentWalQuad.quad"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to rename polygon thumbnail" -u critical
-      exit 1
-  fi
+    (
+        flock -x 200
+        if [ ! -f "$cache_file" ] || [ ! -f "$md5_file" ] || [ "$current_md5" != "$(cat "$md5_file" 2>/dev/null)" ]; then
+            magick "$imagen" -resize 500x500^ -gravity center -extent 500x500 "$cache_file"
+            echo "$current_md5" > "$md5_file"
+        fi
+        # Clean the lock file after processing
+        rm -f "$lock_file"
+    ) 200>"$lock_file"
+}
 
-  # copy the wallpaper in current-wallpaper file
-  mkdir -p "$(dirname "$HOME/.local/share/bg")"
-  if ! ln -sf "$WALLPAPER_PATH" "$HOME/.local/share/bg"; then
-      notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link" -u critical
-      exit 1
-  fi
+# Export variables & functions
+export -f process_image
+export wall_dir cacheDir
 
-  # send notification after completion
-  notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick" "Matugen & ImageMagick has completed its job" -i "$HOME/.local/share/bg"
-else
-  notify-send "waypaper" "[!] Invalid wallpaper path: $WALLPAPER_PATH"
-fi
+# Clean old locks before starting
+rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
+
+# Process files in parallel
+find "$wall_dir" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) -print0 | \
+    xargs -0 -P "$PARALLEL_JOBS" -I {} bash -c 'process_image "{}"'
+
+# Clean orphaned cache files and their locks
+for cached in "$cacheDir"/*; do
+    [ -f "$cached" ] || continue
+    original="${wall_dir}/$(basename "$cached")"
+    if [ ! -f "$original" ]; then
+        nombre_archivo=$(basename "$cached")
+        rm -f "$cached" \
+            "${cacheDir}/.${nombre_archivo}.md5" \
+            "${cacheDir}/.lock_${nombre_archivo}"
+    fi
+done
+
+rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
+
+wallpaper_path=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | xargs)
+wallpaper_path="${wallpaper_path/#~/$HOME}"
+
+# SWWW Config
+FPS=60
+TYPE="any"
+DURATION=2
+BEZIER=".43,1.19,1,.4"
+SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
+
+# initiate swww if not running
+swww query || swww-daemon --format xrgbz
+
+# Set wallpaper
+[[ -n "$wallpaper_path" ]] && swww img "${wallpaper_path}" $SWWW_PARAMS;
+
+# Run matugen script
+[[ -n "$wallpaper_path" ]] && "$scriptsDir/matugenMagick.sh" --dark
+
+sleep 2.0
+[[ -n "$wallpaper_path" ]] && "$scriptsDir/matugenMagick.sh" --dark --skip
