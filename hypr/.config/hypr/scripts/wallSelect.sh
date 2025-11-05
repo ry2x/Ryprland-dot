@@ -5,6 +5,7 @@
 #                        
 
 # Thank you gh0stzk for the script 🤲 means a lot
+# Edited by Ry2X for Ryprland-dot
 # Copyright (C) 2021-2025 gh0stzk <z0mbi3.zk@protonmail.com>
 # Licensed under GPL-3.0 license
 
@@ -105,7 +106,7 @@ rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
 
 # Check if rofi is already running
 if pidof rofi > /dev/null; then
-  pkill rofi
+    pkill rofi
 fi
 
 # Launch rofi
@@ -127,15 +128,4 @@ DURATION=2
 BEZIER=".43,1.19,1,.4"
 SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION"
 
-# initiate swww if not running
-swww query || swww-daemon --format xrgb
-
-
-# Set wallpaper
-[[ -n "$wall_selection" ]] && swww img -o "$focused_monitor" "${wall_dir}/${wall_selection}" $SWWW_PARAMS;
-
-echo "OPK"
-
-# Run matugen script
-sleep 0.5
-[[ -n "$wall_selection" ]] && "$scriptsDir/matugenMagick.sh" --dark
+[[ -n "$wall_selection" ]] && waypaper --wallpaper "${wall_dir}/${wall_selection}"
