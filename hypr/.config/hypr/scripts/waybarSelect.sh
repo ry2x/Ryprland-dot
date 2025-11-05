@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 #  ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┓ ┏┓┏┓┏┳┓
-#  ┃┃┃┣┫┗┫┣┫┣┫┣┫━━┗┓┣ ┃ ┣ ┃  ┃ 
-#  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛┗┛┗┛ ┻ 
-#                              
-
-
+#  ┃┃┃┣┫┗┫┣┫┣┫┣┫━━┗┓┣ ┃ ┣ ┃  ┃
+#  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛┗┛┗┛ ┻
+#
 
 WAYBAR_THEME_DIR="$HOME/.config/waybar/themes"
 WAYBAR_CONFIG="$HOME/.config/waybar/config.jsonc"
@@ -17,7 +15,7 @@ main() {
     if [[ -n "$choice" ]]; then
         cp "$WAYBAR_THEME_DIR/$choice/config.jsonc" "$WAYBAR_CONFIG"
         cp "$WAYBAR_THEME_DIR/$choice/style.css" "$WAYBAR_CSS"
-        
+
         # Restart Waybar
         pkill waybar
         sleep 0.5
@@ -29,4 +27,3 @@ main() {
 }
 
 main
-

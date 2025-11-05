@@ -2,16 +2,16 @@
 
 script_name="$(basename "$0")"
 
-command -v "$script_name" > /dev/null 2>&1 || script_name="$0"
+command -v "$script_name" >/dev/null 2>&1 || script_name="$0"
 
 num_of_ansi=8
 
-die () {
+die() {
     echo -e "\033[0;31m[\033[0m \033[1;91mFATAL\033[0m \033[0;31m]:\033[0m $1" >&2
     exit 1
 }
 
-reset_terminal () {
+reset_terminal() {
     [[ "$TCT_NO_RESET" == 1 ]] && return 0
 
     [[ "$TCT_SOFT_RESET" == 1 ]] || reset
@@ -19,7 +19,7 @@ reset_terminal () {
     clear
 }
 
-print_little_ansi_display () {
+print_little_ansi_display() {
     for style in $(seq 0 1); do
         for ansi in $(seq 1 ${num_of_ansi}); do
             first_part=""
@@ -27,17 +27,17 @@ print_little_ansi_display () {
             [[ "$style" == 0 ]] && first_part=3
             [[ "$style" == 1 ]] && first_part=9
 
-            echo -en "\033[0;${first_part}$(( ${ansi} - 1 ))m███\033[0m"
+            echo -en "\033[0;${first_part}$((${ansi} - 1))m███\033[0m"
         done
 
         echo -en "\n"
     done
 }
 
-hex_color_pretty () {
-    v_red="$(( 0x$1 ))"
-    v_grn="$(( 0x$2 ))"
-    v_blu="$(( 0x$3 ))"
+hex_color_pretty() {
+    v_red="$((0x$1))"
+    v_grn="$((0x$2))"
+    v_blu="$((0x$3))"
 
     h_red="$1"
     h_grn="$2"
@@ -56,7 +56,7 @@ hex_color_pretty () {
     echo -e "\033[7m\033[38;2;${v_red};${v_grn};${v_blu}m#${h_red}${h_grn}${h_blu}\033[0m\033[m"
 }
 
-usage () {
+usage() {
     echo -e " "
     echo -e "\033[0;96mUsage: $script_name <COMMAND>\033[0m"
     echo -e " "
@@ -72,7 +72,7 @@ usage () {
     echo -e " "
 }
 
-prog_help () {
+prog_help() {
     if [[ "$1" == "color-file" ]]; then
         echo -e "\033[0;96mColor files specify RGB values to use for setting the TTY colors.\033[0m"
         echo -e "\033[0;92mTo create one, you edit a text file and you put one"
@@ -96,7 +96,7 @@ prog_help () {
     fi
 }
 
-rc_warning () {
+rc_warning() {
     [[ "$TCT_NO_RC_WARN" == 1 ]] && return 0
 
     shell="$(basename "$SHELL")"
@@ -111,7 +111,7 @@ rc_warning () {
 
     warn_user=0
 
-    grep "$solution" "$rc_file" > /dev/null 2>&1 || warn_user=1
+    grep "$solution" "$rc_file" >/dev/null 2>&1 || warn_user=1
 
     if [[ "$warn_user" == 1 ]]; then
         echo -e "\033[0;93mWarning! Your TTY may end up acting kind of funky if you use the 'set-soft' command!\033[0m"
@@ -121,11 +121,11 @@ rc_warning () {
     fi
 }
 
-rc_bash () {
+rc_bash() {
     echo "alias exit='reset; exit'"
 }
 
-channel_file_path () {
+channel_file_path() {
     spec_chan="blu"
 
     [[ "$1" == 0 ]] && spec_chan="red"
@@ -135,15 +135,15 @@ channel_file_path () {
     echo "/sys/module/vt/parameters/default_${spec_chan}"
 }
 
-get_and_print () {
+get_and_print() {
     for ansi in $(seq 1 ${num_of_ansi}); do
         t_red="$(cat "$(channel_file_path 0)" | tr ',' '\n' | head --lines $ansi | tail --lines 1)"
         t_grn="$(cat "$(channel_file_path 1)" | tr ',' '\n' | head --lines $ansi | tail --lines 1)"
         t_blu="$(cat "$(channel_file_path 2)" | tr ',' '\n' | head --lines $ansi | tail --lines 1)"
 
-        t_red_br="$(cat "$(channel_file_path 0)" | tr ',' '\n' | head --lines $(( ${num_of_ansi} + ansi )) | tail --lines 1)"
-        t_grn_br="$(cat "$(channel_file_path 1)" | tr ',' '\n' | head --lines $(( ${num_of_ansi} + ansi )) | tail --lines 1)"
-        t_blu_br="$(cat "$(channel_file_path 2)" | tr ',' '\n' | head --lines $(( ${num_of_ansi} + ansi )) | tail --lines 1)"
+        t_red_br="$(cat "$(channel_file_path 0)" | tr ',' '\n' | head --lines $((${num_of_ansi} + ansi)) | tail --lines 1)"
+        t_grn_br="$(cat "$(channel_file_path 1)" | tr ',' '\n' | head --lines $((${num_of_ansi} + ansi)) | tail --lines 1)"
+        t_blu_br="$(cat "$(channel_file_path 2)" | tr ',' '\n' | head --lines $((${num_of_ansi} + ansi)) | tail --lines 1)"
 
         c_normal="$(hex_color_pretty ${t_red} ${t_grn} ${t_blu} dec)"
         c_bright="$(hex_color_pretty ${t_red_br} ${t_grn_br} ${t_blu_br} dec)"
@@ -152,7 +152,7 @@ get_and_print () {
     done
 }
 
-set_colors () {
+set_colors() {
     color_file_path="$1"
     soft_arg="$2"
 
@@ -167,13 +167,13 @@ set_colors () {
         for ansi in $(seq 1 ${num_of_ansi}); do
             c_pair="$(cat "$color_file_path" | head --lines $ansi | tail --lines 1)"
 
-            color_hex="$(echo "$c_pair" | cut -f$(( $style + 1 )) -d ' ' | sed 's/^#//g')"
+            color_hex="$(echo "$c_pair" | cut -f$(($style + 1)) -d ' ' | sed 's/^#//g')"
 
             if [[ "$soft_arg" == 0 ]]; then
                 for channel in $(seq 0 2); do
-                    single="$(echo "${color_hex:$(( ${channel} * 2 )):2}")"
+                    single="$(echo "${color_hex:$((${channel} * 2)):2}")"
 
-                    single_dec=$(( 0x${single} ))
+                    single_dec=$((0x${single}))
 
                     suffix=","
 
@@ -184,9 +184,9 @@ set_colors () {
                     [[ $channel == 2 ]] && vt_blu+="${single_dec}${suffix}"
                 done
             else
-                ansi_offset=$(( ${num_of_ansi} * ${style} ))
+                ansi_offset=$((${num_of_ansi} * ${style}))
 
-                index_dec=$(( ${ansi} + ${ansi_offset} - 1 ))
+                index_dec=$((${ansi} + ${ansi_offset} - 1))
                 index_hex="$(printf '%x' $index_dec)"
 
                 echo -en "\033]P${index_hex}${color_hex}"
@@ -205,7 +205,7 @@ set_colors () {
             channel_file_path="$(channel_file_path $channel)"
             tmp_file_path="/tmp/${RANDOM}_$(basename "$channel_file_path")"
 
-            echo "$vt_chan" > "$tmp_file_path" || die "Failed to write channel colors to temporary file!"
+            echo "$vt_chan" >"$tmp_file_path" || die "Failed to write channel colors to temporary file!"
             sudo bash -c "cat '${tmp_file_path}' > '${channel_file_path}'" || die "Failed to write to kernel files!"
         done
     fi
@@ -242,4 +242,3 @@ else
     usage
     exit 1
 fi
-
