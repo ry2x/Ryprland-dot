@@ -1,0 +1,8 @@
+# Global Configs
+[config]
+version_check = false
+
+# Hyprland
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/matugen-hyprland.conf'
+output_path = '~/.config/hypr/matugen/matugen-hyprland.conf'
