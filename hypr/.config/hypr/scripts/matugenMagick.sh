@@ -6,6 +6,7 @@
 
 # utility vars
 config_file="$HOME/.config/waypaper/config.ini"
+matugen_config="$HOME/.config/matugen/hyprland.toml"
 current_monitor=$(hyprctl monitors | awk '/^Monitor/{name=$2} /focused: yes/{print name}')
 
 # Check if cache file exists and extract wallpaper path correctly
@@ -25,15 +26,21 @@ if [ -z "$wallpaper_path" ] || [ ! -f "$wallpaper_path" ]; then
     exit 1
 fi
 
+if [ "$2" == "--skip" ]; then
+    # generate matugen colors
+    if [ "$1" == "--light" ]; then
+        matugen image "$wallpaper_path" -m "light" -c "$matugen_config"
+    else
+        matugen image "$wallpaper_path" -m "dark" -c "$matugen_config"
+    fi
+    exit 0
+fi
+
 # generate matugen colors
 if [ "$1" == "--light" ]; then
     matugen image "$wallpaper_path" -m "light"
 else
     matugen image "$wallpaper_path" -m "dark"
-fi
-
-if [ "$2" == "--skip" ]; then
-    exit 0
 fi
 
 # set gtk theme
