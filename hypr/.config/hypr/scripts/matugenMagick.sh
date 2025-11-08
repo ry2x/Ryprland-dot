@@ -7,12 +7,21 @@
 # utility vars
 config_file="$HOME/.config/waypaper/config.ini"
 matugen_config="$HOME/.config/matugen/hyprland.toml"
-current_monitor=$(hyprctl monitors | awk '/^Monitor/{name=$2} /focused: yes/{print name}')
 
-# Check if cache file exists and extract wallpaper path correctly
+# Parse arguments
+is_skip=false
+mode="dark"
+for arg in "$@"; do
+    case "$arg" in
+        --skip) is_skip=true ;;
+        --light) mode="light" ;;
+    esac
+done
+
+# Check if config file exists and extract wallpaper path correctly
 if [ -f "$config_file" ]; then
-    # Extract the wallpaper path from binary cache file (skip null bytes and 'Lanczos3')
-    wallpaper_path=$(grep "wallpaper =" "$config_file" | cut -d '=' -f2- | xargs)
+    # Extract wallpaper path (handles quotes and whitespace)
+    wallpaper_path=$(awk -F'=' '/^[[:space:]]*wallpaper[[:space:]]*=/ {val=$2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", val); gsub(/^"|"$/, "", val); print val; exit}' "$config_file")
 
     wallpaper_path="${wallpaper_path/#~/$HOME}"
 else
@@ -26,9 +35,9 @@ if [ -z "$wallpaper_path" ] || [ ! -f "$wallpaper_path" ]; then
     exit 1
 fi
 
-if [ "$2" == "--skip" ]; then
-    # generate matugen colors
-    if [ "$1" == "--light" ]; then
+if $is_skip; then
+    # generate matugen colors (with config when skipping ImageMagick)
+    if [ "$mode" = "light" ]; then
         matugen image "$wallpaper_path" -m "light" -c "$matugen_config"
     else
         matugen image "$wallpaper_path" -m "dark" -c "$matugen_config"
@@ -37,7 +46,7 @@ if [ "$2" == "--skip" ]; then
 fi
 
 # generate matugen colors
-if [ "$1" == "--light" ]; then
+if [ "$mode" = "light" ]; then
     matugen image "$wallpaper_path" -m "light"
 else
     matugen image "$wallpaper_path" -m "dark"
