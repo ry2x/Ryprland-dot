@@ -1,7 +1,7 @@
 #  ┳┳┓┏┓┏┳┓┳┳┏┓┏┓┳┓
 #  ┃┃┃┣┫ ┃ ┃┃┃┓┣ ┃┃
 #  ┛ ┗┛┗ ┻ ┗┛┗┛┗┛┛┗
-#                  
+#
 
 # Global Configs
 [config]
@@ -39,18 +39,6 @@ output_path = '~/.config/hypr/matugen/matugen-hyprland.conf'
 [templates.hyprlock]
 input_path = '~/.config/matugen/templates/matugen-hyprlock.conf'
 output_path = '~/.config/hypr/hyprlock/matugen/matugen-hyprlock.conf'
-
-# Waybar
-[templates.waybar]
-input_path = '~/.config/matugen/templates/matugen-waybar.css'
-output_path = '~/.config/waybar/matugen/matugen-waybar.css'
-post_hook = 'pkill -SIGUSR2 waybar'
-
-# Swaync
-[templates.swaync]
-input_path = '~/.config/matugen/templates/matugen-swaync.css'
-output_path = '~/.config/swaync/matugen/matugen-swaync.css'
-post_hook = 'swaync-client -rs'
 
 
 # Gtk3
