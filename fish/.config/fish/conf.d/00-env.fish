@@ -1,7 +1,7 @@
 #  ┏┓┏┓  ┏┓┳┓┓┏
 #  ┃┫┃┫━━┣ ┃┃┃┃
 #  ┗┛┗┛  ┗┛┛┗┗┛
-#              
+#
 
 # Environment variables and application defaults
 set -e fish_user_paths
@@ -53,6 +53,10 @@ set -gx FZF_DEFAULT_OPTS "--style=full --height=90% --pointer '>' --color 'point
 set -gx PNPM_HOME "$XDG_DATA_HOME/pnpm"
 set -gx PATH "$PNPM_HOME:$PATH"
 
+# npm
+set -gx NPM_CONFIG_USERCONFIG "$XDG_CONFIG_HOME/npm/.npmrc"
+set -gx NPM_CONFIG_CACHE "$XDG_CACHE_HOME/npm"
+
 # Other program settings
 set -gx DICS /usr/share/stardict/dic/
 set -gx SUDO_ASKPASS "$HOME/.local/bin/dmenupass"
@@ -70,4 +74,6 @@ set -gx MOZ_USE_XINPUT2 1
 set -gx AWT_TOOLKIT "MToolkit wmname LG3D"
 set -gx _JAVA_AWT_WM_NONREPARENTING 1
 
+# fnm
 fnm env --use-on-cd --shell fish | source
+set -gx FNM_COREPACK_ENABLED true

@@ -24,5 +24,11 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
+
+# fnm
 eval "$(fnm env --use-on-cd --shell bash)"
+export FNM_COREPACK_ENABLED=true
+
+# npm
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/.npmrc"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
