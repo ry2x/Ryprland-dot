@@ -77,3 +77,6 @@ set -gx _JAVA_AWT_WM_NONREPARENTING 1
 # fnm
 fnm env --use-on-cd --shell fish | source
 set -gx FNM_COREPACK_ENABLED true
+
+# rustup
+set -gx RUSTUP_HOME "$XDG_DATA_HOME/rustup"
