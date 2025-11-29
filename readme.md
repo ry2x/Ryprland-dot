@@ -2,6 +2,10 @@
 
 This repository is my personal configuration files for Hyprland, a dynamic tiling Wayland compositor. It includes my settings for Hyprland itself, as well as configurations for various applications and tools that I use alongside it.
 
+> [!NOTE]
+> This dotfile is for Japanese input environment.
+> If you don't need Japanese input, please edit or remove related configurations.
+
 ## Originals
 
 The original configurations can be found in the following repositories:
@@ -27,3 +31,9 @@ stow hypr
 ```
 
 Repeat this step for other configurations as needed (e.g., `alacritty`, `nvim`, `waybar`, etc.).
+
+## Using Japanese Input
+
+I highly recommend using [Mozc](https://github.com/google/mozc) and [fcitx5](https://github.com/fcitx/fcitx5) for Japanese input.
+
+- Additionally, you need to confirm the font is support Japanese.
