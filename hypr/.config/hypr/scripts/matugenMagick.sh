@@ -10,11 +10,9 @@ matugen_config="$HOME/.config/matugen/hyprland.toml"
 default_matugen_config="$HOME/.config/matugen/config.toml"
 
 # Parse arguments
-is_skip=false
 mode="dark"
 for arg in "$@"; do
     case "$arg" in
-        --skip) is_skip=true ;;
         --light) mode="light" ;;
     esac
 done
@@ -36,21 +34,15 @@ if [ -z "$wallpaper_path" ] || [ ! -f "$wallpaper_path" ]; then
     exit 1
 fi
 
-if $is_skip; then
-    # generate matugen colors (with config when skipping ImageMagick)
-    if [ "$mode" = "light" ]; then
-        matugen image "$wallpaper_path" -m "light" -c "$matugen_config"
-    else
-        matugen image "$wallpaper_path" -m "dark" -c "$matugen_config"
-    fi
-    exit 0
-fi
-
 # generate matugen colors
 if [ "$mode" = "light" ]; then
     matugen image "$wallpaper_path" -m "light" -c "$default_matugen_config"
+    sleep 0.5
+    matugen image "$wallpaper_path" -m "light" -c "$matugen_config"
 else
     matugen image "$wallpaper_path" -m "dark" -c "$default_matugen_config"
+    sleep 0.5
+    matugen image "$wallpaper_path" -m "dark" -c "$matugen_config"
 fi
 
 # set gtk theme
