@@ -11,10 +11,10 @@ output_path = '~/.config/hypr/matugen/matugen-hyprland.conf'
 [templates.waybar]
 input_path = '~/.config/matugen/templates/matugen-waybar.css'
 output_path = '~/.config/waybar/matugen/matugen-waybar.css'
-post_hook = 'killall -SIGUSR2 waybar'
+#post_hook = 'killall -SIGUSR2 waybar'
 
 # Swaync
 [templates.swaync]
 input_path = '~/.config/matugen/templates/matugen-swaync.css'
 output_path = '~/.config/swaync/matugen/matugen-swaync.css'
-post_hook = 'swaync-client -rs'
+#post_hook = 'swaync-client -rs'
