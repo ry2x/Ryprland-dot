@@ -30,16 +30,15 @@ output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
 input_path = '~/.config/matugen/templates/matugen-rofi.rasi'
 output_path = '~/.config/rofi/matugen/matugen-rofi.rasi'
 
-# Hyprland
-[templates.hyprland]
-input_path = '~/.config/matugen/templates/matugen-hyprland.conf'
-output_path = '~/.config/hypr/matugen/matugen-hyprland.conf'
-
 # Hyprlock
 [templates.hyprlock]
 input_path = '~/.config/matugen/templates/matugen-hyprlock.conf'
 output_path = '~/.config/hypr/hyprlock/matugen/matugen-hyprlock.conf'
 
+# HyprBind
+[templates.hyprbind]
+input_path = '~/.config/matugen/templates/hyprbind-theme.css'
+output_path = '~/.config/hyprbind/hyprbind-theme.css'
 
 # Gtk3
 [templates.gtk3]
@@ -81,8 +80,3 @@ post_hook = 'pywalfox update'
 [templates.zathura]
 input_path = '~/.config/matugen/templates/matugen-zathurarc'
 output_path = '~/.config/zathura/matugen-zathurarc'
-
-# HyprBind
-[templates.hyprbind]
-input_path = '~/.config/matugen/templates/hyprbind-theme.css'
-output_path = '~/.config/hyprbind/hyprbind-theme.css'
