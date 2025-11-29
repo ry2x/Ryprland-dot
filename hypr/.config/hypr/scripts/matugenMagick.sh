@@ -7,6 +7,7 @@
 # utility vars
 config_file="$HOME/.config/waypaper/config.ini"
 matugen_config="$HOME/.config/matugen/hyprland.toml"
+default_matugen_config="$HOME/.config/matugen/config.toml"
 
 # Parse arguments
 is_skip=false
@@ -47,9 +48,9 @@ fi
 
 # generate matugen colors
 if [ "$mode" = "light" ]; then
-    matugen image "$wallpaper_path" -m "light"
+    matugen image "$wallpaper_path" -m "light" -c "$default_matugen_config"
 else
-    matugen image "$wallpaper_path" -m "dark"
+    matugen image "$wallpaper_path" -m "dark" -c "$default_matugen_config"
 fi
 
 # set gtk theme
