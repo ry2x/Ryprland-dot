@@ -17,4 +17,4 @@ output_path = '~/.config/waybar/matugen/matugen-waybar.css'
 [templates.swaync]
 input_path = '~/.config/matugen/templates/matugen-swaync.css'
 output_path = '~/.config/swaync/matugen/matugen-swaync.css'
-#post_hook = 'swaync-client -rs'
+post_hook = 'swaync-client -rs'
