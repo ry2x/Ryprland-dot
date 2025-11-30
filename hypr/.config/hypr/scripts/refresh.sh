@@ -4,4 +4,4 @@
 #  ┛┗┗┛┻ ┛┗┗┛┗┛┛┗
 #
 
-"/home/haku/Profile/Ryprland-dot/waypaper/.config/waypaper/load_matugen.sh" --dark --skip
+"~/.config/waypaper/load_matugen.sh"
