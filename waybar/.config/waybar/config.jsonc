@@ -92,13 +92,13 @@
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
   },
   "custom/pacman": {
-    "format": "󰅢  {}",
-    "interval": 30,
-    "exec": "checkupdates | wc -l",
-    "exec-if": "exit 0",
+    "return-type": "json",
+    "format": "󰅢  {text}",
+    "interval": 600,
+    "exec": "~/.config/waybar/scripts/check_update.sh",
     "on-click": "kitty --title PacUpdate ~/.config/hypr/scripts/update_packages.sh; pkill -SIGRTMIN+8 waybar",
     "signal": 8,
-    "tooltip": false
+    "tooltip": true
   },
   "custom/colorpicker": {
     "format": "",
