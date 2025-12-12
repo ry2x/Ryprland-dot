@@ -2,7 +2,7 @@
  *    ┏┓┏┓┓ ┏┓┳┓┏┓
  *    ┃ ┃┃┃ ┃┃┣┫┗┓
  *    ┗┛┗┛┗┛┗┛┛┗┗┛
- *                
+ *
  */
 
 
@@ -17,7 +17,7 @@
        background-alt:   @surface-container-highest;
        background-alpha: @surface-alpha;
        foreground:       @on-surface;
-       border-color:     @tertiary;
+       border-color:     @primary;
        selected:         @primary-fixed;
        selected-alpha:   @primary-fixed-alpha;
        selected-text:    @surface;
