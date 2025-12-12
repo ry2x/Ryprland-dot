@@ -74,7 +74,7 @@ output_path = '~/.config/cava/config'
 [templates.pywalfox]
 input_path = '~/.config/matugen/templates/pywalfox-colors.json'
 output_path = '~/.cache/wal/colors.json'
-post_hook = 'pywalfox update'
+#post_hook = 'pywalfox update'
 
 # Zathura
 [templates.zathura]
