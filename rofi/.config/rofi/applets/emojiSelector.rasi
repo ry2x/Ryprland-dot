@@ -2,7 +2,7 @@
  *    ┏┓┳┳┓┏┓┏┳┳
  *    ┣ ┃┃┃┃┃ ┃┃
  *    ┗┛┛ ┗┗┛┗┛┻
- *                       
+ *
  */
 
 
@@ -18,20 +18,19 @@ configuration {
 
 /*****----- Main Window -----*****/
 window {
-    /* properties for window widget */
-    transparency:                "real";
-    location:                    center;
-    anchor:                      center;
-    fullscreen:                  false;
-    width:                       800px;
-    x-offset:                    0px;
-    y-offset:                    0px;
-    border:                      2px;
-    border-color:                @border-color;
     enabled:                     true;
-    border-radius:               20px;
+    fullscreen:                  false;
+    transparency:                "real";
     cursor:                      "default";
-    background-color:            @background;
+    background-color:            @background-alpha;
+    spacing:                     0em;
+    border:                      2px solid;
+    border-radius:               15px;
+    border-color:                @border-color;
+    width:                       60%;
+    height:                      60%;
+    margin:                      0px;
+    padding:                     0px;
 }
 
 /*****----- Main Box -----*****/
