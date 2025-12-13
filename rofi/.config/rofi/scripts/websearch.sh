@@ -32,7 +32,7 @@ run_cmd() {
     elif [[ "$1" == '--opt2' ]]; then
         xdg-open 'https://mail.google.com/'
     elif [[ "$1" == '--opt3' ]]; then
-        xdg-open 'https://www.youtube.com/'
+        kitty --title "YouTube" -e yt-x
     elif [[ "$1" == '--opt4' ]]; then
         xdg-open 'https://www.github.com/'
     elif [[ "$1" == '--opt5' ]]; then
