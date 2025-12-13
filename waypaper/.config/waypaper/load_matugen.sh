@@ -91,4 +91,4 @@ swww query || swww-daemon --format xrgbz
 [[ -n "$wallpaper_path" ]] && "$scriptsDir/matugenMagick.sh" --dark
 
 # Reload waybar swaync
-[[ -n "$wallpaper_path" ]] && "$scriptsDir/waybarRestart.sh"
+#[[ -n "$wallpaper_path" ]] && "$scriptsDir/waybarRestart.sh"
