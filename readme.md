@@ -20,8 +20,8 @@ This repository uses GNU Stow to manage the dotfiles. To set up the configuratio
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/Ryprland-dotfiles.git
-cd Ryprland-dotfiles
+git clone https://github.com/ry2x/Ryprland-dot.git
+cd Ryprland-dot
 ```
 
 2. Use Stow to create symlinks for the desired configurations. For example, to set up the Hyprland configuration, run:
