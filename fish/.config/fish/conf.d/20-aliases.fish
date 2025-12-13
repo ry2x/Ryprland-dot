@@ -54,3 +54,4 @@ alias gco='git checkout'
 alias h='history'
 alias reload='exec fish'
 alias q='exit'
+alias icat="kitten icat"
