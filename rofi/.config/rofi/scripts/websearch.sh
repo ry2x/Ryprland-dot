@@ -8,12 +8,8 @@
 rofiTheme="$HOME/.config/rofi/applets/webSearch.rasi"
 
 # Websites
-option_1=""
-option_2="󰊫"
-option_3="󰗃"
-option_4="󰊤"
-option_5=""
-option_6="󰕄"
+option_1=" 󰗃 "
+option_2="  "
 
 # Rofi CMD
 rofi_cmd() {
@@ -22,23 +18,16 @@ rofi_cmd() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-    echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6" | rofi_cmd
+    echo -e "$option_1\n$option_2" | rofi_cmd
 }
 
 # Execute Command
 run_cmd() {
     if [[ "$1" == '--opt1' ]]; then
-        xdg-open 'https://www.google.com/'
-    elif [[ "$1" == '--opt2' ]]; then
-        xdg-open 'https://mail.google.com/'
-    elif [[ "$1" == '--opt3' ]]; then
         kitty --title "YouTube" -e yt-x
-    elif [[ "$1" == '--opt4' ]]; then
-        xdg-open 'https://www.github.com/'
-    elif [[ "$1" == '--opt5' ]]; then
-        xdg-open 'https://www.reddit.com/'
-    elif [[ "$1" == '--opt6' ]]; then
-        xdg-open 'https://www.twitter.com/'
+    elif [[ "$1" == '--opt2' ]]; then
+        #xdg-open 'https://google.com/'
+        brave --enable-wayland-ime --disable-features=WaylandWpColorManagerV1
     fi
 }
 
@@ -50,17 +39,5 @@ $option_1)
     ;;
 $option_2)
     run_cmd --opt2
-    ;;
-$option_3)
-    run_cmd --opt3
-    ;;
-$option_4)
-    run_cmd --opt4
-    ;;
-$option_5)
-    run_cmd --opt5
-    ;;
-$option_6)
-    run_cmd --opt6
     ;;
 esac
