@@ -1,8 +1,8 @@
 /***
  *    ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
- *    ┃ ┃ ┃┃┃┣┫┃┗┓ ┃ 
- *    ┗┛┗┛┻┣┛┛┗┻┗┛ ┻ 
- *                   
+ *    ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
+ *    ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
+ *
  */
 
 /* Configuration ---------------------------------------------------- */
@@ -51,7 +51,7 @@ inputbar {
     spacing:                     0px;
     padding:                     128px 64px;
     orientation:                 horizontal;
-    background-image:            url("~/.local/share/bg", width);
+    background-image:            url("~/.config/rofi/images/currentWal.thumb", width);
 }
 
 dummy {

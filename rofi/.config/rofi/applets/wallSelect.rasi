@@ -1,8 +1,8 @@
 /***
  *    ┓ ┏┏┓┓ ┓ ┏┓┏┓┓ ┏┓┏┓┏┳┓
- *    ┃┃┃┣┫┃ ┃ ┗┓┣ ┃ ┣ ┃  ┃ 
- *    ┗┻┛┛┗┗┛┗┛┗┛┗┛┗┛┗┛┗┛ ┻ 
- *                          
+ *    ┃┃┃┣┫┃ ┃ ┗┓┣ ┃ ┣ ┃  ┃
+ *    ┗┻┛┛┗┗┛┗┛┗┛┗┛┗┛┗┛┗┛ ┻
+ *
  */
 
 /* ---- Configuration ---- */
@@ -13,10 +13,10 @@ configuration {
     hover-select:           	  true;
     me-select-entry:        	  "MouseSecondary";
     me-accept-entry:        	  "MousePrimary";
-    
+
 }
 
-/* ---- Global properties ---- */ 
+/* ---- Global properties ---- */
 @import 		    	  "~/.config/rofi/applets/shared/colors.rasi"
 @import 	            	  "~/.config/rofi/applets/shared/fonts.rasi"
 

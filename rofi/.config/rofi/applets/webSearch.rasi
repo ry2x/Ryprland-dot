@@ -2,7 +2,7 @@
  *    ┓ ┏┏┓┳┓┏┓┏┓┏┓┳┓┏┓┓┏
  *    ┃┃┃┣ ┣┫┗┓┣ ┣┫┣┫┃ ┣┫
  *    ┗┻┛┗┛┻┛┗┛┗┛┛┗┛┗┗┛┛┗
- *                       
+ *
  */
 
 
@@ -10,12 +10,12 @@ configuration {
     modi:                       "drun,run";
     show-icons:                 false;
     drun-display-format:        "{name}";
-    font:                       "GeistMono Nerd Font Propo 28";
     hover-select:               true;
 }
 
 /* colors ------------------------------ */
 @import "~/.config/rofi/applets/shared/colors.rasi"
+@import '~/.config/rofi/applets/shared/fonts.rasi'
 
 
 
@@ -30,9 +30,9 @@ window {
     y-offset:                    0px;
     margin:                      0px;
     padding:                     0px;
-    border:                      0px solid;
+    border:                      2px solid;
     border-radius:               10px;
-    border-color:                @selected;
+    border-color:                @border-color;
     cursor:                      "default";
     background-color:            @background;
 }
