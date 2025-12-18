@@ -13,7 +13,7 @@ option_2="  "
 
 # Rofi CMD
 rofi_cmd() {
-    rofi -x11 -markup-rows -dmenu -theme ${rofiTheme}
+    rofi -markup-rows -dmenu -theme ${rofiTheme}
 }
 
 # Pass variables to rofi dmenu
