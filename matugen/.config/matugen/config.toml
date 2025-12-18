@@ -21,9 +21,9 @@ output_path = '~/.config/bat/themes/matugen-bat-colors.tmTheme'
 post_hook = 'bat cache --build'
 
 # Spicetify
-[templates.spicetify]
-input_path = '~/.config/matugen/templates/spotify-colors.ini'
-output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
+#[templates.spicetify]
+#input_path = '~/.config/matugen/templates/spotify-colors.ini'
+#output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
 
 # Rofi
 [templates.rofi]
@@ -71,9 +71,9 @@ input_path = '~/.config/matugen/templates/matugen-cava'
 output_path = '~/.config/cava/config'
 
 # Pywalfox
-[templates.pywalfox]
-input_path = '~/.config/matugen/templates/pywalfox-colors.json'
-output_path = '~/.cache/wal/colors.json'
+#[templates.pywalfox]
+#input_path = '~/.config/matugen/templates/pywalfox-colors.json'
+#output_path = '~/.cache/wal/colors.json'
 #post_hook = 'pywalfox update'
 
 # Zathura
