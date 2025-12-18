@@ -20,7 +20,7 @@ done
 # Check if config file exists and extract wallpaper path correctly
 if [ -f "$config_file" ]; then
     # Extract wallpaper path (handles quotes and whitespace)
-    wallpaper_path=$(awk -F'=' '/^[[:space:]]*wallpaper[[:space:]]*=/ {val=$2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", val); gsub(/^"|"$/, "", val); print val; exit}' "$config_file")
+    wallpaper_path=$(grep "wallpaper =" "$config_file" | cut -d '=' -f2- | xargs)
 
     wallpaper_path="${wallpaper_path/#~/$HOME}"
 else
