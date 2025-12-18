@@ -14,7 +14,7 @@
 while true; do
     # Run rofi and capture both the result string and its exit status
     result=$(
-        rofi -x11 -i -dmenu \
+        rofi -i -dmenu \
             -kb-custom-1 "Control-Delete" \
             -kb-custom-2 "ALT-Delete" \
             -config ~/.config/rofi/applets/cliphist.rasi < <(cliphist list)

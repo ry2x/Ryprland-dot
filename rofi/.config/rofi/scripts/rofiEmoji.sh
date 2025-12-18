@@ -7,9 +7,9 @@
 
 if [ $? -eq 0 ]
 then
-    sed '1,/^### DATA ###$/d' $0 | rofi -x11 -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
+    sed '1,/^### DATA ###$/d' $0 | rofi  -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
 else
-    sed '1,/^### DATA ###$/d' $0 | rofi -x11 -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
+    sed '1,/^### DATA ###$/d' $0 | rofi  -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
 fi
 exit
 ### DATA ###

@@ -9,4 +9,4 @@ dir="$HOME/.config/rofi/launchers/sidelaunchers"
 theme='style-1'
 
 # Run
-pkill rofi || rofi -x11 -show drun -theme ${dir}/${theme}.rasi
+pkill rofi || rofi -show drun -theme ${dir}/${theme}.rasi
