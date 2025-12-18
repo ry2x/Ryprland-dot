@@ -27,7 +27,7 @@ run_cmd() {
         kitty --title "YouTube" -e yt-x
     elif [[ "$1" == '--opt2' ]]; then
         #xdg-open 'https://google.com/'
-        brave --enable-wayland-ime --disable-features=WaylandWpColorManagerV1
+        brave --enable-wayland-ime
     fi
 }
 
