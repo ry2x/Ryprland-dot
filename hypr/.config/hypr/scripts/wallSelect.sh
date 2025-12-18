@@ -118,11 +118,5 @@ wall_selection=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg"
         fi
     done | $rofi_command)
 
-# SWWW Config
-FPS=60
-TYPE="any"
-DURATION=2
-BEZIER=".43,1.19,1,.4"
-SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION"
 
 [[ -n "$wall_selection" ]] && waypaper --wallpaper "${wall_dir}/${wall_selection}"
