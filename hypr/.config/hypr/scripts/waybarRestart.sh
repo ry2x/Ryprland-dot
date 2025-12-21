@@ -6,7 +6,7 @@
 
 # kill already running processes
 #_ps=(waybar rofi swaync)
-_ps=(waybar rofi)
+_ps=(waybar rofi swaync)
 for _prs in "${_ps[@]}"; do
     if pidof "${_prs}" >/dev/null; then
         pkill "${_prs}"
