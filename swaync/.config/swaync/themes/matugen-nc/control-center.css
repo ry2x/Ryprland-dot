@@ -34,8 +34,8 @@
 
 .control-center {
   background: @background-trans;
-  border-radius: 24px;
-  border: 1px solid @selected;
+  border-radius: 12px;
+  border: 3px solid @selected;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
   margin: 18px;
   padding: 12px;
@@ -169,7 +169,7 @@
 /* Label widget */
 .widget-label {
   margin: 6px 6px 6px 140px;
-  color: @accent;
+  color: @selected;
 }
 
 /* Notification clear button */
