@@ -20,7 +20,7 @@ done
 # Check if config file exists and extract wallpaper path correctly
 if [ -f "$config_file" ]; then
     # Extract wallpaper path (handles quotes and whitespace)
-    wallpaper_path=$(grep "wallpaper =" "$config_file" | cut -d '=' -f2- | xargs)
+wallpaper_path=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
     wallpaper_path="${wallpaper_path/#~/$HOME}"
 else
@@ -91,4 +91,5 @@ if ! ln -sf "$wallpaper_path" "$HOME/.local/share/bg"; then
 fi
 
 # send notification after completion
-notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick" "Matugen & ImageMagick has completed its job" -i "$HOME/.local/share/bg"
+msg=$'The wallpaper have been update to\n'"$wallpaper_path"
+notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -i "$HOME/.local/share/bg"

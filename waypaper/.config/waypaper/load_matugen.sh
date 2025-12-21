@@ -4,7 +4,7 @@
 wall_dir="$HOME/Pictures/wallpapers"
 scriptsDir="$HOME/.config/hypr/scripts"
 
-wallpaper_path=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | xargs)
+wallpaper_path=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 wallpaper_path="${wallpaper_path/#~/$HOME}"
 
 # SWWW Config
