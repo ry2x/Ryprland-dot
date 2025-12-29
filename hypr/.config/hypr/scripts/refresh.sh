@@ -4,4 +4,4 @@
 #  ┛┗┗┛┻ ┛┗┗┛┗┛┛┗
 #
 
-"~/.config/waypaper/load_matugen.sh"
+"$HOME/.config/waypaper/load_matugen.sh"

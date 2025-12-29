@@ -30,7 +30,6 @@
 # Set dir varialable
 wall_dir="$HOME/Pictures/wallpapers"
 cacheDir="$HOME/.cache/wallcache"
-scriptsDir="$HOME/.config/hypr/scripts"
 
 # Create cache dir if not exists
 [ -d "$cacheDir" ] || mkdir -p "$cacheDir"
@@ -117,6 +116,5 @@ wall_selection=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg"
             printf '%s\x00icon\x1f%s/%s\n' "$A" "${cacheDir}" "$A" # Non-gif files with icon convention
         fi
     done | $rofi_command)
-
 
 [[ -n "$wall_selection" ]] && waypaper --wallpaper "${wall_dir}/${wall_selection}"
