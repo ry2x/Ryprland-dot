@@ -7,7 +7,7 @@
 set -e fish_user_paths
 set -U fish_user_paths $HOME/.local/bin $HOME/.local/bin/statusbar $HOME/.local/bin/cron $HOME/Applications /var/lib/flatpak/exports/bin/ $fish_user_paths $HOME/.local/share/cargo/bin
 
-# Supresses fish's intro message
+# Suppresses fish's intro message
 set fish_greeting ""
 
 # Default programs
@@ -15,7 +15,7 @@ set -gx EDITOR nvim
 set -gx TERMINAL st
 set -gx TERMINAL_PROG st
 set -gx LOCATION Memari
-set -gx BROWSER brave\ --enable-wayland-ime\ --disable-features=WaylandWpColorManagerV1
+set -gx BROWSER brave\ --enable-wayland-ime
 
 # XDG paths and application config
 set -gx XDG_CONFIG_HOME "$HOME/.config"
