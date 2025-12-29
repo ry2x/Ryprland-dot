@@ -5,11 +5,10 @@
 #
 
 iDIR="$HOME/.config/swaync/icons"
-notification_timeout=1000
 
 # Get brightness
 get_backlight() {
-    echo $(brightnessctl -m | cut -d, -f4)
+    echo "$(brightnessctl -m | cut -d, -f4)"
 }
 
 # Get icons

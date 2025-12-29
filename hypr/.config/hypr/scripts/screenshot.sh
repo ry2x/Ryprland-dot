@@ -4,7 +4,7 @@
 #  ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛ ┻
 #
 
-grim_path=~/Pictures/screenshots/grim-$(date +%Y-%m-%d_%H%M).png
+grim_path=$HOME/Pictures/screenshots/grim-$(date +%Y-%m-%d_%H%M).png
 
 if [[ "$1" == "--crop" ]]; then
     grim -g "$(slurp -d)" "$grim_path"
