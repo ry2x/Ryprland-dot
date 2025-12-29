@@ -80,3 +80,7 @@ set -gx FNM_COREPACK_ENABLED true
 
 # rustup
 set -gx RUSTUP_HOME "$XDG_DATA_HOME/rustup"
+
+# Go
+set -gx GOBIN "$GOPATH/bin"
+set -gx PATH "$GOBIN:$PATH"
