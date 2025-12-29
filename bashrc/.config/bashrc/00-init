@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # -----------------------------------------------------
 # INIT
 # -----------------------------------------------------
@@ -21,8 +22,8 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 # pnpm
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
 # fnm
@@ -35,3 +36,7 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 
 # rustup
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+#Go
+export GOBIN="$GOPATH/bin"
+export PATH="$PATH:$GOPATH/bin"
