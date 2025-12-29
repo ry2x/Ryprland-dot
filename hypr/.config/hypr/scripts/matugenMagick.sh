@@ -13,14 +13,14 @@ default_matugen_config="$HOME/.config/matugen/config.toml"
 mode="dark"
 for arg in "$@"; do
     case "$arg" in
-        --light) mode="light" ;;
+    --light) mode="light" ;;
     esac
 done
 
 # Check if config file exists and extract wallpaper path correctly
 if [ -f "$config_file" ]; then
     # Extract wallpaper path (handles quotes and whitespace)
-wallpaper_path=$(grep "wallpaper =" ~/.config/waypaper/config.ini | cut -d '=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+    wallpaper_path=$(grep "wallpaper =" $HOME/.config/waypaper/config.ini | cut -d '=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
     wallpaper_path="${wallpaper_path/#~/$HOME}"
 else
