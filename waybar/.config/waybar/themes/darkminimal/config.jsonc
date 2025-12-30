@@ -88,7 +88,7 @@
     "format-ethernet": "󰈁 ",
     "format-disconnected": "󰖪",
     "tooltip-format": "{essid}",
-    "on-click": "kitty --title KittyNmtui sh -c 'sleep 0.1; nmtui'",
+    "on-click": "pkill nmgui || nmgui",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
   },
   "custom/pacman": {
