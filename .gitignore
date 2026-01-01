@@ -65,3 +65,4 @@ hyprbind/.config/hyprbind/hyprbind-theme.css
 
 # Thunar
 xfce4/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+Thunar/.config/Thunar/accels.scm
