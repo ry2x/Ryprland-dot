@@ -160,7 +160,7 @@
     "interval": 1,
     "format-stopped": "",
     "format-paused": " <small>{title} - {artist}</small>",
-    "format-playing": " <small>{title} - {artist}</small>",
+    "format-playing": " <small>{title} - {artist}</small>",
     "dynamic-importance-order": ["title", "artist", "album"],
     "dynamic-separator": " - ",
     "title-len": 20,
