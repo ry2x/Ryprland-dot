@@ -88,7 +88,7 @@ esac
 
 #echo $temp $condition
 
-echo -e "{\"text\":\""$condition $temperature"\", \"alt\":\""${weather[0]}"\", \"tooltip\":\""${weather[0]}: $temperature ${weather[1]}"\"}"
+echo -e "{\"text\":\""$condition :${temperature}C"\", \"alt\":\""${weather[0]}"\", \"tooltip\":\""${weather[0]}: $temperature ${weather[1]}"\"}"
 
 cached_weather=" $temperature  \n$condition ${weather[1]}"
 
