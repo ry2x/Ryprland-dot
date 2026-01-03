@@ -205,3 +205,17 @@ window#waybar {
   background: alpha(@on_primary_container, 0.1);
   transition: all 0.3s ease;
 }
+
+/*
+* Tooltip Properties
+*/
+
+tooltip {
+  background: alpha(@surface, 0.8);
+  border: 2px solid @tertiary;
+  border-radius: 12px;
+}
+tooltip label {
+  color: @on_surface;
+  padding: 6px;
+}

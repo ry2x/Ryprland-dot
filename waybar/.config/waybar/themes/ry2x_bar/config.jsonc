@@ -255,7 +255,7 @@
     "tooltip-format-disconnected": "󰅛 Network Disconnected",
     "tooltip-format-disabled": "󰲛 Network Disabled",
     "tooltip-format-ethernet": " {bandwidthUpBytes} \n  {bandwidthDownBytes}",
-    "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n 󱚺  {bandwidthUpBytes} \n 󱚶  {bandwidthDownBytes}",
+    "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
     "on-click": "pkill nmgui || nmgui"
   },
 
