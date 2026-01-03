@@ -18,6 +18,7 @@ main() {
 
         # Restart Waybar
         pkill waybar
+        pkill cava
         sleep 0.5
         waybar &
 
