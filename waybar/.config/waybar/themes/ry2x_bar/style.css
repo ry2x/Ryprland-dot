@@ -38,7 +38,7 @@ window#waybar {
   margin: 0px 5px 5px 5px;
   padding: 8px 10px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
@@ -47,7 +47,7 @@ window#waybar {
   margin: 0px 5px 5px 5px;
   padding: 8px 13px 8px 10px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
@@ -57,7 +57,7 @@ window#waybar {
 #player {
   margin: 0px 5px 5px 5px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
@@ -78,8 +78,8 @@ window#waybar {
 
 #memory,
 #idle_inhibitor {
-  border-left: 0.7px solid alpha(@on_primary_container, 0.6);
-  border-right: 0.7px solid alpha(@on_primary_container, 0.6);
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
 }
 
 #custom-launcher:hover,
@@ -111,7 +111,7 @@ window#waybar {
 #hyprland {
   margin: 0px 5px 5px 5px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
@@ -127,23 +127,23 @@ window#waybar {
 
 #workspaces button {
   color: @on_surface;
-  border-left: 0.7px solid transparent;
-  border-right: 0.7px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
 
 #workspaces button:hover {
   color: @tertiary;
   background: alpha(@on_primary_container, 0.1);
-  border-left: 0.7px solid alpha(@on_primary_container, 0.6);
-  border-right: 0.7px solid alpha(@on_primary_container, 0.6);
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
   transition: all 0.3s ease;
 }
 
 #workspaces button.active {
   color: @tertiary;
   background: alpha(@on_primary_container, 0.5);
-  border-left: 0.7px solid alpha(@on_primary_container, 0.6);
-  border-right: 0.7px solid alpha(@on_primary_container, 0.6);
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
   transition: all 0.3s ease;
 }
 
@@ -170,7 +170,7 @@ window#waybar {
   margin: 0px 5px 5px 5px;
   padding: 8px 10px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
@@ -178,7 +178,7 @@ window#waybar {
 #settings {
   margin: 0px 5px 5px 5px;
   color: @on_surface;
-  border: 0.7px solid alpha(@on_primary_container, 0.6);
+  border: 1px solid alpha(@on_primary_container, 0.6);
   border-top: none;
   border-radius: 0px 0px 8px 8px;
 }
