@@ -7,10 +7,11 @@
 # Exports
 # -----------------------------------------------------
 export EDITOR=nvim
-export BROWSER="brave --enable-wayland-ime --disable-features=WaylandWpColorManagerV1"
+export BROWSER="brave --enable-wayland-ime"
 export TERMINAL=kitty
 export PATH="$HOME/.local/bin/:$PATH"
 export PATH="$HOME/.local/share/cargo/bin:$PATH"
+export PATH="$HOME/.local/share/bin:$PATH"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -19,16 +20,13 @@ export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export KODI_DATA="$XDG_DATA_HOME/kodi"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+
 # pnpm
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-# fnm
-eval "$(fnm env --use-on-cd --shell bash)"
-export FNM_COREPACK_ENABLED=true
 
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/.npmrc"
