@@ -10,6 +10,7 @@ rofiTheme="$HOME/.config/rofi/applets/webSearch.rasi"
 # Websites
 option_1=" 󰗃 "
 option_2="  "
+option_3=" 󰎆 "
 
 # Rofi CMD
 rofi_cmd() {
@@ -18,7 +19,7 @@ rofi_cmd() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-    echo -e "$option_1\n$option_2" | rofi_cmd
+    echo -e "$option_1\n$option_2\n$option_3" | rofi_cmd
 }
 
 # Execute Command
@@ -28,6 +29,8 @@ run_cmd() {
     elif [[ "$1" == '--opt2' ]]; then
         #xdg-open 'https://google.com/'
         brave --enable-wayland-ime
+    elif [[ "$1" == '--opt3' ]]; then
+        youtube-music
     fi
 }
 
@@ -39,5 +42,8 @@ $option_1)
     ;;
 $option_2)
     run_cmd --opt2
+    ;;
+$option_3)
+    run_cmd --opt3
     ;;
 esac
