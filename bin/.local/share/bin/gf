@@ -41,6 +41,7 @@ git_commit() {
   # git add the selected files
   echo "$files" | xargs git add
   log_info "選んだファイルをステージしたよ！"
+  echo "-------------------------------"
   echo "$files"
   echo "-------------------------------"
 
@@ -103,7 +104,7 @@ git_pull() {
 # 4. Switch branch
 git_branch_switch() {
   local branch
-  branch=$(git branch --all | grep -v '->' | fzf --height 40% --prompt "どのブランチにする？: " | sed 's/.* //;s/remotes\/origin\///')
+  branch=$(git branch --all | grep -v -- "->" | fzf --height 40% --prompt "どのブランチにする？: " | sed 's/.* //;s/remotes\/origin\///')
   if [ -n "$branch" ]; then
     git checkout "$branch"
     log_success "ブランチ切り替えたよ！"
