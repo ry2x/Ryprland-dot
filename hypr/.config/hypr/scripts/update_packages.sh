@@ -215,10 +215,6 @@ update_paru() {
     fi
 }
 
-# Get terminal width for formatting
-TERM_WIDTH=$(tput cols)
-HALF_WIDTH=$((TERM_WIDTH / 2 - 5))
-
 # Update package databases first
 update_package_databases
 
