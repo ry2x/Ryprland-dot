@@ -68,11 +68,11 @@ git_commit() {
   log_normal ""
 
   # Enter commit message (multi-line interactive input using `gum write`)
-  log_info "コミットメッセージを入力してね! (Ctrl+Dで確定、複数行OK!)"
+  log_info "コミットメッセージを入力してね! (複数行OK!)"
   local message
   message=$(
     gum write \
-      --placeholder "ここにメッセージを入力... (Ctrl+Dで確定)" \
+      --placeholder "ここにメッセージを入力..." \
       --placeholder.foreground "#fbc2eb" \
       --width 60 \
       --height 8 \
@@ -202,13 +202,12 @@ git_branch_switch() {
   if [ "$selected" = "+ 新規ブランチ作成" ]; then
     local new_branch_name
     new_branch_name=$(
-      gum write \
-        --placeholder "ここに新しいブランチ名を入力... (Ctrl+Dで確定)" \
+      gum input \
+        --placeholder "ここに新しいブランチ名を入力..." \
         --placeholder.foreground "#fbc2eb" \
         --width 60 \
-        --height 8 \
-        --base.background "#fff0f6" \
-        --base.foreground "#4b1038" \
+        --header.background "#fff0f6" \
+        --header.foreground "#4b1038" \
         --cursor.foreground "#d01b77" \
         --prompt.foreground "#ff69b4"
     )
