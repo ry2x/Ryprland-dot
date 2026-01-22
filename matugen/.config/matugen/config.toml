@@ -76,6 +76,11 @@ output_path = '~/.config/cava/config'
 #output_path = '~/.cache/wal/colors.json'
 #post_hook = 'pywalfox update'
 
+# Zen
+[templates.zen]
+input_path = '~/.config/matugen/templates/zen-userchrome.css'
+output_path = '~/.config/ry2x/zen.css'
+
 # Zathura
 [templates.zathura]
 input_path = '~/.config/matugen/templates/matugen-zathurarc'
