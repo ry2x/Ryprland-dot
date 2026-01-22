@@ -24,34 +24,54 @@ log_success() {
   echo -e "${BLUE}[SUCCESS]${NC} $1"
 }
 
+# Log a plain message without any color or level prefix.
+log_normal() {
+  echo -e "${NC}$1"
+}
+
 # --- Function definitions ---
 
 # 1. Commit (Stage -> Message -> Confirm)
 git_commit() {
-  # Select files to stage (multiple selection allowed)
-  # {+2} refers to the 2nd column of `git status -s` (the file path)
-  local files
-  files=$(git status -s | fzf -m --ansi --preview 'git diff --color=always {+2}' | awk '{print $2}')
+  local files status
 
-  if [ -z "$files" ]; then
-    log_info "キャンセルしたよ。"
+  status=$(git status -s)
+  if [ -z "$status" ]; then
+    log_warn "選べるファイルがないよ。"
     return
   fi
 
-  # git add the selected files
-  echo "$files" | xargs git add
-  log_info "選んだファイルをステージしたよ！"
-  echo "-------------------------------"
-  echo "$files"
-  echo "-------------------------------"
+  files=$(
+    echo "$status" |
+      fzf -m \
+        --ansi \
+        --preview-window '+{2}-/2' \
+        --preview 'git diff --color=always {+2}' |
+      awk '{print $2}'
+  )
+
+  if [ -z "$files" ]; then
+    log_warn "キャンセルしたよ。"
+    return
+  fi
+
+  # git add the selected files safely, handling filenames with spaces
+  while IFS= read -r file; do
+    [ -n "$file" ] && git add -- "$file"
+  done <<<"$files"
+
+  log_info "以下のファイルをステージしたよ!"
+  log_normal ""
+  log_normal "-------------------------------"
+  log_normal "$files"
+  log_normal "-------------------------------"
+  log_normal ""
 
   # Enter commit message (multi-line interactive input using `gum write`)
-  log_info "コミットメッセージを入力してね！（Ctrl+Dで確定、複数行OK！）"
+  log_info "コミットメッセージを入力してね! (Ctrl+Dで確定、複数行OK!)"
   local message
   message=$(
     gum write \
-      --header "コミットメッセージを入力してね！" \
-      --header.foreground "#d01b77" \
       --placeholder "ここにメッセージを入力... (Ctrl+Dで確定)" \
       --placeholder.foreground "#fbc2eb" \
       --width 60 \
@@ -63,56 +83,200 @@ git_commit() {
   )
 
   if [ -z "$message" ]; then
-    log_fatal "メッセージが空っぽだよ…今回はコミットやめておくね！ステージングも解除したよ！"
-    git restore --staged $files
+    log_warn "メッセージが空っぽだよ…今回はコミットやめておくね!ステージングも解除したよ!"
+    echo "$files" | xargs git restore --staged
     return
   fi
 
-  # Confirmation (y/n)
-  echo -e "\n--- Message ---"
-  echo "$message"
-  echo "---------------"
-  read -p "このメッセージでコミットしてもいい？(y/n) : " confirm
+  # Confirmation via fzf (yes/no) with message preview
+  local choice
+  choice=$(
+    echo -e "yes\nno" |
+      fzf --height 10% --layout=reverse --prompt "このメッセージでコミットしてもいい?: " \
+        --preview "echo \"$message\"" \
+        --preview-label "Commit Message" \
+        --preview-window "down:wrap:border-rounded"
+  )
 
-  if [ "$confirm" = "y" ]; then
-    git commit -m "$message"
-    log_success "コミットしたよ！"
+  if [ "$choice" = "yes" ]; then
+    local output
+    if ! output=$(git commit -m "$message" 2>&1); then
+      log_fatal "$output"
+      log_fatal "コミットに失敗したよ。"
+      return
+    else
+      log_info "$output"
+      log_success "コミットしたよ!"
+      return
+    fi
   else
-    log_warn "コミットやめておいたよ。ステージングも解除したよ！"
-    git restore --staged $files
+    git restore --staged "$files"
+    log_warn "コミットやめておいたよ。ステージングも解除したよ!"
   fi
 }
 
 # 2. Push
 git_push() {
-  local branch
+  local branch remote_ref commits
   branch=$(git branch --show-current)
-  read -p "origin $branch にPushしてもいい？(y/n) : " confirm
-  if [ "$confirm" = "y" ]; then
-    git push origin "$branch"
-    log_success "Pushしたよ！最高だね！一緒に進もうね！"
+  remote_ref="origin/$branch"
+
+  # Determine commits that would be pushed
+  if git rev-parse --verify --quiet "refs/remotes/$remote_ref" >/dev/null 2>&1; then
+    commits=$(git log --oneline "$remote_ref..$branch")
   else
-    log_warn "Pushやめておいたよ。またタイミング教えてね！"
+    commits=$(git log --oneline "$branch")
+  fi
+
+  if [ -z "$commits" ]; then
+    log_info "Pushするコミットはないよ。"
+    return
+  fi
+
+  # Use fzf for Y/N confirmation
+  local choice
+  choice=$(
+    echo -e "yes\nno" |
+      fzf --height 10% --layout=reverse --prompt \
+        "これらのcommitをorigin $branch にPushしてもいい?(y/n): " \
+        --preview "echo \"$commits\"" \
+        --preview-label "Commits to be pushed" \
+        --preview-window "down:70%:wrap:border-rounded"
+  )
+  if [ "$choice" = "yes" ]; then
+    local output
+    if git rev-parse --verify --quiet "refs/remotes/$remote_ref" >/dev/null 2>&1; then
+      if output=$(git push origin "$branch" 2>&1); then
+        log_info "$output"
+      else
+        log_fatal "$output"
+        log_fatal "Pushに失敗したよ!"
+        return
+      fi
+    else
+      if output=$(git push -u origin "$branch" 2>&1); then
+        log_info "$output"
+      else
+        log_fatal "$output"
+        log_fatal "Pushに失敗したよ!"
+        return
+      fi
+    fi
+    log_success "Pushしたよ!"
+  else
+    log_warn "Pushやめておいたよ。またタイミング教えてね!"
   fi
 }
 
 # 3. Pull
 git_pull() {
-  git pull
+  # Let `git pull` write directly to stdout/stderr so colors and progress are preserved
+  local output
+  if output=$(git pull 2>&1); then
+    log_info "$output"
+    log_success "Pullしたよ!"
+  else
+    log_fatal "$output"
+    log_fatal "Pullに失敗したよ!"
+  fi
 }
 
 # 4. Switch branch
 git_branch_switch() {
-  local branch
-  branch=$(git branch --all | grep -v -- "->" | fzf --height 40% --prompt "どのブランチにする？: " | sed 's/.* //;s/remotes\/origin\///')
-  if [ -n "$branch" ]; then
-    git checkout "$branch"
-    log_success "ブランチ切り替えたよ！"
-  else
+  local selected branch output
+  selected=$(
+    (
+      echo "+ 新規ブランチ作成"
+      git branch --all | grep -v -- "->"
+    ) |
+      fzf --height 40% \
+        --prompt "どのブランチにする？: " \
+        --header "Enterで選択 / リモートは自動で追跡します"
+  )
+
+  if [ -z "$selected" ]; then
     log_warn "ブランチ切り替えやめておいたよ。"
+    return
+  fi
+
+  if [ "$selected" = "+ 新規ブランチ作成" ]; then
+    local new_branch_name
+    new_branch_name=$(
+      gum write \
+        --placeholder "ここに新しいブランチ名を入力... (Ctrl+Dで確定)" \
+        --placeholder.foreground "#fbc2eb" \
+        --width 60 \
+        --height 8 \
+        --base.background "#fff0f6" \
+        --base.foreground "#4b1038" \
+        --cursor.foreground "#d01b77" \
+        --prompt.foreground "#ff69b4"
+    )
+
+    if [ -z "$new_branch_name" ]; then
+      log_warn "ブランチ名が入力されなかったので中止したよ。"
+      return
+    fi
+
+    if output=$(git checkout -b "$new_branch_name" 2>&1); then
+      log_info "$output"
+      log_success "新しいブランチ '$new_branch_name' を作成して切り替えたよ！"
+      return
+    else
+      log_fatal "$output"
+      log_fatal "ブランチ '$new_branch_name' の作成または切り替えに失敗したよ。既に同名のブランチがないか確認してね。"
+      return
+    fi
+  fi
+
+  branch=$(echo "$selected" | sed 's/.* //;s/remotes\/origin\///')
+  if output=$(git checkout "$branch" 2>&1); then
+    log_info "$output"
+    log_success "ブランチ切り替えたよ! 現在のブランチ: $branch"
+  else
+    log_fatal "$output"
+    log_fatal "切り替えに失敗したよ。"
   fi
 }
 
+git_branch_delete() {
+  local branches
+  branches=$(git branch | grep -v '^\*' | fzf -m --height 50% \
+    --prompt "削除するブランチを選んで: " \
+    --preview "git log --oneline --graph --color=always {1}" \
+    --preview-label "Commits: {1} " \
+    --preview-window "right:60%:border-top:wrap")
+
+  if [ -z "$branches" ]; then
+    log_warn "削除をキャンセルしたよ。"
+    return
+  fi
+
+  local choice
+  choice=$(
+    echo -e "yes\nno" |
+      fzf --height 10% --layout=reverse --prompt "上記のブランチを削除してもいい?(y/n): " \
+        --preview "echo \"$branches\"" \
+        --preview-label "Selected branches" \
+        --preview-window "down:wrap:border-rounded"
+  )
+
+  if [ "$choice" = "no" ]; then
+    log_info "削除を中止したよ。"
+    return
+  fi
+
+  local output
+  if ! output=$(printf '%s\n' "$branches" | xargs -I {} git branch -d -- "{}" 2>&1); then
+    log_fatal "$output"
+    log_fatal "ブランチの削除に失敗したよ。"
+  else
+    log_info "$output"
+    log_success "選択したブランチを削除したよ！"
+  fi
+}
+
+# 5. Exit
 exit_menu() {
   log_info "終了するよ！"
   exit 0
@@ -123,13 +287,17 @@ exit_menu() {
 main() {
   while true; do
     local choice
-    choice=$(echo -e "commit\npush\npull\nbranch-switch\nexit" | fzf --height 10% --layout=reverse --prompt "GIT MENU > どの操作をする？ ")
+    choice=$(
+      echo -e "commit\npush\npull\nbranch-switch\nbranch-delete\nexit" |
+        fzf --height 10% --layout=reverse --prompt "GIT MENU > どの操作をする?: "
+    )
 
     case "$choice" in
     commit) git_commit ;;
     push) git_push ;;
     pull) git_pull ;;
     branch-switch) git_branch_switch ;;
+    branch-delete) git_branch_delete ;;
     "exit" | "") exit_menu ;;
     esac
   done
@@ -137,8 +305,9 @@ main() {
 
 # --- Git repository check ---
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  echo -e "${RED}[FATAL]${NC} gitリポジトリじゃないよ！"
-  exit_menu
+  log_fatal "gitリポジトリじゃないよ!"
+  log_fatal "このスクリプトはgitリポジトリの中で実行してね!"
+  exit 1
 fi
 
 main
