@@ -9,7 +9,7 @@
 fzf --fish | source
 
 # ZOXIDE
-zoxide init fish | source
+zoxide init --cmd cd fish | source
 
 # mise activation https://mise.jdx.dev/getting-started.html
 if status is-interactive
