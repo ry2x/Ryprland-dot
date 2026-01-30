@@ -41,7 +41,7 @@ mainbox {
     background-color:            transparent;
     spacing:                     16px;
     margin:                      0px;
-    padding:                     64px;
+    padding:                     4% 2%;
 }
 
 /* Inputbar --------------------------------------------------- */
