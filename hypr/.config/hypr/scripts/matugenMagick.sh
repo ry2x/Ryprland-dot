@@ -5,7 +5,6 @@
 #
 
 # utility vars
-config_file="$HOME/.config/waypaper/config.ini"
 matugen_config="$HOME/.config/matugen/hyprland.toml"
 default_matugen_config="$HOME/.config/matugen/config.toml"
 
@@ -17,14 +16,12 @@ for arg in "$@"; do
     esac
 done
 
-# Check if config file exists and extract wallpaper path correctly
-if [ -f "$config_file" ]; then
-    # Extract wallpaper path (handles quotes and whitespace)
-    wallpaper_path=$(grep "wallpaper =" $HOME/.config/waypaper/config.ini | cut -d '=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-
-    wallpaper_path="${wallpaper_path/#~/$HOME}"
+# Check if waypaper command exists
+if command -v waypaper >/dev/null 2>&1; then
+    # Extract wallpaper path
+    wallpaper_path=$(waypaper --list | jq -r '.[0].wallpaper')
 else
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Config file $config_file not found" -u critical
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Waypaper command not found" -u critical
     exit 1
 fi
 

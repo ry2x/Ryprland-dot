@@ -1,6 +1,6 @@
 #!/bin/bash
 
 while true; do
-    sleep 900 # Change wallpaper every 15 minutes (in seconds)
-    $HOME/.config/hypr/scripts/random_wallpaper.sh
+    sleep 3600 # Change wallpaper every 60 minutes (in seconds)
+    waypaper --random
 done
