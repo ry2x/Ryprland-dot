@@ -5,8 +5,9 @@
 #
 
 # utility vars
-matugen_config="$HOME/.config/matugen/hyprland.toml"
-default_matugen_config="$HOME/.config/matugen/config.toml"
+DEFAULT_MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
+IMG_DIR="$HOME/.config/rofi/images"
+BG_DIR="$HOME/.local/share/bg"
 
 # Parse arguments
 mode="dark"
@@ -32,15 +33,7 @@ if [ -z "$wallpaper_path" ] || [ ! -f "$wallpaper_path" ]; then
 fi
 
 # generate matugen colors
-if [ "$mode" = "light" ]; then
-    matugen image "$wallpaper_path" -m "light" -c "$default_matugen_config"
-    sleep 0.5
-    matugen image "$wallpaper_path" -m "light" -c "$matugen_config"
-else
-    matugen image "$wallpaper_path" -m "dark" -c "$default_matugen_config"
-    sleep 0.5
-    matugen image "$wallpaper_path" -m "dark" -c "$matugen_config"
-fi
+matugen image "$wallpaper_path" -m "$mode" -c "$DEFAULT_MATUGEN_CONFIG"
 
 # set gtk theme
 #gsettings set org.gnome.desktop.interface gtk-theme ""
@@ -49,40 +42,30 @@ fi
 #-------Imagemagick magick 👀--------------#
 
 # Create rofi images directory if it doesn't exist
-mkdir -p "$HOME/.config/rofi/images"
+mkdir -p "$IMG_DIR"
 
 # convert and resize the current wallpaper & make it image for rofi with blur
-if ! magick "$wallpaper_path" -strip -resize 1000 -gravity center -extent 1000 -blur "30x30" -quality 90 "$HOME/.config/rofi/images/currentWalBlur.thumb"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create blurred thumbnail" -u critical
-    exit 1
-fi
+if ! magick "$wallpaper_path" -strip \
+    \( -clone 0 -thumbnail 1000x1000^ -gravity center -extent 1000 -quality 70 \
+    -write "$IMG_DIR/currentWal.thumb" \
+    -blur 0x8 -write "$IMG_DIR/currentWalBlur.thumb" +delete \) \
+    \( -clone 0 -thumbnail 500x500^ -gravity center -extent 500x500 \
+    -write "$IMG_DIR/currentWal.sqre" \
+    \( +clone -fill white -colorize 100 \
+    -fill "gray(30%)" -draw "polygon 400,500 500,500 500,0 450,0" \
+    -fill black -draw "polygon 500,500 500,0 450,500" \) \
+    -alpha off -compose CopyOpacity -composite \
+    -write png:"$IMG_DIR/currentWalQuad.quad" +delete \) \
+    null:; then
 
-# convert and resize the current wallpaper & make it image for rofi without blur
-if ! magick "$wallpaper_path" -strip -resize 1000 -gravity center -extent 1000 -quality 90 "$HOME/.config/rofi/images/currentWal.thumb"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create normal thumbnail" -u critical
-    exit 1
-fi
-
-# convert and resize the current wallpaper & make it image for rofi with square format
-if ! magick "$wallpaper_path" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$HOME/.config/rofi/images/currentWal.sqre"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create square thumbnail" -u critical
-    exit 1
-fi
-
-# convert and resize the square formatted & make it image for rofi with drawing polygon
-if ! magick "$HOME/.config/rofi/images/currentWal.sqre" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) -alpha Off -compose CopyOpacity -composite "$HOME/.config/rofi/images/currentWalQuad.png"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create polygon thumbnail" -u critical
-    exit 1
-fi
-
-if ! mv "$HOME/.config/rofi/images/currentWalQuad.png" "$HOME/.config/rofi/images/currentWalQuad.quad"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to rename polygon thumbnail" -u critical
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif \
+        "MatugenMagick Error" "Failed to create images" -u critical
     exit 1
 fi
 
 # copy the wallpaper in current-wallpaper file
-mkdir -p "$(dirname "$HOME/.local/share/bg")"
-if ! ln -sf "$wallpaper_path" "$HOME/.local/share/bg"; then
+mkdir -p "$(dirname "$BG_DIR")"
+if ! ln -sf "$wallpaper_path" "$BG_DIR"; then
     notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link" -u critical
     exit 1
 fi
