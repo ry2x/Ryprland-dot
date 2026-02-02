@@ -18,8 +18,11 @@
 
 window#waybar {
   all: unset;
-  text-shadow: -1px -1px 1px @surface-alpha, 1px -1px 1px @surface-alpha,
-    -1px 1px 1px @surface-alpha, 1px 1px 1px @surface-alpha;
+  text-shadow:
+    -1px -1px 1px @surface-alpha,
+    1px -1px 1px @surface-alpha,
+    -1px 1px 1px @surface-alpha,
+    1px 1px 1px @surface-alpha;
 }
 
 /*
@@ -215,6 +218,7 @@ tooltip {
   border: 2px solid @tertiary;
   border-radius: 12px;
 }
+
 tooltip label {
   color: @on_surface;
   padding: 6px;
