@@ -116,7 +116,7 @@
     "tooltip": true,
   },
   "clock": {
-    "format": "{:%I:%M}",
+    "format": "{:%H:%M}",
     "interval": 60,
     "tooltip-format": "󰥔  {:%I:%M %p \n%Y/%m/%d %A}\n<tt>{calendar}</tt>",
     "calendar": {
