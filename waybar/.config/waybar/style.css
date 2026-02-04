@@ -27,19 +27,21 @@ window#waybar {
 */
 
 #apps {
-  margin: 5px 5px 0px 5px;
+  margin: 3px 3px 3px 3px;
   padding: 7px;
   background: @background-alpha;
   border-radius: 18px;
   color: @primary;
+  border: 2px solid @primary;
 }
 
 #music {
-  margin: 5px 5px 0px 5px;
+  margin: 3px 3px 3px 3px;
   padding: 7px;
   background: @background-alpha;
   border-radius: 18px;
   color: @primary;
+  border: 2px solid @primary;
 }
 
 #custom-launcher {
@@ -58,11 +60,11 @@ window#waybar {
 }
 
 #mpris {
-  padding: 0px 14px 0px 1em;
+  padding: 0px 0px 0px 1em;
 }
 
 #custom-cava {
-  padding: 0px 1em 0px 0px;
+  padding: 0px 1em 0px 1em;
 }
 
 #custom-launcher:hover,
@@ -80,11 +82,12 @@ window#waybar {
 */
 
 .modules-center {
-  margin: 5px 0px 0px 0px;
+  margin: 3px 3px 3px 3px;
   padding: 7px;
   background: @background-alpha;
   border-radius: 18px;
   color: @primary;
+  border: 2px solid @primary;
 }
 
 #custom-weather {
@@ -149,11 +152,12 @@ window#waybar {
 */
 
 #traysystem {
-  margin: 5px 5px 0px 0px;
+  margin: 3px 3px 3px 3px;
   background: @background-alpha;
   border-radius: 18px;
   padding: 7px;
   color: @primary;
+  border: 2px solid @primary;
 }
 
 #tray {
@@ -161,11 +165,12 @@ window#waybar {
 }
 
 #systemtools {
-  margin: 5px 5px 0px 5px;
+  margin: 3px 3px 3px 3px;
   background: @background-alpha;
   border-radius: 18px;
   padding: 7px;
   color: @primary;
+  border: 2px solid @primary;
 }
 
 #backlight,
