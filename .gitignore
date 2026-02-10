@@ -66,3 +66,7 @@ hyprbind/.config/hyprbind/hyprbind-theme.css
 # Thunar
 xfce4/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 Thunar/.config/Thunar/accels.scm
+
+# mozc (config files only)
+fcitx5-mozc/.config/mozc/*
+!fcitx5-mozc/.config/mozc/config1.db
