@@ -23,12 +23,12 @@
   // Grouped App Modules
   "group/apps": {
     "orientation": "horizontal",
-    "modules": ["custom/launcher", "custom/pacman", "group/usage"],
+    "modules": ["custom/launcher", "custom/pacman", "group/usage"]
   },
   "custom/launcher": {
     "format": "󰣇",
     "tooltip": false,
-    "on-click": "~/.config/rofi/scripts/sidelauncher",
+    "on-click": "~/.config/rofi/scripts/sidelauncher"
   },
   "custom/pacman": {
     "return-type": "json",
@@ -37,39 +37,39 @@
     "exec": "~/.config/waybar/scripts/check_update.sh",
     "on-click": "kitty --title PacUpdate par_tui; pkill -SIGRTMIN+8 waybar",
     "signal": 8,
-    "tooltip": true,
+    "tooltip": true
   },
   "group/usage": {
     "orientation": "inherit",
     "drawer": {
       "transition-duration": 600,
       "children-class": "child-utility",
-      "transition-left-to-right": true,
+      "transition-left-to-right": true
     },
-    "modules": ["cpu", "memory", "temperature"],
+    "modules": ["cpu", "memory", "temperature"]
   },
   "cpu": {
     "interval": 10,
     "format": "  {usage}%",
     "max-length": 10,
-    "on-click": "",
+    "on-click": ""
   },
   "memory": {
     "interval": 30,
     "format": "  {}%",
     "tooltip-format": "  RAM {percentage}%\nAvail: {avail}GB of {total}GB\nSWAP: {swapUsed}GB of {swapTotal}GB",
-    "max-length": 10,
+    "max-length": 10
   },
   "temperature": {
     "critical-threshold": 80,
     "format": "{icon}  {temperatureC}°C",
     "format-icons": ["", "", "", "", "", ""],
-    "tooltip": false,
+    "tooltip": false
   },
   // Grouped Music Modules
   "group/music": {
     "orientation": "horizontal",
-    "modules": ["mpris", "custom/cava"],
+    "modules": ["mpris", "custom/cava"]
   },
   "mpris": {
     "interval": 1,
@@ -82,16 +82,16 @@
     "artist-len": 0,
     "status-icons": {
       "playing": "",
-      "paused": "",
+      "paused": ""
     },
     "tooltip": true,
     "tooltip-format-stopped": "  No music playing ",
-    "tooltip-format": "{status_icon}  {title}\n{artist}\n{album} {position}/{length}",
+    "tooltip-format": "{status_icon}  {title}\n{artist}\n{album} {position}/{length}"
   },
   "custom/cava": {
     "format": "{}",
     "exec": "~/.config/waybar/scripts/cava.sh",
-    "tooltip": false,
+    "tooltip": false
   },
   /**
    * Center Modules
@@ -103,8 +103,8 @@
       "custom/weather",
       "clock",
       "hyprland/workspaces",
-      "custom/notification",
-    ],
+      "custom/notification"
+    ]
   },
   "custom/weather": {
     "format": "{}C",
@@ -113,7 +113,7 @@
     "interval": 3600,
     "return-type": "json",
     "exec": "$HOME/.config/waybar/scripts/Weather.py",
-    "tooltip": true,
+    "tooltip": true
   },
   "clock": {
     "format": "{:%H:%M}",
@@ -125,13 +125,13 @@
         "days": "<span color='#ecc6d9'><b>{}</b></span>",
         "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
         "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
-      },
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
     },
     "actions": {
       "on-click-right": "shift_down",
-      "on-click": "shift_up",
-    },
+      "on-click": "shift_up"
+    }
   },
   "hyprland/workspaces": {
     "all-outputs": false,
@@ -159,8 +159,8 @@
       "16": "Ⅵ",
       "17": "Ⅶ",
       "18": "Ⅷ",
-      "19": "Ⅸ",
-    },
+      "19": "Ⅸ"
+    }
   },
   "custom/notification": {
     "tooltip": false,
@@ -173,24 +173,24 @@
       "inhibited-notification": "<span foreground='red'><sup></sup></span>",
       "inhibited-none": "",
       "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-inhibited-none": "",
+      "dnd-inhibited-none": ""
     },
     "return-type": "json",
     "exec-if": "which swaync-client",
     "exec": "swaync-client -swb",
     "on-click": "sleep 0.1 && swaync-client -t",
     "on-click-right": "sleep 0.1 && swaync-client -d -sw",
-    "escape": true,
+    "escape": true
   },
   /**
    * Right Modules
    */
   "group/traysystem": {
     "orientation": "horizontal",
-    "modules": ["tray"],
+    "modules": ["tray"]
   },
   "tray": {
-    "spacing": 10,
+    "spacing": 10
   },
   "group/systemtools": {
     "orientation": "horizontal",
@@ -201,14 +201,14 @@
       "group/power",
       "backlight",
       "custom/colorpicker",
-      "custom/power-menu",
-    ],
+      "custom/power-menu"
+    ]
   },
   "pulseaudio": {
     "format": "{icon}",
     "format-muted": "",
     "format-icons": {
-      "default": ["", "", ""],
+      "default": ["", "", ""]
     },
     "on-click": "pavucontrol",
     "on-click-right": "pkill pavucontrol",
@@ -216,7 +216,7 @@
     "on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
     "on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
     "tooltip": true,
-    "tooltip-format": "{icon}  Volume: {volume}%\n{desc}",
+    "tooltip-format": "{icon}  Volume: {volume}%\n{desc}"
   },
   "bluetooth": {
     "format": "",
@@ -226,7 +226,7 @@
     "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-    "on-click": "pkill blueman-manager || blueman-manager",
+    "on-click": "pkill blueman-manager || blueman-manager"
   },
   "network": {
     "format-wifi": "{icon}",
@@ -238,7 +238,7 @@
     "tooltip-format-disabled": "󰲛 Network Disabled",
     "tooltip-format-ethernet": " {bandwidthUpBytes} \n  {bandwidthDownBytes}",
     "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
-    "on-click": "pkill nmgui || nmgui",
+    "on-click": "pkill nmgui || nmgui"
   },
   // Grouped Power Modules
   "group/power": {
@@ -247,9 +247,9 @@
       "transition-duration": 600,
       "children-class": "child-power",
       "transition-left-to-right": true,
-      "click-to-reveal": true,
+      "click-to-reveal": true
     },
-    "modules": ["battery", "idle_inhibitor", "power-profiles-daemon"],
+    "modules": ["battery", "idle_inhibitor", "power-profiles-daemon"]
   },
   "battery": {
     "interval": 120,
@@ -257,7 +257,7 @@
     "states": {
       "good": 95,
       "warning": 30,
-      "critical": 15,
+      "critical": 15
     },
     "format": "{icon}",
     "format-charging": "",
@@ -266,17 +266,17 @@
     "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "format-time": "{H}:{M} remaining",
     "tooltip": true,
-    "tooltip-format": "󰁹 : {capacity}% {timeTo}",
+    "tooltip-format": "󰁹 : {capacity}% {timeTo}"
   },
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
       "activated": "󰈈",
-      "deactivated": "󰈉",
+      "deactivated": "󰈉"
     },
     "tooltip": true,
     "tooltip-format-activated": "Idle Inhibitor is {status}",
-    "tooltip-format-deactivated": "Idle Inhibitor is {status}",
+    "tooltip-format-deactivated": "Idle Inhibitor is {status}"
   },
   "power-profiles-daemon": {
     "format": "{icon}",
@@ -286,8 +286,8 @@
       "default": "󰓅",
       "performance": "󰓅",
       "balanced": "󰾅",
-      "power-saver": "󰾆",
-    },
+      "power-saver": "󰾆"
+    }
   },
   "backlight": {
     "device": "eDP-1",
@@ -295,18 +295,18 @@
     "tooltip-format": "{percent}",
     "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"],
     "on-scroll-up": "~/.config/hypr/scripts/backlight.sh --inc",
-    "on-scroll-down": "~/.config/hypr/scripts/backlight.sh --dec",
+    "on-scroll-down": "~/.config/hypr/scripts/backlight.sh --dec"
   },
   "custom/colorpicker": {
     "format": "",
     "interval": "once",
     "on-click": "~/.config/waybar/scripts/Colorpicker.sh",
     "signal": 1,
-    "tooltip": false,
+    "tooltip": false
   },
   "custom/power-menu": {
     "format": "",
     "tooltip-format": "Click to launch wlogout",
-    "on-click": "~/.config/hypr/scripts/wlogout.sh",
-  },
+    "on-click": "~/.config/hypr/scripts/wlogout.sh"
+  }
 }

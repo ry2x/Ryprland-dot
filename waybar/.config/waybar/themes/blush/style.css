@@ -1,13 +1,9 @@
-
-
 /***
  *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┳┓┓ ┳┳┏┓┓┏  ┏┓┏┓┏┓
  *    ┃┃┃┣┫┗┫┣┫┣┫┣┫━━┣┫┃ ┃┃┗┓┣┫━━┃ ┗┓┗┓
  *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┻┛┗┛┗┛┗┛┛┗  ┗┛┗┛┗┛
- *                                     
+ *
  */
-
-
 
 /*--------------Import Matugen Colors--------------*/
 @import "matugen/matugen-waybar.css";
@@ -19,12 +15,11 @@
   font-size: 12px;
   font-weight: 600;
 }
- window#waybar {
+window#waybar {
   transition-property: background-color;
   transition-duration: 0.5s;
   background-color: @surface-alpha;
 }
-
 
 #workspaces button {
   padding: 0.3rem 0.6rem;
@@ -50,39 +45,37 @@
 }
 
 #taskbar button {
-    box-shadow: none;
-    text-shadow: none;
-    padding: 0px;
-    border-radius: 3px;
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
-    margin-left: 0px;
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-right: 0px;
-    color: @on_surface;
-    animation: tb_normal 20s ease-in-out 1;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px;
+  border-radius: 3px;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  margin-left: 0px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-right: 0px;
+  color: @on_surface;
+  animation: tb_normal 20s ease-in-out 1;
 }
 
 #taskbar button.active {
-    background: @primary;
-    color: @scrim;
-    margin-left: 3px;
-    padding-left: 12px;
-    padding-right: 12px;
-    margin-right: 3px;
-    animation: tb_active 20s ease-in-out 1;
-    transition: all 0.4s cubic-bezier(.55,-0.68,.48,1.682);
+  background: @primary;
+  color: @scrim;
+  margin-left: 3px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-right: 3px;
+  animation: tb_active 20s ease-in-out 1;
+  transition: all 0.4s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 }
 
 #taskbar button:hover {
-    background: @tertiary;
-    color: @scrim;
-    animation: tb_hover 20s ease-in-out 1;
-    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
+  background: @tertiary;
+  color: @scrim;
+  animation: tb_hover 20s ease-in-out 1;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
 }
-
-
 
 #clock,
 #pulseaudio,
@@ -116,17 +109,15 @@
 }
 
 #battery {
-    color: @on_surface;
+  color: @on_surface;
 }
 
 #battery.critical,
 #battery.warning,
 #battery.full,
 #battery.plugged {
-    color: @error;
+  color: @error;
 }
-
-
 
 #cpu {
   color: @primary;
@@ -156,14 +147,14 @@
   color: @error;
 }
 
-
-
 #custom-launcher {
   padding: 0rem 0.8rem;
   color: @error;
 }
 
-#custom-pacman, #custom-colorpicker, #custom-weather {
+#custom-pacman,
+#custom-colorpicker,
+#custom-weather {
   padding: 0.3rem 0.6rem;
   border-right: none;
   border-left: none;
@@ -192,4 +183,3 @@ tooltip {
   background-color: @surface;
   border: 2px solid @primary;
 }
-
