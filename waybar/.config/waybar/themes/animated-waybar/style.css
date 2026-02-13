@@ -2,12 +2,11 @@
  *    ┏┓┳┓┳┳┳┓┏┓┏┳┓┏┓┳┓  ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┏┓
  *    ┣┫┃┃┃┃┃┃┣┫ ┃ ┣ ┃┃━━┃┃┃┣┫┗┫┣┫┣┫┣┫━━┃ ┗┓┗┓
  *    ┛┗┛┗┻┛ ┗┛┗ ┻ ┗┛┻┛  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛
- *                                            
+ *
  */
 
-
-@import 			"themes/animated-waybar/launch_animation.css"; 
-@import 			"matugen/matugen-waybar.css";
+@import "themes/animated-waybar/launch_animation.css";
+@import "matugen/matugen-waybar.css";
 @define-color background         @surface;
 @define-color background-alpha   alpha(@surface, 0.25);
 @define-color background-beta    alpha(@surface, 0.75);
@@ -223,7 +222,7 @@ tooltip {
 }
 
 #custom-menu {
-  min-width: 30px; 
+  min-width: 30px;
 }
 
 #pulseaudio,
@@ -233,12 +232,11 @@ tooltip {
   min-width: 46px;
 }
 
-
 #cpu,
 #memory,
 #custom-pacman,
 #custom-weather,
-#custom-colorpicker{
+#custom-colorpicker {
   min-width: 24px;
 }
 

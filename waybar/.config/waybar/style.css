@@ -6,8 +6,6 @@
 
 @import "./matugen/matugen-waybar.css";
 
-@define-color background-alpha alpha(@background, 0.8);
-
 /*
 * Global Properties
 */
@@ -20,51 +18,71 @@
 
 window#waybar {
   all: unset;
+  text-shadow:
+    -1px -1px 1px @surface-alpha,
+    1px -1px 1px @surface-alpha,
+    -1px 1px 1px @surface-alpha,
+    1px 1px 1px @surface-alpha;
 }
 
 /*
-* left module properties
+* Left Module Properties
 */
 
-#apps {
-  margin: 3px 3px 3px 3px;
-  padding: 7px;
-  background: @background-alpha;
-  border-radius: 18px;
-  color: @primary;
-  border: 2px solid @primary;
-}
-
-#music {
-  margin: 3px 3px 3px 3px;
-  padding: 7px;
-  background: @background-alpha;
-  border-radius: 18px;
-  color: @primary;
-  border: 2px solid @primary;
-}
-
-#custom-launcher {
-  padding: 0px 1em;
+.modules-left {
+  margin: 0px 0px 0px 10px;
+  border-radius: 0px 0px 10px 10px;
+  background: alpha(@surface, 0.6);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 
 #custom-pacman,
-#memory,
+#custom-weather {
+  margin: 0px 5px 5px 5px;
+  padding: 8px 10px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
+}
+
+#custom-launcher {
+  margin: 0px 5px 5px 5px;
+  padding: 8px 13px 8px 10px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
+}
+
+#usage,
+#power,
+#player {
+  margin: 0px 5px 5px 5px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
+}
+
 #cpu,
-#temperature {
-  padding: 0px 7px;
-}
-
-#usage {
-  margin: 0px 1em 0px 0px;
-}
-
-#mpris {
-  padding: 0px 0px 0px 1em;
-}
-
+#memory,
+#temperature,
+#battery,
+#mpris,
 #custom-cava {
-  padding: 0px 1em 0px 1em;
+  padding: 8px 10px;
+}
+
+#idle_inhibitor,
+#power-profiles-daemon {
+  padding: 8px 13px 8px 10px;
+}
+
+#memory,
+#idle_inhibitor {
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
 }
 
 #custom-launcher:hover,
@@ -72,9 +90,14 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #temperature:hover,
-#mpris:hover,
-#custom-cava:hover {
-  color: @on_surface;
+#battery:hover,
+#idle_inhibitor:hover,
+#power-profiles-daemon:hover,
+#custom-weather:hover,
+#player:hover {
+  color: @tertiary;
+  background: alpha(@on_primary_container, 0.1);
+  transition: all 0.3s ease;
 }
 
 /*
@@ -82,119 +105,108 @@ window#waybar {
 */
 
 .modules-center {
-  margin: 3px 3px 3px 3px;
-  padding: 7px;
-  background: @background-alpha;
-  border-radius: 18px;
-  color: @primary;
-  border: 2px solid @primary;
+  margin: 0px 0px 0px 10px;
+  border-radius: 0px 0px 10px 10px;
+  background: alpha(@surface, 0.6);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 
-#custom-weather {
-  padding-left: 1em;
-  padding-right: 7px;
+#hyprland {
+  margin: 0px 5px 5px 5px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
 }
 
-#workspaces,
-#clock {
-  padding-left: 7px;
-  padding-right: 7px;
+#window {
+  padding: 0px 0px 0px 10px;
+  min-width: 16px;
+}
+
+#workspaces {
+  padding: 0px 10px 0px 10px;
 }
 
 #workspaces button {
-  padding: 0px 14px;
-  color: @on_primary_container;
-  border-radius: 100px;
-  transition: width 300ms linear 0s;
-}
-
-#workspaces button.active {
-  background: linear-gradient(360deg, @primary_container, @primary);
-  color: @background-alpha;
-  transition: width 300ms linear 0s;
-}
-
-#workspaces button.urgent {
-  background: linear-gradient(360deg, @error_container, @error);
-  color: @on_error_container;
-  transition: width 300ms linear 0s;
+  color: @on_surface;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
 }
 
 #workspaces button:hover {
-  background: linear-gradient(
-    360deg,
-    alpha(@primary_container, 0.5),
-    alpha(@primary, 0.5)
-  );
-  color: @background-alpha;
-  transition: width 300ms linear 0s;
+  color: @tertiary;
+  background: alpha(@on_primary_container, 0.1);
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
+  transition: all 0.3s ease;
 }
 
-#custom-notification {
-  padding-left: 7px;
-  padding-right: 1em;
+#workspaces button.active {
+  color: @tertiary;
+  background: alpha(@on_primary_container, 0.5);
+  border-left: 1px solid alpha(@on_primary_container, 0.6);
+  border-right: 1px solid alpha(@on_primary_container, 0.6);
+  transition: all 0.3s ease;
 }
 
-#custom-weather:hover,
-#clock:hover,
-#pulseaudio:hover,
-#bluetooth:hover,
-#network:hover,
-#battery:hover,
-#idle_inhibitor:hover,
-#power-profiles-daemon:hover,
-#custom-notification:hover {
-  color: @on_surface;
+#workspaces button.urgent {
+  color: @error;
+  transition: all 0.3s ease;
 }
 
 /*
 * Right Module Properties
 */
 
-#traysystem {
-  margin: 3px 3px 3px 3px;
-  background: @background-alpha;
-  border-radius: 18px;
-  padding: 7px;
-  color: @primary;
-  border: 2px solid @primary;
+.modules-right {
+  margin: 0px 10px 0px 0px;
+  border-radius: 0px 0px 10px 10px;
+  background: alpha(@surface, 0.6);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 
-#tray {
-  padding: 0px 1em;
+#tray,
+#clock,
+#custom-notification,
+#custom-power-menu {
+  margin: 0px 5px 5px 5px;
+  padding: 8px 10px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
 }
 
-#systemtools {
-  margin: 3px 3px 3px 3px;
-  background: @background-alpha;
-  border-radius: 18px;
-  padding: 7px;
-  color: @primary;
-  border: 2px solid @primary;
+#settings {
+  margin: 0px 5px 5px 5px;
+  color: @on_surface;
+  border: 1px solid alpha(@on_primary_container, 0.6);
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
 }
 
+#bluetooth,
+#network,
+#pulseaudio,
 #backlight,
 #custom-colorpicker,
-#custom-power-menu,
-#pulseaudio,
-#bluetooth,
-#network {
-  padding: 0px 10px;
+#custom-power-menu {
+  padding: 8px 13px 8px 10px;
 }
 
-#battery {
-  padding: 0px 7px 0px 14px;
-}
-
-#idle_inhibitor,
-#power-profiles-daemon {
-  padding: 0px 7px;
-}
-
+#tray:hover,
+#clock:hover,
+#custom-notification:hover,
+#custom-power-menu:hover,
+#bluetooth:hover,
+#network:hover,
+#pulseaudio:hover,
 #backlight:hover,
-#custom-colorpicker:hover,
-#custom-power-menu:hover {
-  color: @on_surface;
+#custom-colorpicker:hover {
+  color: @tertiary;
+  background: alpha(@on_primary_container, 0.1);
+  transition: all 0.3s ease;
 }
 
 /*
@@ -203,7 +215,7 @@ window#waybar {
 
 tooltip {
   background: alpha(@surface, 0.8);
-  border: 2px solid @primary;
+  border: 2px solid @tertiary;
   border-radius: 12px;
 }
 
