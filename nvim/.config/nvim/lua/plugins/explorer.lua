@@ -7,11 +7,7 @@ return {
         renderer = {
           highlight_git = true,
           icons = {
-            show = {
-              git = true,
-              folder = true,
-              file = true,
-            },
+            show = { git = true, folder = true, file = true },
             glyphs = {
               default = "󰈚",
               symlink = "",
@@ -22,7 +18,7 @@ return {
                 open = "",
                 empty = "",
                 empty_open = "",
-                symlink = "",
+                symlink = ""
               },
               git = {
                 unstaged = "",
@@ -31,46 +27,38 @@ return {
                 renamed = "",
                 untracked = "",
                 deleted = "",
-                ignored = "󰢤",
-              },
-            },
-          },
+                ignored = "󰢤"
+              }
+            }
+          }
         },
-        view = {
-          width = 30,
-          side = "left",
-        },
-        filters = {
-          dotfiles = false,
-        }
+        view = { width = 30, side = "left" },
+        filters = { dotfiles = false }
       })
     end
-  },
-  
-  -- 画像表示プラグイン (image.nvim)
+  },   -- 画像表示プラグイン (image.nvim)
   {
     "3rd/image.nvim",
+    build = false,
     config = function()
       require("image").setup({
-        backend = "kitty", -- Kittyプロトコルを使用
+        backend = "kitty",         -- Kittyプロトコルを使用
         integrations = {
           markdown = {
             enabled = true,
             clear_in_insert_mode = false,
             download_remote_images = true,
-            only_render_image_at_cursor = false,
+            only_render_image_at_cursor = false
           },
-          neorg = {
-            enabled = true,
-          },
+          neorg = { enabled = true }
         },
         max_width = 100,
         max_height = 12,
         max_width_window_percentage = math.huge,
         max_height_window_percentage = math.huge,
         window_overlap_clear_enabled = false,
-        pipe_path = "/tmp/neovim-runtime-magick-img" -- パイプのパス
+        pipe_path = "/tmp/neovim-runtime-magick-img"         -- パイプのパス
       })
     end
-  },
+  }
 }

@@ -1,7 +1,9 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim" },
+    dependencies = {
+      "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"
+    },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -29,10 +31,14 @@ return {
 
           -- [gr] References: どこで使われているかを一覧表示
           -- Telescopeを使っている場合は、以下のように書くとリッチな画面になります
-          keymap.set('n', 'gr', function() require('telescope.builtin').lsp_references() end, opts)
+          keymap.set('n', 'gr', function()
+            require('telescope.builtin').lsp_references()
+          end, opts)
 
           -- [gi] Implementation: トレイトの具体的な実装箇所へジャンプ
-          keymap.set('n', 'gi', function() require('telescope.builtin').lsp_implementations() end, opts)
+          keymap.set('n', 'gi', function()
+            require('telescope.builtin').lsp_implementations()
+          end, opts)
 
           -- [K] Hover: 型情報やドキュメントをポップアップ表示
           keymap.set('n', 'K', lsp.buf.hover, opts)
@@ -48,12 +54,10 @@ return {
           if lsp.inlay_hint then
             lsp.inlay_hint.enable(true, { bufnr = ev.buf })
           end
-        end,
+        end
       })
     end
-  },
-
-  -- Rust支援 (rustaceanvim)
+  },   -- Rust支援 (rustaceanvim)
   {
     "mrcjkb/rustaceanvim",
     version = "^5",
@@ -61,8 +65,8 @@ return {
     server = {
       ['rust-analyzer'] = {
         -- 手動ビルドと干渉しないようディレクトリを分ける
-        cargo = { targetDir = "target/rust-analyzer" },
+        cargo = { targetDir = "target/rust-analyzer" }
       }
     }
-  },
+  }
 }
