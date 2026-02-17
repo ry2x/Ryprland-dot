@@ -15,7 +15,7 @@ set -gx EDITOR nvim
 set -gx TERMINAL st
 set -gx TERMINAL_PROG st
 set -gx LOCATION Memari
-set -gx BROWSER brave\ --enable-wayland-ime
+set -gx BROWSER zen-browser
 
 # XDG paths and application config
 set -gx XDG_CONFIG_HOME "$HOME/.config"
