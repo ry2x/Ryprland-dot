@@ -70,3 +70,4 @@ Thunar/.config/Thunar/accels.scm
 # mozc (config files only)
 fcitx5-mozc/.config/mozc/*
 !fcitx5-mozc/.config/mozc/config1.db
+fcitx5-mozc/.config/fcitx5/conf/cached_layouts
