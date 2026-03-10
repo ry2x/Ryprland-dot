@@ -10,29 +10,21 @@
   "reload_style_on_change": true,
   "layer": "top",
   "position": "top",
-  "height": 30,
+  "height": 10,
   /**
    * Modules Configuration
    */
-  "modules-left": [
-    "custom/launcher",
-    "custom/pacman",
-    "group/usage",
-    "group/power",
-    "custom/weather",
-    "group/player"
-  ],
-  "modules-center": ["group/hyprland"],
-  "modules-right": [
-    "tray",
-    "group/settings",
-    "clock",
-    "custom/notification",
-    "custom/power-menu"
-  ],
+  "modules-left": ["group/apps", "group/music"],
+  "modules-center": ["group/dynamic_islands"],
+  "modules-right": ["group/traysystem", "group/systemtools"],
   /**
    * Left Modules
    */
+  // Grouped App Modules
+  "group/apps": {
+    "orientation": "horizontal",
+    "modules": ["custom/launcher", "custom/pacman", "group/usage"]
+  },
   "custom/launcher": {
     "format": "󰣇",
     "tooltip": false,
@@ -43,11 +35,10 @@
     "format": "󰅢  {text}",
     "interval": 600,
     "exec": "~/.config/waybar/scripts/check_update.sh",
-    "on-click": "kitty --title PacUpdate ~/.config/hypr/scripts/update_packages.sh; pkill -SIGRTMIN+8 waybar",
+    "on-click": "kitty --title PacUpdate par_tui; pkill -SIGRTMIN+8 waybar",
     "signal": 8,
     "tooltip": true
   },
-  // Grouped Usage Modules
   "group/usage": {
     "orientation": "inherit",
     "drawer": {
@@ -75,76 +66,20 @@
     "format-icons": ["", "", "", "", "", ""],
     "tooltip": false
   },
-  // Grouped Power Modules
-  "group/power": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 600,
-      "children-class": "child-power",
-      "transition-left-to-right": true
-    },
-    "modules": ["battery", "idle_inhibitor", "power-profiles-daemon"]
-  },
-  "battery": {
-    "interval": 120,
-    "full-at": 100,
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{icon}  {capacity}",
-    "format-charging": "  {capacity}",
-    "format-plugged": "  {capacity}",
-    "format-full": "󱟢  Full",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-    "format-time": "{H}:{M} remaining",
-    "tooltip": true,
-    "tooltip-format": "󰁹 : {capacity}% {timeTo}"
-  },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": "󰈈",
-      "deactivated": "󰈉"
-    },
-    "tooltip": true,
-    "tooltip-format-activated": "Idle Inhibitor is {status}",
-    "tooltip-format-deactivated": "Idle Inhibitor is {status}"
-  },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Mode: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": "󰓅",
-      "performance": "󰓅",
-      "balanced": "󰾅",
-      "power-saver": "󰾆"
-    }
-  },
-  "custom/weather": {
-    "format": "{}",
-    "format-alt": "{alt}: {}",
-    "format-alt-click": "click",
-    "interval": 3600,
-    "return-type": "json",
-    "exec": "$HOME/.config/waybar/scripts/Weather.py",
-    "tooltip": true
-  },
-  "group/player": {
+  // Grouped Music Modules
+  "group/music": {
     "orientation": "horizontal",
     "modules": ["mpris", "custom/cava"]
   },
   "mpris": {
     "interval": 1,
     "format-stopped": "",
-    "format-paused": " <small>{title} - {artist}</small>",
-    "format-playing": " <small>{title} - {artist}</small>",
+    "format-paused": " <small>{title}</small>",
+    "format-playing": " <small>{title}</small>",
     "dynamic-importance-order": ["title", "artist", "album"],
     "dynamic-separator": " - ",
-    "title-len": 20,
-    "artist-len": 20,
+    "title-len": 15,
+    "artist-len": 0,
     "status-icons": {
       "playing": "",
       "paused": ""
@@ -161,14 +96,42 @@
   /**
    * Center Modules
    */
-  "group/hyprland": {
+  // Grouped Dynamic Islands Modules
+  "group/dynamic_islands": {
     "orientation": "horizontal",
-    "modules": ["hyprland/window", "hyprland/workspaces"]
+    "modules": [
+      "custom/weather",
+      "clock",
+      "hyprland/workspaces",
+      "custom/notification"
+    ]
   },
-  "hyprland/window": {
-    "icon": true,
-    "icon-size": 16,
-    "format": ""
+  "custom/weather": {
+    "format": "{}C",
+    "format-alt": "{alt}: {}",
+    "format-alt-click": "click",
+    "interval": 3600,
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/Weather.py",
+    "tooltip": true
+  },
+  "clock": {
+    "format": "{:%H:%M}",
+    "interval": 60,
+    "tooltip-format": "󰥔  {:%I:%M %p \n%Y/%m/%d %A}\n<tt>{calendar}</tt>",
+    "calendar": {
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "shift_down",
+      "on-click": "shift_up"
+    }
   },
   "hyprland/workspaces": {
     "all-outputs": false,
@@ -196,27 +159,64 @@
       "16": "Ⅵ",
       "17": "Ⅶ",
       "18": "Ⅷ",
-      "19": "Ⅸ",
-      /* States */
-      "urgent": "",
-      "active": "󰮯"
+      "19": "Ⅸ"
     }
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}<span><sup> {0}</sup></span>",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "sleep 0.1 && swaync-client -t",
+    "on-click-right": "sleep 0.1 && swaync-client -d -sw",
+    "escape": true
   },
   /**
    * Right Modules
    */
+  "group/traysystem": {
+    "orientation": "horizontal",
+    "modules": ["tray"]
+  },
   "tray": {
     "spacing": 10
   },
-  "group/settings": {
+  "group/systemtools": {
     "orientation": "horizontal",
     "modules": [
+      "pulseaudio",
       "bluetooth",
       "network",
-      "pulseaudio",
+      "group/power",
       "backlight",
-      "custom/colorpicker"
+      "custom/colorpicker",
+      "custom/power-menu"
     ]
+  },
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol",
+    "on-click-right": "pkill pavucontrol",
+    "scroll-step": 5,
+    "on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+    "on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+    "tooltip": true,
+    "tooltip-format": "{icon}  Volume: {volume}%\n{desc}"
   },
   "bluetooth": {
     "format": "",
@@ -240,19 +240,54 @@
     "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
     "on-click": "pkill nmgui || nmgui"
   },
-  "pulseaudio": {
-    "format": "{icon}",
-    "format-muted": "",
-    "format-icons": {
-      "default": ["", "", ""]
+  // Grouped Power Modules
+  "group/power": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "child-power",
+      "transition-left-to-right": true,
+      "click-to-reveal": true
     },
-    "on-click": "pavucontrol",
-    "on-click-right": "pkill pavucontrol",
-    "scroll-step": 5,
-    "on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
-    "on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+    "modules": ["battery", "idle_inhibitor", "power-profiles-daemon"]
+  },
+  "battery": {
+    "interval": 120,
+    "full-at": 100,
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}",
+    "format-charging": "",
+    "format-plugged": "",
+    "format-full": "󱟢",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format-time": "{H}:{M} remaining",
     "tooltip": true,
-    "tooltip-format": "{icon}  Volume: {volume}%\n{desc}"
+    "tooltip-format": "󰁹 : {capacity}% {timeTo}"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰈈",
+      "deactivated": "󰈉"
+    },
+    "tooltip": true,
+    "tooltip-format-activated": "Idle Inhibitor is {status}",
+    "tooltip-format-deactivated": "Idle Inhibitor is {status}"
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Mode: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "󰓅",
+      "performance": "󰓅",
+      "balanced": "󰾅",
+      "power-saver": "󰾆"
+    }
   },
   "backlight": {
     "device": "eDP-1",
@@ -268,40 +303,6 @@
     "on-click": "~/.config/waybar/scripts/Colorpicker.sh",
     "signal": 1,
     "tooltip": false
-  },
-  "clock": {
-    "format": "󰥔  {:%m/%d %a %I:%M:%S %p}",
-    "interval": 1,
-    "tooltip-format": "<tt>{calendar}</tt>",
-    "calendar": {
-      "format": {
-        "today": "<span color='#fAfBfC'><b>{}</b></span>"
-      }
-    },
-    "actions": {
-      "on-click-right": "shift_down",
-      "on-click": "shift_up"
-    }
-  },
-  "custom/notification": {
-    "tooltip": false,
-    "format": "{icon}<span><sup> {0}</sup></span>",
-    "format-icons": {
-      "notification": "<span foreground='red'><sup></sup></span>",
-      "none": "",
-      "dnd-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-none": "",
-      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "inhibited-none": "",
-      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-inhibited-none": ""
-    },
-    "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "sleep 0.1 && swaync-client -t",
-    "on-click-right": "sleep 0.1 && swaync-client -d -sw",
-    "escape": true
   },
   "custom/power-menu": {
     "format": "",
