@@ -16,5 +16,3 @@ fi
 json='{"text": "'$counts'","alt": "'$counts'","tooltip": "'$tooltip'","class": "pacman"}'
 
 echo $json
-
-pkill -SIGRTMIN+8 waybar
