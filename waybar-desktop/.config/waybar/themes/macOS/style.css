@@ -1,0 +1,95 @@
+/*
+* ┳┓┓┏┏┓┏┓┏┓  ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┏┓┏┓┏┓
+* ┣┫┗┫┏┛ ┃┃ ━━┃┃┃┣┫┗┫┣┫┣┫┣┫━━┃ ┗┓┗┓
+* ┛┗┗┛┗━┗┛┗┛  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛
+*/
+
+@import "./matugen/matugen-waybar.css";
+
+* {
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+window#waybar {
+  background-color: @surface-alpha;
+  color: @on_surface;
+  border-bottom: 0.5px solid @on_surface;
+  transition: all 0.3s ease;
+}
+
+#window,
+#mpris,
+#custom-cava,
+#custom-weather,
+#workspaces,
+#custom-notification,
+#tray,
+#custom-pacman,
+#pulseaudio,
+#bluetooth,
+#network,
+#cpu,
+#memory,
+#clock {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0 10px;
+}
+
+#window:hover,
+#mpris:hover,
+#custom-cava:hover,
+#custom-weather:hover,
+#workspaces button:hover,
+#custom-notification:hover,
+#custom-pacman:hover,
+#pulseaudio:hover,
+#bluetooth:hover,
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#clock:hover {
+  background-color: alpha(@inverse_surface, 0.8);
+  color: @inverse_primary;
+  border-radius: 4px;
+}
+
+#workspaces button {
+  color: @on_surface;
+  padding: 0 7px;
+}
+
+#workspaces button.active {
+  color: @primary;
+  font-size: 20px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+  color: transparent;
+}
+
+/*
+* Tooltip Properties
+*/
+
+tooltip {
+  background-color: @surface;
+  border-radius: 12px;
+}
+
+tooltip * {
+  color: @on_surface;
+  text-shadow: none;
+  padding: 8px;
+}
