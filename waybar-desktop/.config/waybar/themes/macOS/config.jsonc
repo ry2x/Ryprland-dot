@@ -1,0 +1,191 @@
+{
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "top",
+  "height": 20,
+  "margin-top": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+  "spacing": 15,
+
+  "modules-left": ["hyprland/window", "mpris", "custom/cava"],
+  "modules-center": [
+    "custom/weather",
+    "hyprland/workspaces",
+    "custom/notification"
+  ],
+  "modules-right": [
+    "tray",
+    "custom/pacman",
+    "pulseaudio",
+    "bluetooth",
+    "network",
+    "cpu",
+    "memory",
+    "clock"
+  ],
+
+  // modules-left
+
+  "hyprland/window": {
+    "format": "{class} [{title}]",
+    "icon": true,
+    "max-length": 25,
+    "icon-size": 18
+  },
+
+  "mpris": {
+    "interval": 1,
+    "format-stopped": "",
+    "format-paused": " <small>{title} - {artist}</small>",
+    "format-playing": " <small>{title} - {artist}</small>",
+    "dynamic-importance-order": ["title", "artist", "album"],
+    "dynamic-separator": " - ",
+    "title-len": 20,
+    "artist-len": 20,
+    "status-icons": {
+      "playing": "",
+      "paused": ""
+    },
+    "tooltip": true,
+    "tooltip-format-stopped": "  No music playing ",
+    "tooltip-format": "{status_icon}  {title}\n{artist}\n{album} {position}/{length}"
+  },
+
+  "custom/cava": {
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/cava.sh",
+    "tooltip": false
+  },
+
+  // modules-center
+
+  "custom/weather": {
+    "format": "{}",
+    "format-alt": "{alt}: {}",
+    "format-alt-click": "click",
+    "interval": 3600,
+    "return-type": "json",
+    "exec": "$HOME/.config/waybar/scripts/Weather.py",
+    "tooltip": true
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "active": "<span size=\"xx-large\">󱢖</span>",
+      "urgent": ""
+    }
+  },
+
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}<span><sup> {0}</sup></span>",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "sleep 0.1 && swaync-client -t",
+    "on-click-right": "sleep 0.1 && swaync-client -d -sw",
+    "escape": true
+  },
+  "custom/power-menu": {
+    "format": "",
+    "tooltip-format": "Click to launch wlogout",
+    "on-click": "~/.config/hypr/scripts/wlogout.sh"
+  },
+
+  // modules-right
+
+  "tray": {
+    "spacing": 15
+  },
+
+  "custom/pacman": {
+    "return-type": "json",
+    "format": "􀐚  {text}",
+    "interval": 3600,
+    "exec": "~/.config/waybar/scripts/check_update.sh",
+    "on-click": "kitty --title PacUpdate par_tui && pkill -SIGRTMIN+8 waybar",
+    "signal": 8,
+    "tooltip": true
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", ""]
+    },
+    "on-click": "pkill pavucontrol || pavucontrol",
+    "scroll-step": 5,
+    "on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+    "on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+    "tooltip": true,
+    "tooltip-format": "{icon}  Volume: {volume}%\n\n{desc}"
+  },
+
+  "bluetooth": {
+    "format": " {num_connections}",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+    "on-click": "pkill blueman-manager || blueman-manager"
+  },
+
+  "network": {
+    "interval": 10,
+    "format-wifi": "{icon} {signalStrength}%",
+    "format-ethernet": "󰌗",
+    "format-disabled": "󰌙",
+    "format-disconnected": "󰖪",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "tooltip-format-disconnected": "󰅛 Network Disconnected",
+    "tooltip-format-disabled": "󰲛 Network Disabled",
+    "tooltip-format-ethernet": " {bandwidthUpBytes} \n  {bandwidthDownBytes}",
+    "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n\n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
+    "on-click": "pkill nmgui || nmgui"
+  },
+
+  "cpu": {
+    "interval": 10,
+    "format": "  {usage}%",
+    "max-length": 10,
+    "on-click": ""
+  },
+
+  "memory": {
+    "interval": 10,
+    "format": "  {used}GB",
+    "tooltip-format": "PC5-44800\n\nINSTALLED: {total}GB\nUSED: {used}GB  {percentage}%\nSWAP: {swapUsed}GB of {swapTotal}GB",
+    "max-length": 10
+  },
+
+  "clock": {
+    "format": "{:%a %b %d  %H:%M %p}",
+    "interval": 60,
+    "tooltip-format": " <tt>{calendar}</tt>",
+    "calendar": {
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    }
+  }
+}
