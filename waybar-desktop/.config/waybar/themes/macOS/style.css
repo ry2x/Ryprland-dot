@@ -64,7 +64,6 @@ window#waybar {
 
 #workspaces button.active {
   color: @primary;
-  font-size: 20px;
 }
 
 #tray > .passive {

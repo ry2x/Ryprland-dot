@@ -6,7 +6,7 @@
   "margin-top": 0,
   "margin-left": 0,
   "margin-right": 0,
-  "spacing": 15,
+  "spacing": 2,
 
   "modules-left": ["hyprland/window", "mpris", "custom/cava"],
   "modules-center": [
@@ -49,7 +49,7 @@
     },
     "tooltip": true,
     "tooltip-format-stopped": "  No music playing ",
-    "tooltip-format": "{status_icon}  {title}\n{artist}\n{album} {position}/{length}"
+    "tooltip-format": "{status_icon}\t{title}\n\n{artist}\n{album}\n\n{position}/{length}"
   },
 
   "custom/cava": {
@@ -74,7 +74,7 @@
     "format": "{icon}",
     "on-click": "activate",
     "format-icons": {
-      "active": "<span size=\"xx-large\">󱢖</span>",
+      "active": "<span size=\"large\">󱢖</span>",
       "urgent": ""
     }
   },
@@ -156,7 +156,7 @@
     "tooltip-format-disconnected": "󰅛 Network Disconnected",
     "tooltip-format-disabled": "󰲛 Network Disabled",
     "tooltip-format-ethernet": " {bandwidthUpBytes} \n  {bandwidthDownBytes}",
-    "tooltip-format-wifi": "{icon}  {essid}-{frequency}GHz \n\n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
+    "tooltip-format-wifi": "<b>{icon}  {essid}-{frequency}GHz</b> \n\n󱚺   {bandwidthUpBytes} \n󱚶   {bandwidthDownBytes}",
     "on-click": "pkill nmgui || nmgui"
   },
 
