@@ -41,7 +41,6 @@ window#waybar {
 
 #window:hover,
 #mpris:hover,
-#custom-cava:hover,
 #custom-weather:hover,
 #workspaces button:hover,
 #custom-notification:hover,
@@ -64,6 +63,11 @@ window#waybar {
 
 #workspaces button.active {
   color: @primary;
+}
+
+#workspaces button.active:hover {
+  background-color: alpha(@primary, 0.8);
+  color: @on_primary;
 }
 
 #tray > .passive {
