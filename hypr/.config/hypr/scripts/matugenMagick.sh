@@ -33,7 +33,7 @@ if [ -z "$wallpaper_path" ] || [ ! -f "$wallpaper_path" ]; then
 fi
 
 # generate matugen colors
-matugen image "$wallpaper_path" -m "$mode" -c "$DEFAULT_MATUGEN_CONFIG"
+matugen image "$wallpaper_path" -m "$mode" -c "$DEFAULT_MATUGEN_CONFIG" --prefer darkness
 
 # set gtk theme
 #gsettings set org.gnome.desktop.interface gtk-theme ""
