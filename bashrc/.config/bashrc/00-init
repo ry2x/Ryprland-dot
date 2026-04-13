@@ -21,6 +21,9 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export KODI_DATA="$XDG_DATA_HOME/kodi"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
+# docker uses podman
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+
 # pnpm
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 case ":$PATH:" in
