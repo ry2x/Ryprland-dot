@@ -1,0 +1,52 @@
+save_path = "~/Pictures/Screenshots"
+filename_pattern = "grim-%Y-%m-%d_%H%M_%S"
+toolbar_position = "top"
+capture_window_border = false
+
+[freeze_glyphs]
+crop = "󰆟"
+window = ""
+monitor = "󰍹"
+all = "󰁌"
+cancel = "󰖭"
+
+[freeze_colors.overlay]
+background = "#00000059"
+
+[freeze_colors.toolbar]
+background = "{{ colors.background.default.hex }}D9"
+
+[freeze_colors.button]
+idle_background = "{{ colors.surface.default.hex }}"
+idle_text = "{{ colors.on_surface.default.hex }}"
+active_background = "{{ colors.primary.default.hex }}"
+active_text = "{{ colors.on_primary.default.hex }}"
+hover_background = "{{ colors.tertiary.default.hex }}"
+hover_text = "{{ colors.on_tertiary.default.hex }}"
+
+[freeze_colors.cancel_button]
+idle_background = "{{ colors.error.default.hex }}"
+idle_text = "{{ colors.on_error.default.hex }}"
+hover_background = "#D44A47FF"
+hover_text = "#FFFFFFFF"
+
+[freeze_colors.window_frame]
+fill_idle = "{{ colors.primary_container.default.hex }}33"
+fill_hovered = "{{ colors.primary.default.hex }}8C"
+stroke_idle = "{{ colors.outline.default.hex }}"
+stroke_hovered = "{{ colors.outline.default.hex }}"
+label_text = "{{colors.on_surface.default.hex}}"
+hint_text = "{{ colors.on_surface.default.hex }}E6"
+
+[freeze_colors.monitor_frame]
+fill_idle = "{{ colors.primary_container.default.hex }}33"
+fill_hovered = "{{ colors.primary.default.hex }}8C"
+stroke_idle = "{{ colors.outline.default.hex }}"
+stroke_hovered = "{{ colors.outline.default.hex }}"
+label_text = "{{colors.on_surface.default.hex}}"
+hint_text = "{{ colors.on_surface.default.hex }}E6"
+name_text_idle = "{{ colors.on_surface.default.hex }}80"
+
+[freeze_colors.crop_frame]
+stroke = "{{ colors.primary.default.hex }}"
+label_text = "{{ colors.tertiary.default.hex }}"

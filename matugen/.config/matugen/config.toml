@@ -102,3 +102,7 @@ output_path = '~/.config/ry2x/zen.css'
 [templates.zathura]
 input_path = '~/.config/matugen/templates/matugen-zathurarc'
 output_path = '~/.config/zathura/matugen-zathurarc'
+
+[templates.hyprcrop]
+input_path = '~/.config/matugen/templates/matugen-hyprcrop.toml'
+output_path = '~/.config/hyprcrop/config.toml'
