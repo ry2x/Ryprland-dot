@@ -1,8 +1,8 @@
 /***
  *    ┳┳┓┏┓┏┳┓┳┳┏┓┏┓┳┓  ┏┓┏┳┓┓┏┓
- *    ┃┃┃┣┫ ┃ ┃┃┃┓┣ ┃┃━━┃┓ ┃ ┃┫ 
+ *    ┃┃┃┣┫ ┃ ┃┃┃┓┣ ┃┃━━┃┓ ┃ ┃┫
  *    ┛ ┗┛┗ ┻ ┗┛┗┛┗┛┛┗  ┗┛ ┻ ┛┗┛
- *                              
+ *
  */
 
 @define-color accent_color {{colors.primary.default.hex}};
@@ -59,4 +59,8 @@ headerbar.default-decoration {
 window.csd,             /* gtk4? */
 window.csd decoration { /* gtk3 */
   box-shadow: none;
+}
+
+window {
+  background-color: alpha(@theme_bg_color, 0.8);
 }
