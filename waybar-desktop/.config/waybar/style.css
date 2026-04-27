@@ -32,6 +32,7 @@ window#waybar {
 #network,
 #cpu,
 #memory,
+#power-profiles-daemon,
 #clock {
   background: transparent;
   border: none;
@@ -50,6 +51,7 @@ window#waybar {
 #network:hover,
 #cpu:hover,
 #memory:hover,
+#power-profiles-daemon:hover,
 #clock:hover {
   background-color: alpha(@inverse_surface, 0.8);
   color: @inverse_primary;
