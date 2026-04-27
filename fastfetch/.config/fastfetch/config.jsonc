@@ -15,14 +15,6 @@
   "modules": [
     {
       "type": "custom",
-      "format": ""
-    },
-    {
-      "type": "custom",
-      "format": ""
-    },
-    {
-      "type": "custom",
       "format": "                 ─── ⋆⋅☆⋅⋆ ───",
       "outputColor": "magenta"
     },
@@ -57,8 +49,18 @@
       "keyColor": "yellow"
     },
     {
+      "type": "CPU",
+      "key": "    ",
+      "keyColor": "yellow"
+    },
+    {
       "type": "memory",
       "key": "  󰧑  ",
+      "keyColor": "yellow"
+    },
+    {
+      "type": "Uptime",
+      "key": "    ",
       "keyColor": "yellow"
     },
     {
