@@ -10,6 +10,15 @@ monitor = "󰍹"
 all = "󰁌"
 cancel = "󰖭"
 
+[notifications]
+enabled = true
+success_action = "swayimg"
+success_timeout = 5000
+success_summary = "Screenshot saved"
+success_body = "{path}"
+error_summary = "Screenshot failed"
+error_body = "{error}"
+
 [freeze_colors.overlay]
 background = "#00000059"
 
