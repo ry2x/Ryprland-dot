@@ -22,6 +22,7 @@
     "network",
     "cpu",
     "memory",
+    "power-profiles-daemon",
     "clock"
   ],
 
@@ -31,7 +32,26 @@
     "format": "{class} [{title}]",
     "icon": true,
     "max-length": 25,
-    "icon-size": 18
+    "icon-size": 18,
+    "rewrite": {
+      "firefox(.*)": "$1",
+      "chromium(.*)": "$1",
+      "zen(.*)": "$1",
+      "kitty(.*)": "$1",
+      "alacritty(.*)": "$1",
+      "wezterm(.*)": "$1",
+      "code-oss(.*)": "$1",
+      "code(.*)": "$1",
+      "visual-studio-code(.*)": "$1",
+      "jetbrains-idea-ce(.*)": "$1",
+      "jetbrains-idea-ultimate(.*)": "$1",
+      "jetbrains-clion(.*)": "$1",
+      "jetbrains-pycharm-ce(.*)": "$1",
+      "jetbrains-pycharm-pro(.*)": "$1",
+      "jetbrains-webstorm(.*)": "$1",
+      "steam_app_default(.*)": "$1",
+      "net.lutris.Lutris(.*)": "Lutris$1"
+    }
   },
 
   "mpris": {
@@ -76,7 +96,8 @@
     "format-icons": {
       "active": "<span size=\"large\">󱢖</span>",
       "urgent": ""
-    }
+    },
+    "ignore-workspaces": ["99"]
   },
 
   "custom/notification": {
@@ -172,6 +193,18 @@
     "format": "  {used}GB",
     "tooltip-format": "PC5-44800\n\nINSTALLED: {total}GB\nUSED: {used}GB  {percentage}%\nSWAP: {swapUsed}GB of {swapTotal}GB",
     "max-length": 10
+  },
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {icon} {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    }
   },
 
   "clock": {
