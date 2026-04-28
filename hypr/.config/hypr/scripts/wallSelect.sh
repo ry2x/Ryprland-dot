@@ -24,7 +24,7 @@
 #
 # Dependencies:
 #   → Core: hyprland, rofi, jq, xxhsum (xxhash)
-#   → Media: swww, imagemagick
+#   → Media: awww, imagemagick
 #   → GNU: findutils, coreutils, bc
 
 # Set dir varialable
