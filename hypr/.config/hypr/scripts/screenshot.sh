@@ -4,7 +4,7 @@
 #  ┗┛┗┛┛┗┗┛┗┛┛┗┗┛┛┗┗┛ ┻
 #
 
-grim_path=$HOME/Pictures/screenshots/grim-$(date +%Y-%m-%d_%H%M).png
+grim_path=$HOME/Pictures/Screenshots/grim-$(date +%Y-%m-%d_%H%M).png
 
 # Take a cropped region using slurp (interactive)
 if [[ "$1" == "--crop" ]]; then
