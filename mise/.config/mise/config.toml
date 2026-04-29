@@ -1,5 +1,0 @@
-[tools]
-bun = "latest"
-deno = "latest"
-node = "24"
-uv = "latest"
