@@ -4,3 +4,49 @@ private-dotfile/*
 
 # fish_variable
 base/.config/fish/fish_variables
+
+#---------------------
+# Matugen Files
+#---------------------
+
+# cava
+base/.config/cava/config
+
+# gtk3.0
+base/.config/gtk-3.0/gtk.css
+
+# gtk4.0
+base/.config/gtk-4.0/gtk.css
+
+# hyprlock
+base/.config/hypr/hyprlock/matugen/matugen-hyprlock.conf
+
+# hyprland
+base/.config/hypr/matugen/matugen-hyprland.conf
+
+# hyprbind
+base/.config/hyprbind/hyprbind-theme.css
+
+# kitty
+base/.config/kitty/matugen/colors-matugen.conf
+
+# Kvantum
+base/.config/Kvantum/matugen/matugen.kvconfig
+
+# qt5
+base/.config/qt5ct/colors/matugen-qt5ct.conf
+
+# qt6
+base/.config/qt6ct/colors/matugen-qt6ct.conf
+
+# rofi
+base/.config/rofi/matugen/matugen-rofi.rasi
+
+# rofi images
+base/.config/rofi/images/currentWal.sqre
+base/.config/rofi/images/currentWal.thumb
+base/.config/rofi/images/currentWalBlur.thumb
+base/.config/rofi/images/currentWalQuad.quad
+
+# swayc
+base/.config/swaync/matugen/matugen-swaync.css
