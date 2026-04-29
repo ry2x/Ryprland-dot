@@ -42,11 +42,9 @@ check_dependencies() {
 check_action_dependencies() {
     local missing=()
 
-    for cmd in notify-send; do
-        if ! command_exists "$cmd"; then
-            missing+=("$cmd")
-        fi
-    done
+    if ! command_exists "notify-send"; then
+        missing+=("notify-send")
+    fi
 
     if (( ${#missing[@]} > 0 )); then
         error "Missing required commands for actions: ${missing[*]}"
