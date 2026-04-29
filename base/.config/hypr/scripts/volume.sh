@@ -1,141 +1,306 @@
 #!/usr/bin/env bash
 
-iDIR="$HOME/.config/swaync/icons"
-sDIR="$HOME/.config/hypr/scripts"
+set -euo pipefail
 
-# Get Volume
-get_volume() {
-    volume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')
-    muted=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -o '\[MUTED\]')
+# ============================================================================
+# Configuration
+# ============================================================================
+readonly ICON_DIR="$HOME/.config/swaync/icons"
+readonly SCRIPT_DIR="$HOME/.config/hypr/scripts"
+readonly SOUND_SCRIPT="$SCRIPT_DIR/sounds.sh"
+readonly SINK="@DEFAULT_AUDIO_SINK@"
+readonly SOURCE="@DEFAULT_AUDIO_SOURCE@"
+readonly STEP="5%"
 
-    if [[ -n "$muted" ]]; then
+# ============================================================================
+# Helper Functions
+# ============================================================================
+
+error() {
+    echo "Error: $*" >&2
+    exit 1
+}
+
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+check_dependencies() {
+    local missing=()
+
+    for cmd in wpctl awk grep; do
+        if ! command_exists "$cmd"; then
+            missing+=("$cmd")
+        fi
+    done
+
+    if (( ${#missing[@]} > 0 )); then
+        error "Missing required commands: ${missing[*]}"
+    fi
+}
+
+check_action_dependencies() {
+    local missing=()
+
+    for cmd in notify-send; do
+        if ! command_exists "$cmd"; then
+            missing+=("$cmd")
+        fi
+    done
+
+    if (( ${#missing[@]} > 0 )); then
+        error "Missing required commands for actions: ${missing[*]}"
+    fi
+}
+
+get_volume_state() {
+    local target="$1"
+    wpctl get-volume "$target"
+}
+
+is_muted() {
+    local target="$1"
+    get_volume_state "$target" | grep -q '\[MUTED\]'
+}
+
+get_percent() {
+    local target="$1"
+    get_volume_state "$target" | awk '{print int($2 * 100)}'
+}
+
+get_level_label() {
+    local target="$1"
+    local percent
+
+    if is_muted "$target"; then
         echo "Muted"
+        return 0
+    fi
+
+    percent="$(get_percent "$target")"
+    echo "${percent}%"
+}
+
+volume_icon_for_level() {
+    local level="$1"
+    local percent
+
+    if [[ "$level" == "Muted" ]]; then
+        echo "$ICON_DIR/volume-mute.png"
+        return 0
+    fi
+
+    percent="${level%%%}"
+    if (( percent <= 30 )); then
+        echo "$ICON_DIR/volume-low.png"
+    elif (( percent <= 60 )); then
+        echo "$ICON_DIR/volume-mid.png"
     else
-        echo "$volume%"
+        echo "$ICON_DIR/volume-high.png"
     fi
 }
 
-# Get icons
-get_icon() {
-    current=$(get_volume)
-    if [[ "$current" == "Muted" ]]; then
-        echo "$iDIR/volume-mute.png"
-    elif [[ "${current%\%}" -le 30 ]]; then
-        echo "$iDIR/volume-low.png"
-    elif [[ "${current%\%}" -le 60 ]]; then
-        echo "$iDIR/volume-mid.png"
-    else
-        echo "$iDIR/volume-high.png"
-    fi
+get_volume_icon() {
+    local current
+    current="$(get_level_label "$SINK")"
+    volume_icon_for_level "$current"
 }
 
-# Notify
-notify_user() {
-    if [[ "$(get_volume)" == "Muted" ]]; then
-        notify-send -e -h string:x-canonical-private-synchronous:volume_notif -u low -i "$(get_icon)" "Volume: Muted"
-    else
-        notify-send -e -h int:value:"$(get_volume | sed 's/%//')" -h string:x-canonical-private-synchronous:volume_notif -u low -i "$(get_icon)" "Volume: $(get_volume)"
-        "$sDIR/sounds.sh" --volume
-    fi
-}
-
-# Increase Volume
-inc_volume() {
-    if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && notify_user
-    fi
-    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify_user
-}
-
-# Decrease Volume
-dec_volume() {
-    if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && notify_user
-    fi
-    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify_user
-}
-
-# Toggle Mute
-toggle_mute() {
-    if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && notify-send -e -u low -i "$(get_icon)" "Volume Switched ON"
-    else
-        wpctl set-mute @DEFAULT_AUDIO_SINK@ 1 && notify-send -e -u low -i "$iDIR/volume-mute.png" "Volume Switched OFF"
-    fi
-}
-
-# Toggle Mic
-toggle_mic() {
-    if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0 && notify-send -e -u low -i "$iDIR/microphone.png" "Microphone Switched ON"
-    else
-        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1 && notify-send -e -u low -i "$iDIR/microphone-mute.png" "Microphone Switched OFF"
-    fi
-}
-
-# Get Mic Icon
 get_mic_icon() {
-    if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\[MUTED\]'; then
-        echo "$iDIR/microphone-mute.png"
+    if is_muted "$SOURCE"; then
+        echo "$ICON_DIR/microphone-mute.png"
     else
-        echo "$iDIR/microphone.png"
+        echo "$ICON_DIR/microphone.png"
     fi
 }
 
-# Get Microphone Volume
-get_mic_volume() {
-    volume=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print int($2 * 100)}')
-    muted=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -o '\[MUTED\]')
-
-    if [[ -n "$muted" ]]; then
-        echo "Muted"
-    else
-        echo "$volume%"
+play_volume_sound() {
+    if [[ -x "$SOUND_SCRIPT" ]]; then
+        "$SOUND_SCRIPT" --volume >/dev/null 2>&1 || true
     fi
 }
 
-# Notify for Microphone
-notify_mic_user() {
-    volume=$(get_mic_volume)
-    icon=$(get_mic_icon)
-    notify-send -e -h int:value:"$volume" -h "string:x-canonical-private-synchronous:volume_notif" -u low -i "$icon" "Mic-Level: $volume"
+notify_volume() {
+    local level
+    local icon
+    local percent
+
+    level="$(get_level_label "$SINK")"
+    icon="$(get_volume_icon)"
+
+    if [[ "$level" == "Muted" ]]; then
+        notify-send -e -h string:x-canonical-private-synchronous:volume_notif -u low -i "$icon" "Volume: Muted"
+        return 0
+    fi
+
+    percent="${level%%%}"
+    notify-send -e -h int:value:"$percent" -h string:x-canonical-private-synchronous:volume_notif -u low -i "$icon" "Volume: $level"
+    play_volume_sound
 }
 
-# Increase MIC Volume
+notify_mic() {
+    local level
+    local icon
+    local percent
+
+    level="$(get_level_label "$SOURCE")"
+    icon="$(get_mic_icon)"
+
+    if [[ "$level" == "Muted" ]]; then
+        notify-send -e -h string:x-canonical-private-synchronous:volume_notif -u low -i "$icon" "Mic-Level: Muted"
+        return 0
+    fi
+
+    percent="${level%%%}"
+    notify-send -e -h int:value:"$percent" -h string:x-canonical-private-synchronous:volume_notif -u low -i "$icon" "Mic-Level: $level"
+}
+
+unmute_if_needed() {
+    local target="$1"
+    if is_muted "$target"; then
+        wpctl set-mute "$target" 0
+    fi
+}
+
+inc_volume() {
+    unmute_if_needed "$SINK"
+    wpctl set-volume "$SINK" "${STEP}+"
+    notify_volume
+}
+
+dec_volume() {
+    unmute_if_needed "$SINK"
+    wpctl set-volume "$SINK" "${STEP}-"
+    notify_volume
+}
+
 inc_mic_volume() {
-    if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0 && notify_mic_user
-    fi
-    wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ && notify_mic_user
+    unmute_if_needed "$SOURCE"
+    wpctl set-volume "$SOURCE" "${STEP}+"
+    notify_mic
 }
 
-# Decrease MIC Volume
 dec_mic_volume() {
-    if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\[MUTED\]'; then
-        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0 && notify_mic_user
-    fi
-    wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%- && notify_mic_user
+    unmute_if_needed "$SOURCE"
+    wpctl set-volume "$SOURCE" "${STEP}-"
+    notify_mic
 }
 
-# Execute accordingly
-if [[ "$1" == "--get" ]]; then
-    get_volume
-elif [[ "$1" == "--inc" ]]; then
-    inc_volume
-elif [[ "$1" == "--dec" ]]; then
-    dec_volume
-elif [[ "$1" == "--toggle" ]]; then
-    toggle_mute
-elif [[ "$1" == "--toggle-mic" ]]; then
-    toggle_mic
-elif [[ "$1" == "--get-icon" ]]; then
-    get_icon
-elif [[ "$1" == "--get-mic-icon" ]]; then
-    get_mic_icon
-elif [[ "$1" == "--mic-inc" ]]; then
-    inc_mic_volume
-elif [[ "$1" == "--mic-dec" ]]; then
-    dec_mic_volume
-else
-    get_volume
-fi
+toggle_mute() {
+    if is_muted "$SINK"; then
+        wpctl set-mute "$SINK" 0
+        notify-send -e -u low -i "$(get_volume_icon)" "Volume Switched ON"
+    else
+        wpctl set-mute "$SINK" 1
+        notify-send -e -u low -i "$ICON_DIR/volume-mute.png" "Volume Switched OFF"
+    fi
+}
+
+toggle_mic() {
+    if is_muted "$SOURCE"; then
+        wpctl set-mute "$SOURCE" 0
+        notify-send -e -u low -i "$ICON_DIR/microphone.png" "Microphone Switched ON"
+    else
+        wpctl set-mute "$SOURCE" 1
+        notify-send -e -u low -i "$ICON_DIR/microphone-mute.png" "Microphone Switched OFF"
+    fi
+}
+
+print_help() {
+    cat <<'EOF'
+Usage: volume.sh [option]
+
+Options:
+  --get            Get sink volume label
+  --inc            Increase sink volume by 5%
+  --dec            Decrease sink volume by 5%
+  --toggle         Toggle sink mute
+  --get-icon       Get sink icon path for current level
+  --toggle-mic     Toggle microphone mute
+  --get-mic-icon   Get microphone icon path
+  --mic-inc        Increase microphone volume by 5%
+  --mic-dec        Decrease microphone volume by 5%
+  --help, -h       Show this help
+EOF
+}
+
+# ============================================================================
+# Read-Only Commands
+# ============================================================================
+
+run_query_command() {
+    local action="$1"
+
+    case "$action" in
+        --get)
+            get_level_label "$SINK"
+            ;;
+        --get-icon)
+            get_volume_icon
+            ;;
+        --get-mic-icon)
+            get_mic_icon
+            ;;
+        --help|-h)
+            print_help
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# ============================================================================
+# State-Changing Commands
+# ============================================================================
+
+run_action_command() {
+    local action="$1"
+
+    case "$action" in
+        --inc)
+            inc_volume
+            ;;
+        --dec)
+            dec_volume
+            ;;
+        --toggle)
+            toggle_mute
+            ;;
+        --toggle-mic)
+            toggle_mic
+            ;;
+        --mic-inc)
+            inc_mic_volume
+            ;;
+        --mic-dec)
+            dec_mic_volume
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# ============================================================================
+# Main
+# ============================================================================
+
+main() {
+    local action="${1:---get}"
+
+    check_dependencies
+
+    if run_query_command "$action"; then
+        return 0
+    fi
+
+    check_action_dependencies
+    if run_action_command "$action"; then
+        return 0
+    fi
+
+    get_level_label "$SINK"
+}
+
+main "$@"
