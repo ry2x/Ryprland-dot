@@ -82,5 +82,3 @@ set -gx RUSTUP_HOME "$XDG_DATA_HOME/rustup"
 set -gx GOBIN "$GOPATH/bin"
 set -gx PATH "$GOBIN:$PATH"
 
-# Docker uses podman
-set -gx DOCKER_HOST "unix://$XDG_RUNTIME_DIR/podman/podman.sock"
