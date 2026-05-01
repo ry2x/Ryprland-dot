@@ -1,5 +1,0 @@
-# This file contains fish universal variable definitions.
-# VERSION: 3.0
-SETUVAR __fish_initialized:4300
-SETUVAR _fisher_upgraded_to_4_4:\x1d
-SETUVAR fish_user_paths:/home/haku/\x2elocal/bin\x1e/home/haku/\x2elocal/bin/statusbar\x1e/home/haku/\x2elocal/bin/cron\x1e/home/haku/Applications\x1e/var/lib/flatpak/exports/bin/\x1e/home/haku/\x2elocal/share/cargo/bin
