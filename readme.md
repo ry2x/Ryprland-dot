@@ -48,9 +48,6 @@ stow ./nvim-yazi # For neovim and yazi
 - `private-dotfile/`: Not publicly available, contains my private information.
 - `README.md`: This file.
 
-> [!NOTE]
-> Every directory contains a `README.md` file that explains the configuration files in that directory and maybe some instructions on how to use them.
-
 ## Requirements
 
 Install these packages before using this dotfile setup:
