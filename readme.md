@@ -63,6 +63,12 @@ Install these packages before using this dotfile setup:
 - Other application: kitty, pear-desktop, thunar, fcitx5 (with mozc), gnome-keyring, power-profiles-daemon, swayimg
 - AUR/helper: paru, par_tui
 
+### Fonts
+
+- GTK: SF Pro Regular 11
+- Qt: Noto Sans CJK JP 12
+- Coding: Fira Code Regular 12
+
 ## 日本語入力とmozc辞書について
 
 このセットアップでは、fcitx5 + mozc で日本語入力を行います。
