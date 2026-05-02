@@ -1,0 +1,4 @@
+[submodule "private-dotfile"]
+	path = private-dotfile
+	url = https://github.com/ry2x/private-dotfile.git
+	branch = master
