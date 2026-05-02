@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! updates=$(checkupdates 2> /dev/null); then
+if ! updates=$(checkupdates 2>/dev/null); then
     updates=""
 fi
 

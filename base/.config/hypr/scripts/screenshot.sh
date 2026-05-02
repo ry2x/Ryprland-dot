@@ -61,7 +61,7 @@ check_dependencies() {
         done
     fi
 
-    if (( ${#missing_commands[@]} > 0 )); then
+    if ((${#missing_commands[@]} > 0)); then
         error "Missing required commands: ${missing_commands[*]}"
     fi
 }
@@ -117,8 +117,8 @@ capture_window() {
 
     # Query active window geometry from Hyprland
     local geom
-    geom=$(hyprctl activewindow -j | jq -r '.at[0] as $x | .at[1] as $y | .size[0] as $w | .size[1] as $h | "\($x),\($y) \($w)x\($h)"') \
-        || error "Failed to query window geometry"
+    geom=$(hyprctl activewindow -j | jq -r '.at[0] as $x | .at[1] as $y | .size[0] as $w | .size[1] as $h | "\($x),\($y) \($w)x\($h)"') ||
+        error "Failed to query window geometry"
 
     if [[ -z "$geom" || "$geom" == "null" ]]; then
         error "No active window geometry found (is Hyprland running?)"
@@ -138,18 +138,18 @@ main() {
     local mode="${1:-fullscreen}"
 
     case "$mode" in
-        --crop)
-            check_dependencies "crop"
-            ensure_screenshot_dir
-            capture_crop
-            ;;
-        --window)
-            check_dependencies "window"
-            ensure_screenshot_dir
-            capture_window
-            ;;
-        --help|-h)
-            cat <<EOF
+    --crop)
+        check_dependencies "crop"
+        ensure_screenshot_dir
+        capture_crop
+        ;;
+    --window)
+        check_dependencies "window"
+        ensure_screenshot_dir
+        capture_window
+        ;;
+    --help | -h)
+        cat <<EOF
 Usage: $(basename "$0") [--crop|--window]
 
 Options:
@@ -164,13 +164,13 @@ Examples:
   $(basename "$0") --crop   # Cropped region capture
   $(basename "$0") --window # Active window capture
 EOF
-            exit 0
-            ;;
-        *)
-            check_dependencies ""
-            ensure_screenshot_dir
-            capture_fullscreen
-            ;;
+        exit 0
+        ;;
+    *)
+        check_dependencies ""
+        ensure_screenshot_dir
+        capture_fullscreen
+        ;;
     esac
 
     # Copy to clipboard and confirm success

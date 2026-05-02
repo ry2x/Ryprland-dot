@@ -87,22 +87,22 @@ change_brightness() {
 
 notify-send -e -h "Running backlight script with argument: $1"
 case "$1" in
-    --get)
-        for d in $(get_displays); do
-            val=$(ddcutil -d "$d" getvcp $VCP_CODE --terse | awk '{print $4}')
-            echo "Display $d: Brightness is $val%"
-        done
-        ;;
-    --inc)
-        echo "Increasing brightness by $STEP%..."
-        change_brightness "$STEP"
-        ;;
-    --dec)
-        echo "Decreasing brightness by $STEP%..."
-        change_brightness "-$STEP"
-        ;;
-    *)
-        echo "Usage: $0 {--get|--inc|--dec}"
-        exit 1
-        ;;
+--get)
+    for d in $(get_displays); do
+        val=$(ddcutil -d "$d" getvcp $VCP_CODE --terse | awk '{print $4}')
+        echo "Display $d: Brightness is $val%"
+    done
+    ;;
+--inc)
+    echo "Increasing brightness by $STEP%..."
+    change_brightness "$STEP"
+    ;;
+--dec)
+    echo "Decreasing brightness by $STEP%..."
+    change_brightness "-$STEP"
+    ;;
+*)
+    echo "Usage: $0 {--get|--inc|--dec}"
+    exit 1
+    ;;
 esac
