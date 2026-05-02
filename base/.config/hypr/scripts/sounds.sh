@@ -44,7 +44,7 @@ check_dependencies() {
         fi
     done
 
-    if (( ${#missing[@]} > 0 )); then
+    if ((${#missing[@]} > 0)); then
         error "Missing required commands: ${missing[*]}"
     fi
 }
@@ -92,18 +92,18 @@ resolve_sound_pattern() {
     local mode="$1"
 
     case "$mode" in
-        --screenshot)
-            if [[ "$MUTE_SCREENSHOTS" == true ]]; then
-                exit 0
-            fi
-            echo "screen-capture.*"
-            ;;
-        --volume)
-            if [[ "$MUTE_VOLUME" == true ]]; then
-                exit 0
-            fi
-            echo "audio-volume-change.*"
-            ;;
+    --screenshot)
+        if [[ "$MUTE_SCREENSHOTS" == true ]]; then
+            exit 0
+        fi
+        echo "screen-capture.*"
+        ;;
+    --volume)
+        if [[ "$MUTE_VOLUME" == true ]]; then
+            exit 0
+        fi
+        echo "audio-volume-change.*"
+        ;;
     esac
 }
 
@@ -163,24 +163,24 @@ main() {
     fi
 
     case "$mode" in
-        --help|-h|"")
-            print_help
+    --help | -h | "")
+        print_help
+        exit 0
+        ;;
+    --screenshot)
+        if [[ "$MUTE_SCREENSHOTS" == true ]]; then
             exit 0
-            ;;
-        --screenshot)
-            if [[ "$MUTE_SCREENSHOTS" == true ]]; then
-                exit 0
-            fi
-            ;;
-        --volume)
-            if [[ "$MUTE_VOLUME" == true ]]; then
-                exit 0
-            fi
-            ;;
-        *)
-            print_help
+        fi
+        ;;
+    --volume)
+        if [[ "$MUTE_VOLUME" == true ]]; then
             exit 0
-            ;;
+        fi
+        ;;
+    *)
+        print_help
+        exit 0
+        ;;
     esac
 
     check_dependencies

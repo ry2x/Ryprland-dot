@@ -51,10 +51,10 @@ initializeANSI() {
 initializeANSI
 
 cat <<EOF
- ${reset}${whitef}  ██  ██   ${reset}${boldon}${whitef}██    
- ${reset}${yellowf}██████████ ${reset}${boldon}${whitef}██    
- ${reset}${cyanf}  ██  ██   ${reset}${boldon}${whitef}██    
- ${reset}${greenf}██████████       
- ${reset}${redf}  ██  ██   ${reset}${boldon}${redfbright}██     
+ ${reset}${whitef}  ██  ██   ${reset}${boldon}${whitef}██
+ ${reset}${yellowf}██████████ ${reset}${boldon}${whitef}██
+ ${reset}${cyanf}  ██  ██   ${reset}${boldon}${whitef}██
+ ${reset}${greenf}██████████
+ ${reset}${redf}  ██  ██   ${reset}${boldon}${redfbright}██
  ${reset}
 EOF

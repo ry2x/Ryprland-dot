@@ -34,7 +34,7 @@ check_dependencies() {
         fi
     done
 
-    if (( ${#missing[@]} > 0 )); then
+    if ((${#missing[@]} > 0)); then
         error "Missing required commands: ${missing[*]}"
     fi
 }
@@ -46,7 +46,7 @@ check_action_dependencies() {
         missing+=("notify-send")
     fi
 
-    if (( ${#missing[@]} > 0 )); then
+    if ((${#missing[@]} > 0)); then
         error "Missing required commands for actions: ${missing[*]}"
     fi
 }
@@ -89,9 +89,9 @@ volume_icon_for_level() {
     fi
 
     percent="${level%%%}"
-    if (( percent <= 30 )); then
+    if ((percent <= 30)); then
         echo "$ICON_DIR/volume-low.png"
-    elif (( percent <= 60 )); then
+    elif ((percent <= 60)); then
         echo "$ICON_DIR/volume-mid.png"
     else
         echo "$ICON_DIR/volume-high.png"
@@ -230,21 +230,21 @@ run_query_command() {
     local action="$1"
 
     case "$action" in
-        --get)
-            get_level_label "$SINK"
-            ;;
-        --get-icon)
-            get_volume_icon
-            ;;
-        --get-mic-icon)
-            get_mic_icon
-            ;;
-        --help|-h)
-            print_help
-            ;;
-        *)
-            return 1
-            ;;
+    --get)
+        get_level_label "$SINK"
+        ;;
+    --get-icon)
+        get_volume_icon
+        ;;
+    --get-mic-icon)
+        get_mic_icon
+        ;;
+    --help | -h)
+        print_help
+        ;;
+    *)
+        return 1
+        ;;
     esac
 }
 
@@ -256,27 +256,27 @@ run_action_command() {
     local action="$1"
 
     case "$action" in
-        --inc)
-            inc_volume
-            ;;
-        --dec)
-            dec_volume
-            ;;
-        --toggle)
-            toggle_mute
-            ;;
-        --toggle-mic)
-            toggle_mic
-            ;;
-        --mic-inc)
-            inc_mic_volume
-            ;;
-        --mic-dec)
-            dec_mic_volume
-            ;;
-        *)
-            return 1
-            ;;
+    --inc)
+        inc_volume
+        ;;
+    --dec)
+        dec_volume
+        ;;
+    --toggle)
+        toggle_mute
+        ;;
+    --toggle-mic)
+        toggle_mic
+        ;;
+    --mic-inc)
+        inc_mic_volume
+        ;;
+    --mic-dec)
+        dec_mic_volume
+        ;;
+    *)
+        return 1
+        ;;
     esac
 }
 
