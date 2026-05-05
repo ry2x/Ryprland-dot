@@ -4,7 +4,7 @@
 #  ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┗┛┗┛┗┛┗┛┗┛ ┻
 #
 
-WAYBAR_THEME_DIR="$HOME/.config/waybar/themes"
+WAYBAR_THEME_DIR="$HOME/.config/waybar/themes/"
 WAYBAR_CONFIG="$HOME/.config/waybar/config.jsonc"
 WAYBAR_CSS="$HOME/.config/waybar/style.css"
 ROFI_THEME="$HOME/.config/rofi/applets/waybarSelect.rasi"
