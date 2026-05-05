@@ -1,8 +1,8 @@
 /***
  *    ┓ ┏┓ ┏┓┏┓┏┓┳┳┏┳┓
- *    ┃┃┃┃ ┃┃┃┓┃┃┃┃ ┃ 
- *    ┗┻┛┗┛┗┛┗┛┗┛┗┛ ┻ 
- *                    
+ *    ┃┃┃┃ ┃┃┃┓┃┃┃┃ ┃
+ *    ┗┻┛┗┛┗┛┗┛┗┛┗┛ ┻
+ *
  */
 
 /* wallust-wlogout */
@@ -14,7 +14,7 @@ window {
     font-family: GeistMono Nerd Font Propo;
     font-size: 16pt;
     color: @on_primary; /* text */
-    background-color: @surface;
+    background-color: @surface-alpha;
 }
 
 button {
@@ -47,7 +47,7 @@ button:hover {
     box-shadow: 0 0 15px 5px alpha(@on_primary, 0.8),
         0 0 30px 8px alpha(@on_primary, 0.4);
     background-color: @primary;
-    color: transparent;
+    color: @on_primary;
     transition: all 0.3s cubic-bezier(0.55, 0, 0.28, 1.682),
         box-shadow 0.5s ease-in;
 }
