@@ -25,5 +25,5 @@ if [[ "$clients" == "" ]]; then
     $COMMAND
     exit 0
 else
-    hyprctl dispatch closewindow address:"$clients"
+    hyprctl dispatch "hl.dsp.window.close({window = \"address:$clients\"})"
 fi
