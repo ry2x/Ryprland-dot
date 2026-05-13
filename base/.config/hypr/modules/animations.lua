@@ -52,7 +52,7 @@ local anims = {
     { "layersIn",      5,  "open",    "fade" },
     { "layersOut",     5,  "close",   "fade" },
 
-    { "fade",          5,  "close",   "" }
+    { "fade",          3,  "close",   "" }
 
 }
 
