@@ -23,6 +23,7 @@ base/.config/hypr/hyprlock/matugen/matugen-hyprlock.conf
 
 # hyprland
 base/.config/hypr/matugen/matugen-hyprland.conf
+base/.config/hypr/matugen/matugen-hyprland.lua
 
 # hyprbind
 base/.config/hyprbind/hyprbind-theme.css
