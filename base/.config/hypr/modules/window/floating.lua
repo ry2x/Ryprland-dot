@@ -26,7 +26,7 @@ hl.window_rule({
     match = { tag = "floatTopRight" },
     float = true,
     animation = "slide top",
-    move = { "monitor_w - (window_w * 0.6) - 10", "30" },
+    move = { "monitor_w /2", "30" },
     pin = true
 })
 
