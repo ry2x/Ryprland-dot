@@ -1,6 +1,8 @@
 #!/bin/bash
 
+TIME=$1
+
 while true; do
-    sleep 3600 # Change wallpaper every 60 minutes (in seconds)
+    sleep "$TIME" # Change wallpaper every specified interval (in seconds)
     waypaper --random
 done
