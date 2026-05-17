@@ -1,7 +1,7 @@
 #  ┏┓┏┳┓┏┓┳┓┏┓┓┏┳┏┓
 #  ┗┓ ┃ ┣┫┣┫┗┓┣┫┃┃┃
 #  ┗┛ ┻ ┛┗┛┗┗┛┛┗┻┣┛
-#                  
+#
 
 
 # Print a new line at the start of the prompt
@@ -21,8 +21,8 @@ format = '[](bold fg:bright-black)[$symbol]($style)[](bold fg:bright-black
 disabled = false
 
 [os.symbols]
-Arch = "󰣇 "
-EndeavourOS = " "
+Arch = "󰣇"
+EndeavourOS = ""
 
 #-------character--------#
 #------------------------#
@@ -33,6 +33,7 @@ vimcmd_symbol = "[   ](bold fg:yellow)"
 vimcmd_visual_symbol = "[   ](bold fg:yellow)"
 vimcmd_replace_symbol = "[   ](bold fg:purple)"
 vimcmd_replace_one_symbol = "[   ](bold fg:purple)"
+
 #------directory---------#
 #------------------------#
 [directory]
@@ -50,19 +51,18 @@ truncation_length = 12
 truncation_symbol = ""
 format = '[](bold fg:bright-black)[$symbol $branch(:$remote_branch)](fg:yellow bg:bright-black)[](bold fg:bright-black)'
 
-
 #------gitStatus-------#
 #----------------------#
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](fg:green)" 
-modified = "[${count}+](fg:yellow)" 
-deleted =  "[${count}-](fg:red)" 
-conflicted =  "[${count}~](fg:red)" 
+stashed = "[${count}*](fg:green)"
+modified = "[${count}+](fg:yellow)"
+deleted =  "[${count}-](fg:red)"
+conflicted =  "[${count}~](fg:red)"
 ahead = "⇡${count}"
 behind = "⇣${count}"
-untracked = "[${count}?](fg:blue)" 
-staged = "[${count}+](fg:green)" 
+untracked = "[${count}?](fg:blue)"
+staged = "[${count}+](fg:green)"
 
 #-----cmdDuration------#
 #----------------------#
