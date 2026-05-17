@@ -1,8 +1,8 @@
 {
     "workspace": {
-        "library": ["/usr/share/hypr/stubs"]
+        "library": ["/usr/share/hypr/stubs", "/usr/share/swayimg/swayimg.lua"]
     },
     "diagnostics": {
-        "globals": ["hl"]
+        "globals": ["hl", "swayimg"]
     }
 }
