@@ -13,12 +13,12 @@ for _, class in ipairs({
     "^(polkit-gnome-authentication-agent-1)$",
     "^(org.freedesktop.impl.portal.desktop.gtk)$",
     "^(org.freedesktop.impl.portal.desktop.hyprland)$",
-    "^( [Ss]team)$",
+    "^([Ss]team)$",
     "^(steamwebhelper)$",
     "^(com.github.th_ch.youtube_music)$",
     "^(blueman-manager)$",
     "^(wofi)$",
-    "^( [Rr]ofi)$",
+    "^([Rr]ofi)$",
     "^(SourceGit)$",
     "^(jetbrains-idea-ce)$",
     "^(jetbrains-rustrover)$",
@@ -40,7 +40,6 @@ for _, class in ipairs({
     "^(io.gitlab.theevilskeleton.Upscaler)$",
     "^(com.github.unrud.VideoDownloader)$",
     "^(io.gitlab.adhami3310.Impression)$",
-    "^(io.missioncenter.MissionCenter)$",
     "^(io.github.flattool.Warehouse)$",
     "^(gcr-prompter)$"
 }) do
