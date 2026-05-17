@@ -26,18 +26,18 @@ hl.on("hyprland.start", function()
         -- bar
         "killall -q waybar;sleep .5 && waybar",
 
-        -- wallpaper
-        "killall -q awww;sleep .5 && awww-daemon --format xrgb",
-
         -- notifications
         "killall -q swaync;sleep .5 && swaync",
+
+        -- wallpaper
+        "killall -q awww;sleep .5 && awww-daemon --format xrgb",
+        "waypaper --restore",
+        "$HOME/.config/hypr/scripts/wallpaper_loop.sh 3600", -- Change wallpaper every 60 minutes (in seconds)
 
         -- applets
         "blueman-applet",
         "fcitx5 -d",
         "DRI_PRIME=1 discord",
-        "waypaper --restore",
-        "$HOME/.config/hypr/scripts/wallpaper_loop.sh 3600", -- Change wallpaper every 60 minutes (in seconds)
     }
 
     for _, app in ipairs(autostart) do
