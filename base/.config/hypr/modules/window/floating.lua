@@ -17,7 +17,7 @@ hl.window_rule({
     match = { tag = "floatTop" },
     float = true,
     animation = "slide top",
-    center = true,
+    move = { "window_w * 0.25", "30" },
     pin = true
 })
 
@@ -26,7 +26,7 @@ hl.window_rule({
     match = { tag = "floatTopRight" },
     float = true,
     animation = "slide top",
-    move = { "monitor_w /2", "30" },
+    move = { "monitor_w * 0.7 - 10", "30" },
     pin = true
 })
 
@@ -86,7 +86,7 @@ local right_top_floating = {
     { { class = "^(nz.co.mega.megasync)$" },        "mini" },
     { { class = "^(org.pulseaudio.pavucontrol)$" }, "mini" },
     { { class = "^(blueman-manager)$" },            "mini" },
-    { { title = "^(KittyNmtui)$" },                 "half" },
+    { { title = "^(KittyNmtui)$" },                 "mini" },
     { { class = "^(com.network.manager)$" },        "mini" }
 }
 
