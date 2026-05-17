@@ -11,6 +11,7 @@
         "GLFW",
         "groupbar",
         "hypr",
+        "hyprcrop",
         "hyprctl",
         "HYPRCURSOR",
         "hypridle",
