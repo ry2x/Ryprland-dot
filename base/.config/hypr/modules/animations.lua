@@ -37,23 +37,25 @@ hl.curve("move", {
 
 -- animations
 local anims = {
-    { "windowsIn",     3,  "open",    "popin 50%" },
-    { "windowsOut",    3,  "close",   "popin 60%" },
-    { "windowsMove",   3,  "move",    "slide" },
+    { "windowsIn",           3,  "open",    "popin 50%" },
+    { "windowsOut",          3,  "close",   "popin 60%" },
+    { "windowsMove",         3,  "move",    "slide" },
 
-    { "global",        5,  "bubbles", "" },
-    { "border",        1,  "liner",   "" },
-    { "borderangle",   30, "liner",   "loop" },
-    { "fade",          10, "default", "" },
+    { "global",              5,  "bubbles", "" },
+    { "border",              1,  "liner",   "" },
+    { "borderangle",         30, "liner",   "loop" },
+    { "fade",                10, "default", "" },
 
-    { "workspacesIn",  4,  "bubbles", "slide" },
-    { "workspacesOut", 4,  "bubbles", "slide" },
+    { "workspacesIn",        4,  "bubbles", "slidevert" },
+    { "workspacesOut",       4,  "bubbles", "slidevert" },
 
-    { "layersIn",      5,  "open",    "fade" },
-    { "layersOut",     5,  "close",   "fade" },
+    { "specialWorkspaceIn",  4,  "bubbles", "slide" },
+    { "specialWorkspaceOut", 4,  "bubbles", "slide" },
 
-    { "fade",          3,  "close",   "" }
+    { "layersIn",            5,  "open",    "fade" },
+    { "layersOut",           5,  "close",   "fade" },
 
+    { "fade",                3,  "close",   "" }
 }
 
 for _, anim in ipairs(anims) do
