@@ -32,4 +32,4 @@ hl.bind(mod .. "+ F", hl.dsp.window.fullscreen({ action = "toggle" }), { descrip
 
 hl.bind(mod .. "+ SHIFT +F", hl.dsp.window.float(), { description = "Toggle floating" })
 
-hl.bind("ALT + TAB", hl.dsp.window.cycle_next(), { description = "Cycle windows" })
+hl.bind(mod .. " + TAB", hl.dsp.window.cycle_next(), { description = "Cycle windows" })
