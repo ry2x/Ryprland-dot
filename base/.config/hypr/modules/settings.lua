@@ -18,6 +18,10 @@ hl.config({
         mfact = 0.5
     },
 
+    scrolling = {
+        column_width = 0.9 
+    },
+
     -- misc
     misc = {
         disable_hyprland_logo = true,
