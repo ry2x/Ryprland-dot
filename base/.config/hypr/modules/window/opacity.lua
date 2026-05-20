@@ -13,8 +13,6 @@ for _, class in ipairs({
     "^(polkit-gnome-authentication-agent-1)$",
     "^(org.freedesktop.impl.portal.desktop.gtk)$",
     "^(org.freedesktop.impl.portal.desktop.hyprland)$",
-    "^([Ss]team)$",
-    "^(steamwebhelper)$",
     "^(com.github.th_ch.youtube_music)$",
     "^(blueman-manager)$",
     "^(wofi)$",

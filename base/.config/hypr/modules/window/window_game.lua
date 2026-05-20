@@ -7,7 +7,10 @@
 -- game tag
 hl.window_rule({
     match = { tag = "game" },
-    immediate = true
+    immediate = true,
+    workspace = "special:game",
+    fullscreen = true,
+    content = "game"
 })
 
 -- floating game tag
@@ -16,12 +19,38 @@ hl.window_rule({
     float = true,
     center = true,
     size = { "1900", "1046" },
-    immediate = true
+    immediate = true,
+    workspace = "special:game",
+    content = "game"
+})
+
+-- Steam tag
+hl.window_rule({
+    match = { tag = "steam" },
+    workspace = "special:game silent",
+    suppress_event = "activate",
+    no_initial_focus = true
+})
+
+-- special game workspace
+hl.workspace_rule({
+    workspace = "special:game",
+    monitor = "DP-2"
 })
 
 -----------
--- games --
+-- basic --
 -----------
+
+-- steam
+hl.window_rule({
+    match = { class = "^([Ss]team)$" },
+    tag = "+steam"
+})
+hl.window_rule({
+    match = { class = "^(steamwebhelper)$" },
+    tag = "+steam"
+})
 
 -- steam games(also proton)
 hl.window_rule({
@@ -34,6 +63,10 @@ hl.window_rule({
     match = { class = "^(gamescope)$" },
     tag = "+game"
 })
+
+--------------------
+-- Specific games --
+--------------------
 
 -- chill with you (idle game)
 hl.window_rule({
