@@ -20,6 +20,9 @@ require("modules.monitors")
 -- settings (misc, layouts, plugin etc)
 require("modules.settings")
 
+-- workspaces
+require("modules.workspace")
+
 -- decorations (tearing setting)
 require("modules.decorations")
 
