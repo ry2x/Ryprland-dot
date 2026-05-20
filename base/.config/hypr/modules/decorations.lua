@@ -29,7 +29,7 @@ hl.config({
             enabled = true,
         },
 
-        layout = "dwindle"
+        layout = "scrolling"
     },
 
     decoration = {
