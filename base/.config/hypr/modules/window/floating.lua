@@ -139,3 +139,15 @@ hl.window_rule({
     no_initial_focus = true,
     no_focus = true
 })
+
+-- fum left top playerctl
+hl.window_rule({
+    match = {
+        class = "^(kitty)$",
+        title = "^(fum_player)$"
+    },
+    float = true,
+    animation = "slide top",
+    size = { "350", "600" },
+    move = { "50", "30" },
+})

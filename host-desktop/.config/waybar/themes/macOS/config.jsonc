@@ -69,7 +69,8 @@
         },
         "tooltip": true,
         "tooltip-format-stopped": "  No music playing ",
-        "tooltip-format": "{status_icon}\t{title}\n\n{artist}\n{album}\n\n{position}/{length}"
+        "tooltip-format": "{status_icon}\t{title}\n\n{artist}\n{album}\n\n{position}/{length}",
+        "on-click-middle": "kitty --title fum_player fum"
     },
 
     "custom/cava": {
