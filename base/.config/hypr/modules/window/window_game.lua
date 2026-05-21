@@ -35,6 +35,7 @@ hl.window_rule({
 -- special game workspace
 hl.workspace_rule({
     workspace = "special:game",
+    layout = "master",
     monitor = "DP-2"
 })
 
@@ -59,6 +60,7 @@ hl.window_rule({
 })
 
 -- gamescope
+-- I highly recommend to use gamescope for gaming on wayland with RDNA4 GPU.
 hl.window_rule({
     match = { class = "^(gamescope)$" },
     tag = "+game"
