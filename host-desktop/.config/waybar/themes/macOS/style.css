@@ -7,16 +7,16 @@
 @import "./matugen/matugen-waybar.css";
 
 * {
-  font-family: monospace;
-  font-size: 13px;
-  font-weight: 500;
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 window#waybar {
-  background-color: @surface-alpha;
-  color: @on_surface;
-  border-bottom: 0.5px solid @on_surface;
-  transition: all 0.3s ease;
+    background-color: @surface-alpha;
+    color: @on_surface;
+    border-bottom: 0.5px solid @on_surface;
+    transition: all 0.3s ease;
 }
 
 #window,
@@ -34,10 +34,10 @@ window#waybar {
 #memory,
 #power-profiles-daemon,
 #clock {
-  background: transparent;
-  border: none;
-  margin: 0;
-  padding: 0 10px;
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0 10px;
 }
 
 #window:hover,
@@ -53,35 +53,35 @@ window#waybar {
 #memory:hover,
 #power-profiles-daemon:hover,
 #clock:hover {
-  background-color: alpha(@inverse_surface, 0.8);
-  color: @inverse_primary;
-  border-radius: 4px;
+    background-color: alpha(@inverse_surface, 0.8);
+    color: @inverse_primary;
+    border-radius: 4px;
 }
 
 #workspaces button {
-  color: @on_surface;
-  padding: 0 7px;
+    color: @on_surface;
+    padding: 0 7px;
 }
 
 #workspaces button.active {
-  color: @primary;
+    color: @primary;
 }
 
 #workspaces button.active:hover {
-  background-color: alpha(@primary, 0.8);
-  color: @on_primary;
+    background-color: alpha(@primary, 0.8);
+    color: @on_primary;
 }
 
 #tray > .passive {
-  -gtk-icon-effect: dim;
+    -gtk-icon-effect: dim;
 }
 #tray > .needs-attention {
-  -gtk-icon-effect: highlight;
+    -gtk-icon-effect: highlight;
 }
 
 window#waybar.empty #window {
-  background-color: transparent;
-  color: transparent;
+    background-color: transparent;
+    color: transparent;
 }
 
 /*
@@ -89,12 +89,12 @@ window#waybar.empty #window {
 */
 
 tooltip {
-  background-color: @surface;
-  border-radius: 12px;
+    background-color: @surface;
+    border-radius: 12px;
 }
 
 tooltip * {
-  color: @on_surface;
-  text-shadow: none;
-  padding: 8px;
+    color: @on_surface;
+    text-shadow: none;
+    padding: 8px;
 }
