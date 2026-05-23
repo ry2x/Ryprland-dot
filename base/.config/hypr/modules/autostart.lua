@@ -37,7 +37,7 @@ hl.on("hyprland.start", function()
         -- applets
         "blueman-applet",
         "fcitx5 -d",
-        "DRI_PRIME=1 discord",
+        "discord --start-minimized",
     }
 
     for _, app in ipairs(autostart) do
