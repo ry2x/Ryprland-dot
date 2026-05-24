@@ -9,15 +9,15 @@ hl.config({
     general = {
         -- Gaps
         gaps_in = 3,
-        gaps_out = { 3, 7, 1, 7 },
+        gaps_out = 10,
         gaps_workspaces = 50,
 
         -- Borders
         border_size = 3,
         col = {
             active_border = {
-                colors = { matugen.colors.primary, matugen.colors.surface },
-                angle = 20
+                colors = { matugen.colors.primary, matugen.colors.outline_variant },
+                angle = 45
             }
         },
         resize_on_border = true,
