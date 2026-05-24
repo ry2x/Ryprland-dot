@@ -111,12 +111,3 @@ output_path = '~/.config/zathura/matugen-zathurarc'
 [templates.hyprcrop]
 input_path = '~/.config/matugen/templates/matugen-hyprcrop.toml'
 output_path = '~/.config/hyprcrop/config.toml'
-
-# VS Code matugen extension
-[templates.vscode-raw]
-input_path = './templates/vscode-colors'
-output_path = '~/.cache/matugen/vscode-colors'
-
-[templates.vscode-json]
-input_path = './templates/vscode-colors.json'
-output_path = '~/.cache/matugen/vscode-colors.json'
