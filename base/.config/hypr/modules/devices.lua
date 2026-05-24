@@ -3,18 +3,16 @@
 -- ┻┛┗┛┗┛┻┗┛┗┛┗┛
 
 -- To set keymap for X11 sessions, use the following command:
--- sudo localectl set-x11-keymap us,jp pc105 ,dvorak grp:alt_space_toggle,caps:super,altwin:swap_lalt_lwin
+-- sudo localectl set-x11-keymap us,jp pc105 ,dvorak caps:ctrl_modifier,grp:alt_space_toggle,caps:super,altwin:swap_lalt_lwin
 
 hl.device({
     name = "keychron-keychron-k3",
-    kb_options = "caps:super, altwin:swap_lalt_lwin,grp:alt_space_toggle",
     kb_layout = "us",
     kb_model = "pc104"
 })
 
 hl.device({
     name = "keychron-keychron-k3-1",
-    kb_options = "caps:super, altwin:swap_lalt_lwin,grp:alt_space_toggle",
     kb_layout = "us",
     kb_model = "pc104"
 })
