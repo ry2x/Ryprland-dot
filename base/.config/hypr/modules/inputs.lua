@@ -6,7 +6,7 @@ hl.config({
     input = {
         kb_layout = "us,jp",
         kb_variant = "",
-        kb_options = "caps:ctrl_modifier, altwin:swap_lalt_lwin,grp:alt_space_toggle",
+        kb_options = "caps:hyper, altwin:swap_lalt_lwin,grp:alt_space_toggle",
         kb_rules = "",
 
         repeat_rate = 50,
