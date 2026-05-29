@@ -70,15 +70,10 @@ local floating = {
     { { title = "^(File Operation Progress)$" },                   "big" },
     { { class = "^(xdg-desktop-portal-gtk)$" },                    "big" },
     { { title = "^(Rename.*)$" },                                  "big" },
-    -- xdg-desktop-portal dialogs
-    { { class = "^(xdg-desktop-portal-gtk)$" },                    "big" },
-    { { class = "^(xdg-desktop-portal-kde)$" },                    "big" },
-    -- share picker
-    { { class = "^(hyprland-share-picker)$" },                     "mini" },
     -- terminal
     { { title = "^(TempTerminal)$" },                              "big" },
     { { title = "^(yazi)$" },                                      "half" },
-    { { title = "^(PacUpdate)$" },                                 "big" }
+    { { title = "^(PacUpdate)$" },                                 "big" },
 }
 
 -- floating rules for right top
@@ -92,8 +87,14 @@ local right_top_floating = {
 
 -- floating rules for pin
 local pin_floating = {
+    -- toggle applications
     { { class = "^(com.github.th_ch.youtube_music)$" }, "big" },
     { { class = "^(discord)$" },                        "big" },
+    -- xdg-desktop-portal dialogs
+    { { class = "^(xdg-desktop-portal-gtk)$" },         "big" },
+    { { class = "^(xdg-desktop-portal-kde)$" },         "big" },
+    -- share picker
+    { { class = "^(hyprland-share-picker)$" },          "big" },
 }
 
 local function apply_floating_rules(rules, float_tag)
