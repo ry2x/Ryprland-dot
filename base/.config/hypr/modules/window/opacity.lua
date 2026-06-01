@@ -43,13 +43,13 @@ for _, class in ipairs({
 }) do
     hl.window_rule({
         match = { class = class },
-        opacity = "0.80 0.70 1"
+        opacity = "0.85 0.70 1"
     })
 end
 
 hl.window_rule({
     match = { title = "^(HyprBind.*)$" },
-    opacity = "0.80 0.70 1"
+    opacity = "0.85 0.70 1"
 })
 
 -- VSCode
