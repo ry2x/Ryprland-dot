@@ -35,10 +35,10 @@ hl.bind(mod .. "+ CAPS + TAB", function()
     local size = tonumber(col_size) - 0.7
     if size > 0 then
         hl.dsp.layout("colresize all 0.5")
-        hl.exec_cmd("hyprctl dispatch \"hl.dsp.layout(\\\"colresize all 0.5\\\")\"")
+        hl.dispatch(hl.dsp.layout("colresize all 0.5"))
         hl.config({ scrolling = { column_width = 0.5 } })
     else
-        hl.exec_cmd("hyprctl dispatch \"hl.dsp.layout(\\\"colresize all 0.95\\\")\"")
+        hl.dispatch(hl.dsp.layout("colresize all 0.95"))
         hl.config({ scrolling = { column_width = 0.95 } })
     end
 end, { description = "Change column size(0.5/0.95)" })

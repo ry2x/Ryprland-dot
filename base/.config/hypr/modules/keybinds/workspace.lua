@@ -21,8 +21,9 @@ hl.bind(mod .. " + mouse_up", function() return smw.workspace("e-1") end,
 
 -- game workspace
 hl.bind(mod .. " + G",
-    hl.dsp.exec_cmd(
-        "hyprctl dispatch \"hl.dsp.focus({ monitor = \\\"DP-2\\\" })\" && hyprctl dispatch \"hl.dsp.workspace.toggle_special(\\\"game\\\")\""
-    ),
+    function()
+        hl.dispatch(hl.dsp.focus({ monitor = "DP-2" }))
+        hl.dispatch(hl.dsp.workspace.toggle_special("game"))
+    end,
     { description = "Switch to game workspace" }
 )
