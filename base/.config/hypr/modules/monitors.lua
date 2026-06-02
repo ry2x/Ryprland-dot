@@ -7,8 +7,9 @@ hl.monitor({
     scale = "1",
     mode = "2560x1440@100",
     position = "1920x0",
+    vrr = 2,
     cm = "auto",
-    vrr = 2
+    sdr_eotf = "gamma22"
 })
 
 hl.monitor({
@@ -16,5 +17,7 @@ hl.monitor({
     scale = "1",
     mode = "1920x1080@60",
     position = "0x0",
-    vrr = 0
+    vrr = 0,
+    sdr_eotf = "gamma22",
+    cm = "auto"
 })
