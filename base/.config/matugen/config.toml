@@ -13,6 +13,7 @@ version_check = false
 [templates.kitty]
 input_path = '~/.config/matugen/templates/matugen-kitty.conf'
 output_path = '~/.config/kitty/matugen/colors-matugen.conf'
+post_hook = 'kill -SIGUSR1 $(pgrep kitty)'
 
 # Bat
 [templates.bat]
