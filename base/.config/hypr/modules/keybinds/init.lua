@@ -8,7 +8,7 @@ local keybind_modules = {
     "window",
     "power",
     "capture",
-    "fn"
+    "fnkey"
 }
 
 for _, module in ipairs(keybind_modules) do
