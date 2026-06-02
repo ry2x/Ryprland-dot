@@ -31,15 +31,15 @@ hl.bind(mod .. "+ TAB", hl.dsp.window.cycle_next(), { description = "Cycle windo
 
 -- change col size
 hl.bind(mod .. "+ CAPS + TAB", function()
-    local col_size = hl.get_config("scrolling.column_width")
-    local size = tonumber(col_size) - 0.7
-    if size > 0 then
-        hl.dsp.layout("colresize all 0.5")
-        hl.dispatch(hl.dsp.layout("colresize all 0.5"))
-        hl.config({ scrolling = { column_width = 0.5 } })
+    local big = 0.95
+    local small = 0.5
+    if tonumber(hl.get_config("scrolling.column_width")) - 0.7 > 0 then
+        hl.dsp.layout("colresize all " .. small)
+        hl.dispatch(hl.dsp.layout("colresize all " .. small))
+        hl.config({ scrolling = { column_width = small } })
     else
-        hl.dispatch(hl.dsp.layout("colresize all 0.95"))
-        hl.config({ scrolling = { column_width = 0.95 } })
+        hl.dispatch(hl.dsp.layout("colresize all " .. big))
+        hl.config({ scrolling = { column_width = big } })
     end
 end, { description = "Change column size(0.5/0.95)" })
 
