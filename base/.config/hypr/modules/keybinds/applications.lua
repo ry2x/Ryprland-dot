@@ -47,6 +47,9 @@ for _, bind in ipairs(ApplicationBinds) do
     hl.bind(P.mod .. " +" .. bind[1], hl.dsp.exec_cmd(bind[2]), { description = bind[3] })
 end
 
-hl.bind(P.mod .. " + SHIFT + TAB", function()
-    hl.plugin.hymission.open("onlycurrentworkspace")
-end, { description = "Open Overview" })
+hl.bind(P.mod .. " + SHIFT + TAB",
+    function()
+        hl.plugin.hymission.open("onlycurrentworkspace")
+    end,
+    { description = "Open Overview" }
+)
