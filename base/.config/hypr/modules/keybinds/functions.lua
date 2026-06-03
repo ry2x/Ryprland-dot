@@ -15,6 +15,14 @@ F.toggleWindowTray = function(win_class, title, cmd)
             return
         end
     end
+    for _, window in ipairs(hl.get_windows()) do
+        local match_class = win_class and window.class == win_class
+        local match_title = title and window.title == title
+
+        if match_class or match_title then
+            hl.dispatch(hl.dsp.window.close({ window = window }))
+        end
+    end
 
     hl.dispatch(hl.dsp.exec_cmd(cmd))
 end
