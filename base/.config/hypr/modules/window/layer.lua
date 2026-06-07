@@ -6,7 +6,8 @@ for _, namespace in ipairs({
     "notifications",
     "rofi",
     "logout_dialog",
-    "hyprcrop-freeze"
+    "hyprcrop-freeze",
+    "walker"
 }) do
     hl.layer_rule({
         match = { namespace = namespace },
