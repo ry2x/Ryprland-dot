@@ -56,7 +56,7 @@
                     </object>
                 </child>
 
-                <!-- Center: list -->
+                <!-- Right: list -->
                 <child>
                     <object class="GtkBox" id="Box">
                         <style>
@@ -136,7 +136,7 @@
                         </child>
                         <child>
                             <object class="GtkBox" id="Keybinds">
-                                <property name="hexpand">true</property>
+                                <property name="hexpand">false</property>
                                 <property name="margin-top">8</property>
                                 <style>
                                     <class name="keybinds"></class>
@@ -151,8 +151,8 @@
                                 </child>
                                 <child>
                                     <object class="GtkBox" id="ItemKeybinds">
-                                        <property name="hexpand">true</property>
-                                        <property name="halign">end</property>
+                                        <property name="hexpand">false</property>
+                                        <property name="halign">center</property>
                                         <property name="spacing">10</property>
                                         <style>
                                             <class name="item-keybinds"></class>

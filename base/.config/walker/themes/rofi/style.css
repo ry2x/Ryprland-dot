@@ -35,20 +35,17 @@ scrollbar {
     padding: 1em;
     background: @surface-alpha;
     min-width: 66em;
-    max-width: 66em;
     min-height: 34em;
-    max-height: 34em;
 }
 
 /* Left panel: wallpaper image, semi-transparent overlay, rounded left corners */
 .left-panel {
-    background-image: url("file:///home/haku/.config/rofi/images/currentWalQuad.quad");
+    background-image: url("currentWalQuad.quad");
     background-size: cover;
     background-position: center;
     background-color: @surface-alpha;
     border-radius: 1em 0 0 1em;
     min-width: 32em;
-    max-width: 32em;
 }
 
 /* Input: minimal overlay at bottom of image panel */
@@ -79,7 +76,6 @@ scrollbar {
     background: @surface-alpha;
     border-radius: 0 1em 1em 0;
     min-width: 32em;
-    max-width: 32em;
 }
 
 .elephant-hint,
@@ -90,7 +86,6 @@ scrollbar {
 
 .scroll {
     min-width: 32em;
-    max-width: 32em;
 }
 
 .list {
@@ -102,7 +97,7 @@ scrollbar {
 child {
 }
 
-/* List items */
+/* Right panel: list items */
 .item-box {
     border-radius: 8px;
     padding: 12px 8px 12px 24px;
@@ -155,6 +150,7 @@ row:selected .item-box {
     font-size: 12px;
     color: @on_surface;
     padding: 10px 16px;
+    min-height: 28px;
 }
 
 .global-keybinds {
@@ -164,7 +160,7 @@ row:selected .item-box {
 }
 
 .keybind {
-    text-align: center;
+    padding: 0px 6px;
 }
 
 .keybind-button {
