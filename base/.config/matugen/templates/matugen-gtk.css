@@ -62,5 +62,5 @@ window.csd decoration { /* gtk3 */
 }
 
 window {
-  background-color: alpha(@theme_bg_color, 0.85);
+  background-color: alpha({{ colors.background.default.hex }}, 0.85);
 }
