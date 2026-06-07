@@ -49,5 +49,8 @@ base/.config/rofi/images/currentWal.thumb
 base/.config/rofi/images/currentWalBlur.thumb
 base/.config/rofi/images/currentWalQuad.quad
 
-# swayc
+# swaync
 base/.config/swaync/matugen/matugen-swaync.css
+
+# walker
+base/.config/walker/themes/rofi/matugen.css
