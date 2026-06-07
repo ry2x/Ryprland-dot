@@ -25,7 +25,7 @@ local ApplicationBinds = {
     end, " Music" },
 
     -- Launchers
-    { "R", getRofiScript("launcher"), "󱓞 Launcher" },
+    { "R", "walker -t rofi", "󱓞 Launcher" },
     { "V", getRofiScript("cliphist.sh"), " ClipBoard" },
     { "Semicolon", getRofiScript("rofiEmoji.sh"), "󰞅 Emoji" },
     { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
