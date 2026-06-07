@@ -31,7 +31,7 @@ stow ./host-desktop # For desktop
 #or
 stow ./host-laptop # For laptop
 
-#optional 
+#optional
 stow ./nvim-yazi # For neovim and yazi
 ```
 
@@ -54,7 +54,7 @@ Install these packages before using this dotfile setup:
 
 - Core: hyprland, hyprlock, hypridle, stow, awww, imagemagick, jq
 - Hypr ecosystem: hyprbind, hyprcrop, hyprpicker
-- Desktop UI: waybar, rofi, swaync
+- Desktop UI: waybar, rofi, swaync, walker
 - Configuration Application: waypaper, nwg-look, kvantum, nmgui, pavucontrol
 - CLI Application: bat, cava, cliphist, fastfetch, fish, starship, yazi, fum, yt-x
 - Other application: kitty, pear-desktop, thunar, fcitx5 (with mozc), gnome-keyring, power-profiles-daemon, swayimg
