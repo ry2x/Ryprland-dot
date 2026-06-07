@@ -1,0 +1,203 @@
+@import url("matugen.css");
+
+* {
+    all: unset;
+    /* Base font size — change this value to scale the entire window */
+    font-size: 18px;
+}
+
+popover {
+    background: @background;
+    border: 2px solid @primary;
+    border-radius: 1em;
+    padding: 10px;
+}
+
+.normal-icons {
+    -gtk-icon-size: 16px;
+}
+
+.large-icons {
+    -gtk-icon-size: 32px;
+}
+
+scrollbar {
+    opacity: 0;
+}
+
+/* Main wrapper: transparent outer frame with border only */
+.box-wrapper {
+    box-shadow:
+        0 19px 38px rgba(0, 0, 0, 0.3),
+        0 15px 12px rgba(0, 0, 0, 0.22);
+    border: 4px solid @primary;
+    border-radius: 1em;
+    padding: 1em;
+    background: @surface-alpha;
+    min-width: 66em;
+    max-width: 66em;
+    min-height: 34em;
+    max-height: 34em;
+}
+
+/* Left panel: wallpaper image, semi-transparent overlay, rounded left corners */
+.left-panel {
+    background-image: url("file:///home/haku/.config/rofi/images/currentWalQuad.quad");
+    background-size: cover;
+    background-position: center;
+    background-color: @surface-alpha;
+    border-radius: 1em 0 0 1em;
+    min-width: 32em;
+    max-width: 32em;
+}
+
+/* Input: minimal overlay at bottom of image panel */
+.search-container {
+    border-top: 2px solid alpha(@primary, 0.4);
+    padding: 6px 12px;
+}
+
+.input {
+    caret-color: @primary;
+    background: transparent;
+    color: @on_surface;
+    padding: 6px 8px;
+    font-family: "GeistMono Nerd Font";
+    font-weight: bold;
+}
+
+.input placeholder {
+    opacity: 0.5;
+}
+
+.input selection {
+    background: alpha(@on_surface, 0.4);
+}
+
+/* Center list area: semi-transparent, rounded right corners */
+.box {
+    background: @surface-alpha;
+    border-radius: 0 1em 1em 0;
+    min-width: 32em;
+    max-width: 32em;
+}
+
+.elephant-hint,
+.placeholder {
+    color: @on_surface;
+    padding: 16px 32px;
+}
+
+.scroll {
+    min-width: 32em;
+    max-width: 32em;
+}
+
+.list {
+    color: @on_surface;
+    padding: 8px 32px 0px 32px;
+    margin: 16px 8px 0px 0px;
+}
+
+child {
+}
+
+/* List items */
+.item-box {
+    border-radius: 8px;
+    padding: 12px 8px 12px 24px;
+    margin: 1px 0;
+    min-height: 48px;
+}
+
+child:selected .item-box,
+row:selected .item-box {
+    background: @primary_fixed;
+    color: @surface;
+}
+
+.item-quick-activation {
+    background: alpha(@primary_fixed, 0.25);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.item-text-box {
+}
+
+.item-subtext {
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.providerlist .item-subtext {
+    font-size: unset;
+    opacity: 0.75;
+}
+
+.item-image-text {
+    font-size: 28px;
+}
+
+.preview {
+    border: 1px solid alpha(@primary_fixed, 0.25);
+    border-radius: 8px;
+    color: @on_surface;
+}
+
+.preview .large-icons {
+    -gtk-icon-size: 64px;
+}
+
+/* Keybinds */
+.keybinds {
+    border-top: 2px solid alpha(@primary, 0.4);
+    font-size: 12px;
+    color: @on_surface;
+    padding: 10px 16px;
+}
+
+.global-keybinds {
+}
+
+.item-keybinds {
+}
+
+.keybind {
+    text-align: center;
+}
+
+.keybind-button {
+    opacity: 0.5;
+}
+
+.keybind-button:hover {
+    opacity: 0.75;
+}
+
+.keybind-bind {
+    text-transform: lowercase;
+    opacity: 0.35;
+}
+
+.keybind-label {
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid @on_surface;
+}
+
+/* Error */
+.error {
+    padding: 10px;
+    background: @error;
+    color: @on_error;
+}
+
+:not(.calc).current {
+    font-style: italic;
+}
+
+.preview-content.archlinuxpkgs,
+.preview-content.dnfpackages {
+    font-family: monospace;
+}
