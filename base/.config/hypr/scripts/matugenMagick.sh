@@ -8,6 +8,7 @@
 DEFAULT_MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 IMG_DIR="$HOME/.config/rofi/images"
 BG_DIR="$HOME/.local/share/bg"
+WALKER_ROFI_DIR="$HOME/.config/walker/themes/rofi"
 
 # Parse arguments
 mode="dark"
@@ -60,6 +61,13 @@ if ! magick "$wallpaper_path" -strip \
 
     notify-send -e -h string:x-canonical-private-synchronous:matugen_notif \
         "MatugenMagick Error" "Failed to create images" -u critical
+    exit 1
+fi
+
+# copy the quad image to walker rofi mode
+mkdir -p "$WALKER_ROFI_DIR"
+if ! ln -sf "$IMG_DIR/currentWalQuad.quad" "$WALKER_ROFI_DIR/currentWalQuad.quad"; then
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link for walker rofi" -u critical
     exit 1
 fi
 
