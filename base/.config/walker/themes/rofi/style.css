@@ -64,7 +64,7 @@ scrollbar {
 }
 
 .input placeholder {
-    opacity: 0.5;
+    opacity: 0.75;
 }
 
 .input selection {
@@ -164,22 +164,23 @@ row:selected .item-box {
 }
 
 .keybind-button {
-    opacity: 0.5;
 }
 
 .keybind-button:hover {
-    opacity: 0.75;
+    color: @primary;
 }
 
 .keybind-bind {
     text-transform: lowercase;
-    opacity: 0.35;
+    font-size: 12px;
+    padding: 0px 4px;
 }
 
 .keybind-label {
     padding: 2px 4px;
     border-radius: 4px;
     border: 1px solid @on_surface;
+    font-size: 12px;
 }
 
 /* Error */
