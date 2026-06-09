@@ -101,7 +101,7 @@ scrollbar {
 }
 
 child {
-}   
+}
 
 child:selected .item-box,
 row:selected .item-box {
