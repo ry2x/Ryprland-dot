@@ -7,10 +7,6 @@
 }
 
 popover {
-    background: @background;
-    border: 2px solid @primary;
-    border-radius: 1em;
-    padding: 10px;
 }
 
 .normal-icons {
@@ -73,7 +69,7 @@ scrollbar {
     background: alpha(@on_surface, 0.4);
 }
 
-/* Center list area: semi-transparent, rounded right corners */
+/* Right panel: semi-transparent, rounded right corners */
 .box {
     background: @surface-alpha;
     border-radius: 0 1em 1em 0;
@@ -96,10 +92,7 @@ scrollbar {
     margin: 16px 8px 0px 0px;
 }
 
-child {
-}
-
-/* Right panel: list items */
+/* List: Desktop application list */
 .item-box {
     border-radius: 8px;
     padding: 12px 8px 12px 24px;
@@ -107,14 +100,18 @@ child {
     min-height: 48px;
 }
 
+child {
+}   
+
 child:selected .item-box,
 row:selected .item-box {
-    background: @primary_fixed;
+    background-image: linear-gradient(90deg, @primary_fixed, @primary 99%);
     color: @surface;
 }
 
 .item-quick-activation {
-    background: alpha(@primary_fixed, 0.25);
+    background: alpha(@primary_container, 0.25);
+    border: 3px solid alpha(@primary_container, 0.5);
     border-radius: 5px;
     padding: 10px;
 }
