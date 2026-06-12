@@ -3,10 +3,8 @@ local P = require("modules.keybinds.constants")
 
 local F = require("modules.keybinds.functions")
 local toggleWindowTray = F.toggleWindowTray
-
-local function getRofiScript(name)
-    return "pkill rofi || " .. P.rofiScript .. "/" .. name
-end
+local getRofiScript = F.getRofiScript
+local getHyprScript = F.getHyprScript
 
 local ApplicationBinds = {
     -- Applications
@@ -33,14 +31,14 @@ local ApplicationBinds = {
 
     -- waybar
     { "ALT + B", "pkill -SIGUSR1 waybar", "KillWaybar" },
-    { "B", P.hyprScript .. "/waybarSelect.sh", "WaybarSelector" },
-    { "SHIFT + B", P.hyprScript .. "/waybarRestart.sh", "RestartWaybar" },
+    { "B", getHyprScript("waybarSelect.sh"), "WaybarSelector" },
+    { "SHIFT + B", getHyprScript("waybarRestart.sh"), "RestartWaybar" },
 
     -- Wallpaper
-    { "ALT + W", P.hyprScript .. "/wallSelect.sh", "WallpaperSelector" },
+    { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
     { "Q", "pkill waypaper || waypaper", "Waypaper" },
     { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
-    { "SHIFT + T", P.hyprScript .. "/refresh.sh", "RefreshTheme" },
+    { "SHIFT + T", getHyprScript("refresh.sh"), "RefreshTheme" },
 
     -- Notifications
     { "N", "swaync-client -t -sw", "󰂞 Notification" },
@@ -57,10 +55,3 @@ for _, bind in ipairs(ApplicationBinds) do
         hl.bind(key_combination, action, opts)
     end
 end
-
-hl.bind(P.mod .. " + SHIFT + TAB",
-    function()
-        hl.plugin.hymission.open("onlycurrentworkspace")
-    end,
-    { description = "Open Overview" }
-)

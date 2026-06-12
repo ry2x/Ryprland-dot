@@ -1,3 +1,5 @@
+local P = require("modules.keybinds.constants")
+
 local F = {}
 
 F.toggleWindowTray = function(win_class, title, cmd)
@@ -19,6 +21,14 @@ F.toggleWindowTray = function(win_class, title, cmd)
     end
 
     hl.dispatch(hl.dsp.exec_cmd(cmd))
+end
+
+F.getRofiScript = function(name)
+    return "pkill rofi || " .. P.rofiScript .. "/" .. name
+end
+
+F.getHyprScript = function(name)
+    return P.hyprScript .. "/" .. name
 end
 
 return F
