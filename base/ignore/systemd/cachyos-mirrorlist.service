@@ -1,0 +1,8 @@
+[Unit]
+Description=Update CachyOS mirrorlist using rate-mirrors
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/update-cachyos-mirrors.sh
