@@ -2,22 +2,18 @@
 local P = require("modules.keybinds.constants")
 local mod = P.mod
 
-local smw = hl.plugin.split_monitor_workspaces
+package.path = package.path .. ";./?.lua;./?/init.lua"
+local smw = require("plugins.split-monitor-workspaces")
 
 for i = 1, 5 do
     local key = tostring(i)
     -- move to workspace
-    hl.bind(mod .. " + " .. key, function() return smw.workspace(i) end,
+    hl.bind(mod .. " + " .. key, smw.workspace(key),
         { description = "Switch to workspace " .. key })
     -- move focused window to workspace
-    hl.bind(mod .. " + SHIFT + " .. key, function() return smw.move_to_workspace_silent(i) end,
+    hl.bind(mod .. " + SHIFT + " .. key, smw.move_to_workspace_silent(i),
         { description = "Move window to workspace " .. key })
 end
-
-hl.bind(mod .. " + mouse_down", function() return smw.workspace("e+1") end,
-    { description = "Switch to workspace +1" })
-hl.bind(mod .. " + mouse_up", function() return smw.workspace("e-1") end,
-    { description = "Switch to workspace -1" })
 
 -- game workspace
 hl.bind(mod .. " + G",
@@ -27,3 +23,9 @@ hl.bind(mod .. " + G",
     end,
     { description = "Switch to game workspace" }
 )
+
+hl.bind(mod .. " + SHIFT + TAB", function()
+    if hl.plugin and hl.plugin.scrolloverview then
+        hl.plugin.scrolloverview.overview("toggle")
+    end
+end)
