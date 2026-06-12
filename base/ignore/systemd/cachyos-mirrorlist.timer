@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly update of CachyOS mirrorlist
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=12h
+
+[Install]
+WantedBy=timers.target
