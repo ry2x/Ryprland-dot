@@ -8,7 +8,7 @@
 hl.window_rule({
     match = { tag = "game" },
     immediate = true,
-    workspace = "special:game",
+    workspace = "special:game silent",
     fullscreen = true,
     content = "game"
 })
@@ -20,7 +20,7 @@ hl.window_rule({
     center = true,
     size = { "1900", "1046" },
     immediate = true,
-    workspace = "special:game",
+    workspace = "special:game silent",
     content = "game"
 })
 
@@ -36,7 +36,12 @@ hl.window_rule({
 hl.workspace_rule({
     workspace = "special:game",
     layout = "master",
-    monitor = "DP-2"
+    monitor = "DP-2",
+    no_border = true,
+    no_shadow = true,
+    no_rounding = true,
+    decorate = false,
+    gaps_out = 0
 })
 
 -----------
@@ -56,6 +61,10 @@ hl.window_rule({
 -- steam games(also proton)
 hl.window_rule({
     match = { class = "^(steam_app.*)$" },
+    tag = "+game"
+})
+hl.window_rule({
+    match = { xdg_tag = "^(proton-game)$" },
     tag = "+game"
 })
 
