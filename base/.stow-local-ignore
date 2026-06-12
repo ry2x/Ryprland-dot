@@ -11,9 +11,16 @@ CVS
 _darcs
 \.hg
 
+\.git
+\.gitignore
+\.gitmodules
+
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
 ^/README.*
 ^/LICENSE.*
 ^/COPYING
+
+# Ignore helper files not meant to be stowed.
+^/ignore(?:/|$)
