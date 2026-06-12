@@ -1,7 +1,9 @@
 -- Keybinds for screen capture and recording
 local P = require("modules.keybinds.constants")
 local mod = P.mod
-local hyprScript = P.hyprScript
+
+local F = require("modules.keybinds.functions")
+local getHyprScript = F.getHyprScript
 
 local captures = {
     -- screenshot
@@ -10,9 +12,9 @@ local captures = {
     { "Print",                   "hyprcrop all",                                "Capture area" },
 
     -- record screen
-    { mod .. "+ALT + R",         hyprScript .. "/record.sh",                    "Record region (no sound)" },
-    { "CTRL + ALT + R",          hyprScript .. "/record.sh --fullscreen",       "Record screen (no sound)" },
-    { mod .. "+SHIFT + ALT + R", hyprScript .. "/record.sh --fullscreen-sound", "Record screen (with sound)" }
+    { mod .. "+ALT + R",         getHyprScript("record.sh"),                    "Record region (no sound)" },
+    { "CTRL + ALT + R",          getHyprScript("record.sh --fullscreen"),       "Record screen (no sound)" },
+    { mod .. "+SHIFT + ALT + R", getHyprScript("record.sh --fullscreen-sound"), "Record screen (with sound)" }
 }
 
 for _, capture in ipairs(captures) do
