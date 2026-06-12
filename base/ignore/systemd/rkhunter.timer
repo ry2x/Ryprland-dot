@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly Rootkit Hunter Check
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=3600
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Rootkit Hunter Check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rkhunter --check --skip-keypress --quiet --cronjob
