@@ -2,7 +2,7 @@ save_path = "~/Pictures/Screenshots"
 filename_pattern = "grim-%Y-%m-%d_%H%M_%S"
 toolbar_position = "top"
 capture_window_border = false
-freeze_window_use_toplevel_export = true
+window_use_toplevel_export = true
 
 [freeze_glyphs]
 crop = "󰆟"
