@@ -4,6 +4,7 @@
 
 hl.config({
     input = {
+        -- xkb_* variables are for keyboard, see https://wiki.archlinux.org/title/Xorg/Keyboard_configuration
         kb_layout = "us,jp",
         kb_variant = "",
         kb_options = "caps:hyper, altwin:swap_lalt_lwin,grp:alt_space_toggle",
