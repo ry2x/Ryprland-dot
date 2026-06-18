@@ -11,7 +11,7 @@ for i = 1, 5 do
     hl.bind(mod .. " + " .. key, smw.workspace(key),
         { description = "Switch to workspace " .. key })
     -- move focused window to workspace
-    hl.bind(mod .. " + SHIFT + " .. key, smw.move_to_workspace_silent(i),
+    hl.bind(mod .. " + SHIFT + " .. key, smw.move_to_workspace_silent(key),
         { description = "Move window to workspace " .. key })
 end
 
