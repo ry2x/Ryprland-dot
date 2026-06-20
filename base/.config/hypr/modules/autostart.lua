@@ -31,8 +31,7 @@ hl.on("hyprland.start", function()
         "killall -q swaync;sleep .5 && swaync",
 
         -- wallpaper
-        "killall -q awww;sleep .5 && awww-daemon --format xrgb",
-        "waypaper --restore",
+        "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; waypaper --restore",
         "$HOME/.config/hypr/scripts/wallpaper_loop.sh 3600", -- Change wallpaper every 60 minutes (in seconds)
 
         -- applets
