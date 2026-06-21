@@ -8,7 +8,7 @@
 hl.window_rule({
     match = { tag = "game" },
     immediate = true,
-    workspace = "special:game silent",
+    workspace = "name:game silent",
     fullscreen = true,
     content = "game"
 })
@@ -20,21 +20,21 @@ hl.window_rule({
     center = true,
     size = { "1900", "1046" },
     immediate = true,
-    workspace = "special:game silent",
+    workspace = "name:game silent",
     content = "game"
 })
 
 -- Steam tag
 hl.window_rule({
     match = { tag = "steam" },
-    workspace = "special:game silent",
+    workspace = "name:game silent",
     suppress_event = "activate",
     no_initial_focus = true
 })
 
 -- special game workspace
 hl.workspace_rule({
-    workspace = "special:game",
+    workspace = "name:game",
     layout = "master",
     monitor = "DP-2",
     no_border = true,
