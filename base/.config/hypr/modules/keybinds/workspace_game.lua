@@ -81,6 +81,21 @@ hl.define_submap("gaming",
             )
         end
 
+        -- avoid grabbing the mouse in the specific window
+        -- move and focus windows
+        for i = 1, 4 do
+            local keys = { "Left", "Right", "Up", "Down" }
+            local directions = { "l", "r", "u", "d" }
+
+            -- move window
+            hl.bind(mod .. "+ SHIFT + " .. keys[i], hl.dsp.window.move({ direction = directions[i] }),
+                { description = "Move window " .. keys[i] })
+
+            -- move focus
+            hl.bind(mod .. "+ " .. keys[i], hl.dsp.focus({ direction = directions[i] }),
+                { description = "Move focus " .. keys[i] })
+        end
+
         -- discord and youtube music
         hl.bind(mod .. " + D",
             function()
