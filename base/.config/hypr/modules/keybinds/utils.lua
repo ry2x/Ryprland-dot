@@ -34,4 +34,14 @@ end
 F.sendNotification = function(image, title, message)
     hl.dispatch(hl.dsp.exec_cmd(string.format("notify-send -e -u low -i \"%s\" '%s' '%s'", image, title, message)))
 end
+
+F.killActiveProcess = function()
+    local active = hl.get_active_window()
+    if not active then
+        return
+    end
+
+    local pid = active.pid
+    hl.dispatch(hl.dsp.exec_cmd("kill " .. pid))
+end
 return F

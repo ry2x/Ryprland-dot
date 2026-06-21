@@ -4,6 +4,7 @@ local mod = P.mod
 
 local F = require("modules.keybinds.utils")
 local sendNotification = F.sendNotification
+local killActiveProcess = F.killActiveProcess
 
 -- drag window
 hl.bind(mod .. "+ mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Drag window" })
@@ -59,8 +60,7 @@ hl.bind(mod .. "+ CAPS + TAB",
 hl.bind(mod .. "+ C", hl.dsp.window.close(), { description = "Kill window" })
 
 -- kill all windows
-hl.bind(mod .. "+ SHIFT + C", hl.dsp.exec_cmd(P.hyprScript .. "/killActiveProcess.sh"),
-    { description = "Kill all windows" })
+hl.bind(mod .. "+ SHIFT + C", killActiveProcess, { description = "Kill all windows" })
 
 -- toggle floating and fullscreen
 hl.bind(mod .. "+ F", hl.dsp.window.fullscreen({ action = "toggle" }), { description = "Toggle fullscreen" })
