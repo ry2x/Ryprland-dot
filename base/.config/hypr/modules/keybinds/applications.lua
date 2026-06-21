@@ -1,7 +1,8 @@
 -- Keybinds for applications and launchers
 local P = require("modules.keybinds.constants")
+local electronOptions = P.electronOptions
 
-local F = require("modules.keybinds.functions")
+local F = require("modules.keybinds.utils")
 local toggleWindowTray = F.toggleWindowTray
 local getRofiScript = F.getRofiScript
 local getHyprScript = F.getHyprScript
@@ -16,11 +17,13 @@ local ApplicationBinds = {
     { "W", P.browser, " Browser" },
     { "SHIFT + V", "pkill pavucontrol || pavucontrol", " VolumeControl" },
     { "SHIFT + U", P.updater, "󰏔 UpdatePackages" },
-    { "D", function() toggleWindowTray("discord", nil, "discord") end, " Discord" },
-    { "A", function()
-        toggleWindowTray("com.github.th_ch.youtube_music", nil,
-            "youtube-music --enable-wayland-ime --enable-features=UseOzonePlatform --ozone-platform=wayland")
-    end, " Music" },
+    { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
+    { "A",
+        function()
+            toggleWindowTray("com.github.th_ch.youtube_music", "", "youtube-music " .. electronOptions)
+        end,
+        " Music"
+    },
 
     -- Launchers
     { "R", "walker -t rofi", "󱓞 Launcher" }, -- Currently, I'm working on replacing Rofi with Walker
