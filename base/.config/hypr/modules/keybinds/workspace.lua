@@ -1,9 +1,7 @@
 -- Keybinds for workspace management
 local P = require("modules.keybinds.constants")
 local mod = P.mod
-
-package.path = package.path .. ";./?.lua;./?/init.lua"
-local smw = require("plugins.split-monitor-workspaces")
+local smw = P.smw
 
 for i = 1, 5 do
     local key = tostring(i)
@@ -15,17 +13,12 @@ for i = 1, 5 do
         { description = "Move window to workspace " .. key })
 end
 
--- game workspace
-hl.bind(mod .. " + G",
+-- toggle workspace overview
+hl.bind(mod .. " + SHIFT + TAB",
     function()
-        hl.dispatch(hl.dsp.focus({ monitor = "DP-2" }))
-        hl.dispatch(hl.dsp.workspace.toggle_special("game"))
+        if hl.plugin and hl.plugin.scrolloverview then
+            hl.plugin.scrolloverview.overview("toggle")
+        end
     end,
-    { description = "Switch to game workspace" }
+    { description = "Toggle workspace overview" }
 )
-
-hl.bind(mod .. " + SHIFT + TAB", function()
-    if hl.plugin and hl.plugin.scrolloverview then
-        hl.plugin.scrolloverview.overview("toggle")
-    end
-end)
