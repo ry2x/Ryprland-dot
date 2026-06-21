@@ -2,8 +2,9 @@
 local P = require("modules.keybinds.constants")
 local mod = P.mod
 
-local F = require("modules.keybinds.functions")
+local F = require("modules.keybinds.utils")
 local getHyprScript = F.getHyprScript
+local sendNotification = F.sendNotification
 
 local fn_binds = {
     -- Volume, mic, brightness
@@ -31,8 +32,7 @@ end
 hl.bind(mod .. " + F1",
     function()
         hl.dispatch(hl.dsp.submap("fnlayer"))
-        hl.dispatch(hl.dsp.exec_cmd("notify-send -e -u low -i \"" ..
-            P.icon .. "/fn_key_filled.png\" 'Function Layer Activated'"))
+        sendNotification(P.icon .. "/fn_key_filled.png", "ON: Function Layer", "")
     end,
     { description = "Function Layer" }
 )
@@ -66,8 +66,7 @@ hl.define_submap("fnlayer",
         hl.bind("escape",
             function()
                 hl.dispatch(hl.dsp.submap("reset"))
-                hl.dispatch(hl.dsp.exec_cmd("notify-send -e -u low -i \"" ..
-                    P.icon .. "/fn_key_outline.png\" 'Function Layer Deactivated'"))
+                sendNotification(P.icon .. "/fn_key_outline.png", "OFF: Function Layer", "")
             end,
             { description = "Back to Default Layer" }
         )

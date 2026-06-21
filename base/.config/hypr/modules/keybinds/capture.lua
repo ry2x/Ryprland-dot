@@ -2,7 +2,7 @@
 local P = require("modules.keybinds.constants")
 local mod = P.mod
 
-local F = require("modules.keybinds.functions")
+local F = require("modules.keybinds.utils")
 local getHyprScript = F.getHyprScript
 
 local captures = {
