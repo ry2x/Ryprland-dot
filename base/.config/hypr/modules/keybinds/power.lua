@@ -1,5 +1,5 @@
 -- Keybinds for power management and system actions
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local mod = P.mod
 
 hl.bind(mod .. " + X", hl.dsp.exec_cmd(P.hyprScript .. "/wlogout.sh"), { description = "⏻ PowerMenu" })

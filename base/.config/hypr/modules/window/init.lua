@@ -2,7 +2,6 @@
 -- ┃┃┃┃┃┃┃┃┃┃┃┃┃  ┣┫┃┃┃ ┣ ┗┓
 -- ┗┻┛┻┛┗┻┛┗┛┗┻┛  ┛┗┗┛┗┛┗┛┗┛
 
-
 local window_modules = {
     "floating",
     "window",

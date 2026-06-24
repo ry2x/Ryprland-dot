@@ -1,8 +1,8 @@
 -- Keybinds for window management
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local mod = P.mod
 
-local F = require("modules.keybinds.utils")
+local F = require("modules.utils")
 local sendNotification = F.sendNotification
 local killActiveProcess = F.killActiveProcess
 

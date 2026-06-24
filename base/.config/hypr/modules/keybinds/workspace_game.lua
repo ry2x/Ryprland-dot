@@ -1,11 +1,14 @@
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local mod = P.mod
 local smw = P.smw
 local electronOptions = P.electronOptions
 
-local F = require("modules.keybinds.utils")
+local F = require("modules.utils")
 local sendNotification = F.sendNotification
 local toggleWindowTray = F.toggleWindowTray
+
+local W = require("modules.wallpaper")
+local wp_timer = W.timer
 
 local ws_nm = "game"
 local dp_nm = "DP-2"
@@ -55,6 +58,7 @@ local function startGaming()
 
     hl.dispatch(smw.workspace("name:" .. ws_nm))
     hl.dispatch(hl.dsp.submap("gaming"))
+    wp_timer:set_enabled(false)
     sendNotification(P.icon .. "/gamemode.png", "Game Mode ON", "All keybinds are disabled \nWIN + F12 to EXIT")
 end
 
@@ -65,6 +69,7 @@ local function exitGaming()
         hl.dispatch(smw.workspace(last_workspace))
     end
     hl.dispatch(hl.dsp.cursor.move({ x = last_cursor_x, y = last_cursor_y }))
+    wp_timer:set_enabled(true)
     sendNotification(P.icon .. "/gamemode.png", "Game Mode OFF", "")
 end
 

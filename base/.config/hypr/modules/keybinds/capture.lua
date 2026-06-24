@@ -1,8 +1,8 @@
 -- Keybinds for screen capture and recording
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local mod = P.mod
 
-local F = require("modules.keybinds.utils")
+local F = require("modules.utils")
 local getHyprScript = F.getHyprScript
 
 local captures = {
