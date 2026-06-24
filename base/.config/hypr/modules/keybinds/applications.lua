@@ -1,8 +1,8 @@
 -- Keybinds for applications and launchers
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local electronOptions = P.electronOptions
 
-local F = require("modules.keybinds.utils")
+local F = require("modules.utils")
 local toggleWindowTray = F.toggleWindowTray
 local getRofiScript = F.getRofiScript
 local getHyprScript = F.getHyprScript

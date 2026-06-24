@@ -1,4 +1,8 @@
-local P = require("modules.keybinds.constants")
+-- ┳┳┏┳┓┳┓ ┏┓
+-- ┃┃ ┃ ┃┃ ┗┓
+-- ┗┛ ┻ ┻┗┛┗┛
+
+local P = require("modules.constants")
 
 local F = {}
 
@@ -44,4 +48,5 @@ F.killActiveProcess = function()
     local pid = active.pid
     hl.dispatch(hl.dsp.exec_cmd("kill " .. pid))
 end
+
 return F

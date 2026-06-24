@@ -1,5 +1,5 @@
 -- Keybinds for workspace management
-local P = require("modules.keybinds.constants")
+local P = require("modules.constants")
 local mod = P.mod
 local smw = P.smw
 
