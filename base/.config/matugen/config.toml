@@ -109,6 +109,13 @@ output_path = '~/.config/ry2x/zen.css'
 input_path = '~/.config/matugen/templates/matugen-zathurarc'
 output_path = '~/.config/zathura/matugen-zathurarc'
 
+# Hyprcrop
 [templates.hyprcrop]
 input_path = '~/.config/matugen/templates/matugen-hyprcrop.toml'
 output_path = '~/.config/hyprcrop/config.toml'
+
+# AGS
+[templates.ags]
+input_path = '~/.config/matugen/templates/matugen-ags.scss'
+output_path = '~/.config/ags/themes/matugen.scss'
+post_hook = 'ags request reload-css'
