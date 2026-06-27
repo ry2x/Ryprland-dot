@@ -43,8 +43,8 @@ hl.config({
 
     -- fix render for gaming with RDNA4
     render = {
-        direct_scanout = 0,
-        new_render_scheduling = false,
-        commit_timing_enabled = false
+        -- direct_scanout = 0,
+        -- new_render_scheduling = false,
+        -- commit_timing_enabled = false
     }
 })
