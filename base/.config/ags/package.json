@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "ags": "link:/usr/share/ags/js",
+    "gnim": "link:/usr/share/ags/js/node_modules/gnim",
+    "lucide-static": "^1.21.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.7.0",
+    "prettier": "^3.8.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.0"
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write \"./widget/**/*.{js,ts,tsx,json,css,scss,md,html}\" \"./*.{js,ts,tsx,json}\""
+  }
+}
