@@ -1,5 +1,7 @@
 -- Window rules for floating windows
 
+    local top_gap = 45
+
 ---------------------
 -- tag definitions --
 ---------------------
@@ -17,7 +19,7 @@ hl.window_rule({
     match = { tag = "floatTop" },
     float = true,
     animation = "slide top",
-    move = { "monitor_w * 0.1", "30" },
+    move = { "monitor_w * 0.1", tostring(top_gap) },
     pin = true
 })
 
@@ -26,7 +28,7 @@ hl.window_rule({
     match = { tag = "floatTopRight" },
     float = true,
     animation = "slide top",
-    move = { "monitor_w * 0.7 - 10", "30" },
+    move = { "monitor_w * 0.7 - 10", tostring(top_gap) },
     pin = true
 })
 
