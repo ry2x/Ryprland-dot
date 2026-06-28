@@ -1,6 +1,5 @@
 import GLib from "gi://GLib"
 import Gio from "gi://Gio"
-import { Gtk } from "ags/gtk4"
 
 const CONFIG_DIR = `${GLib.get_user_config_dir()}/ags`
 

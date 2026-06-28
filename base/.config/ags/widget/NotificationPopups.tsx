@@ -126,7 +126,7 @@ function PopupCard({
       {/* ACTIONS */}
       {notif.actions && notif.actions.length > 0 && (
         <box spacing={8} class="notif-actions" marginTop={8}>
-          {notif.actions.map((action: any) => (
+          {notif.actions.map((action: { id: string; label: string }) => (
             <button
               class="notif-action-btn"
               hexpand

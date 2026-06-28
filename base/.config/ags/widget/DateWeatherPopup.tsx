@@ -102,12 +102,21 @@ const weatherInfo = weatherJson.as((str) => {
       wind: current.windspeedKmph,
       todayMax: today.maxtempC,
       todayMin: today.mintempC,
-      forecast: data.weather.slice(1, 3).map((w: any) => ({
-        date: w.date,
-        max: w.maxtempC,
-        min: w.mintempC,
-        code: w.hourly[4].weatherCode,
-      })),
+      forecast: data.weather
+        .slice(1, 3)
+        .map(
+          (w: {
+            date: string
+            maxtempC: string
+            mintempC: string
+            hourly: { weatherCode: string }[]
+          }) => ({
+            date: w.date,
+            max: w.maxtempC,
+            min: w.mintempC,
+            code: w.hourly[4].weatherCode,
+          }),
+        ),
     }
   } catch {
     return null
@@ -225,7 +234,7 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
       {/* ACTIONS */}
       {notif.actions && notif.actions.length > 0 && (
         <box spacing={8} class="notif-actions" marginTop={8}>
-          {notif.actions.map((action: any) => (
+          {notif.actions.map((action: { id: string; label: string }) => (
             <button
               class="notif-action-btn"
               hexpand
@@ -299,7 +308,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 />
                 <label
                   label={weatherInfo.as((w) => (w ? w.desc : "Loading..."))}
-                  css="font-size: 1.1em; color: rgba(currentColor, 0.7);"
+                  css="font-size: 1.1em; color: alpha(currentColor, 0.7);"
                   halign={Gtk.Align.START}
                 />
               </box>
@@ -308,7 +317,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
             {/* Additional info */}
             <box
               spacing={16}
-              css="color: rgba(currentColor, 0.6); font-size: 0.9em;"
+              css="color: alpha(currentColor, 0.6); font-size: 0.9em;"
             >
               <label
                 label={weatherInfo.as((w) =>
@@ -357,7 +366,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                   label={weatherInfo.as((w) =>
                     w ? `${w.forecast[0].max}° / ${w.forecast[0].min}°` : "",
                   )}
-                  css="font-size: 0.8em; color: rgba(currentColor, 0.7);"
+                  css="font-size: 0.8em; color: alpha(currentColor, 0.7);"
                 />
               </box>
               <box
@@ -390,7 +399,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                       ? `${w.forecast[1].max}° / ${w.forecast[1].min}°`
                       : "",
                   )}
-                  css="font-size: 0.8em; color: rgba(currentColor, 0.7);"
+                  css="font-size: 0.8em; color: alpha(currentColor, 0.7);"
                 />
               </box>
             </box>

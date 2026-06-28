@@ -45,7 +45,7 @@ export default function Workspaces({
     ) as Gtk.Revealer
 
     // Attach workspace ID for lookup
-    ;(rev as any)._ws_id = ws.id
+    ;(rev as Gtk.Revealer & { _ws_id?: number })._ws_id = ws.id
 
     // Trigger reveal animation on next tick
     setTimeout(() => rev.set_reveal_child(true), 10)
@@ -86,7 +86,9 @@ export default function Workspaces({
     ) {
       const rev = createWorkspaceBtn(ws)
       const children = getChildren()
-      const insertIdx = children.findIndex((c) => (c as any)._ws_id > ws.id)
+      const insertIdx = children.findIndex(
+        (c) => (c as Gtk.Revealer & { _ws_id?: number })._ws_id! > ws.id,
+      )
 
       if (insertIdx === -1) {
         container.append(rev)
@@ -99,7 +101,9 @@ export default function Workspaces({
   })
 
   const hook2 = hypr.connect("workspace-removed", (_, id: number) => {
-    const target = getChildren().find((c) => (c as any)._ws_id === id)
+    const target = getChildren().find(
+      (c) => (c as Gtk.Revealer & { _ws_id?: number })._ws_id === id,
+    )
     if (target) {
       target.set_reveal_child(false)
       setTimeout(() => container.remove(target), 250) // Remove after animation
