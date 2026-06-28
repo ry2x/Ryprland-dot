@@ -7,7 +7,8 @@ for _, namespace in ipairs({
     "rofi",
     "logout_dialog",
     "hyprcrop-freeze",
-    "walker"
+    "walker",
+    "gtk4-layer-shell"
 }) do
     hl.layer_rule({
         match = { namespace = namespace },
@@ -19,5 +20,5 @@ end
 -- xray
 hl.layer_rule({
     match = { namespace = ".*" },
-    xray = true
+    xray = false
 })
