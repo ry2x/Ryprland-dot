@@ -37,6 +37,19 @@ const ram = createPoll({ used: 0, total: 0, percent: 0 }, 2000, () =>
     .catch(() => ({ used: 0, total: 0, percent: 0 })),
 )
 
+const gpu = createPoll(0, 2000, () =>
+  execAsync([
+    "bash",
+    "-c",
+    "cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | sort -nr | head -n 1",
+  ])
+    .then((out) => {
+      const val = parseFloat(out)
+      return isNaN(val) ? 0 : val
+    })
+    .catch(() => 0),
+)
+
 function QuickToggles() {
   const network = Network.get_default()
   const wifi = network.wifi
@@ -148,7 +161,7 @@ function VolumeSlider() {
         min={0}
         max={1}
         value={bind(speaker, "volume")}
-        onChangeValue={(self: any, scroll: any, val: number) => {
+        onChangeValue={(_self, _scroll, val: number) => {
           speaker.volume = val
           playSound()
         }}
@@ -156,7 +169,8 @@ function VolumeSlider() {
 
       <label
         label={bind(speaker, "volume").as((v) => `${Math.round(v * 100)}%`)}
-        css="min-width: 40px; text-align: right; font-weight: 700;"
+        css="min-width: 40px; font-weight: 700;"
+        halign={Gtk.Align.END}
       />
     </box>
   )
@@ -184,7 +198,7 @@ function MediaCard() {
       >
         <label
           label="No Media Playing"
-          css="color: rgba(currentColor, 0.5); font-weight: 700;"
+          css="color: alpha(currentColor, 0.5); font-weight: 700;"
         />
       </box>
 
@@ -304,15 +318,15 @@ function MediaCard() {
   )
 }
 
-function CircularProgress({
+function CircularProgress<T>({
   variable,
   transformer,
   label,
   sublabel,
   color,
 }: {
-  variable: any
-  transformer: (v: any) => number
+  variable: { get: () => T; subscribe: (fn: () => void) => void }
+  transformer: (v: T) => number
   label: string
   sublabel: import("ags").Binding<string> | string
   color: string
@@ -416,12 +430,24 @@ function SystemMetrics() {
       <box halign={Gtk.Align.CENTER}>
         <CircularProgress
           variable={ram}
-          transformer={(r: any) => r.percent}
+          transformer={(r: { percent: number; used: number; total: number }) =>
+            r.percent
+          }
           label="RAM"
           sublabel={ram.as(
             (r) => `${r.used.toFixed(1)} / ${r.total.toFixed(0)}GB`,
           )}
           color="#8be9fd"
+        />
+      </box>
+
+      <box halign={Gtk.Align.CENTER}>
+        <CircularProgress
+          variable={gpu}
+          transformer={(g: number) => g / 100}
+          label="GPU"
+          sublabel={gpu.as((g) => `${Math.round(g)}%`)}
+          color="#50fa7b"
         />
       </box>
     </box>
@@ -486,7 +512,7 @@ function UpdatesCard() {
 }
 
 export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
-  const { TOP, RIGHT } = Astal.WindowAnchor
+  const { TOP } = Astal.WindowAnchor
 
   return (
     <window

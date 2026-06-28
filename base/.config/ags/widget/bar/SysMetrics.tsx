@@ -2,7 +2,6 @@ import { Gdk } from "ags/gtk4"
 import { createPoll } from "ags/time"
 import { execAsync } from "ags/process"
 import { LucideIcon } from "../../lib/lucide"
-import { Gtk } from "ags/gtk4"
 import app from "ags/gtk4/app"
 
 export default function SysMetrics({
@@ -24,7 +23,17 @@ export default function SysMetrics({
     execAsync([
       "bash",
       "-c",
-      "free | grep Mem | awk '{printf \"%.0f%%\", $3/$2 * 100.0}'",
+      "free -m | grep Mem | awk '{printf \"%.1fGB\", $3/1024}'",
+    ])
+      .then((out) => out)
+      .catch(() => "0%"),
+  )
+
+  const gpu = createPoll("0%", 2000, () =>
+    execAsync([
+      "bash",
+      "-c",
+      "cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | sort -nr | head -n 1 | awk '{print $1\"%\"}'",
     ])
       .then((out) => out)
       .catch(() => "0%"),
@@ -54,6 +63,10 @@ export default function SysMetrics({
         <box spacing={4}>
           <LucideIcon name="memory-stick" class="icon" />
           <label label={ram} />
+        </box>
+        <box spacing={4}>
+          <LucideIcon name="gpu" class="icon" />
+          <label label={gpu} />
         </box>
       </box>
     </button>
