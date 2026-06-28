@@ -11,8 +11,22 @@ export default function Bluetooth({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
     powered ? "bluetooth" : "bluetooth-off",
   )
 
+  const toggleMenu = () => {
+    const ccName = `control-center-${gdkmonitor.get_connector()}`
+    const dwName = `date-weather-popup-${gdkmonitor.get_connector()}`
+    const cc = app.get_window(ccName)
+    const dw = app.get_window(dwName)
+
+    if (cc && cc.get_visible()) {
+      cc.set_visible(false)
+    } else {
+      if (dw && dw.get_visible()) dw.set_visible(false)
+      if (cc) cc.set_visible(true)
+    }
+  }
+
   return (
-    <button class="network-btn Bluetooth" onClicked={() => app.toggle_window(`control-center-${gdkmonitor.get_connector()}`)}>
+    <button class="network-btn Bluetooth" onClicked={toggleMenu}>
       <LucideIcon name={icon} />
     </button>
   )

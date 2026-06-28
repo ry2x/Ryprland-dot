@@ -6,6 +6,7 @@ import style from "./style.scss"
 import Bar from "./widget/Bar"
 import ControlCenter from "./widget/ControlCenter"
 import DateWeatherPopup from "./widget/DateWeatherPopup"
+import NotificationPopups from "./widget/NotificationPopups"
 
 app.start({
   css: style,
@@ -39,6 +40,7 @@ app.start({
       Bar(m)
       ControlCenter(m)
       DateWeatherPopup(m)
+      NotificationPopups(m)
     })
   },
 })

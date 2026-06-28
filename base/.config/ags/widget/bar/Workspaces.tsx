@@ -25,7 +25,11 @@ export default function Workspaces({
     )
 
     const box = (
-      <box css="min-width: 20px; min-height: 20px;" valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
+      <box
+        css="min-width: 20px; min-height: 20px;"
+        valign={Gtk.Align.CENTER}
+        halign={Gtk.Align.CENTER}
+      >
         {btn}
       </box>
     )
@@ -49,9 +53,7 @@ export default function Workspaces({
     return rev
   }
 
-  const container = (
-    <box class="Workspaces" spacing={4} />
-  ) as Gtk.Box
+  const container = (<box class="Workspaces" spacing={4} />) as Gtk.Box
 
   const getChildren = () => {
     const children: Gtk.Revealer[] = []
@@ -64,7 +66,8 @@ export default function Workspaces({
   }
 
   // Initial load
-  const initialWss = hypr.get_workspaces()
+  const initialWss = hypr
+    .get_workspaces()
     .filter((ws) => ws.monitor && ws.monitor.name === connector)
     .filter((ws) => !ws.name.startsWith("special"))
     .sort((a, b) => a.id - b.id)
@@ -76,10 +79,14 @@ export default function Workspaces({
   }
 
   const hook1 = hypr.connect("workspace-added", (_, ws: Hyprland.Workspace) => {
-    if (ws.monitor && ws.monitor.name === connector && !ws.name.startsWith("special")) {
+    if (
+      ws.monitor &&
+      ws.monitor.name === connector &&
+      !ws.name.startsWith("special")
+    ) {
       const rev = createWorkspaceBtn(ws)
       const children = getChildren()
-      const insertIdx = children.findIndex(c => (c as any)._ws_id > ws.id)
+      const insertIdx = children.findIndex((c) => (c as any)._ws_id > ws.id)
 
       if (insertIdx === -1) {
         container.append(rev)
@@ -92,7 +99,7 @@ export default function Workspaces({
   })
 
   const hook2 = hypr.connect("workspace-removed", (_, id: number) => {
-    const target = getChildren().find(c => (c as any)._ws_id === id)
+    const target = getChildren().find((c) => (c as any)._ws_id === id)
     if (target) {
       target.set_reveal_child(false)
       setTimeout(() => container.remove(target), 250) // Remove after animation

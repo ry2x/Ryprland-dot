@@ -57,7 +57,10 @@ export default function ScrollerIndicator({
     }
 
     const focused = hypr.focused_client
-    const activeClient = (focused && focused.workspace.id === fw.id) ? focused : fw.last_client
+    const activeClient =
+      focused && focused.workspace && focused.workspace.id === fw.id
+        ? focused
+        : fw.last_client
     const index = activeClient
       ? clients.findIndex((c) => c.address === activeClient.address)
       : -1

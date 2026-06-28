@@ -159,21 +159,21 @@ window.DateWeatherPopup {
   }
 
   .cc-container {
-    min-width: 360px;
+    min-width: 420px;
   }
 
   .dw-container {
     // 2-column layout width
-    min-width: 700px;
-    min-height: 400px;
+    min-width: 850px;
+    min-height: 550px;
   }
 
   .left-column {
-    min-width: 300px;
+    min-width: 320px;
   }
 
   .right-column {
-    min-width: 350px;
+    min-width: 450px;
   }
 
   .widget-card {
@@ -209,7 +209,151 @@ window.DateWeatherPopup {
   }
 
   .notif-scroll {
-    min-height: 300px;
+    min-height: 450px;
+  }
+
+  // Individual Notification Card
+  .notif-card {
+    background: rgba($on-surface, 0.04);
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid rgba($on-surface, 0.05);
+    transition: all 200ms;
+
+    &.urgency-0 {
+      opacity: 0.8;
+      border-color: transparent;
+    }
+
+    &.urgency-2 {
+      border: 1px solid rgba($error, 0.5);
+      background: rgba($error, 0.05);
+    }
+
+    &:hover { background: rgba($on-surface, 0.08); }
+    &.urgency-2:hover { background: rgba($error, 0.1); }
+  }
+
+  .notif-summary {
+    font-weight: 700;
+    color: $text;
+  }
+
+  .notif-app {
+    font-size: 0.8em;
+    color: rgba($text, 0.5);
+  }
+
+  .notif-body {
+    font-size: 0.9em;
+    color: rgba($text, 0.8);
+    margin-top: 4px;
+  }
+
+  .notif-close {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: 6px;
+    color: rgba($text, 0.5);
+    &:hover {
+      background: rgba($on-surface, 0.1);
+      color: $text;
+    }
+  }
+
+  .notif-action-btn {
+    background: rgba($on-surface, 0.08);
+    border-radius: 8px;
+    padding: 6px 12px;
+    border: none;
+    transition: all 200ms;
+    &:hover { 
+      background: rgba($primary, 0.2); 
+      color: $primary; 
+    }
+  }
+
+  .cc-card {
+    background: rgba($on-surface, 0.04);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba($on-surface, 0.05);
+  }
+
+  .cc-toggle-btn {
+    background: rgba($on-surface, 0.06);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba($on-surface, 0.05);
+    transition: all 200ms;
+    
+    &.active {
+      background: rgba($primary, 0.2);
+      color: $primary;
+      border-color: rgba($primary, 0.3);
+    }
+    &:hover {
+      background: rgba($on-surface, 0.1);
+      &.active { background: rgba($primary, 0.3); }
+    }
+  }
+
+  .icon-btn {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    transition: all 200ms;
+    &:hover {
+      background: rgba($on-surface, 0.1);
+    }
+  }
+
+  .power-btn {
+    background: rgba($on-surface, 0.04);
+    border-radius: 12px;
+    padding: 12px;
+    border: none;
+    transition: all 200ms;
+    &:hover {
+      background: rgba($on-surface, 0.1);
+    }
+  }
+
+  // GTK Scale (Sliders) styling
+  scale {
+    contents {
+      trough {
+        background: rgba($on-surface, 0.1);
+        border-radius: 8px;
+        min-height: 8px;
+        highlight {
+          background: $primary;
+          border-radius: 8px;
+        }
+      }
+      slider {
+        background: $text;
+        min-width: 16px;
+        min-height: 16px;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+    }
+  }
+
+  // LevelBar styling
+  levelbar {
+    trough {
+      background: rgba($on-surface, 0.1);
+      border-radius: 4px;
+      min-height: 8px;
+      block.filled {
+        background: $primary;
+        border-radius: 4px;
+      }
+    }
   }
 
   .cc-title,
@@ -217,5 +361,32 @@ window.DateWeatherPopup {
     font-size: 1.1em;
     font-weight: 700;
     color: $text;
+  }
+}
+
+.NotificationPopups {
+  background-color: transparent;
+}
+
+.NotificationPopups {
+  background-color: transparent;
+  
+  .notif-card {
+    background: $bg;
+    border-radius: 24px;
+    border: 1px solid $border;
+    padding: 16px;
+    min-width: 420px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    margin-bottom: 12px;
+
+    &.urgency-0 {
+      opacity: 0.9;
+    }
+
+    &.urgency-2 {
+      border: 1px solid $error;
+      box-shadow: 0 4px 16px rgba($error, 0.3);
+    }
   }
 }
