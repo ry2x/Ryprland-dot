@@ -1,6 +1,7 @@
 import { Gdk, Gtk } from "ags/gtk4"
 import Hyprland from "gi://AstalHyprland"
 import { createState } from "ags"
+import { execAsync } from "ags/process"
 import { LucideIcon } from "../../lib/lucide"
 
 export default function ScrollerIndicator({
@@ -98,7 +99,7 @@ export default function ScrollerIndicator({
       <box>
         <button
           class="ScrollerIndicator"
-          onClicked={() => console.log("TODO: ScrollerIndicator action")}
+          onClicked={() => execAsync("hyprctl dispatch \"hl.plugin.scrolloverview.overview('toggle')\"")}
         >
           <box spacing={4}>
             <LucideIcon name="app-window-mac" class="icon" />
