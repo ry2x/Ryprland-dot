@@ -99,7 +99,11 @@ export default function ScrollerIndicator({
       <box>
         <button
           class="ScrollerIndicator"
-          onClicked={() => execAsync("hyprctl dispatch \"hl.plugin.scrolloverview.overview('toggle')\"")}
+          onClicked={() =>
+            execAsync(
+              "hyprctl dispatch \"hl.plugin.scrolloverview.overview('toggle')\"",
+            )
+          }
         >
           <box spacing={4}>
             <LucideIcon name="app-window-mac" class="icon" />

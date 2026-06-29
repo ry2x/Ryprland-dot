@@ -2,6 +2,7 @@ import app from "ags/gtk4/app"
 import { Gtk, Gdk } from "ags/gtk4"
 import GLib from "gi://GLib"
 import { execAsync } from "ags/process"
+import Hyprland from "gi://AstalHyprland"
 import style from "./style.scss"
 import Bar from "./widget/Bar"
 import ControlCenter from "./widget/ControlCenter"
@@ -23,6 +24,44 @@ app.start({
           res("CSS Reloaded Successfully")
         })
         .catch((err) => res(`Error: ${err}`))
+    } else if (request[0] === "toggle-notif") {
+      const focusedMonitor = Hyprland.get_default().get_focused_monitor().name
+      app.get_monitors().forEach((m) => {
+        const dw = app.get_window(`date-weather-popup-${m.get_connector()}`)
+        const cc = app.get_window(`control-center-${m.get_connector()}`)
+        if (dw) {
+          if (m.get_connector() === focusedMonitor) {
+            if (dw.get_visible()) {
+              dw.set_visible(false)
+            } else {
+              if (cc) cc.set_visible(false)
+              dw.set_visible(true)
+            }
+          } else {
+            dw.set_visible(false)
+          }
+        }
+      })
+      res("Toggled Notification Center")
+    } else if (request[0] === "toggle-cc") {
+      const focusedMonitor = Hyprland.get_default().get_focused_monitor().name
+      app.get_monitors().forEach((m) => {
+        const cc = app.get_window(`control-center-${m.get_connector()}`)
+        const dw = app.get_window(`date-weather-popup-${m.get_connector()}`)
+        if (cc) {
+          if (m.get_connector() === focusedMonitor) {
+            if (cc.get_visible()) {
+              cc.set_visible(false)
+            } else {
+              if (dw) dw.set_visible(false)
+              cc.set_visible(true)
+            }
+          } else {
+            cc.set_visible(false)
+          }
+        }
+      })
+      res("Toggled Control Center")
     } else {
       res(`Unknown command: ${request.join(" ")}`)
     }
