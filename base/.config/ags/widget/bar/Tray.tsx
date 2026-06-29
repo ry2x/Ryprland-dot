@@ -64,6 +64,8 @@ export default function Tray() {
 
               const popover = Gtk.PopoverMenu.new_from_model(menu)
               popover.set_parent(btn)
+              popover.set_has_arrow(false)
+              popover.add_css_class("tray-menu")
 
               const rightClick = new Gtk.GestureClick({ button: 3 })
               rightClick.connect("pressed", () => popover.popup())
