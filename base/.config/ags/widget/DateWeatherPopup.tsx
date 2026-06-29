@@ -124,10 +124,6 @@ const weatherInfo = weatherJson.as((str) => {
 })
 
 function NotificationCard({ notif }: { notif: Notifd.Notification }) {
-  const isPath =
-    notif.app_icon &&
-    (notif.app_icon.startsWith("/") || notif.app_icon.startsWith("file://"))
-
   const resolveImage = (img: string | null) => {
     if (!img) return null
     if (img.startsWith("file://")) return img
@@ -161,11 +157,7 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
             valign={Gtk.Align.START}
           />
         ) : appIcon ? (
-          <image
-            iconName={appIcon}
-            pixelSize={24}
-            valign={Gtk.Align.START}
-          />
+          <image iconName={appIcon} pixelSize={24} valign={Gtk.Align.START} />
         ) : (
           <LucideIcon
             name="message-square"
@@ -195,7 +187,10 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
             />
             <box hexpand />
             <label
-              label={new Date(notif.time * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              label={new Date(notif.time * 1000).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
               class="notif-time"
               css="font-size: 0.75em; color: alpha(currentColor, 0.6); margin-right: 8px;"
             />
@@ -469,7 +464,9 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                     n.filter((notif) => !notif.transient),
                   )}
                 >
-                  {(notif) => <NotificationCard notif={notif as Notifd.Notification} />}
+                  {(notif) => (
+                    <NotificationCard notif={notif as Notifd.Notification} />
+                  )}
                 </For>
               </box>
             ),

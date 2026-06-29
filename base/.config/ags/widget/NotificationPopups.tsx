@@ -23,9 +23,6 @@ function PopupCard({
   notif: Notifd.Notification
   onDismiss: () => void
 }) {
-  const isPath =
-    notif.app_icon &&
-    (notif.app_icon.startsWith("/") || notif.app_icon.startsWith("file://"))
   const appIcon = notif.app_icon || notif.desktop_entry || notif.image
   const appIconPath = resolveImage(appIcon)
 
@@ -53,11 +50,7 @@ function PopupCard({
             valign={Gtk.Align.START}
           />
         ) : appIcon ? (
-          <image
-            iconName={appIcon}
-            pixelSize={24}
-            valign={Gtk.Align.START}
-          />
+          <image iconName={appIcon} pixelSize={24} valign={Gtk.Align.START} />
         ) : (
           <LucideIcon
             name="message-square"
