@@ -135,8 +135,10 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
     return null
   }
 
-  const imageToDisplay =
-    resolveImage(notif.image) || (isPath ? resolveImage(notif.app_icon) : null)
+  const appIcon = notif.app_icon || notif.desktop_entry || notif.image
+  const appIconPath = resolveImage(appIcon)
+
+  const imageToDisplay = resolveImage(notif.image)
 
   return (
     <box
@@ -146,26 +148,24 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
     >
       <box spacing={12}>
         {/* ICON */}
-        {notif.app_icon ? (
-          isPath ? (
-            <box
-              css={`
-                background-image: url("${notif.app_icon}");
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                min-width: 24px;
-                min-height: 24px;
-              `}
-              valign={Gtk.Align.START}
-            />
-          ) : (
-            <image
-              iconName={notif.app_icon}
-              pixelSize={24}
-              valign={Gtk.Align.START}
-            />
-          )
+        {appIconPath ? (
+          <box
+            css={`
+              background-image: url("${appIconPath}");
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: center;
+              min-width: 24px;
+              min-height: 24px;
+            `}
+            valign={Gtk.Align.START}
+          />
+        ) : appIcon ? (
+          <image
+            iconName={appIcon}
+            pixelSize={24}
+            valign={Gtk.Align.START}
+          />
         ) : (
           <LucideIcon
             name="message-square"
@@ -184,14 +184,22 @@ function NotificationCard({ notif }: { notif: Notifd.Notification }) {
             lines={1}
             maxWidthChars={24}
           />
-          <label
-            label={notif.app_name}
-            class="notif-app"
-            xalign={0}
-            ellipsize={Pango.EllipsizeMode.END}
-            lines={1}
-            maxWidthChars={24}
-          />
+          <box orientation={Gtk.Orientation.HORIZONTAL}>
+            <label
+              label={notif.app_name ?? "Notify-send"}
+              class="notif-app"
+              xalign={0}
+              ellipsize={Pango.EllipsizeMode.END}
+              lines={1}
+              maxWidthChars={18}
+            />
+            <box hexpand />
+            <label
+              label={new Date(notif.time * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              class="notif-time"
+              css="font-size: 0.75em; color: alpha(currentColor, 0.6); margin-right: 8px;"
+            />
+          </box>
         </box>
 
         {/* CLOSE BUTTON */}
@@ -461,7 +469,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                     n.filter((notif) => !notif.transient),
                   )}
                 >
-                  {(notif) => <NotificationCard notif={notif} />}
+                  {(notif) => <NotificationCard notif={notif as Notifd.Notification} />}
                 </For>
               </box>
             ),

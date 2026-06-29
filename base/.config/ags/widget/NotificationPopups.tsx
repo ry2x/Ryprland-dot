@@ -26,8 +26,10 @@ function PopupCard({
   const isPath =
     notif.app_icon &&
     (notif.app_icon.startsWith("/") || notif.app_icon.startsWith("file://"))
-  const imageToDisplay =
-    resolveImage(notif.image) || (isPath ? resolveImage(notif.app_icon) : null)
+  const appIcon = notif.app_icon || notif.desktop_entry || notif.image
+  const appIconPath = resolveImage(appIcon)
+
+  const imageToDisplay = resolveImage(notif.image)
 
   return (
     <box
@@ -38,26 +40,24 @@ function PopupCard({
     >
       <box spacing={12}>
         {/* ICON */}
-        {notif.app_icon ? (
-          isPath ? (
-            <box
-              css={`
-                background-image: url("${notif.app_icon}");
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                min-width: 24px;
-                min-height: 24px;
-              `}
-              valign={Gtk.Align.START}
-            />
-          ) : (
-            <image
-              iconName={notif.app_icon}
-              pixelSize={24}
-              valign={Gtk.Align.START}
-            />
-          )
+        {appIconPath ? (
+          <box
+            css={`
+              background-image: url("${appIconPath}");
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: center;
+              min-width: 24px;
+              min-height: 24px;
+            `}
+            valign={Gtk.Align.START}
+          />
+        ) : appIcon ? (
+          <image
+            iconName={appIcon}
+            pixelSize={24}
+            valign={Gtk.Align.START}
+          />
         ) : (
           <LucideIcon
             name="message-square"
@@ -77,7 +77,7 @@ function PopupCard({
             maxWidthChars={24}
           />
           <label
-            label={notif.app_name}
+            label={notif.app_name ?? "Notify-send"}
             class="notif-app"
             xalign={0}
             ellipsize={Pango.EllipsizeMode.END}
