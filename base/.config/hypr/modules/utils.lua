@@ -36,7 +36,7 @@ F.getHyprScript = function(name)
 end
 
 F.sendNotification = function(image, title, message)
-    hl.dispatch(hl.dsp.exec_cmd(string.format("notify-send -e -u low -i \"%s\" '%s' '%s'", image, title, message)))
+    hl.dispatch(hl.dsp.exec_cmd(string.format("notify-send -e -u low -n \"%s\" '%s' '%s'", image, title, message)))
 end
 
 F.killActiveProcess = function()
