@@ -5,6 +5,7 @@ import { createBinding as bind, For } from "ags"
 import { createPoll } from "ags/time"
 import { LucideIcon } from "../lib/lucide"
 import Pango from "gi://Pango"
+import NotificationCard from "./NotificationCard"
 
 // Location for weather
 const LOCATION = "Osaka"
@@ -123,146 +124,6 @@ const weatherInfo = weatherJson.as((str) => {
   }
 })
 
-function NotificationCard({ notif }: { notif: Notifd.Notification }) {
-  const resolveImage = (img: string | null) => {
-    if (!img) return null
-    if (img.startsWith("file://")) return img
-    if (img.startsWith("/")) return `file://${img}`
-    return null
-  }
-
-  const appIcon = notif.app_icon || notif.desktop_entry || notif.image
-  const appIconPath = resolveImage(appIcon)
-
-  const imageToDisplay = resolveImage(notif.image)
-
-  return (
-    <box
-      class={`notif-card urgency-${notif.urgency}`}
-      orientation={Gtk.Orientation.VERTICAL}
-      spacing={8}
-    >
-      <box spacing={12}>
-        {/* ICON */}
-        {appIconPath ? (
-          <box
-            css={`
-              background-image: url("${appIconPath}");
-              background-size: contain;
-              background-repeat: no-repeat;
-              background-position: center;
-              min-width: 24px;
-              min-height: 24px;
-            `}
-            valign={Gtk.Align.START}
-          />
-        ) : appIcon ? (
-          <image iconName={appIcon} pixelSize={24} valign={Gtk.Align.START} />
-        ) : (
-          <LucideIcon
-            name="message-square"
-            pixelSize={24}
-            valign={Gtk.Align.START}
-          />
-        )}
-
-        {/* SUMMARY & APP NAME */}
-        <box orientation={Gtk.Orientation.VERTICAL} hexpand>
-          <label
-            label={notif.summary}
-            class="notif-summary"
-            xalign={0}
-            ellipsize={Pango.EllipsizeMode.END}
-            lines={1}
-            maxWidthChars={24}
-          />
-          <box orientation={Gtk.Orientation.HORIZONTAL}>
-            <label
-              label={notif.app_name ?? "Notify-send"}
-              class="notif-app"
-              xalign={0}
-              ellipsize={Pango.EllipsizeMode.END}
-              lines={1}
-              maxWidthChars={18}
-            />
-            <box hexpand />
-            <label
-              label={new Date(notif.time * 1000).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-              class="notif-time"
-              css="font-size: 0.75em; color: alpha(currentColor, 0.6); margin-right: 8px;"
-            />
-          </box>
-        </box>
-
-        {/* CLOSE BUTTON */}
-        <button
-          class="notif-close"
-          onClicked={() => notif.dismiss()}
-          valign={Gtk.Align.START}
-        >
-          <LucideIcon name="x" pixelSize={14} />
-        </button>
-      </box>
-
-      {/* BODY & RICH IMAGE */}
-      <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-        {notif.body && (
-          <label
-            label={notif.body}
-            class="notif-body"
-            xalign={0}
-            wrap
-            wrapMode={Pango.WrapMode.WORD_CHAR}
-            maxWidthChars={24}
-          />
-        )}
-
-        {imageToDisplay && (
-          <box
-            css={`
-              background-image: url("${imageToDisplay}");
-              background-size: cover;
-              background-position: center;
-              border-radius: 8px;
-              min-height: 140px;
-              margin-top: 4px;
-            `}
-          />
-        )}
-      </box>
-
-      {/* ACTIONS */}
-      {notif.actions && notif.actions.length > 0 && (
-        <box spacing={8} class="notif-actions" marginTop={8}>
-          {notif.actions.map((action: { id: string; label: string }) => (
-            <button
-              class="notif-action-btn"
-              hexpand
-              onClicked={() => {
-                notif.invoke(action.id)
-                app.get_monitors().forEach((m) => {
-                  const conn = m.get_connector()
-                  const cc = app.get_window(`control-center-${conn}`)
-                  const dw = app.get_window(`date-weather-popup-${conn}`)
-                  if (cc) cc.set_visible(false)
-                  if (dw) dw.set_visible(false)
-                })
-                // Do not call notif.dismiss() here!
-                // DBus race condition causes a segfault if the object is freed while invoke is pending.
-              }}
-            >
-              <label label={action.label} ellipsize={Pango.EllipsizeMode.END} />
-            </button>
-          ))}
-        </box>
-      )}
-    </box>
-  )
-}
-
 export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
   const { TOP } = Astal.WindowAnchor
   const notifd = Notifd.get_default()
@@ -280,7 +141,22 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       application={app}
       visible={false}
     >
-      <box class="dw-container" spacing={24}>
+      <overlay>
+        <button
+          hexpand
+          vexpand
+          onClicked={(self) => {
+            const win = self.get_root() as Gtk.Window
+            if (win) win.set_visible(false)
+          }}
+          class="click-catcher"
+        />
+        <box
+          valign={Gtk.Align.START}
+          halign={Gtk.Align.CENTER}
+          marginTop={8}
+        >
+          <box class="dw-container" spacing={24}>
         {/* LEFT COLUMN: Weather & Calendar */}
         <box
           orientation={Gtk.Orientation.VERTICAL}
@@ -474,6 +350,8 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
           })}
         </box>
       </box>
+        </box>
+      </overlay>
     </window>
   )
 }

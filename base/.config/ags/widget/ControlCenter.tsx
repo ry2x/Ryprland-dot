@@ -258,35 +258,18 @@ function MediaCard() {
                         "\u2587",
                         "\u2588",
                       ]
-                      const GRADIENT = [
-                        "#8be9fd",
-                        "#96e2fc",
-                        "#a1dbfb",
-                        "#acd4fb",
-                        "#b7cdfa",
-                        "#c2c6f9",
-                        "#cdbff8",
-                        "#d8b8f8",
-                        "#e3b1f7",
-                        "#eeabf6",
-                        "#f9a4f6",
-                        "#ff9df5",
-                        "#ff95ed",
-                        "#ff8de5",
-                        "#ff85dd",
-                        "#ff79c6",
-                      ]
                       // Force the array to only process the first 16 values to prevent doubling and stretching
                       return v
                         .slice(0, 16)
-                        .map((val: number, idx: number) => {
+                        .map((val: number) => {
                           let i = Math.floor(val * CAVA_CHARS.length)
                           if (i < 0) i = 0
                           if (i >= CAVA_CHARS.length) i = CAVA_CHARS.length - 1
-                          return `<span fgcolor="${GRADIENT[idx]}">${CAVA_CHARS[i]}</span>`
+                          return CAVA_CHARS[i]
                         })
                         .join("")
                     })}
+                    class="cava-visualizer"
                     css="font-size: 14px; margin-bottom: 8px; font-weight: 800;"
                     halign={Gtk.Align.START}
                     valign={Gtk.Align.END}
@@ -321,25 +304,20 @@ function MediaCard() {
 function CircularProgress<T>({
   variable,
   transformer,
+  icon,
   label,
   sublabel,
-  color,
+  cssClass,
 }: {
   variable: { get: () => T; subscribe: (fn: () => void) => void }
   transformer: (v: T) => number
+  icon: string
   label: string
   sublabel: import("ags").Binding<string> | string
-  color: string
+  cssClass: string
 }) {
-  const hex2rgb = (hex: string) => {
-    const r = parseInt(hex.slice(1, 3), 16) / 255
-    const g = parseInt(hex.slice(3, 5), 16) / 255
-    const b = parseInt(hex.slice(5, 7), 16) / 255
-    return [r, g, b]
-  }
-  const [r, g, b] = hex2rgb(color)
-
   const area = new Gtk.DrawingArea()
+  area.add_css_class(cssClass)
   area.set_content_width(120)
   area.set_content_height(120)
   area.set_size_request(120, 120)
@@ -351,6 +329,12 @@ function CircularProgress<T>({
   })
 
   area.set_draw_func((_area, cr, width, height) => {
+    const ctx = _area.get_style_context()
+    const color = ctx.get_color() // Automatically fetches the color from CSS
+    const r = color.red
+    const g = color.green
+    const b = color.blue
+
     const center_x = width / 2
     const center_y = height / 2
     const radius = Math.min(width, height) / 2 - 6
@@ -388,14 +372,16 @@ function CircularProgress<T>({
       valign={Gtk.Align.CENTER}
       halign={Gtk.Align.CENTER}
     >
-      <label
-        label={label}
-        css={`
-          color: ${color};
-          font-weight: 800;
-          font-size: 14px;
-        `}
-      />
+      <box spacing={6} valign={Gtk.Align.CENTER} class={cssClass}>
+        <LucideIcon name={icon} pixelSize={14} />
+        <label
+          label={label}
+          css={`
+            font-weight: 800;
+            font-size: 14px;
+          `}
+        />
+      </box>
       <label
         label={sublabel}
         css="opacity: 0.7; font-weight: 700; font-size: 11px; margin-top: 2px;"
@@ -421,9 +407,10 @@ function SystemMetrics() {
         <CircularProgress
           variable={cpu}
           transformer={(c: number) => c / 100}
+          icon="cpu"
           label="CPU"
           sublabel={cpu.as((c) => `${Math.round(c)}%`)}
-          color="#ff79c6"
+          cssClass="cpu-progress"
         />
       </box>
 
@@ -433,11 +420,12 @@ function SystemMetrics() {
           transformer={(r: { percent: number; used: number; total: number }) =>
             r.percent
           }
+          icon="memory-stick"
           label="RAM"
           sublabel={ram.as(
             (r) => `${r.used.toFixed(1)} / ${r.total.toFixed(0)}GB`,
           )}
-          color="#8be9fd"
+          cssClass="ram-progress"
         />
       </box>
 
@@ -445,9 +433,10 @@ function SystemMetrics() {
         <CircularProgress
           variable={gpu}
           transformer={(g: number) => g / 100}
+          icon="gpu"
           label="GPU"
           sublabel={gpu.as((g) => `${Math.round(g)}%`)}
-          color="#50fa7b"
+          cssClass="gpu-progress"
         />
       </box>
     </box>
@@ -471,8 +460,7 @@ function UpdatesCard() {
       <LucideIcon
         name="package"
         pixelSize={24}
-        class="icon"
-        css="color: #ffb86c;"
+        class="icon updates-icon"
       />
       <box
         orientation={Gtk.Orientation.VERTICAL}
