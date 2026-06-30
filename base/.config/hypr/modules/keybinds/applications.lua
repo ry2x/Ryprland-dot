@@ -32,19 +32,16 @@ local ApplicationBinds = {
     { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
     { "SHIFT + R", getRofiScript("launcher-style-changer"), "SwitchLauncher" },
 
-    -- waybar
-    { "ALT + B", "pkill -SIGUSR1 waybar", "KillWaybar" },
-    { "B", getHyprScript("waybarSelect.sh"), "WaybarSelector" },
-    { "SHIFT + B", getHyprScript("waybarRestart.sh"), "RestartWaybar" },
+    -- ags
+    { "SHIFT + B", getHyprScript("restartAgs.sh"), "RestartWaybar" },
+    { "ALT + B", "ags request reload-css", "Reload ags CSS" },
+    { "N", "ags request toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
     { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
     { "Q", "pkill waypaper || waypaper", "Waypaper" },
     { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
     { "SHIFT + T", getHyprScript("refresh.sh"), "RefreshTheme" },
-
-    -- Notifications
-    { "N", "swaync-client -t -sw", "󰂞 Notification" },
 }
 
 for _, bind in ipairs(ApplicationBinds) do
