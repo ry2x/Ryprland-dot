@@ -1,8 +1,9 @@
 import { Gtk } from "ags/gtk4"
-import Gio from "gi://Gio"
 import AstalTray from "gi://AstalTray"
+import GLib from "gi://GLib"
 import { createBinding, For } from "ags"
 import { execAsync } from "ags/process"
+import { LucideIcon } from "../../lib/lucide"
 
 export default function Tray() {
   const tray = AstalTray.get_default()
@@ -21,35 +22,6 @@ export default function Tray() {
         <box class="Tray">
           <For each={items}>
             {(item) => {
-              const menu = new Gio.Menu()
-              menu.append("  ConfigTool", "fcitx.config")
-              menu.append("󰑓  Reload", "fcitx.reload")
-              menu.append("󰐥  Restart", "fcitx.restart")
-
-              const actionGroup = new Gio.SimpleActionGroup()
-
-              const configAction = new Gio.SimpleAction({ name: "config" })
-              configAction.connect("activate", () =>
-                execAsync([
-                  "bash",
-                  "-c",
-                  "QT_QPA_PLATFORMTHEME=qt6ct fcitx5-configtool",
-                ]).catch(() => {}),
-              )
-              actionGroup.add_action(configAction)
-
-              const reloadAction = new Gio.SimpleAction({ name: "reload" })
-              reloadAction.connect("activate", () =>
-                execAsync(["fcitx5-remote", "-r"]).catch(() => {}),
-              )
-              actionGroup.add_action(reloadAction)
-
-              const restartAction = new Gio.SimpleAction({ name: "restart" })
-              restartAction.connect("activate", () =>
-                execAsync(["bash", "-c", "fcitx5 -r"]).catch(() => {}),
-              )
-              actionGroup.add_action(restartAction)
-
               const btn = (
                 <button
                   class="tray-item"
@@ -60,12 +32,58 @@ export default function Tray() {
                 </button>
               ) as Gtk.Button
 
-              btn.insert_action_group("fcitx", actionGroup)
-
-              const popover = Gtk.PopoverMenu.new_from_model(menu)
+              const popover = new Gtk.Popover()
               popover.set_parent(btn)
               popover.set_has_arrow(false)
               popover.add_css_class("tray-menu")
+
+              popover.set_child(
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
+                  <button
+                    class="tray-menu-btn"
+                    onClicked={() => {
+                      popover.popdown()
+                      const env = GLib.getenv("QT_QPA_PLATFORMTHEME")
+                      execAsync([
+                        "bash",
+                        "-c",
+                        `QT_QPA_PLATFORMTHEME=${env} fcitx5-configtool`,
+                      ]).catch(() => {})
+                    }}
+                  >
+                    <box spacing={8}>
+                      <LucideIcon name="settings" pixelSize={16} />
+                      <label label="ConfigTool" />
+                    </box>
+                  </button>
+
+                  <button
+                    class="tray-menu-btn"
+                    onClicked={() => {
+                      popover.popdown()
+                      execAsync(["fcitx5-remote", "-r"]).catch(() => {})
+                    }}
+                  >
+                    <box spacing={8}>
+                      <LucideIcon name="refresh-cw" pixelSize={16} />
+                      <label label="Reload" />
+                    </box>
+                  </button>
+
+                  <button
+                    class="tray-menu-btn"
+                    onClicked={() => {
+                      popover.popdown()
+                      execAsync(["bash", "-c", "fcitx5 -r"]).catch(() => {})
+                    }}
+                  >
+                    <box spacing={8}>
+                      <LucideIcon name="power" pixelSize={16} />
+                      <label label="Restart" />
+                    </box>
+                  </button>
+                </box>,
+              )
 
               const rightClick = new Gtk.GestureClick({ button: 3 })
               rightClick.connect("pressed", () => popover.popup())
