@@ -273,6 +273,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       class="DateWeatherPopup"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.NORMAL}
+      layer={Astal.Layer.TOP}
       anchor={TOP}
       marginTop={8}
       keymode={Astal.Keymode.ON_DEMAND}

@@ -520,6 +520,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       class="ControlCenter"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.NORMAL}
+      layer={Astal.Layer.TOP}
       anchor={TOP}
       marginTop={8}
       keymode={Astal.Keymode.ON_DEMAND}

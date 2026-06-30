@@ -62,6 +62,16 @@ app.start({
         }
       })
       res("Toggled Control Center")
+    } else if (request[0] === "list-windows") {
+      const focusedMonitor = Hyprland.get_default().get_focused_monitor().name
+      const dw = app.get_window(`date-weather-popup-${focusedMonitor}`)
+      res(
+        `Focused: ${focusedMonitor} | dw visible: ${dw?.get_visible()} | Windows: ` +
+          app
+            .get_windows()
+            .map((w) => w.name)
+            .join(", "),
+      )
     } else {
       res(`Unknown command: ${request.join(" ")}`)
     }

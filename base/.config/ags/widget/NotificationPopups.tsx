@@ -198,7 +198,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
       anchor={TOP | RIGHT}
       marginTop={12}
       marginRight={12}
-      layer={Astal.Layer.OVERLAY}
+      layer={Astal.Layer.TOP}
       application={app}
       visible={popups.as((p) => p.length > 0)}
     >
