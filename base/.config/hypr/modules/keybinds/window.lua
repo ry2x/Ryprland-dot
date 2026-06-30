@@ -3,7 +3,6 @@ local P = require("modules.constants")
 local mod = P.mod
 
 local F = require("modules.utils")
-local sendNotification = F.sendNotification
 local killActiveProcess = F.killActiveProcess
 
 -- drag window
@@ -37,24 +36,6 @@ hl.bind(mod .. "+ CAPS + Right", hl.dsp.window.swap({ direction = "r" }), { desc
 
 -- cycle windows
 hl.bind(mod .. "+ TAB", hl.dsp.window.cycle_next(), { description = "Cycle windows" })
-
--- change col size
-hl.bind(mod .. "+ CAPS + TAB",
-    function()
-        local big = 0.95
-        local small = 0.5
-        if tonumber(hl.get_config("scrolling.column_width")) - 0.7 > 0 then
-            hl.dispatch(hl.dsp.layout("colresize all " .. small))
-            hl.config({ scrolling = { column_width = small } })
-            sendNotification(P.icon .. "/col_resize_small.png", "Column Size: Small", "")
-        else
-            hl.dispatch(hl.dsp.layout("colresize all " .. big))
-            hl.config({ scrolling = { column_width = big } })
-            sendNotification(P.icon .. "/col_resize_big.png", "Column Size: Big", "")
-        end
-    end,
-    { description = "Change column size(0.5/0.95)" }
-)
 
 -- kill windowd
 hl.bind(mod .. "+ C", hl.dsp.window.close(), { description = "Kill window" })
