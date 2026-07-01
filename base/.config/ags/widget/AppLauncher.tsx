@@ -174,16 +174,25 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
 
     if (targetChild) {
       const vadj = scrollWindow.get_vadjustment()
-      if (vadj) {
-        const itemTop = idx * 60
-        const itemBottom = itemTop + 60
-        const scrollTop = vadj.get_value()
-        const scrollBottom = scrollTop + vadj.get_page_size()
+      const viewport = scrollWindow.get_child()
 
-        if (itemTop < scrollTop) {
-          vadj.set_value(itemTop)
-        } else if (itemBottom > scrollBottom) {
-          vadj.set_value(itemBottom - vadj.get_page_size())
+      if (vadj && viewport) {
+        const itemHeight = targetChild.get_height() || 50
+
+        // Translate relative to the VIEWPORT (visible area)
+        const res = targetChild.translate_coordinates(viewport, 0, 0)
+        if (Array.isArray(res) && res[0]) {
+          const visibleY = res[2]
+          const visibleBottom = visibleY + itemHeight
+          const pageSize = vadj.get_page_size()
+
+          if (visibleY < 0) {
+            // Item is above the visible area
+            vadj.set_value(vadj.get_value() + visibleY - 10)
+          } else if (visibleBottom > pageSize) {
+            // Item is below the visible area
+            vadj.set_value(vadj.get_value() + (visibleBottom - pageSize) + 10)
+          }
         }
       }
     }
