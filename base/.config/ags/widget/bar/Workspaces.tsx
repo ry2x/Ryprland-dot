@@ -1,6 +1,5 @@
 import { Gdk, Gtk } from "ags/gtk4"
 import Hyprland from "gi://AstalHyprland"
-import { createBinding } from "ags"
 
 export default function Workspaces({
   gdkmonitor,
@@ -10,20 +9,32 @@ export default function Workspaces({
   const hypr = Hyprland.get_default()
   const connector = gdkmonitor.get_connector()
 
-  const focused = createBinding(hypr, "focused_workspace")
-
   const createWorkspaceBtn = (ws: Hyprland.Workspace) => {
     const wsId = ws.id
-    const btn = (
-      <button
-        valign={Gtk.Align.CENTER}
-        halign={Gtk.Align.CENTER}
-        class={focused.as((fw) =>
-          fw?.id === wsId ? "workspace active" : "workspace",
-        )}
-        onClicked={() => hypr.dispatch("workspace", wsId.toString())}
-      />
-    )
+    const btn = new Gtk.Button({
+      valign: Gtk.Align.CENTER,
+      halign: Gtk.Align.CENTER,
+      cssClasses:
+        hypr.get_focused_workspace()?.id === wsId
+          ? ["workspace", "active"]
+          : ["workspace"],
+    })
+
+    btn.connect("clicked", () => hypr.dispatch("workspace", wsId.toString()))
+
+    // Connect manually to GObject notify signal to update active state
+    const updateActive = () => {
+      const fw = hypr.get_focused_workspace()
+      btn.set_css_classes(
+        fw?.id === wsId ? ["workspace", "active"] : ["workspace"],
+      )
+    }
+
+    const hookId = hypr.connect("notify::focused-workspace", updateActive)
+
+    btn.connect("destroy", () => {
+      hypr.disconnect(hookId)
+    })
 
     const box = (
       <box
