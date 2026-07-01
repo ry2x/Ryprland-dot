@@ -8,8 +8,8 @@
   border-radius: 6px;
   color: rgba($text, 0.5);
   &:hover {
-    background: rgba($on-surface, 0.1);
-    color: $text;
+    background: $error;
+    color: $on-error;
   }
 }
 
@@ -90,8 +90,8 @@
     color: rgba($on-surface, 0.6);
     transition: all 200ms;
     &:hover {
-      background: rgba($on-surface, 0.1);
-      color: $on-surface;
+      background: $error;
+      color: $on-error;
     }
   }
 
