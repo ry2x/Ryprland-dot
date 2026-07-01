@@ -523,7 +523,7 @@ function CircularProgress<T>({
               .get_window(`control-center-${m.get_connector()}`)
               ?.set_visible(false),
           )
-        execAsync("kitty btm").catch(console.error)
+        execAsync("kitty --title TempTerminal btm").catch(console.error)
       }}
     >
       {overlay}
