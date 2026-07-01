@@ -46,7 +46,7 @@ local function setColSizeTb(ws, size, size_str)
     col_state_tb[ws] = size
     hl.dispatch(hl.dsp.layout("colresize all " .. size))
     hl.config({ scrolling = { column_width = size } })
-    sendNotification(P.icon .. "/col_resize_" .. size_str .. ".png", "Column Size: Small", "")
+    sendNotification(P.icon .. "/col_resize_" .. size_str .. ".png", "Column Size: " .. size_str, "")
 end
 
 hl.bind(mod .. "+ CAPS + TAB",
@@ -73,11 +73,7 @@ hl.bind(mod .. "+ CAPS + TAB",
 
 -- keep col size per workspace
 hl.on("workspace.active",
-    function()
-        local current_ws = hl.get_active_workspace()
-        if not current_ws then
-            return
-        end
+    function(current_ws)
         local ws = current_ws.id
 
         if not isExistingInTb(ws) then
