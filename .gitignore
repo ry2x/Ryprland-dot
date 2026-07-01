@@ -1,6 +1,4 @@
-# Ignore all files in the private-dotfile directory except for README.md
 private-dotfile/*
-!private-dotfile/README.md
 
 # fish_variable
 base/.config/fish/fish_variables
@@ -49,9 +47,9 @@ base/.config/rofi/images/currentWal.thumb
 base/.config/rofi/images/currentWalBlur.thumb
 base/.config/rofi/images/currentWalQuad.quad
 
-# swaync
-base/.config/swaync/matugen/matugen-swaync.css
+# ags
+base/.config/ags/assets/launcher_bg_*.png
+base/.config/ags/assets/bg.scss
 
-# walker
-base/.config/walker/themes/rofi/matugen.css
-base/.config/walker/themes/rofi/currentWalQuad.quad
+# wlogout
+base/.config/wlogout/matugen-wlogout.css
