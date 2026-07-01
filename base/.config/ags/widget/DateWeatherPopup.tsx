@@ -4,11 +4,23 @@ import Notifd from "gi://AstalNotifd"
 import { createBinding as bind, For } from "ags"
 import { createPoll } from "ags/time"
 import { LucideIcon } from "../lib/lucide"
-import Pango from "gi://Pango"
 import NotificationCard from "./NotificationCard"
 
 // Location for weather
 const LOCATION = "Osaka"
+
+// Clock variables
+const clockTime = createPoll("", 1000, "date '+%H:%M'")
+const clockTz = createPoll("", 60000, "date '+%Z'")
+const clockDate = createPoll("", 60000, "date '+%B %d, %Y'")
+const clockDay = createPoll("", 60000, "env LC_TIME=en_US.UTF-8 date '+%A'")
+
+const WORLD_CLOCKS = [
+  { label: "London", tz: "Europe/London" },
+  { label: "Brisbane", tz: "Australia/Brisbane" },
+  { label: "New York", tz: "America/New_York" },
+  { label: "Los Angeles", tz: "America/Los_Angeles" },
+]
 
 // Fetch full JSON for future forecast usage (every 30 mins, timeout 10s)
 const weatherJson = createPoll(
@@ -93,6 +105,7 @@ const weatherInfo = weatherJson.as((str) => {
 
     const current = data.current_condition[0]
     const today = data.weather[0]
+    const region = data.nearest_area?.[0]?.region?.[0]?.value || LOCATION
 
     return {
       temp: current.temp_C,
@@ -101,6 +114,7 @@ const weatherInfo = weatherJson.as((str) => {
       code: current.weatherCode,
       humidity: current.humidity,
       wind: current.windspeedKmph,
+      region: region,
       todayMax: today.maxtempC,
       todayMin: today.mintempC,
       forecast: data.weather
@@ -151,205 +165,314 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
           }}
           class="click-catcher"
         />
-        <box
-          valign={Gtk.Align.START}
-          halign={Gtk.Align.CENTER}
-          marginTop={8}
-        >
+        <box valign={Gtk.Align.START} halign={Gtk.Align.CENTER} marginTop={8}>
           <box class="dw-container" spacing={24}>
-        {/* LEFT COLUMN: Weather & Calendar */}
-        <box
-          orientation={Gtk.Orientation.VERTICAL}
-          spacing={16}
-          class="left-column"
-        >
-          <box
-            class="weather-card widget-card"
-            orientation={Gtk.Orientation.VERTICAL}
-            spacing={16}
-            hexpand
-          >
-            {/* Current conditions */}
-            <box spacing={16}>
-              <LucideIcon
-                name={weatherInfo.as((w) =>
-                  w ? getWeatherIcon(w.code) : "cloud",
-                )}
-                pixelSize={48}
-              />
+            {/* LEFT COLUMN: Weather & Calendar */}
+            <box
+              orientation={Gtk.Orientation.VERTICAL}
+              spacing={16}
+              class="left-column"
+            >
+              {/* CLOCK CARD */}
               <box
+                class="clock-card widget-card"
                 orientation={Gtk.Orientation.VERTICAL}
+                spacing={8}
+                valign={Gtk.Align.CENTER}
+                hexpand
+              >
+                <box halign={Gtk.Align.FILL} valign={Gtk.Align.CENTER}>
+                  <box hexpand />
+                  <label label={clockTime} class="clock-time" />
+                  <box hexpand valign={Gtk.Align.END} halign={Gtk.Align.START}>
+                    <label
+                      label={clockTz}
+                      class="clock-tz"
+                      css="margin-left: 8px;"
+                    />
+                  </box>
+                </box>
+                <box spacing={8} halign={Gtk.Align.CENTER}>
+                  <label label={clockDay} class="clock-day" />
+                  <label label="•" class="clock-dot" />
+                  <label label={clockDate} class="clock-date" />
+                </box>
+              </box>
+
+              {/* WORLD CLOCK CARD */}
+              <box
+                class="world-clock-card widget-card"
+                orientation={Gtk.Orientation.VERTICAL}
+                spacing={8}
+                hexpand
+              >
+                {WORLD_CLOCKS.map((tz) => (
+                  <box
+                    orientation={Gtk.Orientation.VERTICAL}
+                    halign={Gtk.Align.FILL}
+                    spacing={2}
+                  >
+                    <box
+                      orientation={Gtk.Orientation.HORIZONTAL}
+                      halign={Gtk.Align.FILL}
+                    >
+                      <label
+                        label={tz.label}
+                        halign={Gtk.Align.START}
+                        hexpand
+                        class="world-clock-label"
+                      />
+                      <label
+                        halign={Gtk.Align.END}
+                        css="font-weight: 700; font-size: 1.1em;"
+                        label={clockTime.as(() => {
+                          const now = new Date()
+                          return now.toLocaleTimeString("en-US", {
+                            timeZone: tz.tz,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })
+                        })}
+                      />
+                    </box>
+                    <label
+                      halign={Gtk.Align.START}
+                      css="color: alpha(currentColor, 0.7); font-size: 0.85em;"
+                      label={clockTime.as(() => {
+                        const now = new Date()
+                        const date = now.toLocaleDateString("en-US", {
+                          timeZone: tz.tz,
+                          month: "short",
+                          day: "2-digit",
+                        })
+                        const parts = new Intl.DateTimeFormat("en-US", {
+                          timeZone: tz.tz,
+                          timeZoneName: "shortOffset",
+                        }).formatToParts(now)
+                        const offsetPart =
+                          parts.find((p) => p.type === "timeZoneName")?.value ||
+                          ""
+                        let offset = offsetPart.replace("GMT", "")
+                        if (offset === "") offset = "+0"
+                        const tzAbbrParts = new Intl.DateTimeFormat("en-US", {
+                          timeZone: tz.tz,
+                          timeZoneName: "short",
+                        }).formatToParts(now)
+                        const tzAbbr =
+                          tzAbbrParts.find((p) => p.type === "timeZoneName")
+                            ?.value || ""
+                        return `${date} | ${offset}h | ${tzAbbr}`
+                      })}
+                    />
+                  </box>
+                ))}
+              </box>
+
+              <box
+                class="weather-card widget-card"
+                orientation={Gtk.Orientation.VERTICAL}
+                spacing={8}
+                hexpand
                 valign={Gtk.Align.CENTER}
               >
-                <label
-                  label={weatherInfo.as((w) => (w ? `${w.temp}°C` : "--"))}
-                  css="font-size: 2.2em; font-weight: 800;"
-                  halign={Gtk.Align.START}
-                />
-                <label
-                  label={weatherInfo.as((w) => (w ? w.desc : "Loading..."))}
-                  css="font-size: 1.1em; color: alpha(currentColor, 0.7);"
-                  halign={Gtk.Align.START}
-                />
+                {/* Current conditions */}
+                <box spacing={16} halign={Gtk.Align.FILL}>
+                  <LucideIcon
+                    name={weatherInfo.as((w) =>
+                      w ? getWeatherIcon(w.code) : "cloud",
+                    )}
+                    pixelSize={48}
+                    class="weather-icon"
+                    halign={Gtk.Align.START}
+                  />
+                  <box
+                    orientation={Gtk.Orientation.VERTICAL}
+                    valign={Gtk.Align.CENTER}
+                    hexpand
+                    halign={Gtk.Align.CENTER}
+                  >
+                    <label
+                      label={weatherInfo.as((w) => (w ? `${w.temp}°C` : "--"))}
+                      class="weather-temp"
+                      halign={Gtk.Align.CENTER}
+                    />
+                    <label
+                      label={weatherInfo.as((w) => (w ? w.desc : "Loading..."))}
+                      class="weather-desc"
+                      halign={Gtk.Align.CENTER}
+                    />
+                  </box>
+                  <label
+                    label={weatherInfo.as((w) => (w ? w.region : LOCATION))}
+                    css="font-size: 1.1em; font-weight: 700; color: alpha(currentColor, 0.7);"
+                    halign={Gtk.Align.END}
+                    valign={Gtk.Align.CENTER}
+                  />
+                </box>
+
+                {/* Additional info */}
+                <box
+                  spacing={24}
+                  class="weather-info"
+                  halign={Gtk.Align.CENTER}
+                >
+                  <box spacing={6}>
+                    <LucideIcon
+                      name="wind"
+                      pixelSize={16}
+                      class="weather-info-icon"
+                    />
+                    <label
+                      label={weatherInfo.as((w) =>
+                        w ? `${w.wind} km/h` : "--",
+                      )}
+                    />
+                  </box>
+                  <box spacing={6}>
+                    <LucideIcon
+                      name="droplets"
+                      pixelSize={16}
+                      class="weather-info-icon"
+                    />
+                    <label
+                      label={weatherInfo.as((w) =>
+                        w ? `${w.humidity}%` : "--",
+                      )}
+                    />
+                  </box>
+                </box>
+
+                {/* 2-Day Forecast */}
+                <box
+                  orientation={Gtk.Orientation.HORIZONTAL}
+                  spacing={16}
+                  homogeneous
+                  css="margin-top: 4px;"
+                >
+                  {[0, 1].map((i) => (
+                    <box
+                      orientation={Gtk.Orientation.HORIZONTAL}
+                      spacing={12}
+                      valign={Gtk.Align.CENTER}
+                      halign={Gtk.Align.CENTER}
+                    >
+                      <label
+                        label={weatherInfo.as((w) =>
+                          w && w.forecast[i]
+                            ? new Date(w.forecast[i].date)
+                                .toLocaleDateString("en-US", {
+                                  weekday: "short",
+                                })
+                                .toUpperCase()
+                            : "",
+                        )}
+                        class="forecast-day"
+                        halign={Gtk.Align.START}
+                      />
+                      <LucideIcon
+                        name={weatherInfo.as((w) =>
+                          w && w.forecast[i]
+                            ? getWeatherIcon(w.forecast[i].code)
+                            : "cloud",
+                        )}
+                        pixelSize={24}
+                        class="forecast-icon"
+                      />
+                      <box
+                        orientation={Gtk.Orientation.VERTICAL}
+                        spacing={2}
+                        valign={Gtk.Align.CENTER}
+                      >
+                        <label
+                          label={weatherInfo.as((w) =>
+                            w && w.forecast[i] ? `${w.forecast[i].max}°C` : "",
+                          )}
+                          class="forecast-max"
+                          halign={Gtk.Align.START}
+                        />
+                        <label
+                          label={weatherInfo.as((w) =>
+                            w && w.forecast[i] ? `${w.forecast[i].min}°C` : "",
+                          )}
+                          class="forecast-min"
+                          halign={Gtk.Align.START}
+                        />
+                      </box>
+                    </box>
+                  ))}
+                </box>
+              </box>
+
+              <box class="calendar-card widget-card" halign={Gtk.Align.FILL}>
+                {/* GTK Calendar component */}
+                {Object.assign(new Gtk.Calendar(), {
+                  halign: Gtk.Align.CENTER,
+                  hexpand: true,
+                })}
               </box>
             </box>
 
-            {/* Additional info */}
-            <box
-              spacing={16}
-              css="color: alpha(currentColor, 0.6); font-size: 0.9em;"
-            >
-              <label
-                label={weatherInfo.as((w) =>
-                  w ? `H:${w.todayMax}° L:${w.todayMin}°` : "",
-                )}
-              />
-              <label
-                label={weatherInfo.as((w) => (w ? `Hum: ${w.humidity}%` : ""))}
-              />
-              <label
-                label={weatherInfo.as((w) => (w ? `Wind: ${w.wind}km/h` : ""))}
-              />
-            </box>
-
+            {/* Separator between columns */}
             <box class="vertical-sep" />
 
-            {/* 2-Day Forecast */}
+            {/* RIGHT COLUMN: Notifications */}
             <box
-              orientation={Gtk.Orientation.HORIZONTAL}
+              orientation={Gtk.Orientation.VERTICAL}
               spacing={16}
-              homogeneous
+              class="right-column"
             >
-              <box
-                orientation={Gtk.Orientation.VERTICAL}
-                spacing={4}
-                halign={Gtk.Align.CENTER}
-              >
+              <box class="notif-header" spacing={8}>
+                <LucideIcon name="bell" pixelSize={20} />
                 <label
-                  label={weatherInfo.as((w) =>
-                    w
-                      ? new Date(w.forecast[0].date).toLocaleDateString(
-                          "en-US",
-                          { weekday: "short" },
-                        )
-                      : "",
-                  )}
-                  css="font-size: 0.9em; font-weight: 700;"
+                  label="Notifications"
+                  class="dw-title"
+                  halign={Gtk.Align.START}
+                  hexpand
                 />
-                <LucideIcon
-                  name={weatherInfo.as((w) =>
-                    w ? getWeatherIcon(w.forecast[0].code) : "cloud",
-                  )}
-                  pixelSize={24}
-                />
-                <label
-                  label={weatherInfo.as((w) =>
-                    w ? `${w.forecast[0].max}° / ${w.forecast[0].min}°` : "",
-                  )}
-                  css="font-size: 0.8em; color: alpha(currentColor, 0.7);"
-                />
+                <button
+                  class="clear-all-btn"
+                  onClicked={() =>
+                    notifd.get_notifications().forEach((n) => n.dismiss())
+                  }
+                >
+                  <box spacing={6}>
+                    <LucideIcon name="trash-2" pixelSize={14} />
+                    <label
+                      label="Clear All"
+                      css="font-size: 0.8em; font-weight: 600;"
+                    />
+                  </box>
+                </button>
               </box>
-              <box
-                orientation={Gtk.Orientation.VERTICAL}
-                spacing={4}
-                halign={Gtk.Align.CENTER}
-              >
-                <label
-                  label={weatherInfo.as((w) =>
-                    w && w.forecast[1]
-                      ? new Date(w.forecast[1].date).toLocaleDateString(
-                          "en-US",
-                          { weekday: "short" },
-                        )
-                      : "",
-                  )}
-                  css="font-size: 0.9em; font-weight: 700;"
-                />
-                <LucideIcon
-                  name={weatherInfo.as((w) =>
-                    w && w.forecast[1]
-                      ? getWeatherIcon(w.forecast[1].code)
-                      : "cloud",
-                  )}
-                  pixelSize={24}
-                />
-                <label
-                  label={weatherInfo.as((w) =>
-                    w && w.forecast[1]
-                      ? `${w.forecast[1].max}° / ${w.forecast[1].min}°`
-                      : "",
-                  )}
-                  css="font-size: 0.8em; color: alpha(currentColor, 0.7);"
-                />
-              </box>
+
+              {Object.assign(new Gtk.ScrolledWindow(), {
+                cssClasses: ["notif-scroll"],
+                vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
+                hscrollbarPolicy: Gtk.PolicyType.NEVER,
+                vexpand: true,
+                child: (
+                  <box
+                    orientation={Gtk.Orientation.VERTICAL}
+                    spacing={12}
+                    class="notif-list"
+                  >
+                    <For
+                      each={bind(notifd, "notifications").as((n) =>
+                        n.filter((notif) => !notif.transient),
+                      )}
+                    >
+                      {(notif) => (
+                        <NotificationCard
+                          notif={notif as Notifd.Notification}
+                        />
+                      )}
+                    </For>
+                  </box>
+                ),
+              })}
             </box>
           </box>
-
-          <box class="calendar-card widget-card" halign={Gtk.Align.FILL}>
-            {/* GTK Calendar component */}
-            {Object.assign(new Gtk.Calendar(), {
-              halign: Gtk.Align.CENTER,
-              hexpand: true,
-            })}
-          </box>
-        </box>
-
-        {/* Separator between columns */}
-        <box class="vertical-sep" />
-
-        {/* RIGHT COLUMN: Notifications */}
-        <box
-          orientation={Gtk.Orientation.VERTICAL}
-          spacing={16}
-          class="right-column"
-        >
-          <box class="notif-header">
-            <label
-              label="Notifications"
-              class="dw-title"
-              halign={Gtk.Align.START}
-              hexpand
-            />
-            <button
-              class="clear-all-btn"
-              onClicked={() =>
-                notifd.get_notifications().forEach((n) => n.dismiss())
-              }
-            >
-              <box spacing={6}>
-                <label
-                  label="Clear All"
-                  css="font-size: 0.8em; font-weight: 600;"
-                />
-              </box>
-            </button>
-          </box>
-
-          {Object.assign(new Gtk.ScrolledWindow(), {
-            cssClasses: ["notif-scroll"],
-            vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
-            hscrollbarPolicy: Gtk.PolicyType.NEVER,
-            vexpand: true,
-            child: (
-              <box
-                orientation={Gtk.Orientation.VERTICAL}
-                spacing={12}
-                class="notif-list"
-              >
-                <For
-                  each={bind(notifd, "notifications").as((n) =>
-                    n.filter((notif) => !notif.transient),
-                  )}
-                >
-                  {(notif) => (
-                    <NotificationCard notif={notif as Notifd.Notification} />
-                  )}
-                </For>
-              </box>
-            ),
-          })}
-        </box>
-      </box>
         </box>
       </overlay>
     </window>
