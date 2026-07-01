@@ -36,10 +36,6 @@ fi
 # generate matugen colors
 matugen image "$wallpaper_path" -m "$mode" -c "$DEFAULT_MATUGEN_CONFIG" --prefer darkness
 
-# set gtk theme
-#gsettings set org.gnome.desktop.interface gtk-theme ""
-#gsettings set org.gnome.desktop.interface gtk-theme Otis
-
 #-------Imagemagick magick 👀--------------#
 
 # Create rofi images directory if it doesn't exist
@@ -64,12 +60,21 @@ if ! magick "$wallpaper_path" -strip \
     exit 1
 fi
 
-# copy the quad image to AGS assets
+# Create a unique filename for the launcher background to bypass GTK4 texture caching
+RAND=$(date +%s%N)
+NEW_BG="$AGS_ASSETS_DIR/launcher_bg_$RAND.png"
+
 mkdir -p "$AGS_ASSETS_DIR"
-if ! ln -sf "$IMG_DIR/currentWalQuad.quad" "$AGS_ASSETS_DIR/launcher_bg.png"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link for AGS assets" -u critical
+if ! cp "$IMG_DIR/currentWalQuad.quad" "$NEW_BG"; then
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to copy AGS assets" -u critical
     exit 1
 fi
+
+# Clean up old background files
+find "$AGS_ASSETS_DIR" -name "launcher_bg_*.png" -not -name "launcher_bg_$RAND.png" -delete
+
+# Create a SCSS file
+echo "\$launcher_bg: 'file://$NEW_BG';" > "$AGS_ASSETS_DIR/bg.scss"
 
 # copy the wallpaper in current-wallpaper file
 mkdir -p "$(dirname "$BG_DIR")"
@@ -78,6 +83,10 @@ if ! ln -sf "$wallpaper_path" "$BG_DIR"; then
     exit 1
 fi
 
+# explicitly reload AGS css
+ags request reload-css
+
 # send notification after completion
 msg=$'The wallpaper have been update to\n'"$wallpaper_path"
-notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -i "$HOME/.local/share/bg"
+notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -i "$IMG_DIR/currentWal.sqre"
+
