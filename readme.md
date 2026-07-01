@@ -7,7 +7,7 @@ This configurations are heavily based on [Matuprland](https://github.com/Abhra00
 I think Matuprland is a great dotfile, but I want to make it use my own style and preferences, so I forked it and made several changes.
 
 > [!IMPORTANT]
-> I'll try to keep it up to date with the latest changes in Hyprland, but I won't be able to provide support for it. If you want to use it, you can fork it and make your own changes.
+> This branch is an archive of the last Waybar configuration used with Hyprland.
 
 ## How to use
 
