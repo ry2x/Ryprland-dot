@@ -10,13 +10,13 @@ window.DateWeatherPopup {
 
   .cc-container,
   .dw-container {
-    background: rgba($bg, 0.65);
+    background: color.adjust($surface, $alpha: -0.25);
     border-radius: 28px;
-    border: 1px solid rgba($border, 0.5);
+    border: 1px solid rgba($on-surface, 0.1);
     padding: 24px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      inset 0 1px 1px rgba(255, 255, 255, 0.05);
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba($on-surface, 0.1);
   }
 
   .cc-container {
@@ -26,7 +26,7 @@ window.DateWeatherPopup {
   .dw-container {
     // 2-column layout width
     min-width: 850px;
-    min-height: 550px;
+    min-height: 600px;
   }
 
   .left-column {
@@ -41,7 +41,12 @@ window.DateWeatherPopup {
     background: rgba($on-surface, 0.04);
     border-radius: 16px;
     padding: 16px;
-    border: 1px solid rgba($on-surface, 0.05);
+    border: 1px solid rgba($on-surface, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 200ms;
+    &:hover {
+      background: rgba($on-surface, 0.06);
+    }
   }
 
   .calendar-card {
@@ -67,12 +72,13 @@ window.DateWeatherPopup {
     border: none;
     transition: all 200ms;
     &:hover {
-      background: rgba($on-surface, 0.1);
+      background: $error;
+      color: $on-error;
     }
   }
 
   .notif-scroll {
-    min-height: 450px;
+    min-height: 500px;
   }
 
   &.urgency-2 {
@@ -82,34 +88,40 @@ window.DateWeatherPopup {
 }
 
 .cc-card {
-  background: rgba($on-surface, 0.05);
+  background: rgba($on-surface, 0.04);
   border-radius: 20px;
   padding: 16px;
   border: 1px solid rgba($on-surface, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 200ms;
+  &:hover {
+    background: rgba($on-surface, 0.06);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .cc-toggle-btn {
-  background: rgba($on-surface, 0.05);
+  background: rgba($on-surface, 0.04);
   border-radius: 20px;
   padding: 16px;
   border: 1px solid rgba($on-surface, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   transition: all 200ms;
 
   &.active {
-    background: rgba($primary, 0.2);
-    border-color: rgba($primary, 0.4);
+    background: rgba($primary, 0.15);
+    border-color: rgba($primary, 0.3);
     .icon,
     label {
       color: $primary;
     }
-    box-shadow: 0 4px 16px rgba($primary, 0.15);
+    box-shadow: 0 4px 16px rgba($primary, 0.2);
   }
   &:hover {
-    background: rgba($on-surface, 0.1);
+    background: rgba($on-surface, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     &.active {
-      background: rgba($primary, 0.3);
+      background: rgba($primary, 0.25);
     }
   }
 }
@@ -170,7 +182,7 @@ window.DateWeatherPopup {
 }
 
 // GTK Scale (Sliders) styling
-scale {
+.volume-slider {
   contents {
     trough {
       background: rgba($on-surface, 0.1);
@@ -233,4 +245,91 @@ levelbar {
     border: none;
     box-shadow: none;
   }
+}
+
+// ===== Clock Widget =====
+.clock-time {
+  font-size: 3.5em;
+  font-weight: 800;
+  color: $primary;
+}
+
+.clock-day {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: $text;
+}
+
+.clock-dot {
+  font-size: 1.1em;
+  color: rgba($text, 0.5);
+}
+
+.clock-date {
+  font-size: 1.1em;
+  color: rgba($text, 0.8);
+}
+
+// ===== Weather Card =====
+.weather-icon {
+  color: $primary;
+}
+
+.weather-temp {
+  font-size: 2.2em;
+  font-weight: 800;
+  color: $primary;
+}
+
+.weather-desc {
+  font-size: 1.1em;
+  color: rgba($text, 0.7);
+}
+
+.weather-info {
+  color: rgba($text, 0.6);
+  font-size: 0.9em;
+}
+
+.weather-info-icon {
+  color: $secondary;
+}
+
+// ===== Forecast Layout =====
+.forecast-day {
+  font-size: 0.95em;
+  font-weight: 800;
+  min-width: 45px;
+  color: $text;
+}
+
+.forecast-icon {
+  color: $primary;
+}
+
+.forecast-max {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: $secondary;
+}
+
+.forecast-min {
+  font-size: 0.8em;
+  color: rgba($text, 0.6);
+}
+
+// ===== World Clock Card =====
+.world-clock-card {
+  .world-clock-label {
+    font-weight: 700;
+    color: $primary;
+  }
+}
+
+// ===== Clock Card Timezone =====
+.clock-tz {
+  font-weight: 700;
+  color: $primary;
+  font-size: 1.2em;
+  margin-bottom: 8px;
 }
