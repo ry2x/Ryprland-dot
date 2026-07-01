@@ -12,24 +12,30 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
   const connector = gdkmonitor.get_connector()
 
   const [popups, setPopups] = createState<Notifd.Notification[]>([])
+  const [revealed, setRevealed] = createState<number[]>([])
   const timeouts = new Map<number, ReturnType<typeof setTimeout>>()
   const notifd = Notifd.get_default()
   const hypr = Hyprland.get_default()
 
   const dismissPopup = (id: number) => {
-    const currentPopups = popups.get()
-    const n = currentPopups.find((p) => p.id === id)
-
     if (timeouts.has(id)) {
       clearTimeout(timeouts.get(id)!)
       timeouts.delete(id)
     }
-    setPopups(currentPopups.filter((p) => p.id !== id))
 
-    // Clean up transient notifications from daemon memory once they expire from popups
-    if (n && n.transient) {
-      n.dismiss()
-    }
+    setRevealed(revealed.peek().filter((rid) => rid !== id))
+
+    setTimeout(() => {
+      const currentPopups = popups.peek()
+      const n = currentPopups.find((p) => p.id === id)
+      if (!n) return
+      setPopups(currentPopups.filter((p) => p.id !== id))
+
+      // Clean up transient notifications from daemon memory once they expire from popups
+      if (n.transient) {
+        n.dismiss()
+      }
+    }, 300)
   }
 
   notifd.connect("notified", (_, id) => {
@@ -40,9 +46,12 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
 
     const n = notifd.get_notification(id)
     if (n) {
-      const current = popups.get()
+      const current = popups.peek()
       if (!current.some((p) => p.id === id)) {
         setPopups([n, ...current])
+        setTimeout(() => {
+          setRevealed([...revealed.peek(), id])
+        }, 10)
       }
 
       if (timeouts.has(id)) {
@@ -78,7 +87,26 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
         valign={Gtk.Align.START}
       >
         <For each={popups}>
-          {(notif) => <NotificationCard notif={notif as Notifd.Notification} />}
+          {(notif) => {
+            const n = notif as Notifd.Notification
+            return (
+              <revealer
+                transitionType={Gtk.RevealerTransitionType.SLIDE_LEFT}
+                transitionDuration={300}
+                revealChild={revealed.as((ids) => ids.includes(n.id))}
+              >
+                <revealer
+                  transitionType={Gtk.RevealerTransitionType.CROSSFADE}
+                  transitionDuration={300}
+                  revealChild={revealed.as((ids) => ids.includes(n.id))}
+                >
+                  <box halign={Gtk.Align.END}>
+                    <NotificationCard notif={n} />
+                  </box>
+                </revealer>
+              </revealer>
+            )
+          }}
         </For>
       </box>
     </window>
