@@ -20,7 +20,7 @@ local ApplicationBinds = {
     { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
     { "A",
         function()
-            toggleWindowTray("com.github.th_ch.youtube_music", "", "youtube-music " .. electronOptions)
+            toggleWindowTray("com.github.th-ch.youtube-music", "", "youtube-music " .. electronOptions)
         end,
         " Music"
     },
