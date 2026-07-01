@@ -33,43 +33,48 @@ export default function ScrollerIndicator({
     })
   }
 
+  let updateTimeout: ReturnType<typeof setTimeout> | null = null
+
   function updateInfo() {
-    const monitor = hypr.monitors.find((m) => m.name === connector)
-    if (!monitor) {
-      currentHasClients = false
+    if (updateTimeout) return
+    updateTimeout = setTimeout(() => {
+      updateTimeout = null
+
+      const monitor = hypr.monitors.find((m) => m.name === connector)
+      if (!monitor) {
+        currentHasClients = false
+        updateVisibility()
+        return setInfo("0 / 0")
+      }
+
+      const fw = monitor.active_workspace
+      if (!fw) {
+        currentHasClients = false
+        updateVisibility()
+        return setInfo("0 / 0")
+      }
+
+      const clients = fw.clients
+        .filter((c) => !c.floating)
+        .sort((a, b) => a.x - b.x)
+      if (clients.length === 0) {
+        currentHasClients = false
+        updateVisibility()
+        return setInfo("0 / 0")
+      }
+
+      const focused = hypr.focused_client
+      const activeClient =
+        focused && focused.workspace?.id === fw.id ? focused : fw.last_client
+      const index = activeClient
+        ? clients.findIndex((c) => c.address === activeClient.address)
+        : -1
+      const displayIndex = index !== -1 ? index + 1 : 0
+
+      currentHasClients = true
       updateVisibility()
-      return setInfo("0 / 0")
-    }
-
-    const fw = monitor.active_workspace
-    if (!fw) {
-      currentHasClients = false
-      updateVisibility()
-      return setInfo("0 / 0")
-    }
-
-    const clients = fw.clients
-      .filter((c) => !c.floating)
-      .sort((a, b) => a.x - b.x)
-    if (clients.length === 0) {
-      currentHasClients = false
-      updateVisibility()
-      return setInfo("0 / 0")
-    }
-
-    const focused = hypr.focused_client
-    const activeClient =
-      focused && focused.workspace && focused.workspace.id === fw.id
-        ? focused
-        : fw.last_client
-    const index = activeClient
-      ? clients.findIndex((c) => c.address === activeClient.address)
-      : -1
-    const displayIndex = index !== -1 ? index + 1 : 0
-
-    currentHasClients = true
-    updateVisibility()
-    setInfo(`${displayIndex} / ${clients.length}`)
+      setInfo(`${displayIndex} / ${clients.length}`)
+    }, 10)
   }
 
   // Hook up IPC events for layout changes
