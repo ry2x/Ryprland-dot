@@ -3,64 +3,19 @@ GLib.setenv("GSK_RENDERER", "gl", true)
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import app from "ags/gtk4/app"
 import Apps from "gi://AstalApps"
-import { For, createState } from "ags"
+import { createState } from "ags"
 import Pango from "gi://Pango"
 
 const apps = new Apps.Apps()
-
-function AppItem({
-  appInstance,
-  hide,
-}: {
-  appInstance: Apps.Application
-  hide: () => void
-}) {
-  return (
-    <button
-      class="applauncher-item"
-      canFocus={false}
-      onClicked={() => {
-        hide()
-        appInstance.launch()
-      }}
-    >
-      <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
-        <image
-          iconName={appInstance.iconName || "application-x-executable"}
-          class="applauncher-item-icon"
-        />
-        <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
-          <label
-            label={appInstance.name}
-            halign={Gtk.Align.START}
-            class="applauncher-item-name"
-          />
-          {appInstance.description && (
-            <label
-              label={appInstance.description}
-              halign={Gtk.Align.START}
-              class="applauncher-item-desc"
-              ellipsize={Pango.EllipsizeMode.END}
-              maxWidthChars={40}
-            />
-          )}
-        </box>
-      </box>
-    </button>
-  )
-}
 
 export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
   const { CENTER } = Astal.WindowAnchor
   const [text, setText] = createState("")
   const [selectedIndex, setSelectedIndex] = createState(0)
-  const filteredApps = text.as((t) => apps.fuzzy_query(t))
-
   const searchEntry = (
     <entry
       class="applauncher-input"
       placeholderText="Search apps..."
-      text={text()}
       onChanged={(self: Gtk.Entry) => {
         setText(self.text)
         setSelectedIndex(0)
@@ -73,9 +28,9 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     <button
       class="applauncher-item"
       canFocus={false}
-      visible={text.as((t) => t.trim() !== "")}
+      visible={text.as((t) => (t || "").trim() !== "")}
       onClicked={() => {
-        const t = text.peek()
+        const t = text.peek() || ""
         app
           .get_window(`applauncher-${gdkmonitor.get_connector()}`)
           ?.set_visible(false)
@@ -91,7 +46,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
         <image iconName="web-browser" class="applauncher-item-icon" />
         <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
           <label
-            label={text.as((t) => `Search "${t}"`)}
+            label={text.as((t) => `Search "${t || ""}"`)}
             halign={Gtk.Align.START}
             class="applauncher-item-name"
             ellipsize={Pango.EllipsizeMode.END}
@@ -107,21 +62,142 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
   )
 
   const appList = (
-    <box orientation={Gtk.Orientation.VERTICAL} spacing={10}>
-      <For each={filteredApps}>
-        {(a) => (
-          <AppItem
-            appInstance={a as Apps.Application}
-            hide={() =>
-              app
-                .get_window(`applauncher-${gdkmonitor.get_connector()}`)
-                ?.set_visible(false)
-            }
-          />
-        )}
-      </For>
-    </box>
+    <box orientation={Gtk.Orientation.VERTICAL} spacing={10} />
   ) as Gtk.Box
+
+  const widgetMap = new Map<string, Gtk.Widget>()
+
+  function getAppKey(appInstance: Apps.Application) {
+    return (
+      appInstance.name +
+      (appInstance.description || "") +
+      (appInstance.iconName || "")
+    )
+  }
+
+  const allApps = apps.get_list()
+  let currentResults: Apps.Application[] = []
+
+  // Custom JS-side fuzzy query to completely prevent C/GJS GObject allocation leaks
+  function searchApps(q: string) {
+    if (q === "") return allApps
+    const keywords = q.split(/\s+/)
+
+    const results = allApps
+      .map((app) => {
+        const name = (app.name || "").toLowerCase()
+        const desc = (app.description || "").toLowerCase()
+        const exec = (app.executable || "").toLowerCase()
+        const searchString = name + " " + desc + " " + exec
+
+        let score = 0
+        if (name.startsWith(q)) score += 100
+        else if (name.includes(q)) score += 50
+        else if (exec.includes(q)) score += 30
+        else if (desc.includes(q)) score += 10
+
+        const matchesAll = keywords.every((kw) => searchString.includes(kw))
+        if (!matchesAll) score = 0
+
+        return { app, score }
+      })
+      .filter((x) => x.score > 0)
+
+    results.sort((a, b) => b.score - a.score)
+    return results.map((x) => x.app).slice(0, 30) // LIMIT TO 30 APPS TO SAVE MEMORY
+  }
+
+  function populateApps() {
+    const safeT = text() || ""
+    const q = safeT.trim().toLowerCase()
+
+    currentResults = searchApps(q)
+
+    for (const [, w] of widgetMap) {
+      w.set_visible(false)
+    }
+
+    let prev: Gtk.Widget | null = null
+    currentResults.forEach((res) => {
+      const key = getAppKey(res)
+      let w = widgetMap.get(key)
+      if (!w) {
+        // Construct vanilla GTK widget to avoid JSX tracking context issues & memory leaks
+        const btn = new Gtk.Button({
+          cssClasses: ["applauncher-item"],
+          canFocus: false,
+        })
+
+        const box = new Gtk.Box({
+          orientation: Gtk.Orientation.HORIZONTAL,
+          spacing: 12,
+        })
+
+        const icon = new Gtk.Image({
+          iconName: res.iconName || "application-x-executable",
+          cssClasses: ["applauncher-item-icon"],
+        })
+
+        const textBox = new Gtk.Box({
+          orientation: Gtk.Orientation.VERTICAL,
+          valign: Gtk.Align.CENTER,
+        })
+
+        const nameLabel = new Gtk.Label({
+          label: res.name,
+          halign: Gtk.Align.START,
+          cssClasses: ["applauncher-item-name"],
+        })
+
+        textBox.append(nameLabel)
+
+        if (res.description) {
+          const descLabel = new Gtk.Label({
+            label: res.description,
+            halign: Gtk.Align.START,
+            cssClasses: ["applauncher-item-desc"],
+            ellipsize: Pango.EllipsizeMode.END,
+            maxWidthChars: 40,
+          })
+          textBox.append(descLabel)
+        }
+
+        box.append(icon)
+        box.append(textBox)
+        btn.set_child(box)
+
+        btn.connect("clicked", () => {
+          app
+            .get_window(`applauncher-${gdkmonitor.get_connector()}`)
+            ?.set_visible(false)
+          res.launch()
+        })
+
+        w = btn
+        widgetMap.set(key, w)
+        appList.append(w)
+      }
+      w.set_visible(true)
+      appList.reorder_child_after(w, prev)
+      prev = w
+    })
+
+    import("gi://GLib").then((GLib) => {
+      GLib.default.idle_add(GLib.default.PRIORITY_DEFAULT_IDLE, () => {
+        updateSelection()
+        return GLib.default.SOURCE_REMOVE
+      })
+    })
+  }
+
+  text.subscribe(() => populateApps())
+
+  import("gi://GLib").then((GLib) => {
+    GLib.default.idle_add(GLib.default.PRIORITY_DEFAULT_IDLE, () => {
+      populateApps()
+      return GLib.default.SOURCE_REMOVE
+    })
+  })
 
   const scrollWindow = Object.assign(new Gtk.ScrolledWindow(), {
     cssClasses: ["applauncher-scroll"],
@@ -146,7 +222,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
 
   function updateSelection() {
     const idx = selectedIndex.get()
-    const results = filteredApps.get()
+    const results = currentResults
 
     let targetChild: Gtk.Widget | null = null
 
@@ -154,18 +230,22 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     let child = appList.get_first_child()
     let i = 0
     while (child) {
-      if (i === idx) {
-        child.add_css_class("selected")
-        targetChild = child
+      if (child.get_visible()) {
+        if (i === idx) {
+          child.add_css_class("selected")
+          targetChild = child
+        } else {
+          child.remove_css_class("selected")
+        }
+        i++
       } else {
         child.remove_css_class("selected")
       }
       child = child.get_next_sibling()
-      i++
     }
 
     // update searchGoogleBtn
-    if (idx === results.length && text.get().trim() !== "") {
+    if (idx === results.length && (text.get() || "").trim() !== "") {
       searchGoogleBtn.add_css_class("selected")
       targetChild = searchGoogleBtn
     } else {
@@ -199,19 +279,13 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
   }
 
   selectedIndex.subscribe(() => updateSelection())
-  filteredApps.subscribe(() => {
-    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-      updateSelection()
-      return GLib.SOURCE_REMOVE
-    })
-  })
 
   const entryKeyCtrl = new Gtk.EventControllerKey()
   entryKeyCtrl.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
   entryKeyCtrl.connect("key-pressed", (_, keyval) => {
-    const results = filteredApps.get()
+    const results = currentResults
     const maxIndex =
-      text.get().trim() !== "" ? results.length : results.length - 1
+      (text.get() || "").trim() !== "" ? results.length : results.length - 1
     if (maxIndex < 0) return false
 
     if (keyval === Gdk.KEY_Down) {
@@ -227,13 +301,14 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     if (keyval === Gdk.KEY_Return || keyval === Gdk.KEY_KP_Enter) {
       const idx = selectedIndex.get()
       if (idx === results.length) {
+        const searchQuery = text.get()
         app
           .get_window(`applauncher-${gdkmonitor.get_connector()}`)
           ?.set_visible(false)
         import("ags/process").then(({ execAsync }) => {
           execAsync([
             "xdg-open",
-            `https://google.com/search?q=${encodeURIComponent(text.get())}`,
+            `https://google.com/search?q=${encodeURIComponent(searchQuery)}`,
           ])
         })
       } else if (idx < results.length) {
@@ -261,6 +336,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       visible={false}
       onNotifyVisible={(self) => {
         if (!self.visible) {
+          searchEntry.set_text("")
           setText("")
           setSelectedIndex(0)
         } else {

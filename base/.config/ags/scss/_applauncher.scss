@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "../assets/bg.scss" as *;
 
 .applauncher-window {
   background: transparent;
@@ -16,7 +17,7 @@
 }
 
 .applauncher-left-panel {
-  background-image: url("file:///home/haku/.config/ags/assets/launcher_bg.png");
+  background-image: url(#{$launcher_bg});
   background-size: cover;
   background-position: center;
   background-color: $bg;
