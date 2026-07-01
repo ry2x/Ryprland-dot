@@ -118,4 +118,3 @@ output_path = '~/.config/hyprcrop/config.toml'
 [templates.ags]
 input_path = '~/.config/matugen/templates/matugen-ags.scss'
 output_path = '~/.config/ags/themes/matugen.scss'
-post_hook = 'ags request reload-css'
