@@ -1,6 +1,7 @@
+import GLib from "gi://GLib"
+GLib.setenv("GSK_RENDERER", "gl", true)
 import app from "ags/gtk4/app"
 import { Gtk, Gdk } from "ags/gtk4"
-import GLib from "gi://GLib"
 import { execAsync } from "ags/process"
 import Hyprland from "gi://AstalHyprland"
 import style from "./style.scss"
@@ -8,6 +9,7 @@ import Bar from "./widget/Bar"
 import ControlCenter from "./widget/ControlCenter"
 import DateWeatherPopup from "./widget/DateWeatherPopup"
 import NotificationPopups from "./widget/NotificationPopups"
+import AppLauncher from "./widget/AppLauncher"
 
 app.start({
   css: style,
@@ -62,6 +64,19 @@ app.start({
         }
       })
       res("Toggled Control Center")
+    } else if (request[0] === "toggle-launcher") {
+      const focusedMonitor = Hyprland.get_default().get_focused_monitor().name
+      app.get_monitors().forEach((m) => {
+        const al = app.get_window(`applauncher-${m.get_connector()}`)
+        if (al) {
+          if (m.get_connector() === focusedMonitor) {
+            al.set_visible(!al.get_visible())
+          } else {
+            al.set_visible(false)
+          }
+        }
+      })
+      res("Toggled App Launcher")
     } else if (request[0] === "list-windows") {
       const focusedMonitor = Hyprland.get_default().get_focused_monitor().name
       const dw = app.get_window(`date-weather-popup-${focusedMonitor}`)
@@ -90,6 +105,7 @@ app.start({
       ControlCenter(m)
       DateWeatherPopup(m)
       NotificationPopups(m)
+      AppLauncher(m)
     })
   },
 })
