@@ -1,15 +1,26 @@
 import { Gdk } from "ags/gtk4"
 import { Gtk } from "ags/gtk4"
-import { createPoll } from "ags/time"
 import { LucideIcon } from "../../lib/lucide"
 import app from "ags/gtk4/app"
+import { createState } from "gnim"
+import { execAsync } from "ags/process"
+import GLib from "gi://GLib?version=2.0"
 
-// Check for updates (official and AUR) every 30 minutes. Exported to share with ControlCenter.
-export const updatesPoll = createPoll(
-  "0",
-  60000 * 30,
-  "bash -c '(checkupdates 2>/dev/null; paru -Qu 2>/dev/null) | wc -l'",
-)
+export const [updatesPoll, setUpdates] = createState("0")
+
+export function refreshUpdates() {
+  execAsync(
+    "bash -c '(checkupdates 2>/dev/null; paru -Qu 2>/dev/null) | wc -l'",
+  )
+    .then((out) => setUpdates(out))
+    .catch(console.error)
+}
+
+refreshUpdates()
+GLib.timeout_add(GLib.PRIORITY_DEFAULT, 60000 * 30, () => {
+  refreshUpdates()
+  return GLib.SOURCE_CONTINUE
+})
 
 export default function Updates({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const isVisible = updatesPoll.as((u) => parseInt(u) > 0)
