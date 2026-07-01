@@ -252,8 +252,12 @@ function CavaWidget() {
   area.set_size_request(-1, 160) // 160px fixed height
   area.set_hexpand(true)
 
-  cava.connect("notify::values", () => {
+  const signalId = cava.connect("notify::values", () => {
     area.queue_draw()
+  })
+
+  area.connect("destroy", () => {
+    cava.disconnect(signalId)
   })
 
   area.set_draw_func((_area, cr, width, height) => {
