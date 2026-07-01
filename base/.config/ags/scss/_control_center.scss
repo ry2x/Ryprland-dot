@@ -11,7 +11,7 @@ window.DateWeatherPopup {
   .cc-container,
   .dw-container {
     background: color.adjust($surface, $alpha: -0.25);
-    margin: 20px 40px 48px 40px;
+    margin: 0px 40px 48px 40px;
     border-radius: 28px;
     border: 1px solid rgba($on-surface, 0.1);
     padding: 24px;
@@ -341,13 +341,13 @@ levelbar {
   box-shadow: none;
   transition: all 200ms;
   &:hover {
-    background: rgba(255,255,255, 0.05);
+    background: rgba(255, 255, 255, 0.05);
   }
 }
 
 .cc-split-btn-right {
   @extend .cc-split-btn;
-  border-left: 1px solid rgba(255,255,255, 0.1);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 20px;

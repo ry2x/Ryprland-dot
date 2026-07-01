@@ -645,7 +645,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.NORMAL}
       layer={Astal.Layer.TOP}
       anchor={TOP}
-      marginTop={8}
+      marginTop={0}
       keymode={Astal.Keymode.ON_DEMAND}
       application={app}
       visible={false}

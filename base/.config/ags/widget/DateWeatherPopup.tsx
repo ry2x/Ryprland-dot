@@ -202,7 +202,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.NORMAL}
       layer={Astal.Layer.TOP}
       anchor={TOP}
-      marginTop={8}
+      marginTop={0}
       keymode={Astal.Keymode.ON_DEMAND}
       application={app}
       visible={false}
@@ -217,7 +217,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
           }}
           class="click-catcher"
         />
-        <box valign={Gtk.Align.START} halign={Gtk.Align.CENTER} marginTop={8}>
+        <box valign={Gtk.Align.START} halign={Gtk.Align.CENTER} marginTop={0}>
           <box class="dw-container" spacing={24}>
             {/* LEFT COLUMN: Weather & Calendar */}
             <box
