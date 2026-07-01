@@ -1,13 +1,8 @@
 -- Layer rules
 for _, namespace in ipairs({
-    "waybar",
-    "swaync-control-center",
-    "swaync-notification-window",
-    "notifications",
     "rofi",
     "logout_dialog",
     "hyprcrop-freeze",
-    "walker",
     "gtk4-layer-shell"
 }) do
     hl.layer_rule({

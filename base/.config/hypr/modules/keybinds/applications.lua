@@ -33,7 +33,7 @@ local ApplicationBinds = {
     { "SHIFT + R", getRofiScript("launcher-style-changer"), "SwitchLauncher" },
 
     -- ags
-    { "SHIFT + B", getHyprScript("restartAgs.sh"), "RestartWaybar" },
+    { "SHIFT + B", getHyprScript("restartAgs.sh"), "Restart ags" },
     { "ALT + B", "ags request reload-css", "Reload ags CSS" },
     { "N", "ags request toggle-notif", "󰂞 Notification" },
 
@@ -41,7 +41,7 @@ local ApplicationBinds = {
     { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
     { "Q", "pkill waypaper || waypaper", "Waypaper" },
     { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
-    { "SHIFT + T", getHyprScript("refresh.sh"), "RefreshTheme" },
+    { "SHIFT + T", getHyprScript("matugenMagick.sh"), "RefreshTheme" },
 }
 
 for _, bind in ipairs(ApplicationBinds) do
