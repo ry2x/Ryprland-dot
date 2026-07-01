@@ -8,7 +8,7 @@
 DEFAULT_MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 IMG_DIR="$HOME/.config/rofi/images"
 BG_DIR="$HOME/.local/share/bg"
-WALKER_ROFI_DIR="$HOME/.config/walker/themes/rofi"
+AGS_ASSETS_DIR="$HOME/.config/ags/assets"
 
 # Parse arguments
 mode="dark"
@@ -64,10 +64,10 @@ if ! magick "$wallpaper_path" -strip \
     exit 1
 fi
 
-# copy the quad image to walker rofi mode
-mkdir -p "$WALKER_ROFI_DIR"
-if ! ln -sf "$IMG_DIR/currentWalQuad.quad" "$WALKER_ROFI_DIR/currentWalQuad.quad"; then
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link for walker rofi" -u critical
+# copy the quad image to AGS assets
+mkdir -p "$AGS_ASSETS_DIR"
+if ! ln -sf "$IMG_DIR/currentWalQuad.quad" "$AGS_ASSETS_DIR/launcher_bg.png"; then
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to create symbolic link for AGS assets" -u critical
     exit 1
 fi
 
