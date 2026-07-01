@@ -58,69 +58,123 @@ function QuickToggles() {
   return (
     <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
       {/* Wi-Fi Toggle */}
-      <button
+      <box
         class={bind(wifi, "enabled").as(
           (e) => `cc-toggle-btn ${e ? "active" : ""}`,
         )}
-        onClicked={() =>
-          execAsync([
-            "bash",
-            "-c",
-            `nmcli radio wifi ${wifi.enabled ? "off" : "on"}`,
-          ]).catch(console.error)
-        }
+        spacing={0}
+        css="padding: 0;"
       >
-        <box spacing={12}>
-          <LucideIcon name="wifi" class="icon" pixelSize={24} />
-          <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
-            <label
-              label="Wi-Fi"
-              css="font-weight: 700; font-size: 1.1em;"
-              halign={Gtk.Align.START}
-            />
-            <label
-              label={bind(wifi, "ssid").as((s) => s || "Disconnected")}
-              css="font-size: 0.8em; opacity: 0.7;"
-              halign={Gtk.Align.START}
-              ellipsize={Pango.EllipsizeMode.END}
-              maxWidthChars={12}
-              lines={1}
-            />
+        <button
+          hexpand
+          class="cc-split-btn-left"
+          css="padding: 16px;"
+          onClicked={() =>
+            execAsync([
+              "bash",
+              "-c",
+              `nmcli radio wifi ${wifi.enabled ? "off" : "on"}`,
+            ]).catch(console.error)
+          }
+        >
+          <box spacing={12}>
+            <LucideIcon name="wifi" class="icon" pixelSize={24} />
+            <box
+              orientation={Gtk.Orientation.VERTICAL}
+              valign={Gtk.Align.CENTER}
+            >
+              <label
+                label="Wi-Fi"
+                css="font-weight: 700; font-size: 1.1em;"
+                halign={Gtk.Align.START}
+              />
+              <label
+                label={bind(wifi, "ssid").as((s) => s || "Disconnected")}
+                css="font-size: 0.8em; opacity: 0.7;"
+                halign={Gtk.Align.START}
+                ellipsize={Pango.EllipsizeMode.END}
+                maxWidthChars={12}
+                lines={1}
+              />
+            </box>
           </box>
-        </box>
-      </button>
+        </button>
+        <button
+          class="cc-split-btn-right"
+          css="padding: 16px;"
+          onClicked={() => {
+            app
+              .get_monitors()
+              .forEach((m) =>
+                app
+                  .get_window(`control-center-${m.get_connector()}`)
+                  ?.set_visible(false),
+              )
+            execAsync("nmgui").catch(console.error)
+          }}
+        >
+          <LucideIcon name="chevron-right" pixelSize={20} />
+        </button>
+      </box>
 
       {/* BT Toggle */}
-      <button
+      <box
         class={bind(bt, "is_powered").as(
           (e) => `cc-toggle-btn ${e ? "active" : ""}`,
         )}
-        onClicked={() =>
-          execAsync([
-            "bash",
-            "-c",
-            `rfkill ${bt.is_powered ? "block" : "unblock"} bluetooth`,
-          ]).catch(console.error)
-        }
+        spacing={0}
+        css="padding: 0;"
       >
-        <box spacing={12}>
-          <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
-          <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
-            <label
-              label="Bluetooth"
-              css="font-weight: 700; font-size: 1.1em;"
-              halign={Gtk.Align.START}
-            />
-            <label
-              label={bind(bt, "is_connected").as((c) =>
-                c ? "Connected" : "Disconnected",
-              )}
-              css="font-size: 0.8em; opacity: 0.7;"
-              halign={Gtk.Align.START}
-            />
+        <button
+          hexpand
+          class="cc-split-btn-left"
+          css="padding: 16px;"
+          onClicked={() =>
+            execAsync([
+              "bash",
+              "-c",
+              `rfkill ${bt.is_powered ? "block" : "unblock"} bluetooth`,
+            ]).catch(console.error)
+          }
+        >
+          <box spacing={12}>
+            <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
+            <box
+              orientation={Gtk.Orientation.VERTICAL}
+              valign={Gtk.Align.CENTER}
+            >
+              <label
+                label="Bluetooth"
+                css="font-weight: 700; font-size: 1.1em;"
+                halign={Gtk.Align.START}
+              />
+              <label
+                label={bind(bt, "is_connected").as((c) =>
+                  c ? "Connected" : "Disconnected",
+                )}
+                css="font-size: 0.8em; opacity: 0.7;"
+                halign={Gtk.Align.START}
+              />
+            </box>
           </box>
-        </box>
-      </button>
+        </button>
+        <button
+          class="cc-split-btn-right"
+          css="padding: 16px;"
+          onClicked={() => {
+            app
+              .get_monitors()
+              .forEach((m) =>
+                app
+                  .get_window(`control-center-${m.get_connector()}`)
+                  ?.set_visible(false),
+              )
+            execAsync("blueman-manager").catch(console.error)
+          }}
+        >
+          <LucideIcon name="chevron-right" pixelSize={20} />
+        </button>
+      </box>
     </box>
   )
 }
@@ -168,11 +222,24 @@ function VolumeSlider() {
         }}
       />
 
-      <label
-        label={bind(speaker, "volume").as((v) => `${Math.round(v * 100)}%`)}
-        css="min-width: 40px; font-weight: 700;"
-        halign={Gtk.Align.END}
-      />
+      <button
+        class="icon-btn"
+        css="min-width: 40px; padding: 4px; font-weight: 700; border-radius: 10px;"
+        onClicked={() => {
+          app
+            .get_monitors()
+            .forEach((m) =>
+              app
+                .get_window(`control-center-${m.get_connector()}`)
+                ?.set_visible(false),
+            )
+          execAsync("pavucontrol").catch(console.error)
+        }}
+      >
+        <label
+          label={bind(speaker, "volume").as((v) => `${Math.round(v * 100)}%`)}
+        />
+      </button>
     </box>
   )
 }
@@ -282,16 +349,40 @@ function MediaCard() {
                 valign={Gtk.Align.CENTER}
                 hexpand
               >
-                <label
-                  label={bind(player, "title").as((t) => t || "Unknown")}
-                  css="font-weight: 800; font-size: 1.2em;"
+                <button
+                  css="background: transparent; border: none; box-shadow: none; padding: 0;"
                   halign={Gtk.Align.START}
-                  wrap={true}
-                  wrapMode={Pango.WrapMode.WORD_CHAR}
-                  maxWidthChars={20}
-                  lines={2}
-                  ellipsize={Pango.EllipsizeMode.END}
-                />
+                  onClicked={() => {
+                    app
+                      .get_monitors()
+                      .forEach((m) =>
+                        app
+                          .get_window(`control-center-${m.get_connector()}`)
+                          ?.set_visible(false),
+                      )
+                    try {
+                      player.raise()
+                    } catch (e) {
+                      console.error(e)
+                    }
+                    if (player.entry) {
+                      execAsync(
+                        `hyprctl dispatch focuswindow "class:^(${player.entry})$"`,
+                      ).catch(() => {})
+                    }
+                  }}
+                >
+                  <label
+                    label={bind(player, "title").as((t) => t || "Unknown")}
+                    css="font-weight: 800; font-size: 1.2em;"
+                    halign={Gtk.Align.START}
+                    wrap={true}
+                    wrapMode={Pango.WrapMode.WORD_CHAR}
+                    maxWidthChars={20}
+                    lines={2}
+                    ellipsize={Pango.EllipsizeMode.END}
+                  />
+                </button>
                 <label
                   label={bind(player, "artist").as((a) => a || "Unknown")}
                   css="opacity: 0.7; font-size: 0.9em; margin-bottom: 4px;"
@@ -421,7 +512,23 @@ function CircularProgress<T>({
 
   overlay.add_overlay(textContainer)
 
-  return overlay
+  return (
+    <button
+      css="background: transparent; border: none; box-shadow: none; padding: 0; border-radius: 50%;"
+      onClicked={() => {
+        app
+          .get_monitors()
+          .forEach((m) =>
+            app
+              .get_window(`control-center-${m.get_connector()}`)
+              ?.set_visible(false),
+          )
+        execAsync("kitty btm").catch(console.error)
+      }}
+    >
+      {overlay}
+    </button>
+  )
 }
 
 function SystemMetrics() {
@@ -549,11 +656,10 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
         spacing={16}
         widthRequest={420}
       >
-        <label
-          label="Control Center"
-          class="cc-title"
-          halign={Gtk.Align.START}
-        />
+        <box spacing={12} halign={Gtk.Align.START}>
+          <LucideIcon name="settings-2" pixelSize={24} />
+          <label label="Control Center" class="cc-title" />
+        </box>
 
         <QuickToggles />
         <VolumeSlider />
