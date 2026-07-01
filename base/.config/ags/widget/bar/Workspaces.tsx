@@ -13,14 +13,15 @@ export default function Workspaces({
   const focused = createBinding(hypr, "focused_workspace")
 
   const createWorkspaceBtn = (ws: Hyprland.Workspace) => {
+    const wsId = ws.id
     const btn = (
       <button
         valign={Gtk.Align.CENTER}
         halign={Gtk.Align.CENTER}
         class={focused.as((fw) =>
-          fw?.id === ws.id ? "workspace active" : "workspace",
+          fw?.id === wsId ? "workspace active" : "workspace",
         )}
-        onClicked={() => ws.focus()}
+        onClicked={() => hypr.dispatch("workspace", wsId.toString())}
       />
     )
 
