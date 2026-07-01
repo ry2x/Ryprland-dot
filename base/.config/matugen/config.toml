@@ -23,31 +23,16 @@ post_hook = 'bat cache --build'
 #[templates.spicetify]
 #input_path = '~/.config/matugen/templates/spotify-colors.ini'
 #output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
+
 # Rofi
 [templates.rofi]
 input_path = '~/.config/matugen/templates/matugen-rofi.rasi'
 output_path = '~/.config/rofi/matugen/matugen-rofi.rasi'
 
-# Hyprland
-# [templates.hyprland]
-# input_path = '~/.config/matugen/templates/matugen-hyprland.conf'
-# output_path = '~/.config/hypr/matugen/matugen-hyprland.conf'
 # Hyprland (above 0.5.5)
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/matugen-hyprland.lua'
 output_path = '~/.config/hypr/matugen/matugen-hyprland.lua'
-
-# Waybar
-#[templates.waybar]
-#input_path = '~/.config/matugen/templates/matugen-waybar.css'
-#output_path = '~/.config/waybar/matugen/matugen-waybar.css'
-#post_hook = 'killall -SIGUSR2 waybar'
-
-# Swaync
-#[templates.swaync]
-#input_path = '~/.config/matugen/templates/matugen-swaync.css'
-#output_path = '~/.config/swaync/matugen/matugen-swaync.css'
-#post_hook = 'swaync-client -rs'
 
 # Hyprlock
 [templates.hyprlock]
@@ -69,11 +54,6 @@ output_path = '~/.config/gtk-3.0/gtk.css'
 input_path = '~/.config/matugen/templates/matugen-gtk.css'
 output_path = '~/.config/gtk-4.0/gtk.css'
 
-# walker
-[templates.walker]
-input_path = '~/.config/matugen/templates/matugen-walker.css'
-output_path = '~/.config/walker/themes/rofi/matugen.css'
-
 # Qt5
 [templates.qt5]
 input_path = '~/.config/matugen/templates/qtct-colors.conf'
@@ -94,11 +74,6 @@ output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 input_path = '~/.config/matugen/templates/matugen-cava'
 output_path = '~/.config/cava/config'
 
-# Pywalfox
-#[templates.pywalfox]
-#input_path = '~/.config/matugen/templates/pywalfox-colors.json'
-#output_path = '~/.cache/wal/colors.json'
-#post_hook = 'pywalfox update'
 # Zen
 [templates.zen]
 input_path = '~/.config/matugen/templates/zen-userchrome.css'
@@ -118,3 +93,8 @@ output_path = '~/.config/hyprcrop/config.toml'
 [templates.ags]
 input_path = '~/.config/matugen/templates/matugen-ags.scss'
 output_path = '~/.config/ags/themes/matugen.scss'
+
+# wlogout
+[templates.wlogout]
+input_path = '~/.config/matugen/templates/matugen-wlogout.css'
+output_path = '~/.config/wlogout/matugen-wlogout.css'
