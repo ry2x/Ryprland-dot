@@ -10,7 +10,7 @@ import { createPoll } from "ags/time"
 import { execAsync } from "ags/process"
 import { LucideIcon } from "../lib/lucide"
 import Pango from "gi://Pango"
-import { updatesPoll } from "./bar/Updates"
+import { updatesPoll, refreshUpdates } from "./bar/Updates"
 
 const cpu = createPoll(0, 2000, () =>
   execAsync(["bash", "-c", "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'"])
@@ -156,6 +156,7 @@ function VolumeSlider() {
       </button>
 
       <slider
+        class="volume-slider"
         hexpand
         drawValue={false}
         min={0}
@@ -172,6 +173,55 @@ function VolumeSlider() {
         css="min-width: 40px; font-weight: 700;"
         halign={Gtk.Align.END}
       />
+    </box>
+  )
+}
+
+function CavaWidget() {
+  const cava = AstalCava.get_default()
+  if (!cava) return <box visible={false} />
+
+  const area = new Gtk.DrawingArea()
+  area.set_size_request(-1, 160) // 160px fixed height
+  area.set_hexpand(true)
+
+  cava.connect("notify::values", () => {
+    area.queue_draw()
+  })
+
+  area.set_draw_func((_area, cr, width, height) => {
+    const vals = cava.values.slice(0, 30) // Reduce bars to 30 to add spacing
+    if (vals.length === 0) return
+
+    const SENSITIVITY = 1.5
+    const barWidth = width / vals.length
+    const padding = 2
+
+    const ctx = _area.get_style_context()
+    const color = ctx.get_color()
+    cr.setSourceRGBA(color.red, color.green, color.blue, 0.15) // Overlap color
+
+    for (let i = 0; i < vals.length; i++) {
+      const val = Math.min(vals[i] * SENSITIVITY, 1.0)
+      const barHeight = Math.max(val * height, 2)
+      cr.rectangle(
+        i * barWidth + padding / 2,
+        height - barHeight,
+        barWidth - padding,
+        barHeight,
+      )
+      cr.fill()
+    }
+  })
+
+  return (
+    <box
+      class="cava-visualizer"
+      css="margin-bottom: -160px; margin-left: 20px; margin-right: 20px;"
+      canTarget={false}
+      valign={Gtk.Align.END}
+    >
+      {area}
     </box>
   )
 }
@@ -194,7 +244,7 @@ function MediaCard() {
         visible={bind(mpris, "players").as((p) => p.length === 0)}
         halign={Gtk.Align.CENTER}
         valign={Gtk.Align.CENTER}
-        css="min-height: 100px;"
+        css="min-height: 160px;"
       >
         <label
           label="No Media Playing"
@@ -204,10 +254,20 @@ function MediaCard() {
 
       <For each={bind(mpris, "players").as((p) => p.slice(0, 1))}>
         {(player) => (
-          <box class="cc-card" spacing={16}>
-            <box
-              css={bind(player, "cover_art").as(
-                (art) => `
+          <box
+            class="cc-card"
+            orientation={Gtk.Orientation.VERTICAL}
+            css="padding: 0;"
+            heightRequest={160}
+          >
+            {/* CAVA (Drawn First -> Background) */}
+            <CavaWidget />
+
+            <box spacing={16} css="padding: 16px;" vexpand={true}>
+              <box
+                valign={Gtk.Align.CENTER}
+                css={bind(player, "cover_art").as(
+                  (art) => `
                 background-image: url('${art && (art.startsWith("/") || art.startsWith("file://")) ? (art.startsWith("file://") ? art : `file://${art}`) : ""}');
                 background-size: cover;
                 background-position: center;
@@ -215,83 +275,53 @@ function MediaCard() {
                 min-width: 80px;
                 min-height: 80px;
               `,
-              )}
-            />
-            <box
-              orientation={Gtk.Orientation.VERTICAL}
-              valign={Gtk.Align.CENTER}
-              hexpand
-            >
-              <label
-                label={bind(player, "title").as((t) => t || "Unknown")}
-                css="font-weight: 800; font-size: 1.2em;"
-                halign={Gtk.Align.START}
-                wrap={true}
-                wrapMode={Pango.WrapMode.WORD_CHAR}
-                maxWidthChars={20}
-                lines={2}
-                ellipsize={Pango.EllipsizeMode.END}
+                )}
               />
-              <label
-                label={bind(player, "artist").as((a) => a || "Unknown")}
-                css="opacity: 0.7; font-size: 0.9em; margin-bottom: 4px;"
-                halign={Gtk.Align.START}
-                wrap={true}
-                wrapMode={Pango.WrapMode.WORD_CHAR}
-                maxWidthChars={25}
-                lines={1}
-                ellipsize={Pango.EllipsizeMode.END}
-              />
+              <box
+                orientation={Gtk.Orientation.VERTICAL}
+                valign={Gtk.Align.CENTER}
+                hexpand
+              >
+                <label
+                  label={bind(player, "title").as((t) => t || "Unknown")}
+                  css="font-weight: 800; font-size: 1.2em;"
+                  halign={Gtk.Align.START}
+                  wrap={true}
+                  wrapMode={Pango.WrapMode.WORD_CHAR}
+                  maxWidthChars={20}
+                  lines={2}
+                  ellipsize={Pango.EllipsizeMode.END}
+                />
+                <label
+                  label={bind(player, "artist").as((a) => a || "Unknown")}
+                  css="opacity: 0.7; font-size: 0.9em; margin-bottom: 4px;"
+                  halign={Gtk.Align.START}
+                  wrap={true}
+                  wrapMode={Pango.WrapMode.WORD_CHAR}
+                  maxWidthChars={25}
+                  lines={1}
+                  ellipsize={Pango.EllipsizeMode.END}
+                />
 
-              {cava && (
-                <box heightRequest={24} valign={Gtk.Align.END}>
-                  <label
-                    useMarkup={true}
-                    label={bind(cava, "values").as((v) => {
-                      const CAVA_CHARS = [
-                        "\u2581",
-                        "\u2582",
-                        "\u2583",
-                        "\u2584",
-                        "\u2585",
-                        "\u2586",
-                        "\u2587",
-                        "\u2588",
-                      ]
-                      // Force the array to only process the first 16 values to prevent doubling and stretching
-                      return v
-                        .slice(0, 16)
-                        .map((val: number) => {
-                          let i = Math.floor(val * CAVA_CHARS.length)
-                          if (i < 0) i = 0
-                          if (i >= CAVA_CHARS.length) i = CAVA_CHARS.length - 1
-                          return CAVA_CHARS[i]
-                        })
-                        .join("")
-                    })}
-                    class="cava-visualizer"
-                    css="font-size: 14px; margin-bottom: 8px; font-weight: 800;"
-                    halign={Gtk.Align.START}
-                    valign={Gtk.Align.END}
-                  />
+                <box spacing={16} halign={Gtk.Align.START}>
+                  <button class="icon-btn" onClicked={() => player.previous()}>
+                    <LucideIcon name="skip-back" pixelSize={20} />
+                  </button>
+                  <button
+                    class="icon-btn"
+                    onClicked={() => player.play_pause()}
+                  >
+                    <LucideIcon
+                      name={bind(player, "playback_status").as((s) =>
+                        s === Mpris.PlaybackStatus.PLAYING ? "pause" : "play",
+                      )}
+                      pixelSize={20}
+                    />
+                  </button>
+                  <button class="icon-btn" onClicked={() => player.next()}>
+                    <LucideIcon name="skip-forward" pixelSize={20} />
+                  </button>
                 </box>
-              )}
-
-              <box spacing={16} halign={Gtk.Align.START}>
-                <button class="icon-btn" onClicked={() => player.previous()}>
-                  <LucideIcon name="skip-back" pixelSize={20} />
-                </button>
-                <button class="icon-btn" onClicked={() => player.play_pause()}>
-                  <LucideIcon
-                    name={bind(player, "playback_status").as((s) =>
-                      s === Mpris.PlaybackStatus.PLAYING ? "pause" : "play",
-                    )}
-                    pixelSize={20}
-                  />
-                </button>
-                <button class="icon-btn" onClicked={() => player.next()}>
-                  <LucideIcon name="skip-forward" pixelSize={20} />
-                </button>
               </box>
             </box>
           </box>
@@ -457,11 +487,7 @@ function UpdatesCard() {
       spacing={16}
       hexpand
     >
-      <LucideIcon
-        name="package"
-        pixelSize={24}
-        class="icon updates-icon"
-      />
+      <LucideIcon name="package" pixelSize={24} class="icon updates-icon" />
       <box
         orientation={Gtk.Orientation.VERTICAL}
         valign={Gtk.Align.CENTER}
@@ -490,7 +516,9 @@ function UpdatesCard() {
             if (cc) cc.set_visible(false)
             if (dw) dw.set_visible(false)
           })
-          execAsync("kitty paru -Syu")
+          execAsync("kitty --title PacUpdate par_tui")
+            .then(() => refreshUpdates())
+            .catch(console.error)
         }}
       >
         <LucideIcon name="download" pixelSize={20} />
