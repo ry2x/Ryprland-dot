@@ -84,6 +84,10 @@ hl.window_rule({
     match = { title = "^(Chill With You)$" },
     tag = "+float_game"
 })
+hl.window_rule({
+    match = { class = "^(steam_app_3548580)$" },
+    tag = "+float_game"
+})
 
 -- mate engine x86_64 (desktop mascot)
 hl.window_rule({
