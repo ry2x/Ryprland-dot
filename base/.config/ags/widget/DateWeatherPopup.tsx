@@ -1,7 +1,7 @@
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import app from "ags/gtk4/app"
 import Notifd from "gi://AstalNotifd"
-import { createBinding as bind, For } from "ags"
+import { For, createState } from "ags"
 import { createPoll } from "ags/time"
 import { LucideIcon } from "../lib/lucide"
 import NotificationCard from "./NotificationCard"
@@ -137,6 +137,58 @@ const weatherInfo = weatherJson.as((str) => {
     return null
   }
 })
+
+function AnimatedNotificationList() {
+  const notifd = Notifd.get_default()
+  const [notifs, setNotifs] = createState<Notifd.Notification[]>(
+    notifd.get_notifications().filter((n) => !n.transient),
+  )
+  const [revealed, setRevealed] = createState<number[]>(
+    notifs.peek().map((n) => n.id),
+  )
+
+  notifd.connect("notified", (_, id) => {
+    const n = notifd.get_notification(id)
+    if (n && !n.transient) {
+      setNotifs([n, ...notifs.peek()])
+      setTimeout(() => {
+        setRevealed([...revealed.peek(), id])
+      }, 10)
+    }
+  })
+
+  notifd.connect("resolved", (_, id) => {
+    setRevealed(revealed.peek().filter((rid) => rid !== id))
+    setTimeout(() => {
+      setNotifs(notifs.peek().filter((n) => n.id !== id))
+    }, 300)
+  })
+
+  return (
+    <box orientation={Gtk.Orientation.VERTICAL} spacing={12} class="notif-list">
+      <For each={notifs}>
+        {(notif) => {
+          const n = notif as Notifd.Notification
+          return (
+            <revealer
+              transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
+              transitionDuration={300}
+              revealChild={revealed.as((ids) => ids.includes(n.id))}
+            >
+              <revealer
+                transitionType={Gtk.RevealerTransitionType.CROSSFADE}
+                transitionDuration={300}
+                revealChild={revealed.as((ids) => ids.includes(n.id))}
+              >
+                <NotificationCard notif={n} />
+              </revealer>
+            </revealer>
+          )
+        }}
+      </For>
+    </box>
+  )
+}
 
 export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
   const { TOP } = Astal.WindowAnchor
@@ -451,25 +503,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
                 hscrollbarPolicy: Gtk.PolicyType.NEVER,
                 vexpand: true,
-                child: (
-                  <box
-                    orientation={Gtk.Orientation.VERTICAL}
-                    spacing={12}
-                    class="notif-list"
-                  >
-                    <For
-                      each={bind(notifd, "notifications").as((n) =>
-                        n.filter((notif) => !notif.transient),
-                      )}
-                    >
-                      {(notif) => (
-                        <NotificationCard
-                          notif={notif as Notifd.Notification}
-                        />
-                      )}
-                    </For>
-                  </box>
-                ),
+                child: <AnimatedNotificationList />,
               })}
             </box>
           </box>
