@@ -1,4 +1,4 @@
-import { Astal, Gtk } from "ags/gtk4"
+import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango"
 import { LucideIcon } from "../lib/lucide"
@@ -10,7 +10,11 @@ export function resolveImage(img: string | null) {
   return null
 }
 
-export default function NotificationCard({ notif }: { notif: Notifd.Notification }) {
+export default function NotificationCard({
+  notif,
+}: {
+  notif: Notifd.Notification
+}) {
   const appIcon = notif.app_icon || notif.desktop_entry || notif.image
   const appIconPath = resolveImage(appIcon)
   const imageToDisplay = resolveImage(notif.image)
@@ -69,11 +73,7 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
               maxWidthChars={18}
             />
             <box hexpand />
-            <label
-              label={timeStr}
-              class="notif-time"
-              xalign={1}
-            />
+            <label label={timeStr} class="notif-time" xalign={1} />
             {/* CLOSE BUTTON */}
             <button
               class="notif-close"

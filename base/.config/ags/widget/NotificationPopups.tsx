@@ -78,9 +78,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
         valign={Gtk.Align.START}
       >
         <For each={popups}>
-          {(notif) => (
-            <NotificationCard notif={notif as Notifd.Notification} />
-          )}
+          {(notif) => <NotificationCard notif={notif as Notifd.Notification} />}
         </For>
       </box>
     </window>
