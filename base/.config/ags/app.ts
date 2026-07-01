@@ -11,8 +11,29 @@ import DateWeatherPopup from "./widget/DateWeatherPopup"
 import NotificationPopups from "./widget/NotificationPopups"
 import AppLauncher from "./widget/AppLauncher"
 
+let globalCssProvider: Gtk.CssProvider | null = null
+
+function reloadCss(cssInput: string) {
+  if (!globalCssProvider) {
+    globalCssProvider = new Gtk.CssProvider()
+    const display = Gdk.Display.get_default()
+    if (display) {
+      Gtk.StyleContext.add_provider_for_display(
+        display,
+        globalCssProvider,
+        Gtk.STYLE_PROVIDER_PRIORITY_USER,
+      )
+    }
+  }
+
+  if (GLib.file_test(cssInput, GLib.FileTest.EXISTS)) {
+    globalCssProvider.load_from_path(cssInput)
+  } else {
+    globalCssProvider.load_from_string(cssInput)
+  }
+}
+
 app.start({
-  css: style,
   requestHandler(request, res) {
     if (request[0] === "reload-css") {
       const configDir = `${GLib.get_user_config_dir()}/ags`
@@ -21,8 +42,7 @@ app.start({
 
       execAsync(`sass ${scssPath} ${cssPath}`)
         .then(() => {
-          app.reset_css()
-          app.apply_css(cssPath)
+          reloadCss(cssPath)
           res("CSS Reloaded Successfully")
         })
         .catch((err) => res(`Error: ${err}`))
@@ -92,6 +112,7 @@ app.start({
     }
   },
   main() {
+    reloadCss(style)
     // Add lucide symbolic icons to GTK Icon Theme search path
     const display = Gdk.Display.get_default()
     if (display) {
