@@ -10,6 +10,7 @@ hl.window_rule({
     immediate = true,
     workspace = "name:game silent",
     fullscreen = true,
+    render_unfocused = true,
     content = "game"
 })
 
@@ -21,6 +22,7 @@ hl.window_rule({
     size = { "1900", "1046" },
     immediate = true,
     workspace = "name:game silent",
+    render_unfocused = true,
     content = "game"
 })
 
