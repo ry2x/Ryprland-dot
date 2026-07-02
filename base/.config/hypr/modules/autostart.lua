@@ -28,12 +28,11 @@ hl.on("hyprland.start",
             -- wallpaper
             "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; waypaper --restore",
 
-            -- applets
-            "fcitx5 -d",
-            "discord --start-minimized",
-
             -- bar & notifications
-            "sleep 5; ags run & sleep 5; blueman-applet"
+            "sleep 5; ags run",
+            "sleep 10; blueman-applet",
+            "fcitx5 -d",
+            "sleep 2; discord --start-minimized"
         }
 
         for _, app in ipairs(autostart) do
