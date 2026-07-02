@@ -81,18 +81,18 @@ export default function ScrollerIndicator({
   }
 
   // Hook up IPC events for layout changes
-  hypr.connect("event", (_, event) => {
+  const hook1 = hypr.connect("event", (_, event) => {
     if (event === "configreloaded" || event.includes("scrolling")) {
       updateLayout()
     }
   })
 
   // Hook up IPC events for window list/focus changes
-  hypr.connect("notify::focused-workspace", updateInfo)
-  hypr.connect("notify::focused-client", updateInfo)
-  hypr.connect("client-added", updateInfo)
-  hypr.connect("client-removed", updateInfo)
-  hypr.connect("client-moved", updateInfo)
+  const hook2 = hypr.connect("notify::focused-workspace", updateInfo)
+  const hook3 = hypr.connect("notify::focused-client", updateInfo)
+  const hook4 = hypr.connect("client-added", updateInfo)
+  const hook5 = hypr.connect("client-removed", updateInfo)
+  const hook6 = hypr.connect("client-moved", updateInfo)
 
   // Initial fetch
   updateLayout()
@@ -103,6 +103,14 @@ export default function ScrollerIndicator({
       transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
       transitionDuration={250}
       revealChild={isVisible}
+      onDestroy={() => {
+        hypr.disconnect(hook1)
+        hypr.disconnect(hook2)
+        hypr.disconnect(hook3)
+        hypr.disconnect(hook4)
+        hypr.disconnect(hook5)
+        hypr.disconnect(hook6)
+      }}
     >
       <box>
         <button
