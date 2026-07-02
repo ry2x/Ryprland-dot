@@ -1,6 +1,8 @@
 import { Gdk } from "ags/gtk4"
 import { Gtk } from "ags/gtk4"
-import { createPoll } from "ags/time"
+import { createState } from "ags"
+import { execAsync } from "ags/process"
+import GLib from "gi://GLib?version=2.0"
 import { LucideIcon } from "../../lib/lucide"
 import app from "ags/gtk4/app"
 
@@ -8,15 +10,37 @@ import app from "ags/gtk4/app"
 // Leave empty "" to auto-detect based on your IP address.
 const LOCATION = "Osaka"
 
-// Fetch full JSON for future forecast usage (every 30 mins, timeout 10s)
-const weatherJson = createPoll(
-  "{}",
-  60000 * 30,
-  `curl -s --max-time 10 'wttr.in/${LOCATION}?format=j1'`,
-)
+export const [weatherJson, setWeatherJson] = createState("{}")
+
+export function refreshWeather() {
+  execAsync([
+    "bash",
+    "-c",
+    `curl -s --max-time 10 'wttr.in/${LOCATION}?format=j1'`,
+  ])
+    .then((out) => {
+      if (!out || out.trim() === "") throw new Error("Empty weather response")
+      // Validate it's actually JSON before accepting
+      JSON.parse(out)
+      setWeatherJson(out)
+    })
+    .catch((err) => {
+      console.error("Weather fetch failed:", err)
+      GLib.timeout_add(GLib.PRIORITY_DEFAULT, 60000, () => {
+        refreshWeather()
+        return GLib.SOURCE_REMOVE
+      })
+    })
+}
+
+refreshWeather()
+GLib.timeout_add(GLib.PRIORITY_DEFAULT, 60000 * 30, () => {
+  refreshWeather()
+  return GLib.SOURCE_CONTINUE
+})
 
 // WMO weather code mapping to Lucide icons
-function getWeatherIcon(code: string) {
+export function getWeatherIcon(code: string) {
   const c = parseInt(code)
   if (isNaN(c)) return "cloud"
 
