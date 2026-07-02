@@ -2,18 +2,28 @@ import { Gdk } from "ags/gtk4"
 import { Gtk } from "ags/gtk4"
 import { LucideIcon } from "../../lib/lucide"
 import app from "ags/gtk4/app"
-import { createState } from "gnim"
+import { createState } from "ags"
 import { execAsync } from "ags/process"
 import GLib from "gi://GLib?version=2.0"
 
 export const [updatesPoll, setUpdates] = createState("0")
 
 export function refreshUpdates() {
-  execAsync(
-    "bash -c '(checkupdates 2>/dev/null; paru -Qu 2>/dev/null) | wc -l'",
-  )
-    .then((out) => setUpdates(out))
-    .catch(console.error)
+  execAsync([
+    "bash",
+    "-c",
+    "ping -c 1 -W 2 archlinux.org >/dev/null && timeout 15 bash -c '(checkupdates 2>/dev/null; paru -Qu 2>/dev/null) | wc -l'",
+  ])
+    .then((out) => {
+      setUpdates(out)
+    })
+    .catch((err) => {
+      console.error(err)
+      GLib.timeout_add(GLib.PRIORITY_DEFAULT, 60000, () => {
+        refreshUpdates()
+        return GLib.SOURCE_REMOVE
+      })
+    })
 }
 
 refreshUpdates()
