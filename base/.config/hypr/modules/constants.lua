@@ -19,7 +19,6 @@ M.fileManager = "thunar"
 M.updater = "kitty --title PacUpdate par_tui"
 M.electronOptions = "--enable-wayland-ime --enable-features=UseOzonePlatform --ozone-platform=wayland --disable-gpu"
 
-
 M.mod = "SUPER"
 
 M.smw = smw
