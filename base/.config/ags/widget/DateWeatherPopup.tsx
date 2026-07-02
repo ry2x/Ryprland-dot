@@ -65,8 +65,10 @@ const weatherInfo = weatherJson.as((str) => {
   }
 })
 
-function AnimatedNotificationList() {
+export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
+  const { TOP } = Astal.WindowAnchor
   const notifd = Notifd.get_default()
+
   const [notifs, setNotifs] = createState<Notifd.Notification[]>(
     notifd.get_notifications().filter((n) => !n.transient),
   )
@@ -90,36 +92,6 @@ function AnimatedNotificationList() {
       setNotifs(notifs.peek().filter((n) => n.id !== id))
     }, 300)
   })
-
-  return (
-    <box orientation={Gtk.Orientation.VERTICAL} spacing={12} class="notif-list">
-      <For each={notifs}>
-        {(notif) => {
-          const n = notif as Notifd.Notification
-          return (
-            <revealer
-              transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
-              transitionDuration={300}
-              revealChild={revealed.as((ids) => ids.includes(n.id))}
-            >
-              <revealer
-                transitionType={Gtk.RevealerTransitionType.CROSSFADE}
-                transitionDuration={300}
-                revealChild={revealed.as((ids) => ids.includes(n.id))}
-              >
-                <NotificationCard notif={n} />
-              </revealer>
-            </revealer>
-          )
-        }}
-      </For>
-    </box>
-  )
-}
-
-export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
-  const { TOP } = Astal.WindowAnchor
-  const notifd = Notifd.get_default()
 
   return (
     <window
@@ -411,9 +383,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 />
                 <button
                   class="clear-all-btn"
-                  onClicked={() =>
-                    notifd.get_notifications().forEach((n) => n.dismiss())
-                  }
+                  onClicked={() => notifs.peek().forEach((n) => n.dismiss())}
                 >
                   <box spacing={6}>
                     <LucideIcon name="trash-2" pixelSize={14} />
@@ -430,7 +400,40 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
                 hscrollbarPolicy: Gtk.PolicyType.NEVER,
                 vexpand: true,
-                child: <AnimatedNotificationList />,
+                child: (
+                  <box
+                    orientation={Gtk.Orientation.VERTICAL}
+                    spacing={12}
+                    class="notif-list"
+                  >
+                    <For each={notifs}>
+                      {(notif) => {
+                        const n = notif as Notifd.Notification
+                        return (
+                          <revealer
+                            transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
+                            transitionDuration={300}
+                            revealChild={revealed.as((ids) =>
+                              ids.includes(n.id),
+                            )}
+                          >
+                            <revealer
+                              transitionType={
+                                Gtk.RevealerTransitionType.CROSSFADE
+                              }
+                              transitionDuration={300}
+                              revealChild={revealed.as((ids) =>
+                                ids.includes(n.id),
+                              )}
+                            >
+                              <NotificationCard notif={n} />
+                            </revealer>
+                          </revealer>
+                        )
+                      }}
+                    </For>
+                  </box>
+                ),
               })}
             </box>
           </box>
