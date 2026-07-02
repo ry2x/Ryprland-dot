@@ -9,7 +9,7 @@ local M = {}
 
 M.hyprScript = "$HOME/.config/hypr/scripts"
 M.rofiScript = "$HOME/.config/rofi/scripts"
-M.icon = "$HOME/.config/swaync/icons"
+M.icon = "$HOME/.config/hypr/icons"
 
 M.terminal = "kitty"
 M.terminal_tmp = "kitty --title TempTerminal"

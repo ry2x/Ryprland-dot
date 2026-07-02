@@ -13,7 +13,7 @@ set -u
 STEP=20
 VCP_CODE=10 # It means brightness in DDC/CI
 
-IMAGE_DIR="$HOME/.config/swaync/icons"
+IMAGE_DIR="$HOME/.config/hypr/icons"
 
 # Get connected display IDs
 get_displays() {

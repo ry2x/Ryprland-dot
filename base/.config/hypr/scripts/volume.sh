@@ -5,7 +5,7 @@ set -euo pipefail
 # ============================================================================
 # Configuration
 # ============================================================================
-readonly ICON_DIR="$HOME/.config/swaync/icons"
+readonly ICON_DIR="$HOME/.config/hypr/icons"
 readonly SCRIPT_DIR="$HOME/.config/hypr/scripts"
 readonly SOUND_SCRIPT="$SCRIPT_DIR/sounds.sh"
 readonly SINK="@DEFAULT_AUDIO_SINK@"
