@@ -101,6 +101,11 @@ hl.define_submap("gaming",
                 { description = "Move focus " .. keys[i] })
         end
 
+        -- capture window
+        hl.bind(mod .. "+S", hl.dsp.exec_cmd("hyprcrop monitor"), { description = "Capture screen" })
+        hl.bind(mod .. "+SHIFT + S", hl.dsp.exec_cmd("hyprcrop freeze"), { description = "Clipping screen" })
+        hl.bind("Print", hl.dsp.exec_cmd("hyprcrop all"), { description = "Capture area" })
+
         -- discord and youtube music
         hl.bind(mod .. " + D",
             function()
