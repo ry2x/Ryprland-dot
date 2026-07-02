@@ -121,7 +121,7 @@ app.start({
       )
     }
 
-    app.get_monitors().map((m) => {
+    app.get_monitors().forEach((m) => {
       Bar(m)
       ControlCenter(m)
       DateWeatherPopup(m)

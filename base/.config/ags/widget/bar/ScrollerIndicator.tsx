@@ -44,14 +44,16 @@ export default function ScrollerIndicator({
       if (!monitor) {
         currentHasClients = false
         updateVisibility()
-        return setInfo("0 / 0")
+        setInfo("0 / 0")
+        return
       }
 
       const fw = monitor.active_workspace
       if (!fw) {
         currentHasClients = false
         updateVisibility()
-        return setInfo("0 / 0")
+        setInfo("0 / 0")
+        return
       }
 
       const clients = fw.clients
@@ -60,7 +62,8 @@ export default function ScrollerIndicator({
       if (clients.length === 0) {
         currentHasClients = false
         updateVisibility()
-        return setInfo("0 / 0")
+        setInfo("0 / 0")
+        return
       }
 
       const focused = hypr.focused_client

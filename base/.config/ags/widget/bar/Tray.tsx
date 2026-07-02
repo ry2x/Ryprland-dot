@@ -38,51 +38,53 @@ export default function Tray() {
               popover.add_css_class("tray-menu")
 
               popover.set_child(
-                <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                  <button
-                    class="tray-menu-btn"
-                    onClicked={() => {
-                      popover.popdown()
-                      const env = GLib.getenv("QT_QPA_PLATFORMTHEME")
-                      execAsync([
-                        "bash",
-                        "-c",
-                        `QT_QPA_PLATFORMTHEME=${env} fcitx5-configtool`,
-                      ]).catch(() => {})
-                    }}
-                  >
-                    <box spacing={8}>
-                      <LucideIcon name="settings" pixelSize={16} />
-                      <label label="ConfigTool" />
-                    </box>
-                  </button>
+                (
+                  <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
+                    <button
+                      class="tray-menu-btn"
+                      onClicked={() => {
+                        popover.popdown()
+                        const env = GLib.getenv("QT_QPA_PLATFORMTHEME")
+                        execAsync([
+                          "bash",
+                          "-c",
+                          `QT_QPA_PLATFORMTHEME=${env} fcitx5-configtool`,
+                        ]).catch(() => {})
+                      }}
+                    >
+                      <box spacing={8}>
+                        <LucideIcon name="settings" pixelSize={16} />
+                        <label label="ConfigTool" />
+                      </box>
+                    </button>
 
-                  <button
-                    class="tray-menu-btn"
-                    onClicked={() => {
-                      popover.popdown()
-                      execAsync(["fcitx5-remote", "-r"]).catch(() => {})
-                    }}
-                  >
-                    <box spacing={8}>
-                      <LucideIcon name="refresh-cw" pixelSize={16} />
-                      <label label="Reload" />
-                    </box>
-                  </button>
+                    <button
+                      class="tray-menu-btn"
+                      onClicked={() => {
+                        popover.popdown()
+                        execAsync(["fcitx5-remote", "-r"]).catch(() => {})
+                      }}
+                    >
+                      <box spacing={8}>
+                        <LucideIcon name="refresh-cw" pixelSize={16} />
+                        <label label="Reload" />
+                      </box>
+                    </button>
 
-                  <button
-                    class="tray-menu-btn"
-                    onClicked={() => {
-                      popover.popdown()
-                      execAsync(["bash", "-c", "fcitx5 -r"]).catch(() => {})
-                    }}
-                  >
-                    <box spacing={8}>
-                      <LucideIcon name="power" pixelSize={16} />
-                      <label label="Restart" />
-                    </box>
-                  </button>
-                </box>,
+                    <button
+                      class="tray-menu-btn"
+                      onClicked={() => {
+                        popover.popdown()
+                        execAsync(["bash", "-c", "fcitx5 -r"]).catch(() => {})
+                      }}
+                    >
+                      <box spacing={8}>
+                        <LucideIcon name="power" pixelSize={16} />
+                        <label label="Restart" />
+                      </box>
+                    </button>
+                  </box>
+                ) as Gtk.Widget,
               )
 
               const rightClick = new Gtk.GestureClick({ button: 3 })

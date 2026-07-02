@@ -58,64 +58,68 @@ function QuickToggles() {
   return (
     <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
       {/* Wi-Fi Toggle */}
-      <box
-        class={bind(wifi, "enabled").as(
-          (e) => `cc-toggle-btn ${e ? "active" : ""}`,
-        )}
-        spacing={0}
-        css="padding: 0;"
-      >
-        <button
-          hexpand
-          class="cc-split-btn-left"
-          css="padding: 16px;"
-          onClicked={() =>
-            execAsync([
-              "bash",
-              "-c",
-              `nmcli radio wifi ${wifi.enabled ? "off" : "on"}`,
-            ]).catch(console.error)
-          }
+      {wifi ? (
+        <box
+          class={bind(wifi, "enabled").as(
+            (e) => `cc-toggle-btn ${e ? "active" : ""}`,
+          )}
+          spacing={0}
+          css="padding: 0;"
         >
-          <box spacing={12}>
-            <LucideIcon name="wifi" class="icon" pixelSize={24} />
-            <box
-              orientation={Gtk.Orientation.VERTICAL}
-              valign={Gtk.Align.CENTER}
-            >
-              <label
-                label="Wi-Fi"
-                css="font-weight: 700; font-size: 1.1em;"
-                halign={Gtk.Align.START}
-              />
-              <label
-                label={bind(wifi, "ssid").as((s) => s || "Disconnected")}
-                css="font-size: 0.8em; opacity: 0.7;"
-                halign={Gtk.Align.START}
-                ellipsize={Pango.EllipsizeMode.END}
-                maxWidthChars={12}
-                lines={1}
-              />
+          <button
+            hexpand
+            class="cc-split-btn-left"
+            css="padding: 16px;"
+            onClicked={() =>
+              execAsync([
+                "bash",
+                "-c",
+                `nmcli radio wifi ${wifi.enabled ? "off" : "on"}`,
+              ]).catch(console.error)
+            }
+          >
+            <box spacing={12}>
+              <LucideIcon name="wifi" class="icon" pixelSize={24} />
+              <box
+                orientation={Gtk.Orientation.VERTICAL}
+                valign={Gtk.Align.CENTER}
+              >
+                <label
+                  label="Wi-Fi"
+                  css="font-weight: 700; font-size: 1.1em;"
+                  halign={Gtk.Align.START}
+                />
+                <label
+                  label={bind(wifi, "ssid").as((s) => s || "Disconnected")}
+                  css="font-size: 0.8em; opacity: 0.7;"
+                  halign={Gtk.Align.START}
+                  ellipsize={Pango.EllipsizeMode.END}
+                  maxWidthChars={12}
+                  lines={1}
+                />
+              </box>
             </box>
-          </box>
-        </button>
-        <button
-          class="cc-split-btn-right"
-          css="padding: 16px;"
-          onClicked={() => {
-            app
-              .get_monitors()
-              .forEach((m) =>
-                app
-                  .get_window(`control-center-${m.get_connector()}`)
-                  ?.set_visible(false),
-              )
-            execAsync("nmgui").catch(console.error)
-          }}
-        >
-          <LucideIcon name="chevron-right" pixelSize={20} />
-        </button>
-      </box>
+          </button>
+          <button
+            class="cc-split-btn-right"
+            css="padding: 16px;"
+            onClicked={() => {
+              app
+                .get_monitors()
+                .forEach((m) =>
+                  app
+                    .get_window(`control-center-${m.get_connector()}`)
+                    ?.set_visible(false),
+                )
+              execAsync("nmgui").catch(console.error)
+            }}
+          >
+            <LucideIcon name="chevron-right" pixelSize={20} />
+          </button>
+        </box>
+      ) : (
+        <box visible={false} />
+      )}
 
       {/* BT Toggle */}
       <box
@@ -324,7 +328,7 @@ function MediaCard() {
       </box>
 
       <For each={bind(mpris, "players").as((p) => p.slice(0, 1))}>
-        {(player) => (
+        {(player: Mpris.Player) => (
           <box
             class="cc-card"
             orientation={Gtk.Orientation.VERTICAL}
@@ -438,7 +442,8 @@ function CircularProgress<T>({
   transformer: (v: T) => number
   icon: string
   label: string
-  sublabel: import("ags").Binding<string> | string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sublabel: any
   cssClass: string
 }) {
   const area = new Gtk.DrawingArea()
@@ -514,7 +519,7 @@ function CircularProgress<T>({
     </box>
   )
 
-  overlay.add_overlay(textContainer)
+  overlay.add_overlay(textContainer as Gtk.Widget)
 
   return (
     <button

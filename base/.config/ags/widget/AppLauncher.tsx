@@ -9,20 +9,15 @@ import Pango from "gi://Pango"
 const apps = new Apps.Apps()
 
 export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
-  const { CENTER } = Astal.WindowAnchor
   const [text, setText] = createState("")
   const [selectedIndex, setSelectedIndex] = createState(0)
   const searchEntry = (
-    <entry
-      class="applauncher-input"
-      placeholderText="Search apps..."
-      onChanged={(self: Gtk.Entry) => {
-        setText(self.text)
-        setSelectedIndex(0)
-      }}
-      hexpand
-    />
+    <entry class="applauncher-input" placeholderText="Search apps..." hexpand />
   ) as Gtk.Entry
+  searchEntry.connect("changed", () => {
+    setText(searchEntry.get_text())
+    setSelectedIndex(0)
+  })
 
   const searchGoogleBtn = (
     <button
@@ -59,7 +54,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
         </box>
       </box>
     </button>
-  )
+  ) as Gtk.Button
 
   const appList = (
     <box orientation={Gtk.Orientation.VERTICAL} spacing={10} />
@@ -84,10 +79,10 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     const keywords = q.split(/\s+/)
 
     const results = allApps
-      .map((app) => {
-        const name = (app.name || "").toLowerCase()
-        const desc = (app.description || "").toLowerCase()
-        const exec = (app.executable || "").toLowerCase()
+      .map((appItem) => {
+        const name = (appItem.name || "").toLowerCase()
+        const desc = (appItem.description || "").toLowerCase()
+        const exec = (appItem.executable || "").toLowerCase()
         const searchString = name + " " + desc + " " + exec
 
         let score = 0
@@ -99,7 +94,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
         const matchesAll = keywords.every((kw) => searchString.includes(kw))
         if (!matchesAll) score = 0
 
-        return { app, score }
+        return { app: appItem, score }
       })
       .filter((x) => x.score > 0)
 
@@ -182,21 +177,17 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       prev = w
     })
 
-    import("gi://GLib").then((GLib) => {
-      GLib.default.idle_add(GLib.default.PRIORITY_DEFAULT_IDLE, () => {
-        updateSelection()
-        return GLib.default.SOURCE_REMOVE
-      })
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+      updateSelection()
+      return GLib.SOURCE_REMOVE
     })
   }
 
   text.subscribe(() => populateApps())
 
-  import("gi://GLib").then((GLib) => {
-    GLib.default.idle_add(GLib.default.PRIORITY_DEFAULT_IDLE, () => {
-      populateApps()
-      return GLib.default.SOURCE_REMOVE
-    })
+  GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+    populateApps()
+    return GLib.SOURCE_REMOVE
   })
 
   const scrollWindow = Object.assign(new Gtk.ScrolledWindow(), {
@@ -330,7 +321,6 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.OVERLAY}
-      anchor={CENTER}
       keymode={Astal.Keymode.EXCLUSIVE}
       application={app}
       visible={false}
@@ -340,13 +330,11 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
           setText("")
           setSelectedIndex(0)
         } else {
-          import("gi://GLib").then((GLib) => {
-            GLib.default.idle_add(GLib.default.PRIORITY_DEFAULT_IDLE, () => {
-              searchEntry.grab_focus()
-              scrollWindow.get_vadjustment()?.set_value(0)
-              updateSelection()
-              return GLib.default.SOURCE_REMOVE
-            })
+          GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            searchEntry.grab_focus()
+            scrollWindow.get_vadjustment()?.set_value(0)
+            updateSelection()
+            return GLib.SOURCE_REMOVE
           })
         }
       }}

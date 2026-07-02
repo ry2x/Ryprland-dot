@@ -40,6 +40,7 @@ GLib.timeout_add(GLib.PRIORITY_DEFAULT, 60000 * 30, () => {
 })
 
 // WMO weather code mapping to Lucide icons
+// eslint-disable-next-line complexity
 export function getWeatherIcon(code: string) {
   const c = parseInt(code)
   if (isNaN(c)) return "cloud"
