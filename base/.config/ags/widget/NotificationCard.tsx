@@ -2,6 +2,9 @@ import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango"
 import { LucideIcon } from "../lib/lucide"
+import Gdk from "gi://Gdk"
+import Gio from "gi://Gio"
+import system from "system"
 
 export function resolveImage(img: string | null) {
   if (!img) return null
@@ -24,6 +27,26 @@ export default function NotificationCard({
     minute: "2-digit",
   })
 
+  let appIconPic: Gtk.Picture | null = null
+  let imagePic: Gtk.Picture | null = null
+
+  // Ensure immediate native memory release when the notification is resolved,
+  // bypassing lazy JS GC entirely and not relying on widget onDestroy.
+  notif.connect("resolved", () => {
+    setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (appIconPic) appIconPic.set_paintable(null as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (imagePic) imagePic.set_paintable(null as any)
+
+      try {
+        system.gc()
+      } catch (e) {
+        console.error(e)
+      }
+    }, 300) // Wait for slide/crossfade animation to finish
+  })
+
   return (
     <box
       class={`notif-card urgency-${notif.urgency}`}
@@ -36,16 +59,31 @@ export default function NotificationCard({
         <box class="notif-icon-container" valign={Gtk.Align.START}>
           {appIconPath ? (
             <box
-              css={`
-                background-image: url("${appIconPath}");
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                min-width: 32px;
-                min-height: 32px;
-              `}
+              css="min-width: 32px; min-height: 32px;"
+              overflow={Gtk.Overflow.HIDDEN}
               valign={Gtk.Align.CENTER}
-            />
+            >
+              {(() => {
+                const overlay = new Gtk.Overlay()
+                const dummyBox = new Gtk.Box()
+                dummyBox.set_size_request(32, 32)
+                overlay.set_child(dummyBox)
+
+                const pic = new Gtk.Picture()
+                appIconPic = pic
+                pic.set_can_focus(false)
+                pic.set_can_shrink(true)
+                pic.set_content_fit(Gtk.ContentFit.CONTAIN)
+                try {
+                  const file = Gio.File.new_for_uri(appIconPath)
+                  pic.set_paintable(Gdk.Texture.new_from_file(file))
+                } catch (e) {
+                  console.error(e)
+                }
+                overlay.add_overlay(pic)
+                return overlay
+              })()}
+            </box>
           ) : appIcon ? (
             <image
               iconName={appIcon}
@@ -113,15 +151,31 @@ export default function NotificationCard({
       {imageToDisplay && (
         <box
           class="notif-image"
-          css={`
-            background-image: url("${imageToDisplay}");
-            background-size: cover;
-            background-position: center;
-            border-radius: 8px;
-            min-height: 140px;
-            margin-top: 4px;
-          `}
-        />
+          css="border-radius: 8px; min-height: 140px; margin-top: 4px;"
+          overflow={Gtk.Overflow.HIDDEN}
+        >
+          {(() => {
+            const overlay = new Gtk.Overlay()
+            const dummyBox = new Gtk.Box()
+            dummyBox.set_size_request(-1, 140)
+            dummyBox.set_hexpand(true)
+            overlay.set_child(dummyBox)
+
+            const pic = new Gtk.Picture()
+            imagePic = pic
+            pic.set_can_focus(false)
+            pic.set_can_shrink(true)
+            pic.set_content_fit(Gtk.ContentFit.COVER)
+            try {
+              const file = Gio.File.new_for_uri(imageToDisplay)
+              pic.set_paintable(Gdk.Texture.new_from_file(file))
+            } catch (e) {
+              console.error(e)
+            }
+            overlay.add_overlay(pic)
+            return overlay
+          })()}
+        </box>
       )}
 
       {/* ACTIONS */}
