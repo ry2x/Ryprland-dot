@@ -88,5 +88,5 @@ ags request reload-css
 
 # send notification after completion
 msg=$'The wallpaper have been update to\n'"$wallpaper_path"
-notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -i "$IMG_DIR/currentWal.sqre"
+notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -n "$IMG_DIR/currentWal.sqre"
 
