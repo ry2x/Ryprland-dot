@@ -62,7 +62,7 @@ I've been reading the GJS and Gnim documentation and doing my best to avoid memo
 For those interested, here are the memory usage numbers I've observed, including the worst-case scenario:
 
 - **Usually case:**
-  - `around 500 MB`
+  - `around 350~450 MB`
 - **Worst case (many notifications containing large images):**
   - Idle: `~540 MB`
   - Peak: Depends on the number of notifications and the size of the attachments.
