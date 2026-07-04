@@ -49,6 +49,26 @@ This module provides the following widgets:
 
 - Update button
 
+## Directory Structure
+
+```text
+.
+├── app.ts                 # Application entry point
+├── assets/                # Static files (images, icons)
+├── lib/                   # Utility libraries and helpers
+├── scss/                  # Styling files
+├── services/              # Background services and state management
+├── style.scss             # Main stylesheet entry point
+├── themes/                # Generated theme variables
+└── widget/                # UI Components
+    ├── app-launcher/      # Application launcher UI
+    ├── bar/               # Status bar UI
+    ├── common/            # Shared UI components
+    ├── control-center/    # Quick settings and media controls
+    ├── date-weather/      # Date, time, and weather popup
+    └── notification-popups/ # On-screen notification banners
+```
+
 ## Why AGS?
 
 Maybe some people are wondering, "Why AGS? Why not QuickShell?"
@@ -75,15 +95,17 @@ Memory usage returns to the idle level after those notifications are cleared.
 
 ### Requirements
 
-- Bun
+- pnpm
 
 ### Usage
 
 ```bash
-bun install
-bun run lint    # Run ESLint
-bun run tsc     # Run the TypeScript type checker
-bun run format  # Run Prettier
+pnpm install     # init
+pnpm run lint    # Run ESLint
+pnpm run tsc     # Run the TypeScript type checker
+pnpm run format  # Run Prettier
+pnpm run build   # Build the AGS module
+pnpm run start   # Start the AGS module
 
 ags init        # generate the types for GTK4 and AGS
 ```
