@@ -13,15 +13,25 @@ local CENTER_BASE = {
     animation = "popin 80%"
 }
 
-hl.window_rule(withDefaults(CENTER_BASE, {
-    match = { tag = "center_float_big" },
-    size = { "monitor_w * 0.8", "monitor_h * 0.8" },
-}))
+hl.window_rule(
+    withDefaults(
+        CENTER_BASE,
+        {
+            match = { tag = "center_float_big" },
+            size = { "monitor_w * 0.8", "monitor_h * 0.8" },
+        }
+    )
+)
 
-hl.window_rule(withDefaults(CENTER_BASE, {
-    match = { tag = "center_float_half" },
-    size = { "monitor_w * 0.5", "monitor_h * 0.5" },
-}))
+hl.window_rule(
+    withDefaults(
+        CENTER_BASE,
+        {
+            match = { tag = "center_float_half" },
+            size = { "monitor_w * 0.5", "monitor_h * 0.5" },
+        }
+    )
+)
 
 local centerFloating = {
     { { class = "^(nwg-look)$" },                                  "center_float_half" },
@@ -57,17 +67,27 @@ local PINNED_TOP_BASE = {
     stay_focused = true
 }
 
-hl.window_rule(withDefaults(PINNED_TOP_BASE, {
-    match = { tag = "pin_float_big" },
-    size = { "monitor_w * 0.8", "monitor_h * 0.8" },
-    move = { "monitor_w * 0.1", tostring(TOP_GAP) }
-}))
+hl.window_rule(
+    withDefaults(
+        PINNED_TOP_BASE,
+        {
+            match = { tag = "pin_float_big" },
+            size = { "monitor_w * 0.8", "monitor_h * 0.8" },
+            move = { "monitor_w * 0.1", tostring(TOP_GAP) }
+        }
+    )
+)
 
-hl.window_rule(withDefaults(PINNED_TOP_BASE, {
-    match = { tag = "pin_float_mini" },
-    size = { "monitor_w * 0.3", "monitor_h * 0.5" },
-    move = { "monitor_w * 0.35", tostring(TOP_GAP) }
-}))
+hl.window_rule(
+    withDefaults(
+        PINNED_TOP_BASE,
+        {
+            match = { tag = "pin_float_mini" },
+            size = { "monitor_w * 0.3", "monitor_h * 0.5" },
+            move = { "monitor_w * 0.35", tostring(TOP_GAP) }
+        }
+    )
+)
 
 local pinFloating = {
     -- toggle applications
