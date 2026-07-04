@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'variables' as *;
 
 // ===== Base Window & Typography =====
@@ -135,26 +136,32 @@ popover.tray-menu {
   margin: 0px;
 
   > contents {
-    background-color: $bg;
-    border: 1px solid $border;
-    border-radius: 12px;
-    padding: 8px;
+    background: color.adjust($surface, $alpha: -0.25);
+    border: 1px solid rgba($on-surface, 0.1);
+    border-radius: 20px;
+    padding: 16px;
     min-width: 0px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 12px 36px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px rgba($on-surface, 0.1);
     margin: 0px;
     margin-top: 6px; /* Shift down slightly to match ControlCenter's marginTop */
   }
 
   .tray-menu-btn {
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: all 200ms cubic-bezier(0.25, 1, 0.5, 1);
+    background: rgba($on-surface, 0.04);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba($on-surface, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 200ms;
     font-weight: 500;
     font-size: 0.95em;
-    background: transparent;
+    color: $text;
 
     &:hover {
-      background-color: $bg-hover;
+      background: rgba($on-surface, 0.08);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
   }
 }
