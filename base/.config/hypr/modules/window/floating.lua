@@ -1,120 +1,94 @@
 -- Window rules for floating windows
 
-    local top_gap = 45
+local M = require("modules.window.floating_helper")
+local withDefaults = M.makeRuleWithDefaults
+local applyWindowRules = M.applyWindowRules
 
 ---------------------
--- tag definitions --
+-- center floating --
 ---------------------
-
--- center floating tag
-hl.window_rule({
-    match = { tag = "float" },
+local CENTER_BASE = {
     float = true,
-    animation = "popin 80%",
-    center = true
-})
+    center = true,
+    animation = "popin 80%"
+}
 
--- center top floating tag
-hl.window_rule({
-    match = { tag = "floatTop" },
-    float = true,
-    animation = "slide top",
-    move = { "monitor_w * 0.1", tostring(top_gap) },
-    pin = true
-})
-
--- right top floating tag
-hl.window_rule({
-    match = { tag = "floatTopRight" },
-    float = true,
-    animation = "slide top",
-    move = { "monitor_w * 0.7 - 10", tostring(top_gap) },
-    pin = true
-})
-
--- big size
-hl.window_rule({
-    match = { tag = "big" },
+hl.window_rule(withDefaults(CENTER_BASE, {
+    match = { tag = "center_float_big" },
     size = { "monitor_w * 0.8", "monitor_h * 0.8" },
-})
+}))
 
--- half size
-hl.window_rule({
-    match = { tag = "half" },
+hl.window_rule(withDefaults(CENTER_BASE, {
+    match = { tag = "center_float_half" },
     size = { "monitor_w * 0.5", "monitor_h * 0.5" },
-})
+}))
 
--- mini size
-hl.window_rule({
-    match = { tag = "mini" },
-    size = { "monitor_w * 0.3", "monitor_h * 0.5" },
-})
-
---------------------
--- floating rules --
---------------------
-
--- general floating rules
-local floating = {
-    { { class = "^(nwg-look)$" },                                  "mini" },
-    { { class = "^(waypaper)$" },                                  "half" },
-    { { class = "^(kvantummanager)$" },                            "half" },
-    { { class = "^(qt5ct)$" },                                     "half" },
-    { { class = "^(qt6ct)$" },                                     "half" },
-    { { class = "^(org.kde.polkit-kde-authentication-agent-1)$" }, "mini" },
-    { { title = "^(HyprBind.*)$" },                                "half" },
+local centerFloating = {
+    { { class = "^(nwg-look)$" },                                  "center_float_half" },
+    { { class = "^(kvantummanager)$" },                            "center_float_half" },
+    { { class = "^(qt5ct)$" },                                     "center_float_half" },
+    { { class = "^(qt6ct)$" },                                     "center_float_half" },
+    { { class = "^(org.kde.polkit-kde-authentication-agent-1)$" }, "center_float_half" },
+    { { title = "^(HyprBind.*)$" },                                "center_float_half" },
     -- file dialogs
-    { { class = "^(org.gnome.FileRoller)$" },                      "big" },
-    { { initial_title = "^(Open File)$" },                         "big" },
-    { { title = "^(Choose Files)$" },                              "big" },
-    { { title = "^(Save As)$" },                                   "big" },
-    { { title = "^(Confirm to replace files)$" },                  "big" },
-    { { title = "^(File Operation Progress)$" },                   "big" },
-    { { class = "^(xdg-desktop-portal-gtk)$" },                    "big" },
-    { { title = "^(Rename.*)$" },                                  "big" },
+    { { class = "^(org.gnome.FileRoller)$" },                      "center_float_big" },
+    { { initial_title = "^(Open File)$" },                         "center_float_big" },
+    { { title = "^(Choose Files)$" },                              "center_float_big" },
+    { { title = "^(Save As)$" },                                   "center_float_big" },
+    { { title = "^(Confirm to replace files)$" },                  "center_float_big" },
+    { { title = "^(File Operation Progress)$" },                   "center_float_big" },
+    { { title = "^(Rename.*)$" },                                  "center_float_big" },
     -- terminal
-    { { title = "^(TempTerminal)$" },                              "big" },
-    { { title = "^(yazi)$" },                                      "half" },
-    { { title = "^(PacUpdate)$" },                                 "big" },
+    { { title = "^(TempTerminal)$" },                              "center_float_big" },
+    { { title = "^(yazi)$" },                                      "center_float_half" },
+    { { title = "^(PacUpdate)$" },                                 "center_float_big" },
 }
 
--- floating rules for right top
-local right_top_floating = {
-    { { class = "^(nz.co.mega.megasync)$" },        "mini" },
-    { { class = "^(org.pulseaudio.pavucontrol)$" }, "mini" },
-    { { class = "^(blueman-manager)$" },            "mini" },
-    { { title = "^(KittyNmtui)$" },                 "mini" },
-    { { class = "^(com.network.manager)$" },        "mini" }
+applyWindowRules(centerFloating)
+
+-------------------------
+-- top pinned floating --
+-------------------------
+local TOP_GAP = 45
+local PINNED_TOP_BASE = {
+    float = true,
+    animation = "slide top",
+    pin = true
 }
 
--- floating rules for pin
-local pin_floating = {
+hl.window_rule(withDefaults(PINNED_TOP_BASE, {
+    match = { tag = "pin_float_big" },
+    size = { "monitor_w * 0.8", "monitor_h * 0.8" },
+    move = { "monitor_w * 0.1", tostring(TOP_GAP) }
+}))
+
+hl.window_rule(withDefaults(PINNED_TOP_BASE, {
+    match = { tag = "pin_float_mini" },
+    size = { "monitor_w * 0.3", "monitor_h * 0.5" },
+    move = { "monitor_w * 0.35", tostring(TOP_GAP) }
+}))
+
+local pinFloating = {
     -- toggle applications
-    { { class = "^(com.github.th-ch.youtube-music)$" }, "big" },
-    { { class = "^(discord)$" },                        "big" },
+    { { class = "^(com.github.th-ch.youtube-music)$" }, "pin_float_big" },
+    { { class = "^(discord)$" },                        "pin_float_big" },
     -- xdg-desktop-portal dialogs
-    { { class = "^(xdg-desktop-portal-gtk)$" },         "big" },
-    { { class = "^(xdg-desktop-portal-kde)$" },         "big" },
+    { { class = "^(xdg-desktop-portal-gtk)$" },         "pin_float_big" },
+    { { class = "^(xdg-desktop-portal-kde)$" },         "pin_float_big" },
     -- share picker
-    { { class = "^(hyprland-share-picker)$" },          "big" },
+    { { class = "^(hyprland-share-picker)$" },          "pin_float_big" },
+    -- setting apps
+    { { class = "^(org.pulseaudio.pavucontrol)$" },     "pin_float_mini" },
+    { { class = "^(blueman-manager)$" },                "pin_float_mini" },
+    { { class = "^(com.network.manager)$" },            "pin_float_mini" },
+    { { class = "^(nz.co.mega.megasync)$" },            "pin_float_mini" }
 }
 
-local function apply_floating_rules(rules, float_tag)
-    for _, rule in ipairs(rules) do
-        hl.window_rule({
-            match = rule[1],
-            tag = "+" .. float_tag
-        })
-        hl.window_rule({
-            match = rule[1],
-            tag = "+" .. rule[2]
-        })
-    end
-end
+applyWindowRules(pinFloating)
 
-apply_floating_rules(floating, "float")
-apply_floating_rules(right_top_floating, "floatTopRight")
-apply_floating_rules(pin_floating, "floatTop")
+--------------------
+-- other floating --
+--------------------
 
 -- Picture-in-picture
 hl.window_rule({
@@ -136,6 +110,7 @@ hl.window_rule({
     pin = true
 })
 
+-- Waydroid input should be ignored
 hl.window_rule({
     match = { class = "^([Ww]aydroid.InputMethod)$" },
     workspace = "special:magic silent",
@@ -143,14 +118,11 @@ hl.window_rule({
     no_focus = true
 })
 
--- fum left top playerctl
+-- waypaper (left bottom)
 hl.window_rule({
-    match = {
-        class = "^(kitty)$",
-        title = "^(fum_player)$"
-    },
+    match = { class = "^(waypaper)$" },
+    animation = "slide left",
     float = true,
-    animation = "slide top",
-    size = { "350", "600" },
-    move = { "50", "30" },
+    pin = true,
+    move = { "3", "monitor_h - window_h -5" }
 })
