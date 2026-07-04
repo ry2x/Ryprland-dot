@@ -58,8 +58,6 @@ Install these packages before using this dotfile setup:
 > A separate README is available for the AGS configuration.
 > You can access it here: [AGS README](./base/.config/ags/README.md)
 
-You can access it here:
-
 ### Fonts
 
 - GTK: SF Pro Regular 11
