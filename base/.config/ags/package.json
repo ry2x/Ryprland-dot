@@ -14,7 +14,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "format": "prettier --write \"./widget/**/*.{js,ts,tsx,json,css,scss,md,html}\" \"./*.{js,ts,tsx,json}\"",
+    "format": "prettier --write \"./**/*.{js,ts,tsx,json,css,scss,md,html}\" \"./*.{js,ts,tsx,json}\"",
     "tsc": "tsc --noEmit",
     "build": "ags bundle app.ts start-ags",
     "start": "./start-ags"
