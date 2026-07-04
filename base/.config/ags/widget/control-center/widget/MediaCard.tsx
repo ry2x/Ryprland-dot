@@ -57,17 +57,14 @@ export default function MediaCard() {
                   const file = Gio.File.new_for_uri(uri);
                   pic.set_paintable(Gdk.Texture.new_from_file(file));
                 } catch (e) {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  pic.set_paintable(null as any);
+                  pic.set_paintable(null as unknown as Gdk.Paintable);
                   console.error(e);
                 }
               } else {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                pic.set_paintable(null as any);
+                pic.set_paintable(null as unknown as Gdk.Paintable);
               }
             } else {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              pic.set_paintable(null as any);
+              pic.set_paintable(null as unknown as Gdk.Paintable);
             }
 
             // Force JS GC to immediately collect the unmounted old texture wrapper,
@@ -91,8 +88,7 @@ export default function MediaCard() {
               heightRequest={160}
               onDestroy={() => {
                 player.disconnect(hook);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                pic.set_paintable(null as any);
+                pic.set_paintable(null as unknown as Gdk.Paintable);
               }}
             >
               {/* CAVA (Drawn First -> Background) */}

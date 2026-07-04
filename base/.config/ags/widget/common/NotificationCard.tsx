@@ -33,10 +33,8 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
   // bypassing lazy JS GC entirely and not relying on widget onDestroy.
   notif.connect('resolved', () => {
     setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (appIconPic) appIconPic.set_paintable(null as any);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (imagePic) imagePic.set_paintable(null as any);
+      if (appIconPic) appIconPic.set_paintable(null as unknown as Gdk.Paintable);
+      if (imagePic) imagePic.set_paintable(null as unknown as Gdk.Paintable);
 
       try {
         system.gc();

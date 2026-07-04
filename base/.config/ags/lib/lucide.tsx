@@ -58,12 +58,11 @@ export function lucideIcon(name: string): string {
  * LucideIcon component that correctly utilizes GTK's IconTheme via iconName.
  * This allows SCSS states (like :hover, color changes) and dynamic binding updates to work perfectly.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function LucideIcon({ name, ...props }: { name: any; [key: string]: any }) {
+export function LucideIcon({ name, ...props }: { name: string | unknown; [key: string]: unknown }) {
   // Check if name is a reactive binding/accessor (has an .as method)
   const icon =
-    name && typeof name.as === 'function'
-      ? name.as((n: string) => lucideIcon(n))
+    name && typeof (name as { as?: (...args: unknown[]) => unknown }).as === 'function'
+      ? (name as { as: (fn: (n: string) => string) => string }).as((n: string) => lucideIcon(n))
       : lucideIcon(name as string);
 
   return <image iconName={icon} {...props} />;

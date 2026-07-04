@@ -14,8 +14,7 @@ export default function CircularProgress<T>({
   transformer: (v: T) => number;
   icon: string;
   label: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sublabel: any;
+  sublabel: string | unknown;
   cssClass: string;
 }) {
   const area = new Gtk.DrawingArea();
@@ -73,7 +72,7 @@ export default function CircularProgress<T>({
         />
       </box>
       <label
-        label={sublabel}
+        label={sublabel as string}
         css="opacity: 0.7; font-weight: 700; font-size: 11px; margin-top: 2px;"
       />
     </box>

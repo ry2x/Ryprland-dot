@@ -44,10 +44,8 @@ export default function CavaWidget() {
       cr.fill();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (typeof (cr as any).$dispose === 'function') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (cr as any).$dispose();
+    if (typeof (cr as { $dispose?: () => void }).$dispose === 'function') {
+      (cr as { $dispose: () => void }).$dispose();
     }
   });
 
