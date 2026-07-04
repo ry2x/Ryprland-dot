@@ -27,10 +27,6 @@ cd ./Ryprland-dot
 ```bash
 stow ./base
 
-stow ./host-desktop # For desktop
-#or
-stow ./host-laptop # For laptop
-
 #optional
 stow ./nvim-yazi # For neovim and yazi
 ```
@@ -42,8 +38,6 @@ stow ./nvim-yazi # For neovim and yazi
 ## Directory structure
 
 - `base/`: Contains the base configuration files that are common for both desktop and laptop.
-- `host-desktop/`: Contains the configuration files that are specific for desktop.
-- `host-laptop/`: Contains the configuration files that are specific for laptop.
 - `nvim-yazi/`: Contains the configuration files for neovim and yazi.
 - `private-dotfile/`: Not publicly available, contains my private information.
 - `README.md`: This file.
@@ -54,11 +48,17 @@ Install these packages before using this dotfile setup:
 
 - Core: hyprland, hyprlock, hypridle, stow, awww, imagemagick, jq
 - Hypr ecosystem: hyprbind, hyprcrop, hyprpicker
-- Desktop UI: waybar, rofi, swaync, walker
+- Desktop UI: ags, rofi
 - Configuration Application: waypaper, nwg-look, kvantum, nmgui, pavucontrol
 - CLI Application: bat, cava, cliphist, fastfetch, fish, starship, yazi, fum, yt-x
 - Other application: kitty, pear-desktop, thunar, fcitx5 (with mozc), gnome-keyring, power-profiles-daemon, swayimg
 - AUR/helper: paru, par_tui
+
+> [!NOTE]
+> A separate README is available for the AGS configuration.
+> You can access it here: [AGS README](./base/.config/ags/README.md)
+
+You can access it here:
 
 ### Fonts
 
