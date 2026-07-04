@@ -1,0 +1,126 @@
+import { createState } from 'ags';
+import { Gdk, Gtk } from 'ags/gtk4';
+import { execAsync } from 'ags/process';
+
+import Hyprland from 'gi://AstalHyprland';
+
+import { LucideIcon } from '../../../lib/lucide';
+
+export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
+  const hypr = Hyprland.get_default();
+  const connector = gdkmonitor.get_connector();
+  let currentLayout = 'scrolling';
+  let currentHasClients = false;
+  const [isVisible, setIsVisible] = createState(false);
+  const [info, setInfo] = createState('');
+
+  function updateVisibility() {
+    setIsVisible(currentLayout === 'scrolling' && currentHasClients);
+  }
+
+  function updateLayout() {
+    hypr.message_async('j/getoption general:layout', (_, res) => {
+      try {
+        const out = hypr.message_finish(res);
+        const data = JSON.parse(out);
+        currentLayout = data.str;
+        updateVisibility();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+
+  let updateTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  function updateInfo() {
+    if (updateTimeout) return;
+    updateTimeout = setTimeout(() => {
+      updateTimeout = null;
+
+      const monitor = hypr.monitors.find((m) => m.name === connector);
+      if (!monitor) {
+        currentHasClients = false;
+        updateVisibility();
+        setInfo('0 / 0');
+        return;
+      }
+
+      const fw = monitor.active_workspace;
+      if (!fw) {
+        currentHasClients = false;
+        updateVisibility();
+        setInfo('0 / 0');
+        return;
+      }
+
+      const clients = fw.clients.filter((c) => !c.floating).sort((a, b) => a.x - b.x);
+      if (clients.length === 0) {
+        currentHasClients = false;
+        updateVisibility();
+        setInfo('0 / 0');
+        return;
+      }
+
+      const focused = hypr.focused_client;
+      const activeClient = focused && focused.workspace?.id === fw.id ? focused : fw.last_client;
+      const index = activeClient
+        ? clients.findIndex((c) => c.address === activeClient.address)
+        : -1;
+      const displayIndex = index !== -1 ? index + 1 : 0;
+
+      currentHasClients = true;
+      updateVisibility();
+      setInfo(`${displayIndex} / ${clients.length}`);
+    }, 10);
+  }
+
+  // Hook up IPC events for layout changes
+  const hook1 = hypr.connect('event', (_, event) => {
+    if (event === 'configreloaded' || event.includes('scrolling')) {
+      updateLayout();
+    }
+  });
+
+  // Hook up IPC events for window list/focus changes
+  const hook2 = hypr.connect('notify::focused-workspace', updateInfo);
+  const hook3 = hypr.connect('notify::focused-client', updateInfo);
+  const hook4 = hypr.connect('client-added', updateInfo);
+  const hook5 = hypr.connect('client-removed', updateInfo);
+  const hook6 = hypr.connect('client-moved', updateInfo);
+
+  // Initial fetch
+  updateLayout();
+  updateInfo();
+
+  return (
+    <revealer
+      transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
+      transitionDuration={250}
+      revealChild={isVisible}
+      onDestroy={() => {
+        hypr.disconnect(hook1);
+        hypr.disconnect(hook2);
+        hypr.disconnect(hook3);
+        hypr.disconnect(hook4);
+        hypr.disconnect(hook5);
+        hypr.disconnect(hook6);
+      }}
+    >
+      <box>
+        <button
+          class="ScrollerIndicator"
+          onClicked={() =>
+            execAsync('hyprctl dispatch "hl.plugin.scrolloverview.overview(\'toggle\')"')
+          }
+        >
+          <box spacing={4}>
+            <LucideIcon name="app-window-mac" class="icon" />
+            <label label={info} />
+          </box>
+        </button>
+        <box class="sep" />
+      </box>
+    </revealer>
+  );
+}

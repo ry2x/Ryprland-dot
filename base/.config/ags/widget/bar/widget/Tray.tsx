@@ -1,15 +1,17 @@
-import { Gtk } from "ags/gtk4"
-import AstalTray from "gi://AstalTray"
-import GLib from "gi://GLib"
-import { createBinding, For } from "ags"
-import { execAsync } from "ags/process"
-import { LucideIcon } from "../../lib/lucide"
+import { For, createBinding } from 'ags';
+import { Gtk } from 'ags/gtk4';
+import { execAsync } from 'ags/process';
+
+import AstalTray from 'gi://AstalTray';
+import GLib from 'gi://GLib';
+
+import { LucideIcon } from '../../../lib/lucide';
 
 export default function Tray() {
-  const tray = AstalTray.get_default()
-  const items = createBinding(tray, "items").as((list) =>
-    list.filter((item) => item.id.toLowerCase().includes("fcitx")),
-  )
+  const tray = AstalTray.get_default();
+  const items = createBinding(tray, 'items').as((list) =>
+    list.filter((item) => item.id.toLowerCase().includes('fcitx')),
+  );
 
   return (
     <revealer
@@ -25,17 +27,17 @@ export default function Tray() {
               const btn = (
                 <button
                   class="tray-item"
-                  tooltipMarkup={createBinding(item, "tooltip_markup")}
+                  tooltipMarkup={createBinding(item, 'tooltip_markup')}
                   onClicked={() => item.activate(0, 0)}
                 >
-                  <image gicon={createBinding(item, "gicon")} pixelSize={18} />
+                  <image gicon={createBinding(item, 'gicon')} pixelSize={18} />
                 </button>
-              ) as Gtk.Button
+              ) as Gtk.Button;
 
-              const popover = new Gtk.Popover()
-              popover.set_parent(btn)
-              popover.set_has_arrow(false)
-              popover.add_css_class("tray-menu")
+              const popover = new Gtk.Popover();
+              popover.set_parent(btn);
+              popover.set_has_arrow(false);
+              popover.add_css_class('tray-menu');
 
               popover.set_child(
                 (
@@ -43,13 +45,13 @@ export default function Tray() {
                     <button
                       class="tray-menu-btn"
                       onClicked={() => {
-                        popover.popdown()
-                        const env = GLib.getenv("QT_QPA_PLATFORMTHEME")
+                        popover.popdown();
+                        const env = GLib.getenv('QT_QPA_PLATFORMTHEME');
                         execAsync([
-                          "bash",
-                          "-c",
+                          'bash',
+                          '-c',
                           `QT_QPA_PLATFORMTHEME=${env} fcitx5-configtool`,
-                        ]).catch(() => {})
+                        ]).catch(() => {});
                       }}
                     >
                       <box spacing={8}>
@@ -61,8 +63,8 @@ export default function Tray() {
                     <button
                       class="tray-menu-btn"
                       onClicked={() => {
-                        popover.popdown()
-                        execAsync(["fcitx5-remote", "-r"]).catch(() => {})
+                        popover.popdown();
+                        execAsync(['fcitx5-remote', '-r']).catch(() => {});
                       }}
                     >
                       <box spacing={8}>
@@ -74,8 +76,8 @@ export default function Tray() {
                     <button
                       class="tray-menu-btn"
                       onClicked={() => {
-                        popover.popdown()
-                        execAsync(["bash", "-c", "fcitx5 -r"]).catch(() => {})
+                        popover.popdown();
+                        execAsync(['bash', '-c', 'fcitx5 -r']).catch(() => {});
                       }}
                     >
                       <box spacing={8}>
@@ -85,19 +87,19 @@ export default function Tray() {
                     </button>
                   </box>
                 ) as Gtk.Widget,
-              )
+              );
 
-              const rightClick = new Gtk.GestureClick({ button: 3 })
-              rightClick.connect("pressed", () => popover.popup())
-              btn.add_controller(rightClick)
+              const rightClick = new Gtk.GestureClick({ button: 3 });
+              rightClick.connect('pressed', () => popover.popup());
+              btn.add_controller(rightClick);
 
-              btn.connect("destroy", () => popover.unparent())
+              btn.connect('destroy', () => popover.unparent());
 
-              return btn
+              return btn;
             }}
           </For>
         </box>
       </box>
     </revealer>
-  )
+  );
 }
