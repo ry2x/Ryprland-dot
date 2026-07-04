@@ -5,7 +5,7 @@ import Apps from 'gi://AstalApps';
 const apps = new Apps.Apps();
 
 export function getAppList() {
-  return apps.get_list();
+  return apps.get_list().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 }
 
 export function searchApps(q: string) {
