@@ -1,10 +1,10 @@
-@use "variables" as *;
+@use 'variables' as *;
 
 // ===== Base Window & Typography =====
 window.Bar {
   background: transparent;
   color: $text;
-  font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
 
   // The main floating bar container
   .island {

@@ -1,12 +1,12 @@
-@use "sass:color";
-@use "variables" as *;
+@use 'sass:color';
+@use 'variables' as *;
 
 // ===== Popups & Control Center =====
 window.ControlCenter,
 window.DateWeatherPopup {
   background: transparent;
   color: $text;
-  font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
 
   .cc-container,
   .dw-container {

@@ -1,12 +1,9 @@
-@forward "../themes/matugen";
-@use "sass:color";
-@use "../themes/matugen" as *;
+@forward '../themes/matugen';
+@use 'sass:color';
+@use '../themes/matugen' as *;
 
 // ===== Color Palette & Theme Tokens =====
-$bg: color.adjust(
-  $surface,
-  $alpha: -0.25
-); // Dark translucent glass based on Matugen surface
+$bg: color.adjust($surface, $alpha: -0.25); // Dark translucent glass based on Matugen surface
 $bg-hover: color.adjust($on-surface, $alpha: -0.92);
 $border: color.adjust($outline, $alpha: -0.8);
 $border-light: color.adjust($outline, $alpha: -0.5);
