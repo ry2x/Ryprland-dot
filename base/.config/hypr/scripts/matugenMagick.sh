@@ -22,6 +22,7 @@ done
 if command -v waypaper >/dev/null 2>&1; then
     # Extract wallpaper path
     wallpaper_path=$(waypaper --list | jq -r '.[0].wallpaper')
+    hyprctl dispatch "hl.dsp.window.close({ class = \"waypaper\" })"
 else
     notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Waypaper command not found" -u critical
     exit 1
@@ -89,4 +90,3 @@ ags request reload-css
 # send notification after completion
 msg=$'The wallpaper have been update to\n'"$wallpaper_path"
 notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Complete" "$msg" -n "$IMG_DIR/currentWal.sqre"
-
