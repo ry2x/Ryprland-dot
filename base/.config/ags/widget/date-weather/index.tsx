@@ -6,34 +6,51 @@ import NotificationList from './widget/NotificationList';
 import WeatherCard from './widget/WeatherCard';
 import WorldClockCard from './widget/WorldClockCard';
 
-export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
-  const { TOP } = Astal.WindowAnchor;
+interface ClickCatcherProps {
+  onClick: () => void;
+  hexpand?: boolean;
+  vexpand?: boolean;
+  heightRequest?: number;
+}
 
-  return (
+function ClickCatcher({
+  onClick,
+  hexpand = false,
+  vexpand = false,
+  heightRequest = -1,
+}: ClickCatcherProps) {
+  const box = (
+    <box class="click-catcher" hexpand={hexpand} vexpand={vexpand} heightRequest={heightRequest} />
+  ) as Gtk.Box;
+  const gesture = new Gtk.GestureClick();
+  gesture.connect('pressed', onClick);
+  box.add_controller(gesture);
+  return box;
+}
+
+export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
+  const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
+
+  const win = (
     <window
       name={`date-weather-popup-${gdkmonitor.get_connector()}`}
       class="DateWeatherPopup"
       gdkmonitor={gdkmonitor}
-      exclusivity={Astal.Exclusivity.NORMAL}
+      exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
-      anchor={TOP}
+      anchor={TOP | BOTTOM | LEFT | RIGHT}
       marginTop={0}
       keymode={Astal.Keymode.ON_DEMAND}
       application={app}
       visible={false}
     >
-      <overlay>
-        <button
-          hexpand
-          vexpand
-          onClicked={(self) => {
-            const win = self.get_root() as Gtk.Window;
-            if (win) win.set_visible(false);
-          }}
-          class="click-catcher"
-        />
-        <box valign={Gtk.Align.START} halign={Gtk.Align.CENTER} marginTop={0}>
-          <box class="dw-container" spacing={24}>
+      <box orientation={Gtk.Orientation.VERTICAL}>
+        <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} heightRequest={40} />
+
+        <box orientation={Gtk.Orientation.HORIZONTAL}>
+          <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} />
+
+          <box class="dw-container" spacing={24} halign={Gtk.Align.CENTER} valign={Gtk.Align.START}>
             {/* LEFT COLUMN: Weather & Calendar */}
             <box orientation={Gtk.Orientation.VERTICAL} spacing={16} class="left-column">
               <ClockCard />
@@ -53,8 +70,24 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
             {/* RIGHT COLUMN: Notifications */}
             <NotificationList />
           </box>
+
+          <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} />
         </box>
-      </overlay>
+
+        <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} vexpand={true} />
+      </box>
     </window>
-  );
+  ) as Astal.Window;
+
+  const keyCtrl = new Gtk.EventControllerKey();
+  keyCtrl.connect('key-pressed', (_, keyval) => {
+    if (keyval === Gdk.KEY_Escape) {
+      win.set_visible(false);
+      return true;
+    }
+    return false;
+  });
+  win.add_controller(keyCtrl);
+
+  return win;
 }
