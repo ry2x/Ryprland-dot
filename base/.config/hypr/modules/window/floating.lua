@@ -53,7 +53,8 @@ local TOP_GAP = 45
 local PINNED_TOP_BASE = {
     float = true,
     animation = "slide top",
-    pin = true
+    pin = true,
+    stay_focused = true
 }
 
 hl.window_rule(withDefaults(PINNED_TOP_BASE, {
