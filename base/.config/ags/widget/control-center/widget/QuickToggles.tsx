@@ -1,0 +1,101 @@
+import { createBinding as bind } from 'ags';
+import { Gtk } from 'ags/gtk4';
+
+import Bluetooth from 'gi://AstalBluetooth';
+import Network from 'gi://AstalNetwork';
+import Pango from 'gi://Pango';
+
+import { LucideIcon } from '../../../lib/lucide';
+import {
+  openBluetoothMenu,
+  openWifiMenu,
+  toggleBluetooth,
+  toggleWifi,
+} from '../../../services/network';
+
+export default function QuickToggles() {
+  const network = Network.get_default();
+  const wifi = network.wifi;
+  const bt = Bluetooth.get_default();
+
+  return (
+    <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
+      {/* Wi-Fi Toggle */}
+      {wifi ? (
+        <box
+          class={bind(wifi, 'enabled').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+          spacing={0}
+          css="padding: 0;"
+        >
+          <button
+            hexpand
+            class="cc-split-btn-left"
+            css="padding: 16px;"
+            onClicked={() => toggleWifi(wifi.enabled)}
+          >
+            <box spacing={12}>
+              <LucideIcon name="wifi" class="icon" pixelSize={24} />
+              <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
+                <label
+                  label="Wi-Fi"
+                  css="font-weight: 700; font-size: 1.1em;"
+                  halign={Gtk.Align.START}
+                />
+                <label
+                  label={bind(wifi, 'ssid').as((s) => s || 'Disconnected')}
+                  css="font-size: 0.8em; opacity: 0.7;"
+                  halign={Gtk.Align.START}
+                  ellipsize={Pango.EllipsizeMode.END}
+                  maxWidthChars={12}
+                  lines={1}
+                />
+              </box>
+            </box>
+          </button>
+          <button class="cc-split-btn-right" css="padding: 16px;" onClicked={() => openWifiMenu()}>
+            <LucideIcon name="chevron-right" pixelSize={20} />
+          </button>
+        </box>
+      ) : (
+        <box visible={false} />
+      )}
+
+      {/* BT Toggle */}
+      <box
+        class={bind(bt, 'is_powered').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+        spacing={0}
+        css="padding: 0;"
+      >
+        <button
+          hexpand
+          class="cc-split-btn-left"
+          css="padding: 16px;"
+          onClicked={() => toggleBluetooth(bt.is_powered)}
+        >
+          <box spacing={12}>
+            <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
+            <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
+              <label
+                label="Bluetooth"
+                css="font-weight: 700; font-size: 1.1em;"
+                halign={Gtk.Align.START}
+              />
+              <label
+                label={bind(bt, 'is_connected').as((c) => (c ? 'Connected' : 'Disconnected'))}
+                css="font-size: 0.8em; opacity: 0.7;"
+                halign={Gtk.Align.START}
+              />
+            </box>
+          </box>
+        </button>
+        <button
+          class="cc-split-btn-right"
+          css="padding: 16px;"
+          onClicked={() => openBluetoothMenu()}
+        >
+          <LucideIcon name="chevron-right" pixelSize={20} />
+        </button>
+      </box>
+    </box>
+  );
+}
