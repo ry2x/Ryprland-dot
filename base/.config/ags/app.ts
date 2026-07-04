@@ -80,6 +80,15 @@ app.start({
   },
   main() {
     reloadCss(style);
+    const configDir = `${GLib.get_user_config_dir()}/ags`;
+    const scssPath = `${configDir}/style.scss`;
+    const cssPath = `/tmp/ags-style.css`;
+    execAsync(`sass ${scssPath} ${cssPath}`)
+      .then(() => {
+        reloadCss(cssPath);
+      })
+      .catch((err) => console.error(`Error compiling SCSS on startup: ${err}`));
+
     // Add lucide symbolic icons to GTK Icon Theme search path
     const display = Gdk.Display.get_default();
     if (display) {
