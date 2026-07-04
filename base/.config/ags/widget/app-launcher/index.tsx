@@ -6,7 +6,7 @@ import Apps from 'gi://AstalApps';
 import GLib from 'gi://GLib';
 import Pango from 'gi://Pango';
 
-import { searchApps, searchWeb } from '../../services/apps';
+import { recordAppLaunch, searchApps, searchWeb } from '../../services/apps';
 import { toggleAppLauncher } from '../../services/windowManager';
 
 GLib.setenv('GSK_RENDERER', 'gl', true);
@@ -119,6 +119,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
 
         btn.connect('clicked', () => {
           toggleAppLauncher(gdkmonitor.get_connector());
+          recordAppLaunch(res);
           res.launch();
         });
 
@@ -246,6 +247,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
         searchWeb(searchQuery);
       } else if (idx < results.length) {
         toggleAppLauncher(gdkmonitor.get_connector());
+        recordAppLaunch(results[idx]);
         results[idx].launch();
       }
       return true;
