@@ -1,11 +1,11 @@
 import { createBinding as bind } from 'ags';
 import { Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
-import { execAsync } from 'ags/process';
 
 import Wp from 'gi://AstalWp';
 
 import { LucideIcon } from '../../../lib/lucide';
+import { playVolumeSound } from '../../../services/audio';
 
 export default function Volume({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const speaker = Wp.get_default()!.audio.default_speaker!;
@@ -48,9 +48,7 @@ export default function Volume({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
     const now = Date.now();
     if (now - lastPlay > 100) {
       lastPlay = now;
-      execAsync(['pw-play', '/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga']).catch(
-        () => {},
-      );
+      playVolumeSound();
     }
   };
 

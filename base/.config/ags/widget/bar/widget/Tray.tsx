@@ -1,11 +1,10 @@
 import { For, createBinding } from 'ags';
 import { Gtk } from 'ags/gtk4';
-import { execAsync } from 'ags/process';
 
 import AstalTray from 'gi://AstalTray';
-import GLib from 'gi://GLib';
 
 import { LucideIcon } from '../../../lib/lucide';
+import { openFcitxConfig, reloadFcitx, restartFcitx } from '../../../services/input';
 
 export default function Tray() {
   const tray = AstalTray.get_default();
@@ -46,12 +45,7 @@ export default function Tray() {
                       class="tray-menu-btn"
                       onClicked={() => {
                         popover.popdown();
-                        const env = GLib.getenv('QT_QPA_PLATFORMTHEME');
-                        execAsync([
-                          'bash',
-                          '-c',
-                          `QT_QPA_PLATFORMTHEME=${env} fcitx5-configtool`,
-                        ]).catch(() => {});
+                        openFcitxConfig();
                       }}
                     >
                       <box spacing={8}>
@@ -64,7 +58,7 @@ export default function Tray() {
                       class="tray-menu-btn"
                       onClicked={() => {
                         popover.popdown();
-                        execAsync(['fcitx5-remote', '-r']).catch(() => {});
+                        reloadFcitx();
                       }}
                     >
                       <box spacing={8}>
@@ -77,7 +71,7 @@ export default function Tray() {
                       class="tray-menu-btn"
                       onClicked={() => {
                         popover.popdown();
-                        execAsync(['bash', '-c', 'fcitx5 -r']).catch(() => {});
+                        restartFcitx();
                       }}
                     >
                       <box spacing={8}>

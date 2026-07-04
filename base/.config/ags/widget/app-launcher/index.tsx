@@ -6,7 +6,7 @@ import Apps from 'gi://AstalApps';
 import GLib from 'gi://GLib';
 import Pango from 'gi://Pango';
 
-import { searchApps } from '../../services/apps';
+import { searchApps, searchWeb } from '../../services/apps';
 import { toggleAppLauncher } from '../../services/windowManager';
 
 GLib.setenv('GSK_RENDERER', 'gl', true);
@@ -30,9 +30,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       onClicked={() => {
         const t = text.peek() || '';
         toggleAppLauncher(gdkmonitor.get_connector());
-        import('ags/process').then(({ execAsync }) => {
-          execAsync(['xdg-open', `https://google.com/search?q=${encodeURIComponent(t)}`]);
-        });
+        searchWeb(t);
       }}
     >
       <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
@@ -245,9 +243,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       if (idx === results.length) {
         const searchQuery = text.get();
         toggleAppLauncher(gdkmonitor.get_connector());
-        import('ags/process').then(({ execAsync }) => {
-          execAsync(['xdg-open', `https://google.com/search?q=${encodeURIComponent(searchQuery)}`]);
-        });
+        searchWeb(searchQuery);
       } else if (idx < results.length) {
         toggleAppLauncher(gdkmonitor.get_connector());
         results[idx].launch();
