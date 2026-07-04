@@ -9,4 +9,4 @@ killall -q ags gjs
 
 sleep 0.1
 
-ags run >/dev/null 2>&1 &
+~/.config/ags/start-ags >/dev/null 2>&1 &
