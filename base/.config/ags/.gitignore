@@ -1,3 +1,4 @@
 node_modules/
 @girs/
 themes/matugen.scss
+config.json
