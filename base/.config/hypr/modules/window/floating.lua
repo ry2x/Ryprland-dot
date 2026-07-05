@@ -64,7 +64,6 @@ local PINNED_TOP_BASE = {
     float = true,
     animation = "slide top",
     pin = true,
-    stay_focused = true
 }
 
 hl.window_rule(
@@ -144,6 +143,7 @@ hl.window_rule({
     match = { class = "^(waypaper)$" },
     animation = "slide left",
     float = true,
+    stay_focused = true,
     pin = true,
     move = { "3", "monitor_h - window_h -5" }
 })
