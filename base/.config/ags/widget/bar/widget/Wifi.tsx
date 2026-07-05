@@ -1,10 +1,10 @@
 import { createBinding as bind } from 'ags';
 import { Gdk } from 'ags/gtk4';
-import App from 'ags/gtk4/app';
 
 import Network from 'gi://AstalNetwork';
 
 import { LucideIcon } from '../../../lib/lucide';
+import { toggleControlCenter } from '../../../services/windowManager';
 
 export default function Wifi({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const network = Network.get_default();
@@ -21,17 +21,7 @@ export default function Wifi({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   });
 
   const toggleMenu = () => {
-    const ccName = `control-center-${gdkmonitor.get_connector()}`;
-    const dwName = `date-weather-popup-${gdkmonitor.get_connector()}`;
-    const cc = App.get_window(ccName);
-    const dw = App.get_window(dwName);
-
-    if (cc && cc.get_visible()) {
-      cc.set_visible(false);
-    } else {
-      if (dw && dw.get_visible()) dw.set_visible(false);
-      if (cc) cc.set_visible(true);
-    }
+    toggleControlCenter(gdkmonitor.get_connector());
   };
 
   return (
