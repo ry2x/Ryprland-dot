@@ -1,3 +1,4 @@
+import { createState } from 'ags';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 
@@ -33,9 +34,27 @@ function ClickCatcher({
 export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
+  const [isRevealed, setIsRevealed] = createState(false);
+
+  const windowName = `control-center-${gdkmonitor.get_connector()}`;
+
+  const hide_animated = () => {
+    setIsRevealed(false);
+    const w = app.get_window(windowName);
+    setTimeout(() => {
+      if (w) w.set_visible(false);
+    }, 300);
+  };
+
+  const show_animated = () => {
+    const w = app.get_window(windowName);
+    if (w) w.set_visible(true);
+    setIsRevealed(true);
+  };
+
   const win = (
     <window
-      name={`control-center-${gdkmonitor.get_connector()}`}
+      name={windowName}
       class="ControlCenter"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.IGNORE}
@@ -47,47 +66,55 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} heightRequest={40} />
+        <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
 
         <box orientation={Gtk.Orientation.HORIZONTAL}>
-          <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} />
+          <ClickCatcher onClick={hide_animated} hexpand={true} />
 
-          <box
-            class="cc-container"
-            orientation={Gtk.Orientation.VERTICAL}
-            spacing={16}
-            widthRequest={420}
+          <revealer
+            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+            transitionDuration={300}
+            revealChild={isRevealed}
             halign={Gtk.Align.CENTER}
             valign={Gtk.Align.START}
           >
-            <box spacing={12} halign={Gtk.Align.START}>
-              <LucideIcon name="settings-2" pixelSize={24} />
-              <label label="Control Center" class="cc-title" />
+            <box
+              class="cc-container"
+              orientation={Gtk.Orientation.VERTICAL}
+              spacing={16}
+              widthRequest={420}
+            >
+              <box spacing={12} halign={Gtk.Align.START}>
+                <LucideIcon name="settings-2" pixelSize={24} />
+                <label label="Control Center" class="cc-title" />
+              </box>
+
+              <QuickToggles />
+              <VolumeSlider />
+              <MediaCard />
+
+              <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16}>
+                <SystemMetrics />
+              </box>
+
+              <UpdatesCard />
             </box>
+          </revealer>
 
-            <QuickToggles />
-            <VolumeSlider />
-            <MediaCard />
-
-            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16}>
-              <SystemMetrics />
-            </box>
-
-            <UpdatesCard />
-          </box>
-
-          <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} />
+          <ClickCatcher onClick={hide_animated} hexpand={true} />
         </box>
 
-        <ClickCatcher onClick={() => win.set_visible(false)} hexpand={true} vexpand={true} />
+        <ClickCatcher onClick={hide_animated} hexpand={true} vexpand={true} />
       </box>
     </window>
   ) as Astal.Window;
 
+  Object.assign(win, { hide_animated, show_animated });
+
   const keyCtrl = new Gtk.EventControllerKey();
   keyCtrl.connect('key-pressed', (_, keyval) => {
     if (keyval === Gdk.KEY_Escape) {
-      win.set_visible(false);
+      hide_animated();
       return true;
     }
     return false;

@@ -1,22 +1,12 @@
 import { Gdk } from 'ags/gtk4';
 import { Gtk } from 'ags/gtk4';
-import app from 'ags/gtk4/app';
 
 import { clockTime, shortDate, shortDay } from '../../../services/time';
+import { toggleDateWeather } from '../../../services/windowManager';
 
 export default function Clock({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const toggleMenu = () => {
-    const ccName = `control-center-${gdkmonitor.get_connector()}`;
-    const dwName = `date-weather-popup-${gdkmonitor.get_connector()}`;
-    const cc = app.get_window(ccName);
-    const dw = app.get_window(dwName);
-
-    if (dw && dw.get_visible()) {
-      dw.set_visible(false);
-    } else {
-      if (cc && cc.get_visible()) cc.set_visible(false);
-      if (dw) dw.set_visible(true);
-    }
+    toggleDateWeather(gdkmonitor.get_connector());
   };
 
   return (

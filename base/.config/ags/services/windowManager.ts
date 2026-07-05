@@ -1,7 +1,13 @@
+import { Astal } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 import { execAsync } from 'ags/process';
 
 import Hyprland from 'gi://AstalHyprland';
+
+type AnimatedWindow = Astal.Window & {
+  hide_animated?: () => void;
+  show_animated?: () => void;
+};
 
 export function focusWindow(className: string) {
   execAsync(`hyprctl dispatch focuswindow "class:^(${className})$"`).catch(() => {});
@@ -9,15 +15,21 @@ export function focusWindow(className: string) {
 
 export function closeAllControlCenters() {
   app.get_monitors().forEach((m) => {
-    const cc = app.get_window(`control-center-${m.get_connector()}`);
-    if (cc) cc.set_visible(false);
+    const cc = app.get_window(`control-center-${m.get_connector()}`) as AnimatedWindow;
+    if (cc && cc.get_visible()) {
+      if (cc.hide_animated) cc.hide_animated();
+      else cc.set_visible(false);
+    }
   });
 }
 
 export function closeAllDateWeathers() {
   app.get_monitors().forEach((m) => {
-    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`);
-    if (dw) dw.set_visible(false);
+    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`) as AnimatedWindow;
+    if (dw && dw.get_visible()) {
+      if (dw.hide_animated) dw.hide_animated();
+      else dw.set_visible(false);
+    }
   });
 }
 
@@ -37,18 +49,24 @@ export function closeAllMenus() {
 export function toggleControlCenter(monitorName?: string | null) {
   const targetMonitor = monitorName || Hyprland.get_default().get_focused_monitor().name;
   app.get_monitors().forEach((m) => {
-    const cc = app.get_window(`control-center-${m.get_connector()}`);
-    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`);
+    const cc = app.get_window(`control-center-${m.get_connector()}`) as AnimatedWindow;
+    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`) as AnimatedWindow;
     if (cc) {
       if (m.get_connector() === targetMonitor) {
         if (cc.get_visible()) {
-          cc.set_visible(false);
+          if (cc.hide_animated) cc.hide_animated();
+          else cc.set_visible(false);
         } else {
-          if (dw) dw.set_visible(false);
-          cc.set_visible(true);
+          if (dw) {
+            if (dw.get_visible() && dw.hide_animated) dw.hide_animated();
+            else dw.set_visible(false);
+          }
+          if (cc.show_animated) cc.show_animated();
+          else cc.set_visible(true);
         }
       } else {
-        cc.set_visible(false);
+        if (cc.get_visible() && cc.hide_animated) cc.hide_animated();
+        else cc.set_visible(false);
       }
     }
   });
@@ -57,18 +75,24 @@ export function toggleControlCenter(monitorName?: string | null) {
 export function toggleDateWeather(monitorName?: string | null) {
   const targetMonitor = monitorName || Hyprland.get_default().get_focused_monitor().name;
   app.get_monitors().forEach((m) => {
-    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`);
-    const cc = app.get_window(`control-center-${m.get_connector()}`);
+    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`) as AnimatedWindow;
+    const cc = app.get_window(`control-center-${m.get_connector()}`) as AnimatedWindow;
     if (dw) {
       if (m.get_connector() === targetMonitor) {
         if (dw.get_visible()) {
-          dw.set_visible(false);
+          if (dw.hide_animated) dw.hide_animated();
+          else dw.set_visible(false);
         } else {
-          if (cc) cc.set_visible(false);
-          dw.set_visible(true);
+          if (cc) {
+            if (cc.get_visible() && cc.hide_animated) cc.hide_animated();
+            else cc.set_visible(false);
+          }
+          if (dw.show_animated) dw.show_animated();
+          else dw.set_visible(true);
         }
       } else {
-        dw.set_visible(false);
+        if (dw.get_visible() && dw.hide_animated) dw.hide_animated();
+        else dw.set_visible(false);
       }
     }
   });
