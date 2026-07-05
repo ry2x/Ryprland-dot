@@ -3,7 +3,9 @@ import { execAsync } from 'ags/process';
 
 import GLib from 'gi://GLib?version=2.0';
 
-export const LOCATION = 'Osaka';
+import { appConfig } from './config';
+
+export const LOCATION = appConfig.weather.location;
 
 export const [weatherJson, setWeatherJson] = createState('{}');
 

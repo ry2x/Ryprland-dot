@@ -1,13 +1,9 @@
 import { Gtk } from 'ags/gtk4';
 
+import { appConfig } from '../../../services/config';
 import { clockTime } from '../../../services/time';
 
-const WORLD_CLOCKS = [
-  { label: 'London', tz: 'Europe/London' },
-  { label: 'Brisbane', tz: 'Australia/Brisbane' },
-  { label: 'New York', tz: 'America/New_York' },
-  { label: 'Los Angeles', tz: 'America/Los_Angeles' },
-];
+const WORLD_CLOCKS = appConfig.worldClocks;
 
 export default function WorldClockCard() {
   return (
