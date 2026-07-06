@@ -66,46 +66,70 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <box orientation={Gtk.Orientation.HORIZONTAL}>
-          <ClickCatcher onClick={hide_animated} hexpand={true} />
+        {(() => {
+          const rev = (
+            <revealer
+              transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+              transitionDuration={300}
+              revealChild={isRevealed}
+            >
+              <box orientation={Gtk.Orientation.VERTICAL}>
+                <ClickCatcher onClick={hide_animated} heightRequest={40} />
 
-          <revealer
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
-            transitionDuration={300}
-            revealChild={isRevealed}
-            halign={Gtk.Align.CENTER}
-            valign={Gtk.Align.START}
-          >
-            <box orientation={Gtk.Orientation.VERTICAL}>
-              <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
-              <box
-                class="cc-container"
-                orientation={Gtk.Orientation.VERTICAL}
-                spacing={16}
-                widthRequest={420}
-              >
-                <box spacing={12} halign={Gtk.Align.START}>
-                <LucideIcon name="settings-2" pixelSize={24} />
-                <label label="Control Center" class="cc-title" />
+                <box orientation={Gtk.Orientation.HORIZONTAL}>
+                  <ClickCatcher onClick={hide_animated} hexpand={true} />
+
+                  {(() => {
+                    const container = (
+                      <box
+                        class="cc-container"
+                        orientation={Gtk.Orientation.VERTICAL}
+                        spacing={16}
+                        widthRequest={420}
+                      >
+                        <box spacing={12} halign={Gtk.Align.START}>
+                          <LucideIcon name="settings-2" pixelSize={24} />
+                          <label label="Control Center" class="cc-title" />
+                        </box>
+
+                        <QuickToggles />
+                        <VolumeSlider />
+                        <MediaCard />
+
+                        <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16}>
+                          <SystemMetrics />
+                        </box>
+
+                        <UpdatesCard />
+                      </box>
+                    ) as Gtk.Box;
+
+                    container.set_hexpand(false);
+                    container.set_hexpand_set(true);
+                    container.set_vexpand(false);
+                    container.set_vexpand_set(true);
+                    container.set_halign(Gtk.Align.CENTER);
+                    container.set_valign(Gtk.Align.START);
+
+                    return container;
+                  })()}
+
+                  <ClickCatcher onClick={hide_animated} hexpand={true} />
+                </box>
+
+                <ClickCatcher onClick={hide_animated} vexpand={true} />
               </box>
+            </revealer>
+          ) as Gtk.Widget;
 
-              <QuickToggles />
-              <VolumeSlider />
-              <MediaCard />
+          // Force the Revealer to fill the screen so inner ClickCatchers can do their job
+          rev.set_hexpand(true);
+          rev.set_hexpand_set(true);
+          rev.set_vexpand(true);
+          rev.set_vexpand_set(true);
 
-              <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16}>
-                <SystemMetrics />
-              </box>
-
-              <UpdatesCard />
-              </box>
-            </box>
-          </revealer>
-
-          <ClickCatcher onClick={hide_animated} hexpand={true} />
-        </box>
-
-        <ClickCatcher onClick={hide_animated} hexpand={true} vexpand={true} />
+          return rev;
+        })()}
       </box>
     </window>
   ) as Astal.Window;

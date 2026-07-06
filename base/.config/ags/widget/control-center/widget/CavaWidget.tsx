@@ -52,9 +52,10 @@ export default function CavaWidget() {
   return (
     <box
       class="cava-visualizer"
-      css="margin-bottom: -160px; margin-left: 20px; margin-right: 20px;"
+      css="margin-left: 20px; margin-right: 20px;"
       canTarget={false}
       valign={Gtk.Align.END}
+      vexpand={true}
     >
       {area}
     </box>

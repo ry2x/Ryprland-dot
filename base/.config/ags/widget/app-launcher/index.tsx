@@ -4,10 +4,11 @@ import app from 'ags/gtk4/app';
 
 import Apps from 'gi://AstalApps';
 import GLib from 'gi://GLib';
-import Pango from 'gi://Pango';
 
 import { recordAppLaunch, searchApps, searchWeb } from '../../services/apps';
 import { toggleAppLauncher } from '../../services/windowManager';
+import { createAppItem } from './widget/AppItem';
+import { SearchGoogleBtn } from './widget/SearchGoogleBtn';
 
 GLib.setenv('GSK_RENDERER', 'gl', true);
 
@@ -22,31 +23,10 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     setSelectedIndex(0);
   });
 
-  const searchGoogleBtn = (
-    <button
-      class="applauncher-item"
-      canFocus={false}
-      visible={text.as((t) => (t || '').trim() !== '')}
-      onClicked={() => {
-        const t = text.peek() || '';
-        toggleAppLauncher(gdkmonitor.get_connector());
-        searchWeb(t);
-      }}
-    >
-      <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
-        <image iconName="web-browser" class="applauncher-item-icon" />
-        <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
-          <label
-            label={text.as((t) => `Search "${t || ''}"`)}
-            halign={Gtk.Align.START}
-            class="applauncher-item-name"
-            ellipsize={Pango.EllipsizeMode.END}
-          />
-          <label label="Search on Google" halign={Gtk.Align.START} class="applauncher-item-desc" />
-        </box>
-      </box>
-    </button>
-  ) as Gtk.Button;
+  const searchGoogleBtn = SearchGoogleBtn({
+    textState: text,
+    monitorConnector: gdkmonitor.get_connector(),
+  });
 
   const appList = (<box orientation={Gtk.Orientation.VERTICAL} spacing={10} />) as Gtk.Box;
 
@@ -73,57 +53,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
       const key = getAppKey(res);
       let w = widgetMap.get(key);
       if (!w) {
-        // Construct vanilla GTK widget to avoid JSX tracking context issues & memory leaks
-        const btn = new Gtk.Button({
-          cssClasses: ['applauncher-item'],
-          canFocus: false,
-        });
-
-        const box = new Gtk.Box({
-          orientation: Gtk.Orientation.HORIZONTAL,
-          spacing: 12,
-        });
-
-        const icon = new Gtk.Image({
-          iconName: res.iconName || 'application-x-executable',
-          cssClasses: ['applauncher-item-icon'],
-        });
-
-        const textBox = new Gtk.Box({
-          orientation: Gtk.Orientation.VERTICAL,
-          valign: Gtk.Align.CENTER,
-        });
-
-        const nameLabel = new Gtk.Label({
-          label: res.name,
-          halign: Gtk.Align.START,
-          cssClasses: ['applauncher-item-name'],
-        });
-
-        textBox.append(nameLabel);
-
-        if (res.description) {
-          const descLabel = new Gtk.Label({
-            label: res.description,
-            halign: Gtk.Align.START,
-            cssClasses: ['applauncher-item-desc'],
-            ellipsize: Pango.EllipsizeMode.END,
-            maxWidthChars: 40,
-          });
-          textBox.append(descLabel);
-        }
-
-        box.append(icon);
-        box.append(textBox);
-        btn.set_child(box);
-
-        btn.connect('clicked', () => {
-          toggleAppLauncher(gdkmonitor.get_connector());
-          recordAppLaunch(res);
-          res.launch();
-        });
-
-        w = btn;
+        w = createAppItem(res, gdkmonitor.get_connector());
         widgetMap.set(key, w);
         appList.append(w);
       }

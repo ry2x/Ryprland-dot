@@ -42,7 +42,16 @@ export default function MediaCard() {
           pic.set_content_fit(Gtk.ContentFit.COVER);
           pic.set_can_focus(false);
           pic.set_can_shrink(true);
-          overlay.add_overlay(pic);
+
+          // Wrap picture in ScrolledWindow to trap its massive natural size
+          const artScroll = new Gtk.ScrolledWindow();
+          artScroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER);
+          artScroll.set_propagate_natural_width(false);
+          artScroll.set_propagate_natural_height(false);
+          artScroll.set_size_request(80, 80);
+          artScroll.set_child(pic);
+
+          overlay.add_overlay(artScroll);
 
           const updateImg = () => {
             const art = player.cover_art;
@@ -80,21 +89,24 @@ export default function MediaCard() {
           const hook = player.connect('notify::cover-art', updateImg);
           updateImg();
 
-          return (
-            <box
-              class="cc-card"
-              orientation={Gtk.Orientation.VERTICAL}
-              css="padding: 0;"
-              heightRequest={160}
-              onDestroy={() => {
-                player.disconnect(hook);
-                pic.set_paintable(null as unknown as Gdk.Paintable);
-              }}
-            >
-              {/* CAVA (Drawn First -> Background) */}
-              <CavaWidget />
+          return (() => {
+            const cardOverlay = Object.assign(new Gtk.Overlay(), {
+              cssClasses: ['cc-card'],
+              css: 'padding: 0;',
+            }) as Gtk.Overlay;
 
-              <box spacing={16} css="padding: 16px;" vexpand={true}>
+            // 1. Cava Widget as the MAIN child (Background)
+            // It provides the base 160px height constraint naturally since we put heightRequest on it
+            const cavaContainer = (
+              <box heightRequest={160} hexpand={true}>
+                <CavaWidget />
+              </box>
+            ) as Gtk.Box;
+            cardOverlay.set_child(cavaContainer);
+
+            // 2. Media Controls as the OVERLAY child (Foreground)
+            const controlsBox = (
+              <box spacing={16} css="padding: 16px;" hexpand={true} vexpand={true}>
                 <box
                   valign={Gtk.Align.CENTER}
                   css="border-radius: 12px; min-width: 80px; min-height: 80px;"
@@ -123,7 +135,7 @@ export default function MediaCard() {
                       halign={Gtk.Align.START}
                       wrap={true}
                       wrapMode={Pango.WrapMode.WORD_CHAR}
-                      maxWidthChars={20}
+                      maxWidthChars={18}
                       lines={2}
                       ellipsize={Pango.EllipsizeMode.END}
                     />
@@ -132,11 +144,9 @@ export default function MediaCard() {
                     label={bind(player, 'artist').as((a) => a || 'Unknown')}
                     css="opacity: 0.7; font-size: 0.9em; margin-bottom: 4px;"
                     halign={Gtk.Align.START}
-                    wrap={true}
-                    wrapMode={Pango.WrapMode.WORD_CHAR}
-                    maxWidthChars={25}
-                    lines={1}
                     ellipsize={Pango.EllipsizeMode.END}
+                    maxWidthChars={20}
+                    lines={1}
                   />
 
                   <box spacing={16} halign={Gtk.Align.START}>
@@ -157,8 +167,17 @@ export default function MediaCard() {
                   </box>
                 </box>
               </box>
-            </box>
-          );
+            ) as Gtk.Box;
+            cardOverlay.add_overlay(controlsBox);
+
+            // Add destroy handler
+            cardOverlay.connect('destroy', () => {
+              player.disconnect(hook);
+              pic.set_paintable(null as unknown as Gdk.Paintable);
+            });
+
+            return cardOverlay;
+          })();
         }}
       </For>
     </box>

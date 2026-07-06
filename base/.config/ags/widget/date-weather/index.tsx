@@ -67,42 +67,61 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
         <box orientation={Gtk.Orientation.HORIZONTAL}>
           <ClickCatcher onClick={hide_animated} hexpand={true} />
 
-          <revealer
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
-            transitionDuration={300}
-            revealChild={isRevealed}
-            halign={Gtk.Align.CENTER}
-            valign={Gtk.Align.START}
-          >
-            <box orientation={Gtk.Orientation.VERTICAL}>
-              <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
-              <box
-                class="dw-container"
-                spacing={24}
-                halign={Gtk.Align.CENTER}
-                valign={Gtk.Align.START}
+          {(() => {
+            const rev = (
+              <revealer
+                transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+                transitionDuration={300}
+                revealChild={isRevealed}
               >
-                {/* LEFT COLUMN: Weather & Calendar */}
-              <box orientation={Gtk.Orientation.VERTICAL} spacing={16} class="left-column">
-                <ClockCard />
-                <WorldClockCard />
-                <WeatherCard />
-                <box class="calendar-card widget-card" halign={Gtk.Align.FILL}>
-                  {Object.assign(new Gtk.Calendar(), {
-                    halign: Gtk.Align.CENTER,
-                    hexpand: true,
-                  })}
+                <box orientation={Gtk.Orientation.VERTICAL}>
+                  <ClickCatcher onClick={hide_animated} heightRequest={40} />
+                  {(() => {
+                    const container = (
+                      <box class="dw-container" spacing={24}>
+                        {/* LEFT COLUMN: Weather & Calendar */}
+                        <box
+                          orientation={Gtk.Orientation.VERTICAL}
+                          spacing={16}
+                          class="left-column"
+                        >
+                          <ClockCard />
+                          <WorldClockCard />
+                          <WeatherCard />
+                          <box class="calendar-card widget-card" halign={Gtk.Align.FILL}>
+                            {Object.assign(new Gtk.Calendar(), {
+                              halign: Gtk.Align.CENTER,
+                              hexpand: true,
+                            })}
+                          </box>
+                        </box>
+
+                        {/* Separator between columns */}
+                        <box class="vertical-sep" />
+
+                        {/* RIGHT COLUMN: Notifications */}
+                        <NotificationList />
+                      </box>
+                    ) as Gtk.Box;
+
+                    container.set_hexpand(false);
+                    container.set_hexpand_set(true);
+                    container.set_vexpand(false);
+                    container.set_vexpand_set(true);
+
+                    return container;
+                  })()}
                 </box>
-              </box>
+              </revealer>
+            ) as Gtk.Widget;
 
-              {/* Separator between columns */}
-              <box class="vertical-sep" />
+            rev.set_hexpand(false);
+            rev.set_hexpand_set(true);
+            rev.set_vexpand(false);
+            rev.set_vexpand_set(true);
 
-              {/* RIGHT COLUMN: Notifications */}
-              <NotificationList />
-            </box>
-            </box>
-          </revealer>
+            return rev;
+          })()}
 
           <ClickCatcher onClick={hide_animated} hexpand={true} />
         </box>

@@ -54,19 +54,13 @@ export function toggleControlCenter(monitorName?: string | null) {
     if (cc) {
       if (m.get_connector() === targetMonitor) {
         if (cc.get_visible()) {
-          if (cc.hide_animated) cc.hide_animated();
-          else cc.set_visible(false);
+          cc.hide_animated?.();
         } else {
-          if (dw) {
-            if (dw.get_visible() && dw.hide_animated) dw.hide_animated();
-            else dw.set_visible(false);
-          }
-          if (cc.show_animated) cc.show_animated();
-          else cc.set_visible(true);
+          if (dw && dw.get_visible()) dw.hide_animated?.();
+          cc.show_animated?.();
         }
       } else {
-        if (cc.get_visible() && cc.hide_animated) cc.hide_animated();
-        else cc.set_visible(false);
+        if (cc.get_visible()) cc.hide_animated?.();
       }
     }
   });
@@ -80,19 +74,13 @@ export function toggleDateWeather(monitorName?: string | null) {
     if (dw) {
       if (m.get_connector() === targetMonitor) {
         if (dw.get_visible()) {
-          if (dw.hide_animated) dw.hide_animated();
-          else dw.set_visible(false);
+          dw.hide_animated?.();
         } else {
-          if (cc) {
-            if (cc.get_visible() && cc.hide_animated) cc.hide_animated();
-            else cc.set_visible(false);
-          }
-          if (dw.show_animated) dw.show_animated();
-          else dw.set_visible(true);
+          if (cc && cc.get_visible()) cc.hide_animated?.();
+          dw.show_animated?.();
         }
       } else {
-        if (dw.get_visible() && dw.hide_animated) dw.hide_animated();
-        else dw.set_visible(false);
+        if (dw.get_visible()) dw.hide_animated?.();
       }
     }
   });
