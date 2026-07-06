@@ -76,8 +76,6 @@ export default function MediaCard() {
               pic.set_paintable(null as unknown as Gdk.Paintable);
             }
 
-            // Force JS GC to immediately collect the unmounted old texture wrapper,
-            // freeing the 5-10MB native GTK texture instantly.
             setTimeout(() => {
               try {
                 system.gc();
@@ -91,12 +89,9 @@ export default function MediaCard() {
 
           return (() => {
             const cardOverlay = Object.assign(new Gtk.Overlay(), {
-              cssClasses: ['cc-card'],
-              css: 'padding: 0;',
+              cssClasses: ['cc-media-card'],
             }) as Gtk.Overlay;
 
-            // 1. Cava Widget as the MAIN child (Background)
-            // It provides the base 160px height constraint naturally since we put heightRequest on it
             const cavaContainer = (
               <box heightRequest={160} hexpand={true}>
                 <CavaWidget />
@@ -104,7 +99,6 @@ export default function MediaCard() {
             ) as Gtk.Box;
             cardOverlay.set_child(cavaContainer);
 
-            // 2. Media Controls as the OVERLAY child (Foreground)
             const controlsBox = (
               <box spacing={16} css="padding: 16px;" hexpand={true} vexpand={true}>
                 <box
@@ -170,7 +164,6 @@ export default function MediaCard() {
             ) as Gtk.Box;
             cardOverlay.add_overlay(controlsBox);
 
-            // Add destroy handler
             cardOverlay.connect('destroy', () => {
               player.disconnect(hook);
               pic.set_paintable(null as unknown as Gdk.Paintable);

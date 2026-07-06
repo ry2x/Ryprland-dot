@@ -9,6 +9,7 @@ export default function CavaWidget() {
   const area = new Gtk.DrawingArea();
   area.set_size_request(-1, 160); // 160px fixed height
   area.set_hexpand(true);
+  area.set_valign(Gtk.Align.END);
 
   const signalId = cava.connect('notify::values', () => {
     area.queue_draw();
@@ -52,7 +53,7 @@ export default function CavaWidget() {
   return (
     <box
       class="cava-visualizer"
-      css="margin-left: 20px; margin-right: 20px;"
+      css="margin-left: 12px; margin-right: 12px; margin-bottom: 1px;"
       canTarget={false}
       valign={Gtk.Align.END}
       vexpand={true}

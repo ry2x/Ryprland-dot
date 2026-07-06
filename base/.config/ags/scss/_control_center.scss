@@ -430,3 +430,8 @@ levelbar {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+.cc-media-card {
+  @extend .cc-card;
+  padding: 0;
+}
