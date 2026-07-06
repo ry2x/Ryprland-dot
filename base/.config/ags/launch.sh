@@ -6,9 +6,8 @@ cd "$DIR" || exit 1
 
 # Check if start-ags exists
 if [ ! -f "start-ags" ]; then
-    echo "start-ags not found. Installing dependencies and building..."
-    pnpm i
-    pnpm run build
+    echo "start-ags not found. Bundling AGS entrypoint..."
+    ags bundle app.ts start-ags
 fi
 
 # Execute start-ags with any passed arguments
