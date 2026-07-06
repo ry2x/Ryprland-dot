@@ -56,3 +56,6 @@ base/.config/ags/assets/bg.scss
 
 # wlogout
 base/.config/wlogout/matugen-wlogout.css
+
+# waypaper
+base/.config/waypaper/matugen.css
