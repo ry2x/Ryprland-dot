@@ -66,18 +66,18 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        {(() => {
-          const rev = (
-            <revealer
-              transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
-              transitionDuration={300}
-              revealChild={isRevealed}
-            >
-              <box orientation={Gtk.Orientation.VERTICAL}>
-                <ClickCatcher onClick={hide_animated} heightRequest={40} />
+        <box orientation={Gtk.Orientation.HORIZONTAL}>
+          <ClickCatcher onClick={hide_animated} hexpand={true} />
 
-                <box orientation={Gtk.Orientation.HORIZONTAL}>
-                  <ClickCatcher onClick={hide_animated} hexpand={true} />
+          {(() => {
+            const rev = (
+              <revealer
+                transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+                transitionDuration={300}
+                revealChild={isRevealed}
+              >
+                <box orientation={Gtk.Orientation.VERTICAL}>
+                  <ClickCatcher onClick={hide_animated} heightRequest={40} />
 
                   {(() => {
                     const container = (
@@ -113,23 +113,22 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
                     return container;
                   })()}
-
-                  <ClickCatcher onClick={hide_animated} hexpand={true} />
                 </box>
+              </revealer>
+            ) as Gtk.Widget;
 
-                <ClickCatcher onClick={hide_animated} vexpand={true} />
-              </box>
-            </revealer>
-          ) as Gtk.Widget;
+            rev.set_hexpand(false);
+            rev.set_hexpand_set(true);
+            rev.set_vexpand(false);
+            rev.set_vexpand_set(true);
 
-          // Force the Revealer to fill the screen so inner ClickCatchers can do their job
-          rev.set_hexpand(true);
-          rev.set_hexpand_set(true);
-          rev.set_vexpand(true);
-          rev.set_vexpand_set(true);
+            return rev;
+          })()}
 
-          return rev;
-        })()}
+          <ClickCatcher onClick={hide_animated} hexpand={true} />
+        </box>
+
+        <ClickCatcher onClick={hide_animated} hexpand={true} vexpand={true} />
       </box>
     </window>
   ) as Astal.Window;
