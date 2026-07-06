@@ -98,3 +98,8 @@ output_path = '~/.config/ags/themes/matugen.scss'
 [templates.wlogout]
 input_path = '~/.config/matugen/templates/matugen-wlogout.css'
 output_path = '~/.config/wlogout/matugen-wlogout.css'
+
+# waypaper
+[templates.waypaper]
+input_path = '~/.config/matugen/templates/matugen-gtk.css'
+output_path = '~/.config/waypaper/matugen.css'
