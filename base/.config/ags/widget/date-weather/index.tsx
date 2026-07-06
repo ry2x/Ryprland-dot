@@ -64,8 +64,6 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
-
         <box orientation={Gtk.Orientation.HORIZONTAL}>
           <ClickCatcher onClick={hide_animated} hexpand={true} />
 
@@ -76,13 +74,15 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
             halign={Gtk.Align.CENTER}
             valign={Gtk.Align.START}
           >
-            <box
-              class="dw-container"
-              spacing={24}
-              halign={Gtk.Align.CENTER}
-              valign={Gtk.Align.START}
-            >
-              {/* LEFT COLUMN: Weather & Calendar */}
+            <box orientation={Gtk.Orientation.VERTICAL}>
+              <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
+              <box
+                class="dw-container"
+                spacing={24}
+                halign={Gtk.Align.CENTER}
+                valign={Gtk.Align.START}
+              >
+                {/* LEFT COLUMN: Weather & Calendar */}
               <box orientation={Gtk.Orientation.VERTICAL} spacing={16} class="left-column">
                 <ClockCard />
                 <WorldClockCard />
@@ -100,6 +100,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
 
               {/* RIGHT COLUMN: Notifications */}
               <NotificationList />
+            </box>
             </box>
           </revealer>
 

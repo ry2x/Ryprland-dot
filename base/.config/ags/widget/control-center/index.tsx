@@ -66,8 +66,6 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
-
         <box orientation={Gtk.Orientation.HORIZONTAL}>
           <ClickCatcher onClick={hide_animated} hexpand={true} />
 
@@ -78,13 +76,15 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
             halign={Gtk.Align.CENTER}
             valign={Gtk.Align.START}
           >
-            <box
-              class="cc-container"
-              orientation={Gtk.Orientation.VERTICAL}
-              spacing={16}
-              widthRequest={420}
-            >
-              <box spacing={12} halign={Gtk.Align.START}>
+            <box orientation={Gtk.Orientation.VERTICAL}>
+              <ClickCatcher onClick={hide_animated} hexpand={true} heightRequest={40} />
+              <box
+                class="cc-container"
+                orientation={Gtk.Orientation.VERTICAL}
+                spacing={16}
+                widthRequest={420}
+              >
+                <box spacing={12} halign={Gtk.Align.START}>
                 <LucideIcon name="settings-2" pixelSize={24} />
                 <label label="Control Center" class="cc-title" />
               </box>
@@ -98,6 +98,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
               </box>
 
               <UpdatesCard />
+              </box>
             </box>
           </revealer>
 
