@@ -77,7 +77,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.VERTICAL}>
-                  <ClickCatcher onClick={hide_animated} heightRequest={40} />
+                  <ClickCatcher onClick={hide_animated} heightRequest={52} />
 
                   {(() => {
                     const container = (

@@ -75,7 +75,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.VERTICAL}>
-                  <ClickCatcher onClick={hide_animated} heightRequest={40} />
+                  <ClickCatcher onClick={hide_animated} heightRequest={52} />
                   {(() => {
                     const container = (
                       <box class="dw-container" spacing={24}>
