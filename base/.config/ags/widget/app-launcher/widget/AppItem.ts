@@ -17,10 +17,18 @@ export function createAppItem(res: Apps.Application, monitorConnector: string | 
     spacing: 12,
   });
 
-  const icon = new Gtk.Image({
-    iconName: res.iconName || 'application-x-executable',
+  const iconStr = res.iconName || 'application-x-executable';
+  const iconProps: { cssClasses: string[]; file?: string; iconName?: string } = {
     cssClasses: ['applauncher-item-icon'],
-  });
+  };
+
+  if (iconStr.startsWith('/')) {
+    iconProps.file = iconStr;
+  } else {
+    iconProps.iconName = iconStr;
+  }
+
+  const icon = new Gtk.Image(iconProps);
 
   const textBox = new Gtk.Box({
     orientation: Gtk.Orientation.VERTICAL,
