@@ -1,9 +1,7 @@
-import { createState } from 'ags';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 import Cairo from 'gi://cairo';
 import GLib from 'gi://GLib';
-import Gio from 'gi://Gio';
 
 import Clock from './widget/Clock';
 import ScrollerIndicator from './widget/ScrollerIndicator';
@@ -106,7 +104,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           } else {
               targetDx = BAR_WIDTH;
           }
-          
+
           if (animTickId === 0) {
               animTickId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000 / 60, () => {
                   const diff = targetDx - currentDx;
@@ -119,7 +117,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
                   }
                   // Simple ease-out
                   const speed = 0.15;
-                  
+
                   currentDx += diff * speed;
                   setAnimDx(currentDx);
                   for (const da of drawingAreas) da.queue_draw();
@@ -143,10 +141,12 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
           const surf = self.get_native()?.get_surface();
           if (surf) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const Region = (Cairo as any).Region;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const RectangleInt = (Cairo as any).RectangleInt;
             const region = new Region();
-            // We only need the left bar clickable initially, 
+            // We only need the left bar clickable initially,
             // but the side panels handle their own clicks, so it's fine.
             region.unionRectangle(new RectangleInt({ x: 0, y: 0, width: BAR_WIDTH + BORDER_WIDTH, height: 9999 }));
             surf.set_input_region(region);
@@ -194,6 +194,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           sensitive={false}
           $={(da: Gtk.DrawingArea) => {
             drawingAreas.push(da);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             da.set_draw_func((_area, ctx: any, w: number, h: number) => {
               const [bgR, bgG, bgB, bgA] = getBgRgba();
               const [bR, bG, bB, bA] = getAccentRgba();
@@ -223,11 +224,11 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
               ctx.arc(dx + r, dy + dh - r, r, Math.PI / 2, Math.PI); // Bottom-left corner
               ctx.arc(dx + r, dy + r, r, Math.PI, 3 * Math.PI / 2); // Top-left corner
               ctx.closePath();
-              
+
               // 2. Clear the desktop hole to show wallpaper/windows underneath
               ctx.setOperator(Cairo.Operator.CLEAR);
               ctx.fillPreserve();
-              
+
               // 3. Draw the accent border along the path
               ctx.setOperator(Cairo.Operator.OVER);
               ctx.setSourceRGBA(bR, bG, bB, bA);

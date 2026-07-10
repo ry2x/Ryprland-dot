@@ -3,7 +3,6 @@ import { createState } from 'ags';
 import app from 'ags/gtk4/app';
 import { execAsync } from 'ags/process';
 import Hyprland from 'gi://AstalHyprland';
-import { Variable } from 'ags';
 
 export const activeSidePanel = {
     value: { panel: "", monitor: "" },
@@ -78,7 +77,7 @@ export function toggleControlCenter(monitorName?: string | null) {
         } else {
           if (dw && dw.get_visible()) dw.hide_animated?.();
           cc.show_animated?.();
-          activeSidePanel.set("control-center", m.get_connector());
+          activeSidePanel.set("control-center", m.get_connector() ?? "");
         }
       } else {
         if (cc.get_visible()) cc.hide_animated?.();
@@ -100,7 +99,7 @@ export function toggleDateWeather(monitorName?: string | null) {
         } else {
           if (cc && cc.get_visible()) cc.hide_animated?.();
           dw.show_animated?.();
-          activeSidePanel.set("date-weather", m.get_connector());
+          activeSidePanel.set("date-weather", m.get_connector() ?? "");
         }
       } else {
         if (dw.get_visible()) dw.hide_animated?.();

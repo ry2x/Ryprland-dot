@@ -3,16 +3,32 @@ import { createState } from 'ags';
 
 import Hyprland from 'gi://AstalHyprland';
 
+interface WsBox extends Gtk.Box {
+  _ws_id?: number;
+}
+
 export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const hypr = Hyprland.get_default();
   const connector = gdkmonitor.get_connector();
 
   const [activeIdx, setActiveIdx] = createState(0);
 
+  const dotsContainer = (<box orientation={Gtk.Orientation.VERTICAL} spacing={12} />) as Gtk.Box;
+
+  const getChildren = (): WsBox[] => {
+    const children: WsBox[] = [];
+    let child = dotsContainer.get_first_child();
+    while (child) {
+      children.push(child as WsBox);
+      child = child.get_next_sibling();
+    }
+    return children;
+  };
+
   const updateIdx = () => {
     const fw = hypr.get_focused_workspace();
     const children = getChildren();
-    const idx = children.findIndex((c) => (c as any)._ws_id === fw?.id);
+    const idx = children.findIndex((c) => (c as WsBox)._ws_id === fw?.id);
     setActiveIdx(idx >= 0 ? idx : 0);
   };
 
@@ -43,25 +59,13 @@ export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) 
       </box>
     ) as Gtk.Box;
 
-    (box as any)._ws_id = ws.id;
+    (box as WsBox)._ws_id = ws.id;
 
     box.connect('destroy', () => {
       hypr.disconnect(hookId);
     });
 
     return box;
-  };
-
-  const dotsContainer = (<box orientation={Gtk.Orientation.VERTICAL} spacing={12} />) as Gtk.Box;
-
-  const getChildren = () => {
-    const children: Gtk.Box[] = [];
-    let child = dotsContainer.get_first_child();
-    while (child) {
-      children.push(child as Gtk.Box);
-      child = child.get_next_sibling();
-    }
-    return children;
   };
 
   // Initial load
@@ -81,7 +85,7 @@ export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) 
     if (ws.monitor && ws.monitor.name === connector && !ws.name.startsWith('special')) {
       const btn = createWorkspaceBtn(ws);
       const children = getChildren();
-      const insertIdx = children.findIndex((c) => (c as any)._ws_id! > ws.id);
+      const insertIdx = children.findIndex((c) => (c as WsBox)._ws_id! > ws.id);
 
       if (insertIdx === -1) {
         dotsContainer.append(btn);
@@ -95,7 +99,7 @@ export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) 
   });
 
   const hook2 = hypr.connect('workspace-removed', (_, id: number) => {
-    const target = getChildren().find((c) => (c as any)._ws_id === id);
+    const target = getChildren().find((c) => (c as WsBox)._ws_id === id);
     if (target) {
       dotsContainer.remove(target);
       updateIdx();
