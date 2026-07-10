@@ -42,7 +42,16 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     const safeT = text() || '';
     const q = safeT.trim().toLowerCase();
 
-    currentResults = searchApps(q);
+    const rawResults = searchApps(q);
+    currentResults = [];
+    const seen = new Set<string>();
+    rawResults.forEach((res) => {
+      const key = getAppKey(res);
+      if (!seen.has(key)) {
+        seen.add(key);
+        currentResults.push(res);
+      }
+    });
 
     for (const [, w] of widgetMap) {
       w.set_visible(false);

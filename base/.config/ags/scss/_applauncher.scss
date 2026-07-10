@@ -8,6 +8,7 @@ window.AppLauncher,
 }
 
 .applauncher-box-wrapper {
+  margin: 3em; /* Adds space inside the window to prevent shadow clipping */
   box-shadow:
     0 19px 38px rgba(0, 0, 0, 0.3),
     0 15px 12px rgba(0, 0, 0, 0.22);
@@ -57,12 +58,14 @@ window.AppLauncher,
 
 .applauncher-scroll {
   min-width: 32em;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .applauncher-list {
   color: $text;
-  padding: 8px 32px 0px 32px;
-  margin: 16px 8px 0px 0px;
+  padding: 0px 32px 0px 32px;
+  margin: 0px 8px 0px 0px;
 }
 
 .applauncher-item {
