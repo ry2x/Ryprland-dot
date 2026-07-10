@@ -1,8 +1,25 @@
 import { Astal } from 'ags/gtk4';
+import { createState } from 'ags';
 import app from 'ags/gtk4/app';
 import { execAsync } from 'ags/process';
-
 import Hyprland from 'gi://AstalHyprland';
+import { Variable } from 'ags';
+
+export const activeSidePanel = {
+    value: { panel: "", monitor: "" },
+    callbacks: [] as ((val: { panel: string, monitor: string }) => void)[],
+    get() { return this.value; },
+    set(panel: string, monitor: string) {
+        this.value = { panel, monitor };
+        this.callbacks.forEach(cb => cb(this.value));
+    },
+    subscribe(cb: (val: { panel: string, monitor: string }) => void) {
+        this.callbacks.push(cb);
+        cb(this.value);
+    }
+};
+
+export const [animDx, setAnimDx] = createState<number>(46);
 
 type AnimatedWindow = Astal.Window & {
   hide_animated?: () => void;
@@ -21,6 +38,7 @@ export function closeAllControlCenters() {
       else cc.set_visible(false);
     }
   });
+  if (activeSidePanel.get().panel === "control-center") activeSidePanel.set("", "");
 }
 
 export function closeAllDateWeathers() {
@@ -31,6 +49,7 @@ export function closeAllDateWeathers() {
       else dw.set_visible(false);
     }
   });
+  if (activeSidePanel.get().panel === "date-weather") activeSidePanel.set("", "");
 }
 
 export function closeAllAppLaunchers() {
@@ -55,9 +74,11 @@ export function toggleControlCenter(monitorName?: string | null) {
       if (m.get_connector() === targetMonitor) {
         if (cc.get_visible()) {
           cc.hide_animated?.();
+          activeSidePanel.set("", "");
         } else {
           if (dw && dw.get_visible()) dw.hide_animated?.();
           cc.show_animated?.();
+          activeSidePanel.set("control-center", m.get_connector());
         }
       } else {
         if (cc.get_visible()) cc.hide_animated?.();
@@ -75,9 +96,11 @@ export function toggleDateWeather(monitorName?: string | null) {
       if (m.get_connector() === targetMonitor) {
         if (dw.get_visible()) {
           dw.hide_animated?.();
+          activeSidePanel.set("", "");
         } else {
           if (cc && cc.get_visible()) cc.hide_animated?.();
           dw.show_animated?.();
+          activeSidePanel.set("date-weather", m.get_connector());
         }
       } else {
         if (dw.get_visible()) dw.hide_animated?.();

@@ -1,3 +1,4 @@
+import { createState } from 'ags';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 import Cairo from 'gi://cairo';
@@ -15,7 +16,7 @@ import Workspaces from './widget/Workspaces';
 
 // --- Config ---
 const BORDER_WIDTH = 2;
-const BAR_WIDTH    = 40;
+const BAR_WIDTH    = 46;
 const MATUGEN_PATH = `${GLib.get_user_config_dir()}/ags/themes/matugen.scss`;
 
 // --- Color parsing ---
@@ -85,8 +86,48 @@ function getAccentRgba(): [number, number, number, number] {
     return hexToRgba(currentColors.primary);
 }
 
+// --- State for expanding bar animation ---
+import { activeSidePanel, setAnimDx } from '../../services/windowManager';
+
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
+
+  let targetDx = BAR_WIDTH;
+  let currentDx = BAR_WIDTH;
+  let animTickId = 0;
+
+  activeSidePanel.subscribe(({ panel, monitor }) => {
+      // Only expand the bar on the monitor where the panel is active.
+      if (monitor === gdkmonitor.get_connector() || monitor === "") {
+          if (panel === 'control-center') {
+              targetDx = BAR_WIDTH + 490;
+          } else if (panel === 'date-weather') {
+              targetDx = BAR_WIDTH + 900;
+          } else {
+              targetDx = BAR_WIDTH;
+          }
+          
+          if (animTickId === 0) {
+              animTickId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000 / 60, () => {
+                  const diff = targetDx - currentDx;
+                  if (Math.abs(diff) < 1.0) {
+                      currentDx = targetDx;
+                      setAnimDx(targetDx);
+                      animTickId = 0;
+                      for (const da of drawingAreas) da.queue_draw();
+                      return GLib.SOURCE_REMOVE;
+                  }
+                  // Simple ease-out
+                  const speed = 0.15;
+                  
+                  currentDx += diff * speed;
+                  setAnimDx(currentDx);
+                  for (const da of drawingAreas) da.queue_draw();
+                  return GLib.SOURCE_CONTINUE;
+              });
+          }
+      }
+  });
 
   return (
     <window
@@ -105,6 +146,8 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
             const Region = (Cairo as any).Region;
             const RectangleInt = (Cairo as any).RectangleInt;
             const region = new Region();
+            // We only need the left bar clickable initially, 
+            // but the side panels handle their own clicks, so it's fine.
             region.unionRectangle(new RectangleInt({ x: 0, y: 0, width: BAR_WIDTH + BORDER_WIDTH, height: 9999 }));
             surf.set_input_region(region);
           }
@@ -162,9 +205,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
               const r = 16; // border radius
 
               // Desktop area rectangle (inset by half border width so stroke is fully visible)
-              const dx = BAR_WIDTH + halfBw;
+              const dx = currentDx + halfBw;
               const dy = halfBw;
-              const dw = w - BAR_WIDTH - bw;
+              const dw = w - currentDx - bw;
               const dh = h - bw;
 
               // 1. Fill entire screen with background color
@@ -175,16 +218,16 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
 
               // Path for desktop hole
               ctx.newPath();
-              ctx.arc(dx + dw - r, dy + r, r, -Math.PI / 2, 0);
-              ctx.arc(dx + dw - r, dy + dh - r, r, 0, Math.PI / 2);
-              ctx.arc(dx + r, dy + dh - r, r, Math.PI / 2, Math.PI);
-              ctx.arc(dx + r, dy + r, r, Math.PI, 3 * Math.PI / 2);
+              ctx.arc(dx + dw - r, dy + r, r, -Math.PI / 2, 0); // Top-right corner
+              ctx.arc(dx + dw - r, dy + dh - r, r, 0, Math.PI / 2); // Bottom-right corner
+              ctx.arc(dx + r, dy + dh - r, r, Math.PI / 2, Math.PI); // Bottom-left corner
+              ctx.arc(dx + r, dy + r, r, Math.PI, 3 * Math.PI / 2); // Top-left corner
               ctx.closePath();
-
+              
               // 2. Clear the desktop hole to show wallpaper/windows underneath
               ctx.setOperator(Cairo.Operator.CLEAR);
               ctx.fillPreserve();
-
+              
               // 3. Draw the accent border along the path
               ctx.setOperator(Cairo.Operator.OVER);
               ctx.setSourceRGBA(bR, bG, bB, bA);

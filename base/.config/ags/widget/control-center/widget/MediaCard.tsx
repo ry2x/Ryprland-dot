@@ -100,7 +100,7 @@ export default function MediaCard() {
             cardOverlay.set_child(cavaContainer);
 
             const controlsBox = (
-              <box spacing={16} css="padding: 16px;" hexpand={true} vexpand={true}>
+              <box spacing={16} css="padding: 16px;" hexpand={true}>
                 <box
                   valign={Gtk.Align.CENTER}
                   css="border-radius: 12px; min-width: 80px; min-height: 80px;"

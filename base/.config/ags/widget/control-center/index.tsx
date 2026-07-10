@@ -8,6 +8,7 @@ import QuickToggles from './widget/QuickToggles';
 import SystemMetrics from './widget/SystemMetrics';
 import UpdatesCard from './widget/UpdatesCard';
 import VolumeSlider from './widget/VolumeSlider';
+import { activeSidePanel, animDx } from '../../services/windowManager';
 
 interface ClickCatcherProps {
   onClick: () => void;
@@ -42,6 +43,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
   const hide_animated = () => {
     setIsRevealed(false);
+    activeSidePanel.set("", "");
     const w = app.get_window(windowName);
     setTimeout(() => {
       if (w) w.set_visible(false);
@@ -68,26 +70,28 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <ClickCatcher onClick={hide_animated} vexpand={true} />
-
-        <box orientation={Gtk.Orientation.HORIZONTAL}>
+        <box orientation={Gtk.Orientation.HORIZONTAL} vexpand={true}>
           {(() => {
             const rev = (
               <revealer
-                transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
+                transitionType={Gtk.RevealerTransitionType.CROSSFADE}
                 transitionDuration={300}
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.HORIZONTAL}>
-                  <ClickCatcher onClick={hide_animated} widthRequest={42} />
+                  <ClickCatcher onClick={hide_animated} widthRequest={46} />
 
                   {(() => {
                     const container = (
                       <box
-                        class="cc-container"
+                        cssClasses={isRevealed.as(r => r ? ["cc-container", "revealed"] : ["cc-container"])}
+                        css={animDx((dx) => {
+                          const ml = dx - 536;
+                          return `margin-left: ${ml < -490 ? -490 : ml}px;`;
+                        })}
                         orientation={Gtk.Orientation.VERTICAL}
                         spacing={16}
-                        widthRequest={420}
+                        widthRequest={400}
                       >
                         <box spacing={12} halign={Gtk.Align.START}>
                           <LucideIcon name="settings-2" pixelSize={24} />
@@ -108,10 +112,9 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
                     container.set_hexpand(false);
                     container.set_hexpand_set(true);
-                    container.set_vexpand(false);
-                    container.set_vexpand_set(true);
+                    container.set_vexpand(true);
+                    container.set_valign(Gtk.Align.FILL);
                     container.set_halign(Gtk.Align.START);
-                    container.set_valign(Gtk.Align.END);
 
                     return container;
                   })()}
@@ -129,8 +132,6 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
           <ClickCatcher onClick={hide_animated} hexpand={true} />
         </box>
-
-        <ClickCatcher onClick={hide_animated} heightRequest={8} />
       </box>
     </window>
   ) as Astal.Window;

@@ -6,6 +6,7 @@ import ClockCard from './widget/ClockCard';
 import NotificationList from './widget/NotificationList';
 import WeatherCard from './widget/WeatherCard';
 import WorldClockCard from './widget/WorldClockCard';
+import { activeSidePanel, animDx } from '../../services/windowManager';
 
 interface ClickCatcherProps {
   onClick: () => void;
@@ -40,10 +41,11 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
 
   const hide_animated = () => {
     setIsRevealed(false);
+    activeSidePanel.set("", "");
     const w = app.get_window(windowName);
     setTimeout(() => {
       if (w) w.set_visible(false);
-    }, 300);
+    }, 800);
   };
 
   const show_animated = () => {
@@ -66,21 +68,26 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <ClickCatcher onClick={hide_animated} vexpand={true} />
-
-        <box orientation={Gtk.Orientation.HORIZONTAL}>
+        <box orientation={Gtk.Orientation.HORIZONTAL} vexpand={true}>
           {(() => {
             const rev = (
               <revealer
-                transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
-                transitionDuration={300}
+                transitionType={Gtk.RevealerTransitionType.CROSSFADE}
+                transitionDuration={800}
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.HORIZONTAL}>
-                  <ClickCatcher onClick={hide_animated} widthRequest={42} />
+                  <ClickCatcher onClick={hide_animated} widthRequest={46} />
                   {(() => {
                     const container = (
-                      <box class="dw-container" spacing={24}>
+                      <box 
+                        cssClasses={isRevealed.as(r => r ? ["dw-container", "revealed"] : ["dw-container"])} 
+                        css={animDx((dx) => {
+                          const ml = dx - 946;
+                          return `margin-left: ${ml < -900 ? -900 : ml}px;`;
+                        })}
+                        spacing={24}
+                      >
                         {/* LEFT COLUMN: Weather & Calendar */}
                         <box
                           orientation={Gtk.Orientation.VERTICAL}
@@ -108,10 +115,9 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
 
                     container.set_hexpand(false);
                     container.set_hexpand_set(true);
-                    container.set_vexpand(false);
-                    container.set_vexpand_set(true);
+                    container.set_vexpand(true);
+                    container.set_valign(Gtk.Align.FILL);
                     container.set_halign(Gtk.Align.START);
-                    container.set_valign(Gtk.Align.CENTER);
 
                     return container;
                   })()}
@@ -129,8 +135,6 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
 
           <ClickCatcher onClick={hide_animated} hexpand={true} />
         </box>
-
-        <ClickCatcher onClick={hide_animated} vexpand={true} />
       </box>
     </window>
   ) as Astal.Window;

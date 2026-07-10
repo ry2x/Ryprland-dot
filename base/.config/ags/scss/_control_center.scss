@@ -10,24 +10,37 @@ window.DateWeatherPopup {
 
   .cc-container,
   .dw-container {
-    background: color.adjust($surface, $alpha: -0.25);
+    background: transparent;
     margin: 0;
-    border-radius: 0 28px 28px 0;
-    border: 1px solid rgba($on-surface, 0.1);
-    border-left: none;
+    border: none;
+    border-radius: 0;
     padding: 24px;
-    box-shadow:
-      0 12px 36px rgba(0, 0, 0, 0.3),
-      inset 0 1px 1px rgba($on-surface, 0.1);
+    box-shadow: none;
+    
+    /* CSS slide-fade */
+    opacity: 0;
   }
 
   .cc-container {
-    min-width: 420px;
+    transition: opacity 300ms ease-out;
+  }
+
+  .dw-container {
+    transition: opacity 800ms ease-out;
+  }
+
+  .cc-container.revealed,
+  .dw-container.revealed {
+    opacity: 1;
+  }
+
+  .cc-container {
+    min-width: 400px;
   }
 
   .dw-container {
     // 2-column layout width
-    min-width: 850px;
+    min-width: 830px;
     min-height: 600px;
   }
 

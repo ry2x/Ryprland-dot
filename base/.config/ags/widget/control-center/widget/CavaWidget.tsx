@@ -55,8 +55,6 @@ export default function CavaWidget() {
       class="cava-visualizer"
       css="margin-left: 12px; margin-right: 12px; margin-bottom: 1px;"
       canTarget={false}
-      valign={Gtk.Align.END}
-      vexpand={true}
     >
       {area}
     </box>
