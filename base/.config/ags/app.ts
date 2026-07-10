@@ -13,7 +13,7 @@ import {
   toggleDateWeather,
 } from './services/windowManager';
 import AppLauncher from './widget/app-launcher';
-import Bar from './widget/bar';
+import Bar, { forceRedrawBar } from './widget/bar';
 import ControlCenter from './widget/control-center';
 import DateWeatherPopup from './widget/date-weather';
 import NotificationPopups from './widget/notification-popups';
@@ -40,6 +40,9 @@ function reloadCss(cssInput: string) {
   } else {
     globalCssProvider.load_from_string(cssInput);
   }
+
+  // Tell the Bar widget to re-read matugen colors and redraw its Cairo surface
+  forceRedrawBar();
 }
 
 app.start({

@@ -1,5 +1,8 @@
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
+import Cairo from 'gi://cairo';
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
 
 import Clock from './widget/Clock';
 import ScrollerIndicator from './widget/ScrollerIndicator';
@@ -10,8 +13,80 @@ import Volume from './widget/Volume';
 import Weather from './widget/Weather';
 import Workspaces from './widget/Workspaces';
 
+// --- Config ---
+const BORDER_WIDTH = 2;
+const BAR_WIDTH    = 40;
+const MATUGEN_PATH = `${GLib.get_user_config_dir()}/ags/themes/matugen.scss`;
+
+// --- Color parsing ---
+function hexToRgba(hex: string): [number, number, number, number] {
+    hex = hex.replace("#", "");
+    if (hex.length === 6) {
+        return [
+            parseInt(hex.slice(0, 2), 16) / 255,
+            parseInt(hex.slice(2, 4), 16) / 255,
+            parseInt(hex.slice(4, 6), 16) / 255,
+            1,
+        ];
+    }
+    if (hex.length === 8) {
+        return [
+            parseInt(hex.slice(0, 2), 16) / 255,
+            parseInt(hex.slice(2, 4), 16) / 255,
+            parseInt(hex.slice(4, 6), 16) / 255,
+            parseInt(hex.slice(6, 8), 16) / 255,
+        ];
+    }
+    return [0.1, 0.07, 0.08, 1];
+}
+
+function readMatugenColors(): { surface: string; primary: string } {
+    try {
+        const [ok, bytes] = GLib.file_get_contents(MATUGEN_PATH);
+        if (!ok || !bytes) throw new Error("read failed");
+        const contents = new TextDecoder().decode(bytes);
+
+        let surface = "#191114";
+        let primary = "#ffb0ce";
+
+        for (const line of contents.split("\n")) {
+            const trimmed = line.trim();
+            const sm = trimmed.match(/^\$surface:\s*(#[0-9a-fA-F]{6})/);
+            if (sm) surface = sm[1];
+            const pm = trimmed.match(/^\$primary:\s*(#[0-9a-fA-F]{6})/);
+            if (pm) primary = pm[1];
+        }
+        console.log(`[Bar] matugen colors: surface=${surface}, primary=${primary}`);
+        return { surface, primary };
+    } catch (e) {
+        console.error(`[Bar] Failed to read matugen.scss: ${e}`);
+        return { surface: "#191114", primary: "#ffb0ce" };
+    }
+}
+
+// --- Module-level state (survives GC) ---
+let currentColors = readMatugenColors();
+const drawingAreas: Gtk.DrawingArea[] = [];
+
+export function forceRedrawBar() {
+    console.log("[Bar] Triggered manual color reload");
+    currentColors = readMatugenColors();
+    for (const da of drawingAreas) {
+        da.queue_draw();
+    }
+}
+
+function getBgRgba(): [number, number, number, number] {
+    const [r, g, b] = hexToRgba(currentColors.surface);
+    return [r, g, b, 0.75];
+}
+
+function getAccentRgba(): [number, number, number, number] {
+    return hexToRgba(currentColors.primary);
+}
+
 export default function Bar(gdkmonitor: Gdk.Monitor) {
-  const { TOP, BOTTOM, LEFT } = Astal.WindowAnchor;
+  const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
   return (
     <window
@@ -19,35 +94,106 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       name={`bar-${gdkmonitor.get_connector()}`}
       cssClasses={["Bar"]}
       gdkmonitor={gdkmonitor}
-      exclusivity={Astal.Exclusivity.EXCLUSIVE}
+      exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
-      anchor={TOP | BOTTOM | LEFT}
+      anchor={TOP | BOTTOM | LEFT | RIGHT}
       application={app}
+      $={(self) => {
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+          const surf = self.get_native()?.get_surface();
+          if (surf) {
+            const Region = (Cairo as any).Region;
+            const RectangleInt = (Cairo as any).RectangleInt;
+            const region = new Region();
+            region.unionRectangle(new RectangleInt({ x: 0, y: 0, width: BAR_WIDTH + BORDER_WIDTH, height: 9999 }));
+            surf.set_input_region(region);
+          }
+          return GLib.SOURCE_REMOVE;
+        });
+      }}
     >
-      <centerbox
-        class="panel"
-        orientation={Gtk.Orientation.VERTICAL}
-        startWidget={
-          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.START} class="panel-start" orientation={Gtk.Orientation.VERTICAL} spacing={24}>
-            <Workspaces gdkmonitor={gdkmonitor} />
-            <ScrollerIndicator gdkmonitor={gdkmonitor} />
-          </box>) as Gtk.Widget
-        }
-        centerWidget={
-          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.CENTER} class="panel-center" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-            <Weather gdkmonitor={gdkmonitor} />
-            <Clock gdkmonitor={gdkmonitor} />
-          </box>) as Gtk.Widget
-        }
-        endWidget={
-          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.END} class="panel-end" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-            <Updates gdkmonitor={gdkmonitor} />
-            <SysMetrics gdkmonitor={gdkmonitor} />
-            <Volume gdkmonitor={gdkmonitor} />
-            <Tray />
-          </box>) as Gtk.Widget
-        }
-      />
+      <overlay hexpand vexpand
+        $={(overlay) => {
+          overlay.add_overlay(
+            <box halign={Gtk.Align.START}>
+              <centerbox
+                class="panel"
+                orientation={Gtk.Orientation.VERTICAL}
+                startWidget={
+                  (<box halign={Gtk.Align.FILL} valign={Gtk.Align.START} class="panel-start" orientation={Gtk.Orientation.VERTICAL} spacing={24}>
+                    <Workspaces gdkmonitor={gdkmonitor} />
+                    <ScrollerIndicator gdkmonitor={gdkmonitor} />
+                  </box>) as Gtk.Widget
+                }
+                centerWidget={
+                  (<box halign={Gtk.Align.FILL} valign={Gtk.Align.CENTER} class="panel-center" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                    <Weather gdkmonitor={gdkmonitor} />
+                    <Clock gdkmonitor={gdkmonitor} />
+                  </box>) as Gtk.Widget
+                }
+                endWidget={
+                  (<box halign={Gtk.Align.FILL} valign={Gtk.Align.END} class="panel-end" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                    <Updates gdkmonitor={gdkmonitor} />
+                    <SysMetrics gdkmonitor={gdkmonitor} />
+                    <Volume gdkmonitor={gdkmonitor} />
+                    <Tray />
+                  </box>) as Gtk.Widget
+                }
+              />
+            </box> as Gtk.Widget
+          );
+        }}
+      >
+        <drawingarea
+          hexpand vexpand
+          canTarget={false}
+          canFocus={false}
+          sensitive={false}
+          $={(da: Gtk.DrawingArea) => {
+            drawingAreas.push(da);
+            da.set_draw_func((_area, ctx: any, w: number, h: number) => {
+              const [bgR, bgG, bgB, bgA] = getBgRgba();
+              const [bR, bG, bB, bA] = getAccentRgba();
+
+              ctx.setAntialias(Cairo.Antialias.BEST);
+
+              const bw = BORDER_WIDTH;
+              const halfBw = bw / 2.0;
+              const r = 16; // border radius
+
+              // Desktop area rectangle (inset by half border width so stroke is fully visible)
+              const dx = BAR_WIDTH + halfBw;
+              const dy = halfBw;
+              const dw = w - BAR_WIDTH - bw;
+              const dh = h - bw;
+
+              // 1. Fill entire screen with background color
+              ctx.setOperator(Cairo.Operator.OVER);
+              ctx.setSourceRGBA(bgR, bgG, bgB, bgA);
+              ctx.rectangle(0, 0, w, h);
+              ctx.fill();
+
+              // Path for desktop hole
+              ctx.newPath();
+              ctx.arc(dx + dw - r, dy + r, r, -Math.PI / 2, 0);
+              ctx.arc(dx + dw - r, dy + dh - r, r, 0, Math.PI / 2);
+              ctx.arc(dx + r, dy + dh - r, r, Math.PI / 2, Math.PI);
+              ctx.arc(dx + r, dy + r, r, Math.PI, 3 * Math.PI / 2);
+              ctx.closePath();
+
+              // 2. Clear the desktop hole to show wallpaper/windows underneath
+              ctx.setOperator(Cairo.Operator.CLEAR);
+              ctx.fillPreserve();
+
+              // 3. Draw the accent border along the path
+              ctx.setOperator(Cairo.Operator.OVER);
+              ctx.setSourceRGBA(bR, bG, bB, bA);
+              ctx.setLineWidth(bw);
+              ctx.stroke();
+            });
+          }}
+        />
+      </overlay>
     </window>
   );
 }

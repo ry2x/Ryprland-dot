@@ -7,10 +7,12 @@ window.Bar {
   color: $text;
   font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
 
+  // Dummy elements: CSS color → JS/Cairo bridge (read via get_color())
+  .bar-color-bg     { color: $bg; }
+  .bar-color-accent { color: $accent; }
+
   // The main floating bar container
   .panel {
-    background: $bg;
-    border-right: 2px solid $accent;
     padding: 12px 0px;
     min-width: 40px;
 
