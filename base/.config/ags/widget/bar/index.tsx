@@ -11,33 +11,43 @@ import Weather from './widget/Weather';
 import Workspaces from './widget/Workspaces';
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
-  const { TOP } = Astal.WindowAnchor;
+  const { TOP, BOTTOM, LEFT } = Astal.WindowAnchor;
 
   return (
     <window
       visible
-      name="bar"
-      class="Bar"
+      name={`bar-${gdkmonitor.get_connector()}`}
+      cssClasses={["Bar"]}
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={TOP}
-      marginTop={2}
-      marginBottom={2}
+      layer={Astal.Layer.TOP}
+      anchor={TOP | BOTTOM | LEFT}
       application={app}
     >
-      <box class="island" spacing={0} halign={Gtk.Align.CENTER}>
-        <Workspaces gdkmonitor={gdkmonitor} />
-        <box class="sep" />
-        <ScrollerIndicator gdkmonitor={gdkmonitor} />
-        <Weather gdkmonitor={gdkmonitor} />
-        <Clock gdkmonitor={gdkmonitor} />
-        <box class="sep" />
-        <Updates gdkmonitor={gdkmonitor} />
-        <SysMetrics gdkmonitor={gdkmonitor} />
-        <box class="sep" />
-        <Volume gdkmonitor={gdkmonitor} />
-        <Tray />
-      </box>
+      <centerbox
+        class="panel"
+        orientation={Gtk.Orientation.VERTICAL}
+        startWidget={
+          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.START} class="panel-start" orientation={Gtk.Orientation.VERTICAL} spacing={24}>
+            <Workspaces gdkmonitor={gdkmonitor} />
+            <ScrollerIndicator gdkmonitor={gdkmonitor} />
+          </box>) as Gtk.Widget
+        }
+        centerWidget={
+          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.CENTER} class="panel-center" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+            <Weather gdkmonitor={gdkmonitor} />
+            <Clock gdkmonitor={gdkmonitor} />
+          </box>) as Gtk.Widget
+        }
+        endWidget={
+          (<box halign={Gtk.Align.FILL} valign={Gtk.Align.END} class="panel-end" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+            <Updates gdkmonitor={gdkmonitor} />
+            <SysMetrics gdkmonitor={gdkmonitor} />
+            <Volume gdkmonitor={gdkmonitor} />
+            <Tray />
+          </box>) as Gtk.Widget
+        }
+      />
     </window>
   );
 }

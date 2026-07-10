@@ -14,13 +14,13 @@ export default function Tray() {
 
   return (
     <revealer
-      transitionType={Gtk.RevealerTransitionType.SLIDE_LEFT}
+      transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
       transitionDuration={250}
       revealChild={items.as((i) => i.length > 0)}
     >
-      <box>
-        <box class="sep" />
-        <box class="Tray">
+      <box orientation={Gtk.Orientation.VERTICAL}>
+
+        <box class="Tray" orientation={Gtk.Orientation.VERTICAL}>
           <For each={items}>
             {(item) => {
               const btn = (

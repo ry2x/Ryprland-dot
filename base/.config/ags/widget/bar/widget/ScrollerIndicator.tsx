@@ -107,14 +107,16 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
         hypr.disconnect(hook6);
       }}
     >
-      <box>
+      <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="ScrollerIndicator" onClicked={toggleScrollerOverview}>
-          <box spacing={4}>
-            <LucideIcon name="app-window-mac" class="icon" />
-            <label label={info} />
+          <box spacing={0} orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
+            <LucideIcon name="app-window-mac" class="icon" css="margin-bottom: 4px;" />
+            <label label={info.as(i => i.split(' / ')[0] || '0')} css="font-weight: 800;" />
+            <box halign={Gtk.Align.CENTER} css="min-height: 3px; min-width: 12px; background-color: @theme_selected_bg_color; margin: 2px 0; border-radius: 2px;" />
+            <label label={info.as(i => i.split(' / ')[1] || '0')} css="font-weight: 800;" />
           </box>
         </button>
-        <box class="sep" />
+
       </box>
     </revealer>
   );

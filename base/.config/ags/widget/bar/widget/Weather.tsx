@@ -12,17 +12,19 @@ export default function Weather({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
       transitionDuration={250}
       revealChild={weatherInfo.as((w) => w !== null)}
     >
-      <box>
+      <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="Weather" onClicked={() => toggleDateWeather(gdkmonitor.get_connector())}>
-          <box spacing={4}>
+          <box spacing={0} orientation={Gtk.Orientation.VERTICAL}>
             <LucideIcon
               name={weatherInfo.as((w) => (w ? getWeatherIcon(w.code) : 'cloud'))}
               class="icon"
+              css="margin-bottom: 4px;"
             />
-            <label label={weatherInfo.as((w) => (w ? `${w.temp}°C` : ''))} />
+            <label label={weatherInfo.as((w) => (w ? `${w.temp}` : ''))} css="font-weight: 800;" />
+            <label label={weatherInfo.as((w) => (w ? '°C' : ''))} css="font-size: 0.85em; font-weight: 800;" />
           </box>
         </button>
-        <box class="sep" />
+
       </box>
     </revealer>
   );

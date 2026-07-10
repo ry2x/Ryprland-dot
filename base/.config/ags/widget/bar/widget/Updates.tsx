@@ -18,14 +18,14 @@ export default function Updates({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
       transitionDuration={250}
       revealChild={isVisible}
     >
-      <box>
+      <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="Updates" onClicked={toggleMenu}>
-          <box spacing={4}>
+          <box spacing={4} orientation={Gtk.Orientation.VERTICAL}>
             <LucideIcon name="package" class="icon" />
             <label label={updatesPoll} />
           </box>
         </button>
-        <box class="sep" />
+
       </box>
     </revealer>
   );

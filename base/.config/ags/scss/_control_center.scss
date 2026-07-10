@@ -12,8 +12,9 @@ window.DateWeatherPopup {
   .dw-container {
     background: color.adjust($surface, $alpha: -0.25);
     margin: 0;
-    border-radius: 28px;
+    border-radius: 0 28px 28px 0;
     border: 1px solid rgba($on-surface, 0.1);
+    border-left: none;
     padding: 24px;
     box-shadow:
       0 12px 36px rgba(0, 0, 0, 0.3),

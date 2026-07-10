@@ -12,6 +12,7 @@ interface ClickCatcherProps {
   hexpand?: boolean;
   vexpand?: boolean;
   heightRequest?: number;
+  widthRequest?: number;
 }
 
 function ClickCatcher({
@@ -19,9 +20,10 @@ function ClickCatcher({
   hexpand = false,
   vexpand = false,
   heightRequest = -1,
+  widthRequest = -1,
 }: ClickCatcherProps) {
   const box = (
-    <box class="click-catcher" hexpand={hexpand} vexpand={vexpand} heightRequest={heightRequest} />
+    <box class="click-catcher" hexpand={hexpand} vexpand={vexpand} heightRequest={heightRequest} widthRequest={widthRequest} />
   ) as Gtk.Box;
   const gesture = new Gtk.GestureClick();
   gesture.connect('pressed', onClick);
@@ -64,18 +66,18 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       visible={false}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-        <box orientation={Gtk.Orientation.HORIZONTAL}>
-          <ClickCatcher onClick={hide_animated} hexpand={true} />
+        <ClickCatcher onClick={hide_animated} vexpand={true} />
 
+        <box orientation={Gtk.Orientation.HORIZONTAL}>
           {(() => {
             const rev = (
               <revealer
-                transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+                transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
                 transitionDuration={300}
                 revealChild={isRevealed}
               >
-                <box orientation={Gtk.Orientation.VERTICAL}>
-                  <ClickCatcher onClick={hide_animated} heightRequest={52} />
+                <box orientation={Gtk.Orientation.HORIZONTAL}>
+                  <ClickCatcher onClick={hide_animated} widthRequest={42} />
                   {(() => {
                     const container = (
                       <box class="dw-container" spacing={24}>
@@ -108,6 +110,8 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                     container.set_hexpand_set(true);
                     container.set_vexpand(false);
                     container.set_vexpand_set(true);
+                    container.set_halign(Gtk.Align.START);
+                    container.set_valign(Gtk.Align.CENTER);
 
                     return container;
                   })()}
@@ -126,7 +130,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
           <ClickCatcher onClick={hide_animated} hexpand={true} />
         </box>
 
-        <ClickCatcher onClick={hide_animated} hexpand={true} vexpand={true} />
+        <ClickCatcher onClick={hide_animated} vexpand={true} />
       </box>
     </window>
   ) as Astal.Window;

@@ -26,9 +26,12 @@ export default function Volume({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
 
   const btn = (
     <button class="Volume" onClicked={toggleMenu}>
-      <box spacing={4}>
+      <box spacing={4} orientation={Gtk.Orientation.VERTICAL}>
         <LucideIcon name={volIcon} class="icon" />
-        <label label={bind(speaker, 'volume').as((v) => `${Math.round(v * 100)}%`)} />
+          <box spacing={0} orientation={Gtk.Orientation.VERTICAL}>
+            <label label={bind(speaker, 'volume').as((v) => `${Math.round(v * 100)}`)} />
+            <label label="%" css="font-size: 0.85em;" />
+          </box>
       </box>
     </button>
   ) as Gtk.Button;
