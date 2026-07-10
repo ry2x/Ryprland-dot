@@ -17,21 +17,7 @@ window.DateWeatherPopup {
     padding: 24px;
     box-shadow: none;
     
-    /* CSS slide-fade */
-    opacity: 0;
-  }
-
-  .cc-container {
-    transition: opacity 300ms ease-out;
-  }
-
-  .dw-container {
-    transition: opacity 800ms ease-out;
-  }
-
-  .cc-container.revealed,
-  .dw-container.revealed {
-    opacity: 1;
+    /* opacity is now controlled via JS css prop */
   }
 
   .cc-container {

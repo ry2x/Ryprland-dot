@@ -62,8 +62,9 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
       anchor={TOP | BOTTOM | LEFT | RIGHT}
+      marginLeft={46}
       marginTop={0}
-      keymode={Astal.Keymode.ON_DEMAND}
+      keymode={Astal.Keymode.NONE}
       application={app}
       visible={false}
     >
@@ -77,14 +78,14 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.HORIZONTAL}>
-                  <ClickCatcher onClick={hide_animated} widthRequest={46} />
                   {(() => {
                     const container = (
                       <box 
                         cssClasses={isRevealed.as(r => r ? ["dw-container", "revealed"] : ["dw-container"])} 
                         css={animDx((dx) => {
                           const ml = dx - 946;
-                          return `margin-left: ${ml < -900 ? -900 : ml}px;`;
+                          const op = Math.max(0, Math.min(1, (dx - 46) / 900));
+                          return `margin-left: ${ml < -900 ? -900 : ml}px; opacity: ${op};`;
                         })}
                         spacing={24}
                       >

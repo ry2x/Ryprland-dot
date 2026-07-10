@@ -64,8 +64,9 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
       anchor={TOP | BOTTOM | LEFT | RIGHT}
+      marginLeft={46}
       marginTop={0}
-      keymode={Astal.Keymode.ON_DEMAND}
+      keymode={Astal.Keymode.NONE}
       application={app}
       visible={false}
     >
@@ -79,15 +80,14 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
                 revealChild={isRevealed}
               >
                 <box orientation={Gtk.Orientation.HORIZONTAL}>
-                  <ClickCatcher onClick={hide_animated} widthRequest={46} />
-
                   {(() => {
                     const container = (
                       <box
                         cssClasses={isRevealed.as(r => r ? ["cc-container", "revealed"] : ["cc-container"])}
                         css={animDx((dx) => {
                           const ml = dx - 536;
-                          return `margin-left: ${ml < -490 ? -490 : ml}px;`;
+                          const op = Math.max(0, Math.min(1, (dx - 46) / 490));
+                          return `margin-left: ${ml < -490 ? -490 : ml}px; opacity: ${op};`;
                         })}
                         orientation={Gtk.Orientation.VERTICAL}
                         spacing={16}

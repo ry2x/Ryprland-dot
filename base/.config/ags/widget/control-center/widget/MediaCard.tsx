@@ -112,7 +112,7 @@ export default function MediaCard() {
                   <button
                     css="background: transparent; border: none; box-shadow: none; padding: 0;"
                     halign={Gtk.Align.START}
-                    onClicked={() => {
+                    onClicked={async () => {
                       try {
                         player.raise();
                       } catch (e) {
@@ -120,6 +120,8 @@ export default function MediaCard() {
                       }
                       if (player.entry) {
                         focusWindow(player.entry);
+                        const { closeAllControlCenters } = await import("../../../services/windowManager");
+                        closeAllControlCenters();
                       }
                     }}
                   >
