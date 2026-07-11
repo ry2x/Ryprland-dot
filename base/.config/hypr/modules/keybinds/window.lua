@@ -37,10 +37,10 @@ hl.bind(mod .. "+ CAPS + Right", hl.dsp.window.swap({ direction = "r" }), { desc
 -- cycle windows
 hl.bind(mod .. "+ TAB", hl.dsp.window.cycle_next(), { description = "Cycle windows" })
 
--- kill windowd
+-- kill window
 hl.bind(mod .. "+ C", hl.dsp.window.close(), { description = "Kill window" })
 
--- kill all windows
+-- kill active window's process
 hl.bind(mod .. "+ SHIFT + C", killActiveProcess, { description = "Kill active window process" })
 
 -- toggle floating and fullscreen
