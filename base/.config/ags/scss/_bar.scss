@@ -132,6 +132,12 @@ window.Bar {
 
   // ===== Specific Overrides =====
 
+  .ScrollerIndicator {
+    .separator {
+      background-color: $accent;
+    }
+  }
+
   // 4. Clock
   .Clock {
     .time {

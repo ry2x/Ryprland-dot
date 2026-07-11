@@ -118,8 +118,9 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
             <LucideIcon name="app-window-mac" class="icon" css="margin-bottom: 4px;" />
             <label label={info.as((i) => i.split(' / ')[0] || '0')} css="font-weight: 800;" />
             <box
+              class="separator"
               halign={Gtk.Align.CENTER}
-              css="min-height: 3px; min-width: 12px; background-color: @theme_selected_bg_color; margin: 2px 0; border-radius: 2px;"
+              css="min-height: 3px; min-width: 12px; margin: 2px 0; border-radius: 2px;"
             />
             <label label={info.as((i) => i.split(' / ')[1] || '0')} css="font-weight: 800;" />
           </box>
