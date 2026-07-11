@@ -109,14 +109,21 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="ScrollerIndicator" onClicked={toggleScrollerOverview}>
-          <box spacing={0} orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
+          <box
+            spacing={0}
+            orientation={Gtk.Orientation.VERTICAL}
+            valign={Gtk.Align.CENTER}
+            halign={Gtk.Align.CENTER}
+          >
             <LucideIcon name="app-window-mac" class="icon" css="margin-bottom: 4px;" />
-            <label label={info.as(i => i.split(' / ')[0] || '0')} css="font-weight: 800;" />
-            <box halign={Gtk.Align.CENTER} css="min-height: 3px; min-width: 12px; background-color: @theme_selected_bg_color; margin: 2px 0; border-radius: 2px;" />
-            <label label={info.as(i => i.split(' / ')[1] || '0')} css="font-weight: 800;" />
+            <label label={info.as((i) => i.split(' / ')[0] || '0')} css="font-weight: 800;" />
+            <box
+              halign={Gtk.Align.CENTER}
+              css="min-height: 3px; min-width: 12px; background-color: @theme_selected_bg_color; margin: 2px 0; border-radius: 2px;"
+            />
+            <label label={info.as((i) => i.split(' / ')[1] || '0')} css="font-weight: 800;" />
           </box>
         </button>
-
       </box>
     </revealer>
   );

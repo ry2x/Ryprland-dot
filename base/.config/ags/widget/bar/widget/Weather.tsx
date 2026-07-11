@@ -21,10 +21,12 @@ export default function Weather({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
               css="margin-bottom: 4px;"
             />
             <label label={weatherInfo.as((w) => (w ? `${w.temp}` : ''))} css="font-weight: 800;" />
-            <label label={weatherInfo.as((w) => (w ? '°C' : ''))} css="font-size: 0.85em; font-weight: 800;" />
+            <label
+              label={weatherInfo.as((w) => (w ? '°C' : ''))}
+              css="font-size: 0.85em; font-weight: 800;"
+            />
           </box>
         </button>
-
       </box>
     </revealer>
   );

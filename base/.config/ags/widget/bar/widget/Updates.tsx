@@ -25,7 +25,6 @@ export default function Updates({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
             <label label={updatesPoll} />
           </box>
         </button>
-
       </box>
     </revealer>
   );

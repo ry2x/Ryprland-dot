@@ -2,11 +2,11 @@ import { createState } from 'ags';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 
+import { activeSidePanel, animDx } from '../../services/windowManager';
 import ClockCard from './widget/ClockCard';
 import NotificationList from './widget/NotificationList';
 import WeatherCard from './widget/WeatherCard';
 import WorldClockCard from './widget/WorldClockCard';
-import { activeSidePanel, animDx } from '../../services/windowManager';
 
 interface ClickCatcherProps {
   onClick: () => void;
@@ -24,7 +24,13 @@ function ClickCatcher({
   widthRequest = -1,
 }: ClickCatcherProps) {
   const box = (
-    <box class="click-catcher" hexpand={hexpand} vexpand={vexpand} heightRequest={heightRequest} widthRequest={widthRequest} />
+    <box
+      class="click-catcher"
+      hexpand={hexpand}
+      vexpand={vexpand}
+      heightRequest={heightRequest}
+      widthRequest={widthRequest}
+    />
   ) as Gtk.Box;
   const gesture = new Gtk.GestureClick();
   gesture.connect('pressed', onClick);
@@ -41,7 +47,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
 
   const hide_animated = () => {
     setIsRevealed(false);
-    activeSidePanel.set("", "");
+    activeSidePanel.set('', '');
     const w = app.get_window(windowName);
     setTimeout(() => {
       if (w) w.set_visible(false);
@@ -62,7 +68,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
       anchor={TOP | BOTTOM | LEFT | RIGHT}
-      marginLeft={46}
+      marginLeft={47}
       marginTop={0}
       keymode={Astal.Keymode.NONE}
       application={app}
@@ -80,11 +86,13 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                 <box orientation={Gtk.Orientation.HORIZONTAL}>
                   {(() => {
                     const container = (
-                      <box 
-                        cssClasses={isRevealed.as(r => r ? ["dw-container", "revealed"] : ["dw-container"])} 
+                      <box
+                        cssClasses={isRevealed.as((r) =>
+                          r ? ['dw-container', 'revealed'] : ['dw-container'],
+                        )}
                         css={animDx((dx) => {
-                          const ml = dx - 946;
-                          const op = Math.max(0, Math.min(1, (dx - 46) / 900));
+                          const ml = dx - 947;
+                          const op = Math.max(0, Math.min(1, (dx - 47) / 900));
                           return `margin-left: ${ml < -900 ? -900 : ml}px; opacity: ${op};`;
                         })}
                         spacing={24}

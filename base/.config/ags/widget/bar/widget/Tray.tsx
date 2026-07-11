@@ -19,7 +19,6 @@ export default function Tray() {
       revealChild={items.as((i) => i.length > 0)}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
-
         <box class="Tray" orientation={Gtk.Orientation.VERTICAL}>
           <For each={items}>
             {(item) => {

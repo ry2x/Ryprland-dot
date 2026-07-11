@@ -8,13 +8,17 @@ window.Bar {
   font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
 
   // Dummy elements: CSS color → JS/Cairo bridge (read via get_color())
-  .bar-color-bg     { color: $bg; }
-  .bar-color-accent { color: $accent; }
+  .bar-color-bg {
+    color: $bg;
+  }
+  .bar-color-accent {
+    color: $accent;
+  }
 
   // The main floating bar container
   .panel {
     padding: 12px 0px;
-    min-width: 46px;
+    min-width: 47px;
 
     .panel-start,
     .panel-center,
@@ -107,7 +111,7 @@ window.Bar {
 
     &:hover {
       box-shadow: inset 2px 0 0 $accent;
-      
+
       > box {
         transform: translateX(3px);
       }
@@ -186,5 +190,3 @@ popover.tray-menu {
     }
   }
 }
-
-

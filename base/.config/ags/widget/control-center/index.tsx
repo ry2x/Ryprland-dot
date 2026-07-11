@@ -3,12 +3,12 @@ import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import app from 'ags/gtk4/app';
 
 import { LucideIcon } from '../../lib/lucide';
+import { activeSidePanel, animDx } from '../../services/windowManager';
 import MediaCard from './widget/MediaCard';
 import QuickToggles from './widget/QuickToggles';
 import SystemMetrics from './widget/SystemMetrics';
 import UpdatesCard from './widget/UpdatesCard';
 import VolumeSlider from './widget/VolumeSlider';
-import { activeSidePanel, animDx } from '../../services/windowManager';
 
 interface ClickCatcherProps {
   onClick: () => void;
@@ -26,7 +26,13 @@ function ClickCatcher({
   widthRequest = -1,
 }: ClickCatcherProps) {
   const box = (
-    <box class="click-catcher" hexpand={hexpand} vexpand={vexpand} heightRequest={heightRequest} widthRequest={widthRequest} />
+    <box
+      class="click-catcher"
+      hexpand={hexpand}
+      vexpand={vexpand}
+      heightRequest={heightRequest}
+      widthRequest={widthRequest}
+    />
   ) as Gtk.Box;
   const gesture = new Gtk.GestureClick();
   gesture.connect('pressed', onClick);
@@ -43,7 +49,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
   const hide_animated = () => {
     setIsRevealed(false);
-    activeSidePanel.set("", "");
+    activeSidePanel.set('', '');
     const w = app.get_window(windowName);
     setTimeout(() => {
       if (w) w.set_visible(false);
@@ -64,7 +70,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.TOP}
       anchor={TOP | BOTTOM | LEFT | RIGHT}
-      marginLeft={46}
+      marginLeft={47}
       marginTop={0}
       keymode={Astal.Keymode.NONE}
       application={app}
@@ -83,10 +89,12 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
                   {(() => {
                     const container = (
                       <box
-                        cssClasses={isRevealed.as(r => r ? ["cc-container", "revealed"] : ["cc-container"])}
+                        cssClasses={isRevealed.as((r) =>
+                          r ? ['cc-container', 'revealed'] : ['cc-container'],
+                        )}
                         css={animDx((dx) => {
-                          const ml = dx - 536;
-                          const op = Math.max(0, Math.min(1, (dx - 46) / 490));
+                          const ml = dx - 537;
+                          const op = Math.max(0, Math.min(1, (dx - 47) / 490));
                           return `margin-left: ${ml < -490 ? -490 : ml}px; opacity: ${op};`;
                         })}
                         orientation={Gtk.Orientation.VERTICAL}

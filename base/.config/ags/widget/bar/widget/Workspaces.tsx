@@ -1,5 +1,5 @@
-import { Gdk, Gtk } from 'ags/gtk4';
 import { createState } from 'ags';
+import { Gdk, Gtk } from 'ags/gtk4';
 
 import Hyprland from 'gi://AstalHyprland';
 
@@ -51,10 +51,7 @@ export default function Workspaces({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) 
     const hookId = hypr.connect('notify::focused-workspace', updateActive);
 
     const box = (
-      <box
-        valign={Gtk.Align.CENTER}
-        halign={Gtk.Align.CENTER}
-      >
+      <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
         {btn}
       </box>
     ) as Gtk.Box;
