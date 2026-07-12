@@ -8,6 +8,10 @@ export interface AppConfig {
     label: string;
     tz: string;
   }[];
+  recorder?: {
+    savePath?: string;
+    filenameFormat?: string;
+  };
 }
 
 const DEFAULT_CONFIG: AppConfig = {
@@ -20,6 +24,10 @@ const DEFAULT_CONFIG: AppConfig = {
     { label: 'New York', tz: 'America/New_York' },
     { label: 'Los Angeles', tz: 'America/Los_Angeles' },
   ],
+  recorder: {
+    savePath: '~/Videos',
+    filenameFormat: 'recording_%Y-%m-%d_%H.%M.%S.mp4',
+  },
 };
 
 function loadConfig(): AppConfig {
