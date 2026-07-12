@@ -120,6 +120,11 @@ hl.define_submap("gaming",
             { description = "Toggle Youtube Music" }
         )
 
+        -- toggle fullscreen
+        hl.bind(mod .. "+ SHIFT + F", hl.dsp.window.fullscreen({ action = "toggle" }),
+            { description = "Toggle fullscreen" }
+        )
+
         -- kill window
         hl.bind(mod .. "+ C",
             function()
