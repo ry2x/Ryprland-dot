@@ -92,7 +92,7 @@ export default function AppLauncher(gdkmonitor: Gdk.Monitor) {
     minContentWidth: 400,
     minContentHeight: 300,
     maxContentHeight: 600,
-    propagateNaturalHeight: true,
+    propagateNaturalHeight: false,
     child: (
       <box orientation={Gtk.Orientation.VERTICAL} class="applauncher-list" spacing={10}>
         {appList}
