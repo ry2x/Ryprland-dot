@@ -74,43 +74,51 @@ export default function ScreenCapture() {
         transitionType={Gtk.StackTransitionType.CROSSFADE}
         transitionDuration={250}
         $={(self: Gtk.Stack) => {
+          const idleBox = (
+            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={8} homogeneous>
+              <button
+                class="power-btn"
+                onClicked={() => handleRecord('slurp')}
+                tooltipText="Record Region"
+              >
+                <box spacing={8} halign={Gtk.Align.CENTER}>
+                  <LucideIcon name="focus" pixelSize={18} class="color-secondary" />
+                  <label label="Region" css="font-size: 0.9em;" />
+                </box>
+              </button>
+              <button
+                class="power-btn"
+                onClicked={() => handleRecord('monitor')}
+                tooltipText="Record Monitor"
+              >
+                <box spacing={8} halign={Gtk.Align.CENTER}>
+                  <LucideIcon name="monitor-play" pixelSize={18} class="color-tertiary" />
+                  <label label="Monitor" css="font-size: 0.9em;" />
+                </box>
+              </button>
+            </box>
+          ) as Gtk.Box;
+
+          const recordingBox = (
+            <box>
+              <button class="power-btn active-record" onClicked={handleStop} hexpand>
+                <box spacing={8} halign={Gtk.Align.CENTER}>
+                  <LucideIcon name="circle-stop" pixelSize={18} />
+                  <label label="Stop Recording" css="font-weight: 700; font-size: 0.9em;" />
+                </box>
+              </button>
+            </box>
+          ) as Gtk.Box;
+
+          self.add_named(idleBox, 'idle');
+          self.add_named(recordingBox, 'recording');
+
           const update = () => self.set_visible_child_name(isRecording() ? 'recording' : 'idle');
           update();
-          isRecording.subscribe(update);
+          const dispose = isRecording.subscribe(update);
+          self.connect('destroy', () => dispose());
         }}
-      >
-        <box name="idle" orientation={Gtk.Orientation.HORIZONTAL} spacing={8} homogeneous>
-          <button
-            class="power-btn"
-            onClicked={() => handleRecord('slurp')}
-            tooltipText="Record Region"
-          >
-            <box spacing={8} halign={Gtk.Align.CENTER}>
-              <LucideIcon name="focus" pixelSize={18} class="color-secondary" />
-              <label label="Region" css="font-size: 0.9em;" />
-            </box>
-          </button>
-          <button
-            class="power-btn"
-            onClicked={() => handleRecord('monitor')}
-            tooltipText="Record Monitor"
-          >
-            <box spacing={8} halign={Gtk.Align.CENTER}>
-              <LucideIcon name="monitor-play" pixelSize={18} class="color-tertiary" />
-              <label label="Monitor" css="font-size: 0.9em;" />
-            </box>
-          </button>
-        </box>
-
-        <box name="recording">
-          <button class="power-btn active-record" onClicked={handleStop} hexpand>
-            <box spacing={8} halign={Gtk.Align.CENTER}>
-              <LucideIcon name="circle-stop" pixelSize={18} />
-              <label label="Stop Recording" css="font-weight: 700; font-size: 0.9em;" />
-            </box>
-          </button>
-        </box>
-      </stack>
+      />
     </box>
   );
 }
