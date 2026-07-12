@@ -435,3 +435,53 @@ levelbar {
   @extend .cc-card;
   padding: 0;
 }
+
+// Screen Capture & Record
+.power-btn.active-record {
+  background: rgba($error, 0.15);
+  border-color: rgba($error, 0.3);
+  box-shadow: 0 4px 16px rgba($error, 0.2);
+  animation: cc-pulse-record 2s infinite;
+
+  image {
+    color: $error;
+  }
+  label {
+    color: $text;
+  }
+
+  &:hover {
+    background: rgba($error, 0.25);
+  }
+}
+
+@keyframes cc-pulse-record {
+  0% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 0 rgba($error, 0.4);
+  }
+  70% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 8px rgba($error, 0);
+  }
+  100% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 0 rgba($error, 0);
+  }
+}
+
+.color-primary {
+  color: $primary;
+}
+.color-secondary {
+  color: $secondary;
+}
+.color-tertiary {
+  color: $tertiary;
+}
+.color-error {
+  color: $error;
+}

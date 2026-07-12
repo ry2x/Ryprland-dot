@@ -6,6 +6,7 @@ import { LucideIcon } from '../../lib/lucide';
 import { activeSidePanel, animDx } from '../../services/windowManager';
 import MediaCard from './widget/MediaCard';
 import QuickToggles from './widget/QuickToggles';
+import ScreenCapture from './widget/ScreenCapture';
 import SystemMetrics from './widget/SystemMetrics';
 import UpdatesCard from './widget/UpdatesCard';
 import VolumeSlider from './widget/VolumeSlider';
@@ -115,6 +116,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
                         </box>
 
                         <UpdatesCard />
+                        <ScreenCapture />
                       </box>
                     ) as Gtk.Box;
 
