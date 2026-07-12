@@ -4,8 +4,7 @@
 #  ┻┛┛┗┗┛┛┗┛┗┛┻┗┛┛┗ ┻
 #
 
-# This script is for backlight control using ddcutil.
-# If you wannta use brightnessctl, delete this file and rename backlight.bk.sh to backlight.sh, then change the command in hyprland.conf accordingly.
+# This script is for backlight control using ddcutil (Optimized for Speed)
 
 set -u
 
@@ -14,30 +13,26 @@ STEP=20
 VCP_CODE=10 # It means brightness in DDC/CI
 
 IMAGE_DIR="$HOME/.config/hypr/icons"
+CACHE_FILE="$HOME/.cache/hypr_ddcutil_buses"
 
-# Get connected display IDs
-get_displays() {
-    ddcutil detect | grep "Display" | awk '{print $2}'
+# Get connected display I2C buses (cached for speed)
+get_buses() {
+    if [ ! -f "$CACHE_FILE" ]; then
+        # Extract I2C bus numbers (e.g., "5" from "/dev/i2c-5")
+        ddcutil detect | awk '/I2C bus:/ { split($NF, a, "-"); print a[2] }' > "$CACHE_FILE"
+    fi
+    cat "$CACHE_FILE"
 }
 
-# Get brightness (display ID as argument)
-get_brightness() {
-    ddcutil -d "$1" getvcp $VCP_CODE --terse | awk '{print $4}'
-}
-
-# Get first detected display brightness
-get_current_brightness() {
-    local first_display
-
-    first_display=$(get_displays | head -n1)
-    [ -z "$first_display" ] && return 1
-
-    get_brightness "$first_display"
+# Clear cache manually if monitor setup changes
+clear_cache() {
+    rm -f "$CACHE_FILE"
+    echo "Cache cleared. Next run will take a few seconds to detect monitors."
 }
 
 # Get icons
 get_icon() {
-    current=$(get_current_brightness)
+    local current=$1
     if [ "$current" -le "20" ]; then
         icon="$IMAGE_DIR/brightness-20.png"
     elif [ "$current" -le "40" ]; then
@@ -53,6 +48,7 @@ get_icon() {
 
 # Notify
 notify_user() {
+    local current=$1
     notify-send -e -h string:x-canonical-private-synchronous:brightness_notif -h int:value:$current -u low -n "$icon" "Brightness : $current%"
 }
 
@@ -60,49 +56,68 @@ notify_user() {
 change_brightness() {
     local delta="$1"
     local current
-    local max
+    local max=100
     local target
-    local info
+    local buses
+    
+    buses=$(get_buses)
+    local first_bus=$(echo "$buses" | head -n 1)
 
-    for d in $(get_displays); do
-        info=$(ddcutil -d "$d" getvcp "$VCP_CODE" --terse)
-        current=$(echo "$info" | awk '{print $4}')
-        max=$(echo "$info" | awk '{print $5}')
-
-        target=$((current + delta))
-        if [ "$target" -lt 0 ]; then
-            target=0
-        elif [ "$target" -gt "$max" ]; then
-            target=$max
-        fi
-
-        ddcutil -d "$d" setvcp "$VCP_CODE" "$target"
-    done
-
-    if current=$(get_current_brightness); then
-        get_icon
-        notify_user
+    if [ -z "$first_bus" ]; then
+        echo "No DDC/CI compatible displays found."
+        return 1
     fi
+
+    # 1. Get current brightness from ONLY the first monitor (Saves time)
+    local info=$(ddcutil -b "$first_bus" getvcp "$VCP_CODE" --terse)
+    current=$(echo "$info" | awk '{print $4}')
+    max=$(echo "$info" | awk '{print $5}')
+    
+    if [ -z "$current" ]; then
+        current=50 # Fallback
+    fi
+    if [ -z "$max" ]; then
+        max=100
+    fi
+
+    # 2. Calculate target brightness
+    target=$((current + delta))
+    if [ "$target" -lt 0 ]; then
+        target=0
+    elif [ "$target" -gt "$max" ]; then
+        target=$max
+    fi
+
+    # 3. Apply to all monitors in parallel (Saves time)
+    for b in $buses; do
+        ddcutil -b "$b" setvcp "$VCP_CODE" "$target" &
+    done
+    wait # Wait for all background tasks to finish
+
+    # 4. Notify using the calculated target (Saves another read query)
+    get_icon "$target"
+    notify_user "$target"
 }
 
-notify-send -e -h "Running backlight script with argument: $1"
 case "$1" in
 --get)
-    for d in $(get_displays); do
-        val=$(ddcutil -d "$d" getvcp $VCP_CODE --terse | awk '{print $4}')
-        echo "Display $d: Brightness is $val%"
+    buses=$(get_buses)
+    for b in $buses; do
+        val=$(ddcutil -b "$b" getvcp $VCP_CODE --terse | awk '{print $4}')
+        echo "Bus $b: Brightness is $val%"
     done
     ;;
 --inc)
-    echo "Increasing brightness by $STEP%..."
     change_brightness "$STEP"
     ;;
 --dec)
-    echo "Decreasing brightness by $STEP%..."
     change_brightness "-$STEP"
     ;;
+--clear-cache)
+    clear_cache
+    ;;
 *)
-    echo "Usage: $0 {--get|--inc|--dec}"
+    echo "Usage: $0 {--get|--inc|--dec|--clear-cache}"
     exit 1
     ;;
 esac
