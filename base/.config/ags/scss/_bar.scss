@@ -132,6 +132,28 @@ window.Bar {
 
   // ===== Specific Overrides =====
 
+  .RecordIndicator {
+    background: rgba($error, 0.15);
+    color: $error;
+    animation: pulse-record 2s infinite;
+
+    &:hover {
+      background: rgba($error, 0.25);
+    }
+  }
+
+  @keyframes pulse-record {
+    0% {
+      box-shadow: 0 0 0 0 rgba($error, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 4px rgba($error, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba($error, 0);
+    }
+  }
+
   .ScrollerIndicator {
     .separator {
       background-color: $accent;
