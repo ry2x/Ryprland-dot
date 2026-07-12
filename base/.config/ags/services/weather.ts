@@ -107,7 +107,7 @@ export const weatherInfo = weatherJson.as((str) => {
     const current = data.current_condition[0];
     const today = data.weather[0];
     const rawRegion = data.nearest_area?.[0]?.region?.[0]?.value || LOCATION;
-    // wttr.in sometimes returns corrupted macrons (e.g., U+008D)
+    // eslint-disable-next-line no-control-regex
     const region = rawRegion.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
 
     return {
