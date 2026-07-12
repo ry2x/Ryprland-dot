@@ -31,7 +31,7 @@ hl.bind(mod .. " + SHIFT + TAB",
 
 -- change col size
 local col_state_tb = {}
-local BIG = 0.95
+local BIG = 1
 local SMALL = 0.5
 
 local function isExistingInTb(ws)
