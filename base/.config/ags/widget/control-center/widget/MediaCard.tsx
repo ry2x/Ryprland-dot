@@ -1,6 +1,6 @@
 import system from 'system';
 
-import { createBinding as bind } from 'ags';
+import { For, createBinding as bind, createState } from 'ags';
 import { Gdk, Gtk } from 'ags/gtk4';
 import { execAsync } from 'ags/process';
 
@@ -14,7 +14,7 @@ import { LucideIcon } from '../../../lib/lucide';
 import { focusWindow } from '../../../services/windowManager';
 import CavaWidget from './CavaWidget';
 
-function createPlayerCard(player: Mpris.Player, total: number, onSwitch: () => void) {
+function createPlayerCard(player: Mpris.Player, onSwitch: () => void) {
   const overlay = new Gtk.Overlay();
   const dummyBox = new Gtk.Box();
   dummyBox.set_size_request(80, 80);
@@ -170,11 +170,14 @@ function createPlayerCard(player: Mpris.Player, total: number, onSwitch: () => v
           <button class="icon-btn" onClicked={() => player.next()}>
             <LucideIcon name="skip-forward" pixelSize={20} />
           </button>
-          {total > 1 ? (
+          <revealer
+            transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
+            revealChild={bind(Mpris.get_default(), 'players').as((p) => p.length > 1)}
+          >
             <button class="icon-btn" onClicked={onSwitch} tooltipText="Switch Player">
               <LucideIcon name="arrow-right-left" pixelSize={18} />
             </button>
-          ) : null}
+          </revealer>
         </box>
       </box>
     </box>
@@ -197,6 +200,8 @@ export default function MediaCard() {
     cava.stereo = false;
   }
 
+  const [activePlayerBusName, setActivePlayerBusName] = createState('');
+
   return (
     <box class="cc-media-container" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
       <box
@@ -211,46 +216,53 @@ export default function MediaCard() {
       <stack
         transitionType={Gtk.StackTransitionType.CROSSFADE}
         transitionDuration={250}
+        visibleChildName={activePlayerBusName.as((b) => b || 'empty')}
         $={(self: Gtk.Stack) => {
-          let currentIndex = 0;
-          let activePlayers: Mpris.Player[] = [];
+          const pages = self.get_pages();
+          pages.connect('items-changed', () => {
+            let i = 0;
+            let page = pages.get_item(i) as Gtk.StackPage | null;
+            while (page) {
+              const child = page.get_child();
+              const name = child.get_name();
+              if (name && page.get_name() !== name) {
+                page.set_name(name);
+              }
+              i++;
+              page = pages.get_item(i) as Gtk.StackPage | null;
+            }
+          });
 
-          const updateStack = () => {
+          const updateActivePlayer = () => {
             const players = mpris.get_players();
-            activePlayers = players;
-
-            // Remove existing
-            let child = self.get_first_child();
-            while (child) {
-              const next = child.get_next_sibling();
-              self.remove(child);
-              child = next;
+            if (players.length > 0) {
+              if (!players.find((p) => p.bus_name === activePlayerBusName())) {
+                setActivePlayerBusName(players[0].bus_name);
+              }
             }
-
-            if (players.length === 0) return;
-
-            if (currentIndex >= players.length) {
-              currentIndex = Math.max(0, players.length - 1);
-            }
-
-            players.forEach((player, i) => {
-              const onSwitch = () => {
-                if (activePlayers.length > 1) {
-                  currentIndex = (currentIndex + 1) % activePlayers.length;
-                  self.set_visible_child_name(`player-${currentIndex}`);
-                }
-              };
-              const card = createPlayerCard(player, players.length, onSwitch);
-              self.add_named(card, `player-${i}`);
-            });
-
-            self.set_visible_child_name(`player-${currentIndex}`);
           };
 
-          mpris.connect('notify::players', updateStack);
-          updateStack();
+          const hook = mpris.connect('notify::players', updateActivePlayer);
+          updateActivePlayer();
+          self.connect('destroy', () => mpris.disconnect(hook));
         }}
-      />
+      >
+        <For each={bind(mpris, 'players')}>
+          {(player: Mpris.Player) => {
+            const onSwitch = () => {
+              const players = mpris.get_players();
+              if (players.length > 1) {
+                const idx = players.findIndex((p) => p.bus_name === activePlayerBusName());
+                const nextIdx = (idx + 1) % players.length;
+                setActivePlayerBusName(players[nextIdx].bus_name);
+              }
+            };
+            const card = createPlayerCard(player, onSwitch);
+            card.set_name(player.bus_name);
+            return card;
+          }}
+        </For>
+      </stack>
     </box>
   );
 }
