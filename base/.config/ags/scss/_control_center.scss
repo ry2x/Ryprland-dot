@@ -251,7 +251,8 @@ window.DateWeatherPopup {
 }
 
 // GTK Scale (Sliders) styling
-.volume-slider {
+.volume-slider,
+.brightness-slider {
   trough {
     background: rgba($on-surface, 0.1);
     border-radius: 4px;

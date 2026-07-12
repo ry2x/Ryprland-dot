@@ -4,6 +4,7 @@ import app from 'ags/gtk4/app';
 
 import { LucideIcon } from '../../lib/lucide';
 import { activeSidePanel, animDx } from '../../services/windowManager';
+import BrightnessSlider from './widget/BrightnessSlider';
 import MediaCard from './widget/MediaCard';
 import QuickToggles from './widget/QuickToggles';
 import ScreenCapture from './widget/ScreenCapture';
@@ -119,6 +120,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
                         <QuickToggles />
                         <VolumeSlider />
+                        <BrightnessSlider />
                         <MediaCard />
 
                         <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16}>
