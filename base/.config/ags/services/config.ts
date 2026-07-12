@@ -11,6 +11,8 @@ export interface AppConfig {
   recorder?: {
     savePath?: string;
     filenameFormat?: string;
+    recordAudio?: boolean;
+    audioSource?: 'system' | 'mic';
   };
 }
 
@@ -27,6 +29,8 @@ const DEFAULT_CONFIG: AppConfig = {
   recorder: {
     savePath: '~/Videos',
     filenameFormat: 'recording_%Y-%m-%d_%H.%M.%S.mp4',
+    recordAudio: true,
+    audioSource: 'system',
   },
 };
 

@@ -38,6 +38,25 @@ export async function startRecord(mode: 'monitor' | 'slurp') {
 
   const cmd = ['wf-recorder', '--pixel-format', 'yuv420p', '-f', fullPath, '-t'];
 
+  if (appConfig.recorder?.recordAudio !== false) {
+    if (appConfig.recorder?.audioSource === 'mic') {
+      cmd.push('-a');
+    } else {
+      // Default to system
+      try {
+        const sink = await execAsync('pactl get-default-sink');
+        if (sink) {
+          cmd.push('-a', `${sink.trim()}.monitor`);
+        } else {
+          cmd.push('-a');
+        }
+      } catch (e) {
+        console.error('Failed to get default sink for audio recording', e);
+        cmd.push('-a');
+      }
+    }
+  }
+
   if (mode === 'monitor') {
     try {
       const monitorsStr = await execAsync('hyprctl monitors -j');
