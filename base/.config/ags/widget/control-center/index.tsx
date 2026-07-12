@@ -48,16 +48,26 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
 
   const windowName = `control-center-${gdkmonitor.get_connector()}`;
 
+  let hideTimeout: ReturnType<typeof setTimeout> | null = null;
+
   const hide_animated = () => {
     setIsRevealed(false);
     activeSidePanel.set('', '');
     const w = app.get_window(windowName);
-    setTimeout(() => {
+    if (hideTimeout !== null) {
+      clearTimeout(hideTimeout);
+    }
+    hideTimeout = setTimeout(() => {
       if (w) w.set_visible(false);
+      hideTimeout = null;
     }, 300);
   };
 
   const show_animated = () => {
+    if (hideTimeout !== null) {
+      clearTimeout(hideTimeout);
+      hideTimeout = null;
+    }
     const w = app.get_window(windowName);
     if (w) w.set_visible(true);
     setIsRevealed(true);
@@ -96,7 +106,7 @@ export default function ControlCenter(gdkmonitor: Gdk.Monitor) {
                         css={animDx((dx) => {
                           const ml = dx - 537;
                           const op = Math.max(0, Math.min(1, (dx - 47) / 490));
-                          return `margin-left: ${ml < -490 ? -490 : ml}px; opacity: ${op};`;
+                          return `transform: translateX(${ml < -490 ? -490 : ml}px); opacity: ${op};`;
                         })}
                         orientation={Gtk.Orientation.VERTICAL}
                         spacing={16}

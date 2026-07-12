@@ -70,17 +70,21 @@ export function closeAllMenus() {
 export function toggleControlCenter(monitorName?: string | null) {
   const targetMonitor = monitorName || Hyprland.get_default().get_focused_monitor().name;
   app.get_monitors().forEach((m) => {
-    const cc = app.get_window(`control-center-${m.get_connector()}`) as AnimatedWindow;
-    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`) as AnimatedWindow;
+    const connector = m.get_connector();
+    const cc = app.get_window(`control-center-${connector}`) as AnimatedWindow;
+    const dw = app.get_window(`date-weather-popup-${connector}`) as AnimatedWindow;
     if (cc) {
-      if (m.get_connector() === targetMonitor) {
-        if (cc.get_visible()) {
+      if (connector === targetMonitor) {
+        const isActive =
+          activeSidePanel.get().panel === 'control-center' &&
+          activeSidePanel.get().monitor === connector;
+        if (isActive) {
           cc.hide_animated?.();
-          activeSidePanel.set('', '');
+          // activeSidePanel is cleared inside hide_animated
         } else {
           if (dw && dw.get_visible()) dw.hide_animated?.();
           cc.show_animated?.();
-          activeSidePanel.set('control-center', m.get_connector() ?? '');
+          activeSidePanel.set('control-center', connector ?? '');
         }
       } else {
         if (cc.get_visible()) cc.hide_animated?.();
@@ -92,17 +96,21 @@ export function toggleControlCenter(monitorName?: string | null) {
 export function toggleDateWeather(monitorName?: string | null) {
   const targetMonitor = monitorName || Hyprland.get_default().get_focused_monitor().name;
   app.get_monitors().forEach((m) => {
-    const dw = app.get_window(`date-weather-popup-${m.get_connector()}`) as AnimatedWindow;
-    const cc = app.get_window(`control-center-${m.get_connector()}`) as AnimatedWindow;
+    const connector = m.get_connector();
+    const dw = app.get_window(`date-weather-popup-${connector}`) as AnimatedWindow;
+    const cc = app.get_window(`control-center-${connector}`) as AnimatedWindow;
     if (dw) {
-      if (m.get_connector() === targetMonitor) {
-        if (dw.get_visible()) {
+      if (connector === targetMonitor) {
+        const isActive =
+          activeSidePanel.get().panel === 'date-weather' &&
+          activeSidePanel.get().monitor === connector;
+        if (isActive) {
           dw.hide_animated?.();
-          activeSidePanel.set('', '');
+          // activeSidePanel is cleared inside hide_animated
         } else {
           if (cc && cc.get_visible()) cc.hide_animated?.();
           dw.show_animated?.();
-          activeSidePanel.set('date-weather', m.get_connector() ?? '');
+          activeSidePanel.set('date-weather', connector ?? '');
         }
       } else {
         if (dw.get_visible()) dw.hide_animated?.();
