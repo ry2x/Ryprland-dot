@@ -7,6 +7,7 @@ import Cairo from 'gi://cairo';
 // --- State for expanding bar animation ---
 import { activeSidePanel, setAnimDx } from '../../services/windowManager';
 import Clock from './widget/Clock';
+import RecordIndicator from './widget/RecordIndicator';
 import ScrollerIndicator from './widget/ScrollerIndicator';
 import SysMetrics from './widget/SysMetrics';
 import Tray from './widget/Tray';
@@ -204,6 +205,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
                         orientation={Gtk.Orientation.VERTICAL}
                         spacing={8}
                       >
+                        <RecordIndicator />
                         <Updates gdkmonitor={gdkmonitor} />
                         <SysMetrics gdkmonitor={gdkmonitor} />
                         <Volume gdkmonitor={gdkmonitor} />
