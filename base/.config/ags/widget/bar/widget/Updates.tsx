@@ -17,6 +17,7 @@ export default function Updates({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
       transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
       transitionDuration={250}
       revealChild={isVisible}
+      visible={isVisible}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="Updates" onClicked={toggleMenu}>
