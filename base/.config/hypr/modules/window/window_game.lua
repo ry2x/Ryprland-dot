@@ -31,6 +31,7 @@ hl.window_rule({
     match = { tag = "steam" },
     workspace = "name:game silent",
     suppress_event = "activate",
+    fullscreen = true,
     no_initial_focus = true
 })
 

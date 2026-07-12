@@ -10,7 +10,8 @@ local applyWindowRules = M.applyWindowRules
 local CENTER_BASE = {
     float = true,
     center = true,
-    animation = "popin 80%"
+    animation = "popin 80%",
+    focus_on_activate = true
 }
 
 hl.window_rule(
@@ -49,9 +50,9 @@ local centerFloating = {
     { { title = "^(File Operation Progress)$" },                   "center_float_big" },
     { { title = "^(Rename.*)$" },                                  "center_float_big" },
     -- terminal
-    { { title = "^(TempTerminal)$" },                              "center_float_big" },
+    { { initial_title = "^(TempTerminal)$" },                      "center_float_big" },
     { { title = "^(yazi)$" },                                      "center_float_half" },
-    { { title = "^(PacUpdate)$" },                                 "center_float_big" },
+    { { initial_title = "^(PacUpdate)$" },                         "center_float_big" },
 }
 
 applyWindowRules(centerFloating)
@@ -59,11 +60,12 @@ applyWindowRules(centerFloating)
 -------------------------
 -- top pinned floating --
 -------------------------
-local TOP_GAP = 45
+local TOP_GAP = "3"
 local PINNED_TOP_BASE = {
     float = true,
     animation = "slide top",
     pin = true,
+    focus_on_activate = true
 }
 
 hl.window_rule(
@@ -72,7 +74,7 @@ hl.window_rule(
         {
             match = { tag = "pin_float_big" },
             size = { "monitor_w * 0.8", "monitor_h * 0.8" },
-            move = { "monitor_w * 0.1", tostring(TOP_GAP) }
+            move = { "monitor_w * 0.1", TOP_GAP }
         }
     )
 )
@@ -83,7 +85,7 @@ hl.window_rule(
         {
             match = { tag = "pin_float_mini" },
             size = { "monitor_w * 0.3", "monitor_h * 0.5" },
-            move = { "monitor_w * 0.35", tostring(TOP_GAP) }
+            move = { "monitor_w * 0.35", TOP_GAP }
         }
     )
 )
@@ -141,9 +143,9 @@ hl.window_rule({
 -- waypaper (left bottom)
 hl.window_rule({
     match = { class = "^(waypaper)$" },
-    animation = "slide left",
+    animation = "slide bottom",
     float = true,
     stay_focused = true,
     pin = true,
-    move = { "3", "monitor_h - window_h -5" }
+    move = { "monitor_w * 0.5 - window_h + 50", "monitor_h - window_h" }
 })
