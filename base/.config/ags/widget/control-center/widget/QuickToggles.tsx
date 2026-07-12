@@ -32,6 +32,7 @@ export default function QuickToggles() {
             class="cc-split-btn-left"
             css="padding: 16px;"
             onClicked={() => toggleWifi(wifi.enabled)}
+            tooltipText="Toggle Wi-Fi"
           >
             <box spacing={12}>
               <LucideIcon name="wifi" class="icon" pixelSize={24} />
@@ -52,7 +53,12 @@ export default function QuickToggles() {
               </box>
             </box>
           </button>
-          <button class="cc-split-btn-right" css="padding: 16px;" onClicked={() => openWifiMenu()}>
+          <button
+            class="cc-split-btn-right"
+            css="padding: 16px;"
+            onClicked={() => openWifiMenu()}
+            tooltipText="Open Wi-Fi Menu"
+          >
             <LucideIcon name="chevron-right" pixelSize={20} />
           </button>
         </box>
@@ -71,6 +77,7 @@ export default function QuickToggles() {
           class="cc-split-btn-left"
           css="padding: 16px;"
           onClicked={() => toggleBluetooth(bt.is_powered)}
+          tooltipText="Toggle Bluetooth"
         >
           <box spacing={12}>
             <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
@@ -92,6 +99,7 @@ export default function QuickToggles() {
           class="cc-split-btn-right"
           css="padding: 16px;"
           onClicked={() => openBluetoothMenu()}
+          tooltipText="Open Bluetooth Menu"
         >
           <LucideIcon name="chevron-right" pixelSize={20} />
         </button>

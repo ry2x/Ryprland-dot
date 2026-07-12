@@ -28,7 +28,11 @@ export default function VolumeSlider() {
 
   return (
     <box class="cc-card" spacing={16}>
-      <button class="icon-btn" onClicked={() => (speaker.mute = !speaker.mute)}>
+      <button
+        class="icon-btn"
+        onClicked={() => (speaker.mute = !speaker.mute)}
+        tooltipText="Toggle Mute"
+      >
         <LucideIcon name={volIcon} pixelSize={20} />
       </button>
 
@@ -49,6 +53,7 @@ export default function VolumeSlider() {
         class="icon-btn"
         css="min-width: 40px; padding: 4px; font-weight: 700; border-radius: 10px;"
         onClicked={() => openAudioControl()}
+        tooltipText="Open Audio Control"
       >
         <label label={bind(speaker, 'volume').as((v) => `${Math.round(v * 100)}%`)} />
       </button>
