@@ -16,6 +16,7 @@ setInterval(() => {
   }
 }, 2000);
 
+// eslint-disable-next-line complexity
 export async function startRecord(mode: 'monitor' | 'slurp') {
   if (isRecording()) return;
 
@@ -46,7 +47,7 @@ export async function startRecord(mode: 'monitor' | 'slurp') {
       try {
         const sink = await execAsync('pactl get-default-sink');
         if (sink) {
-          cmd.push('-a', `${sink.trim()}.monitor`);
+          cmd.push(`--audio=${sink.trim()}.monitor`);
         } else {
           cmd.push('-a');
         }
