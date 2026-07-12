@@ -59,7 +59,7 @@ change_brightness() {
     local max=100
     local target
     local buses
-    
+
     buses=$(get_buses)
     local first_bus=$(echo "$buses" | head -n 1)
 
@@ -72,7 +72,7 @@ change_brightness() {
     local info=$(ddcutil -b "$first_bus" getvcp "$VCP_CODE" --terse)
     current=$(echo "$info" | awk '{print $4}')
     max=$(echo "$info" | awk '{print $5}')
-    
+
     if [ -z "$current" ]; then
         current=50 # Fallback
     fi
@@ -107,6 +107,24 @@ case "$1" in
         echo "Bus $b: Brightness is $val%"
     done
     ;;
+--get-first)
+    buses=$(get_buses)
+    first_bus=$(echo "$buses" | head -n 1)
+    if [ -n "$first_bus" ]; then
+        ddcutil -b "$first_bus" getvcp $VCP_CODE --terse | awk '{print $4}'
+    else
+        echo "0"
+    fi
+    ;;
+--set)
+    if [ -n "${2:-}" ]; then
+        target="$2"
+        buses=$(get_buses)
+        for b in $buses; do
+            ddcutil -b "$b" setvcp $VCP_CODE "$target" &
+        done
+    fi
+    ;;
 --inc)
     change_brightness "$STEP"
     ;;
@@ -117,7 +135,7 @@ case "$1" in
     clear_cache
     ;;
 *)
-    echo "Usage: $0 {--get|--inc|--dec|--clear-cache}"
+    echo "Usage: $0 {--get|--get-first|--set|--inc|--dec|--clear-cache}"
     exit 1
     ;;
 esac
