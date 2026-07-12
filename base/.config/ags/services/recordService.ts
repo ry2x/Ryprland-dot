@@ -19,7 +19,6 @@ setInterval(() => {
 export async function startRecord(mode: 'monitor' | 'slurp') {
   if (isRecording()) return;
 
-  // ファイル名とパスの生成
   const now = GLib.DateTime.new_now_local();
   const format = appConfig.recorder?.filenameFormat || 'recording_%Y-%m-%d_%H.%M.%S.mp4';
   const filename = now.format(format) || `recording_${Date.now()}.mp4`;
@@ -67,7 +66,6 @@ export async function startRecord(mode: 'monitor' | 'slurp') {
     }
   }
 
-  // 実行
   const bashCmd = cmd.map((c) => (typeof c === 'string' ? `'${c}'` : c)).join(' ');
   execAsync(['bash', '-c', `${bashCmd} & disown`]).catch(console.error);
   execAsync(['notify-send', 'Starting recording', filename, '-a', 'Recorder']).catch(console.error);
