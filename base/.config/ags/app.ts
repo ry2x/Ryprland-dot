@@ -7,6 +7,7 @@ import GLib from 'gi://GLib';
 
 import style from './style.scss';
 
+import { isRecording, startRecord, stopRecord } from './services/recordService';
 import {
   toggleAppLauncher,
   toggleControlCenter,
@@ -77,6 +78,26 @@ app.start({
             .map((w) => w.name)
             .join(', '),
       );
+    } else if (request[0] === 'record') {
+      if (request[1] === 'stop') {
+        stopRecord();
+        res('Recording stopped');
+      } else if (request[1] === 'start') {
+        const mode = request[2] === 'slurp' ? 'slurp' : 'monitor';
+        startRecord(mode);
+        res(`Started recording in ${mode} mode`);
+      } else if (request[1] === 'toggle' || !request[1]) {
+        if (isRecording()) {
+          stopRecord();
+          res('Recording stopped');
+        } else {
+          const mode = request[2] === 'slurp' ? 'slurp' : 'monitor';
+          startRecord(mode);
+          res(`Started recording in ${mode} mode`);
+        }
+      } else {
+        res('Usage: ags request "record [start|stop|toggle] [monitor|slurp]"');
+      }
     } else {
       res(`Unknown command: ${request.join(' ')}`);
     }
