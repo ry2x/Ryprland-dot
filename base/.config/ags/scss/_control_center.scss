@@ -199,7 +199,7 @@ window.DateWeatherPopup {
   background: rgba($on-surface, 0.04);
   border-radius: 12px;
   padding: 12px;
-  border: none;
+  border: 1px solid rgba($on-surface, 0.08);
   transition: all 200ms;
   &:hover {
     background: rgba($on-surface, 0.1);
