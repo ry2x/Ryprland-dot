@@ -1,4 +1,5 @@
 import { Gdk, Gtk } from 'ags/gtk4';
+
 import Apps from 'gi://AstalApps';
 
 import { recordAppLaunch, searchWeb } from '../../../services/apps';
