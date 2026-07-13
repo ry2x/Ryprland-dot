@@ -15,7 +15,9 @@ button:hover > image {
     background-image: none;
     box-shadow: none;
     background-color: @accent_bg_color;
-    border-color: @accent_color;
+    border: 3px solid @accent_color;
+    border-radius: 8px;
+    box-shadow: 0 0 5px @accent_color;
 }
 
 .highlighted-button > image,
