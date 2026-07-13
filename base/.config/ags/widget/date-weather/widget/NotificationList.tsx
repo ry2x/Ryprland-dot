@@ -14,7 +14,7 @@ export default function NotificationList() {
   );
   const [revealed, setRevealed] = createState<number[]>(notifs.peek().map((n) => n.id));
 
-  notifd.connect('notified', (_, id) => {
+  const notifiedHook = notifd.connect('notified', (_, id) => {
     const n = notifd.get_notification(id);
     if (n && !n.transient) {
       setNotifs([n, ...notifs.peek()]);
@@ -24,7 +24,7 @@ export default function NotificationList() {
     }
   });
 
-  notifd.connect('resolved', (_, id) => {
+  const resolvedHook = notifd.connect('resolved', (_, id) => {
     setRevealed(revealed.peek().filter((rid) => rid !== id));
     setTimeout(() => {
       setNotifs(notifs.peek().filter((n) => n.id !== id));
@@ -32,7 +32,15 @@ export default function NotificationList() {
   });
 
   return (
-    <box orientation={Gtk.Orientation.VERTICAL} spacing={16} class="right-column">
+    <box
+      orientation={Gtk.Orientation.VERTICAL}
+      spacing={16}
+      class="right-column"
+      onDestroy={() => {
+        notifd.disconnect(notifiedHook);
+        notifd.disconnect(resolvedHook);
+      }}
+    >
       <box class="notif-header" spacing={8}>
         <LucideIcon name="bell" pixelSize={20} />
         <label label="Notifications" class="dw-title" halign={Gtk.Align.START} hexpand />
@@ -67,36 +75,35 @@ export default function NotificationList() {
         </button>
       </box>
 
-      {Object.assign(new Gtk.ScrolledWindow(), {
-        cssClasses: ['notif-scroll'],
-        vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
-        hscrollbarPolicy: Gtk.PolicyType.NEVER,
-        vexpand: true,
-        child: (
-          <box orientation={Gtk.Orientation.VERTICAL} spacing={12} class="notif-list">
-            <For each={notifs}>
-              {(notif) => {
-                const n = notif as Notifd.Notification;
-                return (
+      <scrolledwindow
+        cssClasses={['notif-scroll']}
+        vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
+        hscrollbarPolicy={Gtk.PolicyType.NEVER}
+        vexpand={true}
+      >
+        <box orientation={Gtk.Orientation.VERTICAL} spacing={12} class="notif-list">
+          <For each={notifs}>
+            {(notif) => {
+              const n = notif as Notifd.Notification;
+              return (
+                <revealer
+                  transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
+                  transitionDuration={300}
+                  revealChild={revealed.as((ids) => ids.includes(n.id))}
+                >
                   <revealer
-                    transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
+                    transitionType={Gtk.RevealerTransitionType.CROSSFADE}
                     transitionDuration={300}
                     revealChild={revealed.as((ids) => ids.includes(n.id))}
                   >
-                    <revealer
-                      transitionType={Gtk.RevealerTransitionType.CROSSFADE}
-                      transitionDuration={300}
-                      revealChild={revealed.as((ids) => ids.includes(n.id))}
-                    >
-                      <NotificationCard notif={n} />
-                    </revealer>
+                    <NotificationCard notif={n} />
                   </revealer>
-                );
-              }}
-            </For>
-          </box>
-        ),
-      })}
+                </revealer>
+              );
+            }}
+          </For>
+        </box>
+      </scrolledwindow>
     </box>
   );
 }
