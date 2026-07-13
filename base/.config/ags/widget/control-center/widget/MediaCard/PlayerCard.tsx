@@ -154,7 +154,8 @@ export default function PlayerCard({
                   }
                   if (player.entry) {
                     focusWindow(player.entry);
-                    const { closeAllControlCenters } = await import('../../../../services/windowManager');
+                    const { closeAllControlCenters } =
+                      await import('../../../../services/windowManager');
                     closeAllControlCenters();
                   }
                 }}
