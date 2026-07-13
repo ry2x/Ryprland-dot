@@ -118,7 +118,9 @@ export default function QuickToggles() {
         {/* Power Profile Toggle */}
         {power ? (
           <box
-            class={bind(power, 'activeProfile').as(p => `cc-toggle-btn ${p === 'performance' ? 'active' : ''}`)}
+            class={bind(power, 'activeProfile').as(
+              (p) => `cc-toggle-btn ${p === 'performance' ? 'active' : ''}`,
+            )}
             spacing={0}
             css="padding: 0;"
           >
