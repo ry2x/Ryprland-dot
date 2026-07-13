@@ -9,6 +9,7 @@ import GLib from 'gi://GLib';
 import style from './style.scss';
 
 import { isRecording, startRecord, stopRecord } from './services/recordService';
+import { getPowerProfile, setPowerProfile } from './services/powerProfile';
 import {
   toggleAppLauncher,
   toggleControlCenter,
@@ -83,6 +84,20 @@ app.start({
             .map((w) => w.name)
             .join(', '),
       );
+    } else if (request[0] === 'power-profile') {
+      const power = getPowerProfile();
+      if (!power) {
+        res('Error: AstalPowerProfiles not available');
+        return;
+      }
+      if (request[1] === 'get' || !request[1]) {
+        res(`Current mode: ${power.activeProfile}`);
+      } else if (request[1] === 'set' && request[2]) {
+        const result = setPowerProfile(request[2]);
+        res(result);
+      } else {
+        res('Usage: ags request "power-profile [get | set <mode>]"');
+      }
     } else if (request[0] === 'record') {
       if (request[1] === 'stop') {
         stopRecord();

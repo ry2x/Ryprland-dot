@@ -12,18 +12,71 @@ import {
   toggleBluetooth,
   toggleWifi,
 } from '../../../services/network';
+import {
+  cyclePowerProfile,
+  getPowerIcon,
+  getPowerLabel,
+  getPowerProfile,
+} from '../../../services/powerProfile';
 
 export default function QuickToggles() {
   const network = Network.get_default();
   const wifi = network.wifi;
   const bt = Bluetooth.get_default();
+  const power = getPowerProfile();
 
   return (
-    <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
-      {/* Wi-Fi Toggle */}
-      {wifi ? (
+    <box orientation={Gtk.Orientation.VERTICAL} spacing={16}>
+      <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
+        {/* Wi-Fi Toggle */}
+        {wifi ? (
+          <box
+            class={bind(wifi, 'enabled').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+            spacing={0}
+            css="padding: 0;"
+          >
+            <button
+              hexpand
+              class="cc-split-btn-left"
+              css="padding: 16px;"
+              onClicked={() => toggleWifi(wifi.enabled)}
+              tooltipText="Toggle Wi-Fi"
+            >
+              <box spacing={12}>
+                <LucideIcon name="wifi" class="icon" pixelSize={24} />
+                <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
+                  <label
+                    label="Wi-Fi"
+                    css="font-weight: 700; font-size: 1.1em;"
+                    halign={Gtk.Align.START}
+                  />
+                  <label
+                    label={bind(wifi, 'ssid').as((s) => s || 'Disconnected')}
+                    css="font-size: 0.8em; opacity: 0.7;"
+                    halign={Gtk.Align.START}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    maxWidthChars={12}
+                    lines={1}
+                  />
+                </box>
+              </box>
+            </button>
+            <button
+              class="cc-split-btn-right"
+              css="padding: 16px;"
+              onClicked={() => openWifiMenu()}
+              tooltipText="Open Wi-Fi Menu"
+            >
+              <LucideIcon name="chevron-right" pixelSize={20} />
+            </button>
+          </box>
+        ) : (
+          <box visible={false} />
+        )}
+
+        {/* BT Toggle */}
         <box
-          class={bind(wifi, 'enabled').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+          class={bind(bt, 'is_powered').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
           spacing={0}
           css="padding: 0;"
         >
@@ -31,24 +84,21 @@ export default function QuickToggles() {
             hexpand
             class="cc-split-btn-left"
             css="padding: 16px;"
-            onClicked={() => toggleWifi(wifi.enabled)}
-            tooltipText="Toggle Wi-Fi"
+            onClicked={() => toggleBluetooth(bt.is_powered)}
+            tooltipText="Toggle Bluetooth"
           >
             <box spacing={12}>
-              <LucideIcon name="wifi" class="icon" pixelSize={24} />
+              <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
               <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
                 <label
-                  label="Wi-Fi"
+                  label="Bluetooth"
                   css="font-weight: 700; font-size: 1.1em;"
                   halign={Gtk.Align.START}
                 />
                 <label
-                  label={bind(wifi, 'ssid').as((s) => s || 'Disconnected')}
+                  label={bind(bt, 'is_connected').as((c) => (c ? 'Connected' : 'Disconnected'))}
                   css="font-size: 0.8em; opacity: 0.7;"
                   halign={Gtk.Align.START}
-                  ellipsize={Pango.EllipsizeMode.END}
-                  maxWidthChars={12}
-                  lines={1}
                 />
               </box>
             </box>
@@ -56,53 +106,57 @@ export default function QuickToggles() {
           <button
             class="cc-split-btn-right"
             css="padding: 16px;"
-            onClicked={() => openWifiMenu()}
-            tooltipText="Open Wi-Fi Menu"
+            onClicked={() => openBluetoothMenu()}
+            tooltipText="Open Bluetooth Menu"
           >
             <LucideIcon name="chevron-right" pixelSize={20} />
           </button>
         </box>
-      ) : (
-        <box visible={false} />
-      )}
+      </box>
 
-      {/* BT Toggle */}
-      <box
-        class={bind(bt, 'is_powered').as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
-        spacing={0}
-        css="padding: 0;"
-      >
-        <button
-          hexpand
-          class="cc-split-btn-left"
-          css="padding: 16px;"
-          onClicked={() => toggleBluetooth(bt.is_powered)}
-          tooltipText="Toggle Bluetooth"
-        >
-          <box spacing={12}>
-            <LucideIcon name="bluetooth" class="icon" pixelSize={24} />
-            <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
-              <label
-                label="Bluetooth"
-                css="font-weight: 700; font-size: 1.1em;"
-                halign={Gtk.Align.START}
-              />
-              <label
-                label={bind(bt, 'is_connected').as((c) => (c ? 'Connected' : 'Disconnected'))}
-                css="font-size: 0.8em; opacity: 0.7;"
-                halign={Gtk.Align.START}
-              />
-            </box>
+      <box orientation={Gtk.Orientation.HORIZONTAL} spacing={16} homogeneous>
+        {/* Power Profile Toggle */}
+        {power ? (
+          <box
+            class={bind(power, 'activeProfile').as(p => `cc-toggle-btn ${p === 'performance' ? 'active' : ''}`)}
+            spacing={0}
+            css="padding: 0;"
+          >
+            <button
+              hexpand
+              class="cc-split-btn-left"
+              css="padding: 16px; border-radius: 0.8em;"
+              onClicked={cyclePowerProfile}
+              tooltipText="Toggle Power Profile"
+            >
+              <box spacing={12}>
+                <LucideIcon
+                  name={bind(power, 'activeProfile').as(getPowerIcon)}
+                  class="icon"
+                  pixelSize={24}
+                />
+                <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
+                  <label
+                    label="Power Profile"
+                    css="font-weight: 700; font-size: 1.1em;"
+                    halign={Gtk.Align.START}
+                  />
+                  <label
+                    label={bind(power, 'activeProfile').as(getPowerLabel)}
+                    css="font-size: 0.8em; opacity: 0.7;"
+                    halign={Gtk.Align.START}
+                    ellipsize={Pango.EllipsizeMode.END}
+                  />
+                </box>
+              </box>
+            </button>
           </box>
-        </button>
-        <button
-          class="cc-split-btn-right"
-          css="padding: 16px;"
-          onClicked={() => openBluetoothMenu()}
-          tooltipText="Open Bluetooth Menu"
-        >
-          <LucideIcon name="chevron-right" pixelSize={20} />
-        </button>
+        ) : (
+          <box visible={false} />
+        )}
+
+        {/* Empty Box for layout balance */}
+        <box />
       </box>
     </box>
   );
