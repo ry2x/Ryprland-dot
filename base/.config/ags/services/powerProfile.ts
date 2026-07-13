@@ -35,18 +35,18 @@ export function getPowerLabel(profile: string): string {
 
 export function setPowerProfile(mode: string): string {
   if (!power) return 'Error: AstalPowerProfiles not available';
-  
+
   const current = power.activeProfile;
   const profiles = power.get_profiles().map((p) => p.profile);
-  
+
   if (!profiles.includes(mode)) {
     return `Error: Invalid profile '${mode}'. Available: ${profiles.join(', ')}`;
   }
-  
+
   if (current === mode) {
     return `Already in ${mode} mode`;
   }
-  
+
   power.activeProfile = mode;
   return `Changed from ${current} to ${mode}`;
 }
