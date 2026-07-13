@@ -58,7 +58,6 @@ local function startGaming()
 
     hl.dispatch(smw.workspace("name:" .. ws_nm))
     hl.dispatch(hl.dsp.submap("gaming"))
-    hl.dispatch(hl.dsp.exec_cmd("ags request toggle-dnd"))
     wp_timer:set_enabled(false)
     sendNotification(P.icon .. "/gamemode.png", "Game Mode ON", "All keybinds are disabled \nWIN + F12 to EXIT")
 end
@@ -70,7 +69,6 @@ local function exitGaming()
         hl.dispatch(smw.workspace(last_workspace))
     end
     hl.dispatch(hl.dsp.cursor.move({ x = last_cursor_x, y = last_cursor_y }))
-    hl.dispatch(hl.dsp.exec_cmd("ags request toggle-dnd"))
     wp_timer:set_enabled(true)
     sendNotification(P.icon .. "/gamemode.png", "Game Mode OFF", "")
 end
