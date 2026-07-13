@@ -5,7 +5,7 @@ import app from 'ags/gtk4/app';
 import { LucideIcon } from '../../lib/lucide';
 import { activeSidePanel, animDx } from '../../services/windowManager';
 import BrightnessSlider from './widget/BrightnessSlider';
-import MediaCard from './widget/MediaCard';
+import MediaCard from './widget/MediaCard/index';
 import QuickToggles from './widget/QuickToggles';
 import ScreenCapture from './widget/ScreenCapture';
 import SystemMetrics from './widget/SystemMetrics';
