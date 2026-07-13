@@ -9,14 +9,11 @@ import { toggleScrollerOverview } from '../../../services/windowManager';
 export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
   const hypr = Hyprland.get_default();
   const connector = gdkmonitor.get_connector();
-  let currentLayout = 'scrolling';
-  let currentHasClients = false;
-  const [isVisible, setIsVisible] = createState(false);
-  const [info, setInfo] = createState('');
 
-  function updateVisibility() {
-    setIsVisible(currentLayout === 'scrolling' && currentHasClients);
-  }
+  const [isVisible, setIsVisible] = createState(false);
+  const [info, setInfo] = createState({ current: 0, total: 0 });
+
+  let currentLayout = 'scrolling';
 
   function updateLayout() {
     hypr.message_async('j/getoption general:layout', (_, res) => {
@@ -31,8 +28,11 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
     });
   }
 
-  let updateTimeout: ReturnType<typeof setTimeout> | null = null;
+  function updateVisibility() {
+    setIsVisible(currentLayout === 'scrolling' && info.get().total > 0);
+  }
 
+  let updateTimeout: ReturnType<typeof setTimeout> | null = null;
   function updateInfo() {
     if (updateTimeout) return;
     updateTimeout = setTimeout(() => {
@@ -40,25 +40,22 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
 
       const monitor = hypr.monitors.find((m) => m.name === connector);
       if (!monitor) {
-        currentHasClients = false;
+        setInfo({ current: 0, total: 0 });
         updateVisibility();
-        setInfo('0 / 0');
         return;
       }
 
       const fw = monitor.active_workspace;
       if (!fw) {
-        currentHasClients = false;
+        setInfo({ current: 0, total: 0 });
         updateVisibility();
-        setInfo('0 / 0');
         return;
       }
 
       const clients = fw.clients.filter((c) => !c.floating).sort((a, b) => a.x - b.x);
       if (clients.length === 0) {
-        currentHasClients = false;
+        setInfo({ current: 0, total: 0 });
         updateVisibility();
-        setInfo('0 / 0');
         return;
       }
 
@@ -69,27 +66,22 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
         : -1;
       const displayIndex = index !== -1 ? index + 1 : 0;
 
-      currentHasClients = true;
+      setInfo({ current: displayIndex, total: clients.length });
       updateVisibility();
-      setInfo(`${displayIndex} / ${clients.length}`);
     }, 10);
   }
 
-  // Hook up IPC events for layout changes
-  const hook1 = hypr.connect('event', (_, event) => {
-    if (event === 'configreloaded' || event.includes('scrolling')) {
-      updateLayout();
-    }
-  });
+  const hooks = [
+    hypr.connect('event', (_, event) => {
+      if (event === 'configreloaded' || event.includes('scrolling')) updateLayout();
+    }),
+    hypr.connect('notify::focused-workspace', updateInfo),
+    hypr.connect('notify::focused-client', updateInfo),
+    hypr.connect('client-added', updateInfo),
+    hypr.connect('client-removed', updateInfo),
+    hypr.connect('client-moved', updateInfo),
+  ];
 
-  // Hook up IPC events for window list/focus changes
-  const hook2 = hypr.connect('notify::focused-workspace', updateInfo);
-  const hook3 = hypr.connect('notify::focused-client', updateInfo);
-  const hook4 = hypr.connect('client-added', updateInfo);
-  const hook5 = hypr.connect('client-removed', updateInfo);
-  const hook6 = hypr.connect('client-moved', updateInfo);
-
-  // Initial fetch
   updateLayout();
   updateInfo();
 
@@ -98,14 +90,7 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
       transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
       transitionDuration={250}
       revealChild={isVisible}
-      onDestroy={() => {
-        hypr.disconnect(hook1);
-        hypr.disconnect(hook2);
-        hypr.disconnect(hook3);
-        hypr.disconnect(hook4);
-        hypr.disconnect(hook5);
-        hypr.disconnect(hook6);
-      }}
+      onDestroy={() => hooks.forEach((h) => hypr.disconnect(h))}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>
         <button class="ScrollerIndicator" onClicked={toggleScrollerOverview}>
@@ -116,13 +101,13 @@ export default function ScrollerIndicator({ gdkmonitor }: { gdkmonitor: Gdk.Moni
             halign={Gtk.Align.CENTER}
           >
             <LucideIcon name="app-window-mac" class="icon" css="margin-bottom: 4px;" />
-            <label label={info.as((i) => i.split(' / ')[0] || '0')} css="font-weight: 800;" />
+            <label label={info.as((i) => String(i.current))} css="font-weight: 800;" />
             <box
               class="separator"
               halign={Gtk.Align.CENTER}
               css="min-height: 3px; min-width: 12px; margin: 2px 0; border-radius: 2px;"
             />
-            <label label={info.as((i) => i.split(' / ')[1] || '0')} css="font-weight: 800;" />
+            <label label={info.as((i) => String(i.total))} css="font-weight: 800;" />
           </box>
         </button>
       </box>
