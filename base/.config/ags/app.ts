@@ -3,6 +3,7 @@ import app from 'ags/gtk4/app';
 import { execAsync } from 'ags/process';
 
 import Hyprland from 'gi://AstalHyprland';
+import Notifd from 'gi://AstalNotifd';
 import GLib from 'gi://GLib';
 
 import style from './style.scss';
@@ -59,6 +60,10 @@ app.start({
           res('CSS Reloaded Successfully');
         })
         .catch((err) => res(`Error: ${err}`));
+    } else if (request[0] === 'toggle-dnd') {
+      const notifd = Notifd.get_default();
+      notifd.dontDisturb = !notifd.dontDisturb;
+      res(`DND toggled to ${notifd.dontDisturb}`);
     } else if (request[0] === 'toggle-notif') {
       toggleDateWeather();
       res('Toggled Notification Center');
