@@ -40,7 +40,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
     }, 300);
   };
 
-  notifd.connect('notified', (_, id) => {
+  const notifiedHook = notifd.connect('notified', (_, id) => {
     if (notifd.dont_disturb) return;
 
     // Only show on the focused monitor
@@ -66,7 +66,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
     }
   });
 
-  notifd.connect('resolved', (_, id) => {
+  const resolvedHook = notifd.connect('resolved', (_, id) => {
     dismissPopup(id);
   });
 
@@ -82,6 +82,14 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
       layer={Astal.Layer.TOP}
       application={app}
       visible={popups.as((p) => p.length > 0)}
+      onDestroy={() => {
+        notifd.disconnect(notifiedHook);
+        notifd.disconnect(resolvedHook);
+        for (const timeout of timeouts.values()) {
+          clearTimeout(timeout);
+        }
+        timeouts.clear();
+      }}
     >
       <box orientation={Gtk.Orientation.VERTICAL} spacing={8} valign={Gtk.Align.START}>
         <For each={popups}>
