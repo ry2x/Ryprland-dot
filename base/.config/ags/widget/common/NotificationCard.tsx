@@ -60,26 +60,26 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
               overflow={Gtk.Overflow.HIDDEN}
               valign={Gtk.Align.CENTER}
             >
-              {(() => {
-                const overlay = new Gtk.Overlay();
-                const dummyBox = new Gtk.Box();
-                dummyBox.set_size_request(32, 32);
-                overlay.set_child(dummyBox);
+              <overlay
+                $={(self: Gtk.Overlay) => {
+                  const dummyBox = (<box widthRequest={32} heightRequest={32} />) as Gtk.Widget;
+                  self.set_child(dummyBox);
 
-                const pic = new Gtk.Picture();
-                appIconPic = pic;
-                pic.set_can_focus(false);
-                pic.set_can_shrink(true);
-                pic.set_content_fit(Gtk.ContentFit.CONTAIN);
-                try {
-                  const file = Gio.File.new_for_uri(appIconPath);
-                  pic.set_paintable(Gdk.Texture.new_from_file(file));
-                } catch (e) {
-                  console.error(e);
-                }
-                overlay.add_overlay(pic);
-                return overlay;
-              })()}
+                  const pic = new Gtk.Picture({
+                    canFocus: false,
+                    canShrink: true,
+                    contentFit: Gtk.ContentFit.CONTAIN,
+                  });
+                  appIconPic = pic;
+                  try {
+                    const file = Gio.File.new_for_uri(appIconPath);
+                    pic.set_paintable(Gdk.Texture.new_from_file(file));
+                  } catch (e) {
+                    console.error(e);
+                  }
+                  self.add_overlay(pic);
+                }}
+              />
             </box>
           ) : appIcon ? (
             <image iconName={appIcon} pixelSize={32} valign={Gtk.Align.CENTER} />
@@ -139,27 +139,26 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
           css="border-radius: 8px; min-height: 140px; margin-top: 4px;"
           overflow={Gtk.Overflow.HIDDEN}
         >
-          {(() => {
-            const overlay = new Gtk.Overlay();
-            const dummyBox = new Gtk.Box();
-            dummyBox.set_size_request(-1, 140);
-            dummyBox.set_hexpand(true);
-            overlay.set_child(dummyBox);
+          <overlay
+            $={(self: Gtk.Overlay) => {
+              const dummyBox = (<box hexpand={true} heightRequest={140} />) as Gtk.Widget;
+              self.set_child(dummyBox);
 
-            const pic = new Gtk.Picture();
-            imagePic = pic;
-            pic.set_can_focus(false);
-            pic.set_can_shrink(true);
-            pic.set_content_fit(Gtk.ContentFit.COVER);
-            try {
-              const file = Gio.File.new_for_uri(imageToDisplay);
-              pic.set_paintable(Gdk.Texture.new_from_file(file));
-            } catch (e) {
-              console.error(e);
-            }
-            overlay.add_overlay(pic);
-            return overlay;
-          })()}
+              const pic = new Gtk.Picture({
+                canFocus: false,
+                canShrink: true,
+                contentFit: Gtk.ContentFit.COVER,
+              });
+              imagePic = pic;
+              try {
+                const file = Gio.File.new_for_uri(imageToDisplay);
+                pic.set_paintable(Gdk.Texture.new_from_file(file));
+              } catch (e) {
+                console.error(e);
+              }
+              self.add_overlay(pic);
+            }}
+          />
         </box>
       )}
 
