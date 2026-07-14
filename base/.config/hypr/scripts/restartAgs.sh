@@ -5,7 +5,7 @@
 
 ags quit 2>/dev/null
 
-killall -q ags gjs
+killall -q gjs start-ags
 
 sleep 0.1
 
