@@ -1,3 +1,5 @@
+import system from 'system';
+
 import { Gdk, Gtk } from 'ags/gtk4';
 import { execAsync } from 'ags/process';
 
@@ -10,23 +12,37 @@ import { forceRedrawBar } from '../widget/bar';
 let globalCssProvider: Gtk.CssProvider | null = null;
 
 export function reloadCss(cssInput: string) {
-  if (!globalCssProvider) {
-    globalCssProvider = new Gtk.CssProvider();
-    const display = Gdk.Display.get_default();
-    if (display) {
-      Gtk.StyleContext.add_provider_for_display(
-        display,
-        globalCssProvider,
-        Gtk.STYLE_PROVIDER_PRIORITY_USER,
-      );
-    }
+  const display = Gdk.Display.get_default();
+  if (!display) {
+    throw new Error('Cannot reload CSS without a default display');
   }
 
+  const nextProvider = new Gtk.CssProvider();
   if (GLib.file_test(cssInput, GLib.FileTest.EXISTS)) {
-    globalCssProvider.load_from_path(cssInput);
+    nextProvider.load_from_path(cssInput);
   } else {
-    globalCssProvider.load_from_string(cssInput);
+    nextProvider.load_from_string(cssInput);
   }
+
+  Gtk.StyleContext.add_provider_for_display(
+    display,
+    nextProvider,
+    Gtk.STYLE_PROVIDER_PRIORITY_USER,
+  );
+
+  if (globalCssProvider) {
+    Gtk.StyleContext.remove_provider_for_display(display, globalCssProvider);
+  }
+
+  globalCssProvider = null;
+
+  try {
+    system.gc();
+  } catch (e) {
+    console.error(e);
+  }
+
+  globalCssProvider = nextProvider;
 
   forceRedrawBar();
 }
