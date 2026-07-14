@@ -74,7 +74,6 @@ export async function startRecord(mode: 'monitor' | 'slurp') {
       const region = await execAsync('slurp');
       cmd.push('--geometry', region.trim());
     } catch (e) {
-      console.log('Slurp cancelled', e);
       execAsync([
         'notify-send',
         'Recording cancelled',
