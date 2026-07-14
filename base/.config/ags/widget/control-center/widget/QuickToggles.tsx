@@ -6,6 +6,7 @@ import Network from 'gi://AstalNetwork';
 import Pango from 'gi://Pango';
 
 import { LucideIcon } from '../../../lib/lucide';
+import { isCaffeineEnabled, toggleCaffeine } from '../../../services/caffeine';
 import {
   openBluetoothMenu,
   openWifiMenu,
@@ -156,8 +157,40 @@ export default function QuickToggles() {
         ) : (
           <box visible={false} />
         )}
-        {/* Empty Box for layout balance */}
-        <box />
+        {/* Caffeine Toggle */}
+        <box
+          class={isCaffeineEnabled.as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+          spacing={0}
+          css="padding: 0;"
+        >
+          <button
+            hexpand
+            class="cc-split-btn-left"
+            css="padding: 16px; border-radius: 0.8em;"
+            onClicked={toggleCaffeine}
+            tooltipText="Toggle Caffeine (Idle Inhibit)"
+          >
+            <box spacing={12}>
+              <LucideIcon
+                name={isCaffeineEnabled.as((e) => (e ? 'coffee' : 'moon'))}
+                class="icon"
+                pixelSize={24}
+              />
+              <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER}>
+                <label
+                  label="Caffeine"
+                  css="font-weight: 700; font-size: 1.1em;"
+                  halign={Gtk.Align.START}
+                />
+                <label
+                  label={isCaffeineEnabled.as((e) => (e ? 'Active' : 'Inactive'))}
+                  css="font-size: 0.8em; opacity: 0.7;"
+                  halign={Gtk.Align.START}
+                />
+              </box>
+            </box>
+          </button>
+        </box>
       </box>
     </box>
   );
