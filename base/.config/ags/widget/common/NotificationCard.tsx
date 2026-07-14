@@ -1,3 +1,4 @@
+import { onCleanup } from 'gnim';
 import system from 'system';
 
 import { Gtk } from 'ags/gtk4';
@@ -16,7 +17,13 @@ export function resolveImage(img: string | null) {
   return null;
 }
 
-export default function NotificationCard({ notif }: { notif: Notifd.Notification }) {
+export default function NotificationCard({
+  notif,
+  onDismiss,
+}: {
+  notif: Notifd.Notification;
+  onDismiss?: () => void;
+}) {
   const appIcon = notif.app_icon || notif.desktop_entry || notif.image;
   const appIconPath = resolveImage(appIcon);
   const imageToDisplay = resolveImage(notif.image);
@@ -28,24 +35,58 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
 
   let appIconPic: Gtk.Picture | null = null;
   let imagePic: Gtk.Picture | null = null;
+  let releaseTimeout: ReturnType<typeof setTimeout> | null = null;
+  let isDestroyed = false;
 
-  // Ensure immediate native memory release when the notification is resolved,
-  // bypassing lazy JS GC entirely and not relying on widget onDestroy.
-  notif.connect('resolved', () => {
-    setTimeout(() => {
-      if (appIconPic) appIconPic.set_paintable(null as unknown as Gdk.Paintable);
-      if (imagePic) imagePic.set_paintable(null as unknown as Gdk.Paintable);
+  const releaseImages = () => {
+    if (appIconPic) {
+      appIconPic.set_paintable(null as unknown as Gdk.Paintable);
+      appIconPic = null;
+    }
+    if (imagePic) {
+      imagePic.set_paintable(null as unknown as Gdk.Paintable);
+      imagePic = null;
+    }
+  };
 
-      try {
-        system.gc();
-      } catch (e) {
-        console.error(e);
-      }
-    }, 300); // Wait for slide/crossfade animation to finish
+  const collectGarbage = () => {
+    try {
+      system.gc();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const resolvedHook = notif.connect('resolved', () => {
+    if (releaseTimeout) clearTimeout(releaseTimeout);
+    releaseTimeout = setTimeout(() => {
+      releaseImages();
+      releaseTimeout = null;
+      collectGarbage();
+    }, 300);
   });
+
+  const cleanup = () => {
+    if (isDestroyed) return;
+    isDestroyed = true;
+    if (releaseTimeout) {
+      clearTimeout(releaseTimeout);
+      releaseTimeout = null;
+    }
+    releaseImages();
+    notif.disconnect(resolvedHook);
+    collectGarbage();
+  };
+
+  const onDestroy = () => {
+    cleanup();
+  };
+
+  onCleanup(cleanup);
 
   return (
     <box
+      onDestroy={onDestroy}
       class={`notif-card urgency-${notif.urgency}`}
       orientation={Gtk.Orientation.VERTICAL}
       spacing={8}
@@ -102,7 +143,14 @@ export default function NotificationCard({ notif }: { notif: Notifd.Notification
             <box hexpand />
             <label label={timeStr} class="notif-time" xalign={1} />
             {/* CLOSE BUTTON */}
-            <button class="notif-close" onClicked={() => notif.dismiss()} valign={Gtk.Align.CENTER}>
+            <button
+              class="notif-close"
+              onClicked={() => {
+                onDismiss?.();
+                notif.dismiss();
+              }}
+              valign={Gtk.Align.CENTER}
+            >
               <LucideIcon name="x" pixelSize={14} />
             </button>
           </box>
