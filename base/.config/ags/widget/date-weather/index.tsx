@@ -5,6 +5,7 @@ import app from 'ags/gtk4/app';
 import { activeSidePanel, animDx } from '../../services/windowManager';
 import ClockCard from './widget/ClockCard';
 import NotificationList from './widget/NotificationList';
+import ProfileCard from './widget/ProfileCard';
 import WeatherCard from './widget/WeatherCard';
 import WorldClockCard from './widget/WorldClockCard';
 
@@ -122,6 +123,7 @@ export default function DateWeatherPopup(gdkmonitor: Gdk.Monitor) {
                               hexpand: true,
                             })}
                           </box>
+                          <ProfileCard />
                         </box>
 
                         {/* Separator between columns */}

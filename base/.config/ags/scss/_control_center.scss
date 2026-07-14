@@ -498,3 +498,31 @@ levelbar {
 .color-error {
   color: $error;
 }
+
+// ===== Profile Card =====
+.profile-card {
+  padding: 16px;
+
+  .profile-avatar {
+    border: 2px solid $primary;
+    box-shadow:
+      0 0 8px rgba($primary, 0.8),
+      0 0 16px rgba($primary, 0.4);
+  }
+
+  .profile-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: $primary;
+  }
+
+  .profile-env {
+    font-size: 0.9em;
+    color: rgba($text, 0.7);
+  }
+
+  .profile-uptime {
+    font-size: 0.8em;
+    color: rgba($text, 0.5);
+  }
+}

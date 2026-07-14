@@ -14,6 +14,11 @@ export interface AppConfig {
     recordAudio?: boolean;
     audioSource?: 'system' | 'mic';
   };
+  profile?: {
+    avatarPath?: string;
+    handle?: string;
+    os?: string;
+  };
 }
 
 const DEFAULT_CONFIG: AppConfig = {
@@ -31,6 +36,9 @@ const DEFAULT_CONFIG: AppConfig = {
     filenameFormat: 'recording_%Y-%m-%d_%H.%M.%S.mp4',
     recordAudio: true,
     audioSource: 'system',
+  },
+  profile: {
+    avatarPath: '~/Profile/Profile.png',
   },
 };
 
