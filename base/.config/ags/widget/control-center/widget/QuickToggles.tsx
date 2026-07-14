@@ -156,7 +156,6 @@ export default function QuickToggles() {
         ) : (
           <box visible={false} />
         )}
-
         {/* Empty Box for layout balance */}
         <box />
       </box>
