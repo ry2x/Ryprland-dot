@@ -83,7 +83,9 @@ window.AppLauncher,
 .applauncher-item.selected {
   background-image: linear-gradient(90deg, $accent 0%, $accent 65%, $accent-glow 100%);
   color: $bg;
-  box-shadow: 0 0 8px rgba($accent, 0.6), 0 0 16px rgba($accent, 0.3);
+  box-shadow:
+    0 0 8px rgba($accent, 0.6),
+    0 0 16px rgba($accent, 0.3);
 }
 .applauncher-item:hover label,
 .applauncher-item:focus label,
