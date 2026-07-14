@@ -31,6 +31,18 @@ export default function NotificationList() {
     }, 300);
   });
 
+  const removeNotification = (id: number) => {
+    setRevealed(revealed.peek().filter((rid) => rid !== id));
+    setNotifs(notifs.peek().filter((n) => n.id !== id));
+  };
+
+  const clearNotifications = () => {
+    const current = notifs.peek();
+    setRevealed([]);
+    setNotifs([]);
+    current.forEach((n) => n.dismiss());
+  };
+
   return (
     <box
       orientation={Gtk.Orientation.VERTICAL}
@@ -64,10 +76,7 @@ export default function NotificationList() {
           </box>
         </button>
 
-        <button
-          class="notif-header-btn clear-all"
-          onClicked={() => notifs.peek().forEach((n) => n.dismiss())}
-        >
+        <button class="notif-header-btn clear-all" onClicked={clearNotifications}>
           <box spacing={6}>
             <LucideIcon name="trash-2" pixelSize={14} />
             <label label="Clear All" css="font-size: 0.8em; font-weight: 600;" />
@@ -82,7 +91,7 @@ export default function NotificationList() {
         vexpand={true}
       >
         <box orientation={Gtk.Orientation.VERTICAL} spacing={12} class="notif-list">
-          <For each={notifs}>
+          <For each={notifs} cleanup={(element) => element.run_dispose()}>
             {(notif) => {
               const n = notif as Notifd.Notification;
               return (
@@ -96,7 +105,7 @@ export default function NotificationList() {
                     transitionDuration={300}
                     revealChild={revealed.as((ids) => ids.includes(n.id))}
                   >
-                    <NotificationCard notif={n} />
+                    <NotificationCard notif={n} onDismiss={() => removeNotification(n.id)} />
                   </revealer>
                 </revealer>
               );
