@@ -6,7 +6,7 @@ import Network from 'gi://AstalNetwork';
 import Pango from 'gi://Pango';
 
 import { LucideIcon } from '../../../lib/lucide';
-import { isCaffeineEnabled, toggleCaffeine } from '../../../services/caffeine';
+import { CaffeineState, caffeineState, toggleCaffeine } from '../../../services/caffeine';
 import {
   openBluetoothMenu,
   openWifiMenu,
@@ -159,7 +159,9 @@ export default function QuickToggles() {
         )}
         {/* Caffeine Toggle */}
         <box
-          class={isCaffeineEnabled.as((e) => `cc-toggle-btn ${e ? 'active' : ''}`)}
+          class={caffeineState.as(
+            (s: CaffeineState) => `cc-toggle-btn ${s !== 'disabled' ? 'active' : ''}`,
+          )}
           spacing={0}
           css="padding: 0;"
         >
@@ -168,11 +170,13 @@ export default function QuickToggles() {
             class="cc-split-btn-left"
             css="padding: 16px; border-radius: 0.8em;"
             onClicked={toggleCaffeine}
-            tooltipText="Toggle Caffeine (Idle Inhibit)"
+            tooltipText="Toggle Caffeine (Disabled -> Enabled -> Remote)"
           >
             <box spacing={12}>
               <LucideIcon
-                name={isCaffeineEnabled.as((e) => (e ? 'coffee' : 'moon'))}
+                name={caffeineState.as((s: CaffeineState) =>
+                  s === 'enabled' ? 'coffee' : s === 'remote' ? 'server' : 'moon',
+                )}
                 class="icon"
                 pixelSize={24}
               />
@@ -183,7 +187,9 @@ export default function QuickToggles() {
                   halign={Gtk.Align.START}
                 />
                 <label
-                  label={isCaffeineEnabled.as((e) => (e ? 'Active' : 'Inactive'))}
+                  label={caffeineState.as((s: CaffeineState) =>
+                    s === 'enabled' ? 'Active' : s === 'remote' ? 'Remote' : 'Inactive',
+                  )}
                   css="font-size: 0.8em; opacity: 0.7;"
                   halign={Gtk.Align.START}
                 />
