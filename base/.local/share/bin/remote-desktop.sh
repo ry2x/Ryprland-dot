@@ -35,6 +35,10 @@ is_running() {
     pgrep -x sunshine >/dev/null
 }
 
+reload_ags() {
+    ~/.config/hypr/scripts/restartAgs.sh >/dev/null 2>&1
+}
+
 start() {
     echo "Setting up headless output for remote desktop access..."
 
@@ -64,6 +68,8 @@ start() {
     else
         echo "Remote desktop application is already running."
     fi
+
+    reload_ags
 }
 
 stop() {
@@ -85,6 +91,8 @@ stop() {
     else
         echo "Headless output ${OUTPUT_NAME} is already absent."
     fi
+
+    reload_ags
 }
 
 arg="${1:-}"
