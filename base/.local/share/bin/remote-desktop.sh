@@ -7,8 +7,7 @@ set -euo pipefail
 # ┛┗┗┛┛ ┗┗┛ ┻ ┗┛  ┻┛┗┛┗┛┛┗┛ ┻ ┗┛┣┛
 
 OUTPUT_NAME="RMT-1"
-OUTPUT_MODE="1355x768@60"
-SERVICE_NAME="sunshine"
+OUTPUT_MODE="1920x1080@60"
 
 help() {
     echo "Usage: $0 [OPTIONS]"
@@ -32,6 +31,10 @@ output_exists() {
     hyprctl -j monitors all 2>/dev/null | grep -Eq "\"name\"[[:space:]]*:[[:space:]]*\"${OUTPUT_NAME}\""
 }
 
+is_running() {
+    pgrep -x sunshine >/dev/null
+}
+
 start() {
     echo "Setting up headless output for remote desktop access..."
 
@@ -47,26 +50,33 @@ start() {
         sleep 0.2
     fi
 
-    hyprctl keyword monitor "${OUTPUT_NAME},${OUTPUT_MODE},auto,1" >/dev/null
-
+    hyprctl eval "hl.monitor({
+        output = \"$OUTPUT_NAME\",
+        mode = \"$OUTPUT_MODE\",
+        scale = \"1\",
+        position = \"auto\"
+    })" >/dev/null
     echo "Headless output ${OUTPUT_NAME} is configured."
 
-    systemctl --user start "${SERVICE_NAME}"
-
-    echo "Remote desktop service started."
+    if ! is_running; then
+        nohup sunshine >/dev/null 2>&1 < /dev/null &
+        echo "Remote desktop application started."
+    else
+        echo "Remote desktop application is already running."
+    fi
 }
 
 stop() {
-    echo "Stopping remote desktop service..."
+    echo "Stopping remote desktop application..."
 
     require_cmd hyprctl
     require_cmd systemctl
 
-    if systemctl --user is-active --quiet "${SERVICE_NAME}"; then
-        systemctl --user stop "${SERVICE_NAME}"
-        echo "Remote desktop service stopped."
+    if is_running; then
+        pkill -x sunshine
+        echo "Remote desktop application stopped."
     else
-        echo "Remote desktop service is already stopped."
+        echo "Remote desktop application is already stopped."
     fi
 
     if output_exists; then
