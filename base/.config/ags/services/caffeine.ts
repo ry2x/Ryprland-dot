@@ -15,15 +15,11 @@ const IDLE_DAEMONS = ['hypridle', 'swayidle'];
 let activeDaemon = 'hypridle';
 
 function startInhibit() {
-  execAsync([
-    'bash',
-    '-c',
-    'systemd-inhibit --what=sleep --who="AGS Caffeine" --why="Remote mode" sleep infinity &',
-  ]).catch(console.error);
+  execAsync(['touch', '/tmp/ags_caffeine_remote']).catch(console.error);
 }
 
 function stopInhibit() {
-  execAsync(['pkill', '-f', 'systemd-inhibit --what=sleep --who=AGS Caffeine']).catch(() => {});
+  execAsync(['rm', '-f', '/tmp/ags_caffeine_remote']).catch(() => {});
 }
 
 async function startDaemon() {
@@ -54,7 +50,7 @@ async function initCaffeine() {
 
   let isInhibitRunning = false;
   try {
-    await execAsync(['pgrep', '-f', 'systemd-inhibit --what=sleep --who=AGS Caffeine']);
+    await execAsync(['test', '-f', '/tmp/ags_caffeine_remote']);
     isInhibitRunning = true;
   } catch {
     // ignore
