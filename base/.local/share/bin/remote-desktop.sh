@@ -54,16 +54,10 @@ start() {
         sleep 0.2
     fi
 
-    hyprctl eval "hl.monitor({
-        output = \"$OUTPUT_NAME\",
-        mode = \"$OUTPUT_MODE\",
-        scale = \"1\",
-        position = \"auto\"
-    })" >/dev/null
     echo "Headless output ${OUTPUT_NAME} is configured."
 
     if ! is_running; then
-        nohup sunshine >/dev/null 2>&1 < /dev/null &
+        hyprctl dispatch "hl.dsp.exec_cmd(\"sunshine\")"
         echo "Remote desktop application started."
     else
         echo "Remote desktop application is already running."
