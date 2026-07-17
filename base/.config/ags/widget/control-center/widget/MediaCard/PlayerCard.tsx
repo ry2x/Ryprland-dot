@@ -2,16 +2,41 @@ import system from 'system';
 
 import { createBinding as bind } from 'ags';
 import { Gdk, Gtk } from 'ags/gtk4';
-import { execAsync } from 'ags/process';
 
 import Mpris from 'gi://AstalMpris';
-import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import Pango from 'gi://Pango';
 
 import { LucideIcon } from '../../../../lib/lucide';
+import { fetchYouTubeThumbnail } from '../../../../services/mpris';
 import { focusWindow } from '../../../../services/windowManager';
 import CavaWidget from './CavaWidget';
+
+function updatePicture(pic: Gtk.Picture, artUrl: string | null) {
+  if (!pic) return;
+  if (!artUrl) {
+    pic.set_paintable(null as unknown as Gdk.Paintable);
+    return;
+  }
+
+  const uri = artUrl.startsWith('file://')
+    ? artUrl
+    : artUrl.startsWith('/')
+      ? `file://${artUrl}`
+      : '';
+  if (!uri) {
+    pic.set_paintable(null as unknown as Gdk.Paintable);
+    return;
+  }
+
+  try {
+    const file = Gio.File.new_for_uri(uri);
+    pic.set_paintable(Gdk.Texture.new_from_file(file));
+  } catch (e) {
+    pic.set_paintable(null as unknown as Gdk.Paintable);
+    console.error(e);
+  }
+}
 
 export default function PlayerCard({
   player,
@@ -30,58 +55,12 @@ export default function PlayerCard({
   const picRef = pic;
 
   const updateImg = async () => {
-    let art = player.cover_art;
-
     try {
-      const busName = player.bus_name;
-      if (busName) {
-        const playerName = busName.replace('org.mpris.MediaPlayer2.', '');
-        const url = await execAsync(`playerctl -p ${playerName} metadata xesam:url`);
-
-        if (url.includes('youtube.com/watch?v=') || url.includes('youtu.be/')) {
-          let id = '';
-          if (url.includes('youtu.be/')) {
-            id = url.split('youtu.be/')[1].split('?')[0];
-          } else {
-            const match = url.match(/v=([^&]*)/);
-            if (match) id = match[1];
-          }
-
-          if (id) {
-            const cacheDir = `${GLib.get_user_cache_dir()}/ags/media`;
-            const localPath = `${cacheDir}/${id}.jpg`;
-
-            if (!GLib.file_test(localPath, GLib.FileTest.EXISTS)) {
-              await execAsync(`mkdir -p ${cacheDir}`);
-              await execAsync(
-                `curl -s -o ${localPath} https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
-              );
-            }
-            art = `file://${localPath}`;
-          }
-        }
-      }
+      const ytArt = await fetchYouTubeThumbnail(player);
+      updatePicture(picRef, ytArt || player.cover_art);
     } catch (e) {
       console.error(e);
-    }
-
-    if (picRef) {
-      if (art) {
-        const uri = art.startsWith('file://') ? art : art.startsWith('/') ? `file://${art}` : '';
-        if (uri) {
-          try {
-            const file = Gio.File.new_for_uri(uri);
-            picRef.set_paintable(Gdk.Texture.new_from_file(file));
-          } catch (e) {
-            picRef.set_paintable(null as unknown as Gdk.Paintable);
-            console.error(e);
-          }
-        } else {
-          picRef.set_paintable(null as unknown as Gdk.Paintable);
-        }
-      } else {
-        picRef.set_paintable(null as unknown as Gdk.Paintable);
-      }
+      updatePicture(picRef, player.cover_art);
     }
 
     setTimeout(() => {
