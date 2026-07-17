@@ -1,8 +1,11 @@
 import { createState } from 'ags';
 import { exec, execAsync } from 'ags/process';
 
+import Hyprland from 'gi://AstalHyprland';
+import Wp from 'gi://AstalWp';
 import GLib from 'gi://GLib';
 
+import { sendNotification } from '../lib/notification';
 import { appConfig } from './config';
 
 export const [isRecording, setIsRecording] = createState(false);
@@ -16,88 +19,84 @@ setInterval(() => {
   }
 }, 2000);
 
-// eslint-disable-next-line complexity
 export async function startRecord(mode: 'monitor' | 'slurp') {
-  if (isRecording()) return;
-
-  const now = GLib.DateTime.new_now_local();
-  const format = appConfig.recorder?.filenameFormat || 'recording_%Y-%m-%d_%H.%M.%S.mp4';
-  const filename = now.format(format) || `recording_${Date.now()}.mp4`;
-
-  let savePath = appConfig.recorder?.savePath || '~/Videos';
-  if (savePath.startsWith('~')) {
-    savePath = savePath.replace(/^~/, GLib.get_home_dir());
-  }
-
   try {
-    exec(`mkdir -p ${savePath}`);
-  } catch (e) {
-    console.error('mkdir error', e);
-  }
+    if (isRecording()) return;
 
-  const fullPath = `${savePath}/${filename}`;
+    const now = GLib.DateTime.new_now_local();
+    const format = appConfig.recorder?.filenameFormat || 'recording_%Y-%m-%d_%H.%M.%S.mp4';
+    const filename = now.format(format) || `recording_${Date.now()}.mp4`;
 
-  const cmd = ['wf-recorder', '--pixel-format', 'yuv420p', '-f', fullPath, '-t'];
+    let savePath = appConfig.recorder?.savePath || '~/Videos';
+    if (savePath.startsWith('~')) {
+      savePath = savePath.replace(/^~/, GLib.get_home_dir());
+    }
 
-  if (appConfig.recorder?.recordAudio !== false) {
-    if (appConfig.recorder?.audioSource === 'mic') {
-      cmd.push('-a');
-    } else {
-      // Default to system
-      try {
-        const sink = await execAsync('pactl get-default-sink');
-        if (sink) {
-          cmd.push(`--audio=${sink.trim()}.monitor`);
+    if (GLib.mkdir_with_parents(savePath, 0o755) === -1) {
+      console.error(`Failed to create directory: ${savePath}`);
+    }
+
+    const fullPath = `${savePath}/${filename}`;
+
+    const cmd = ['wf-recorder', '--pixel-format', 'yuv420p', '-f', fullPath, '-t'];
+
+    if (appConfig.recorder?.recordAudio !== false) {
+      if (appConfig.recorder?.audioSource === 'mic') {
+        cmd.push('-a');
+      } else {
+        // Default to system
+        const speaker = Wp.get_default().audio.get_default_speaker();
+        if (speaker) {
+          cmd.push(`--audio=${speaker.name?.trim()}.monitor`);
         } else {
           cmd.push('-a');
         }
+      }
+    }
+
+    if (mode === 'monitor') {
+      const monitor = Hyprland.get_default().get_focused_monitor();
+      if (monitor) {
+        cmd.push('-o', monitor.name);
+      } else {
+        console.error('No focused monitor found for recording');
+      }
+    } else if (mode === 'slurp') {
+      try {
+        const region = await execAsync('slurp');
+        cmd.push('--geometry', region.trim());
       } catch (e) {
-        console.error('Failed to get default sink for audio recording', e);
-        cmd.push('-a');
+        console.warn('Cancelled Slurp [This is not an error. Emit by user operation]', e);
+        sendNotification({
+          summary: 'Recording cancelled',
+          body: 'Selection was cancelled',
+          app_name: 'Recorder',
+        });
+        return;
       }
     }
-  }
 
-  if (mode === 'monitor') {
-    try {
-      const monitorsStr = await execAsync('hyprctl monitors -j');
-      const monitors = JSON.parse(monitorsStr);
-      const active = monitors.find((m: { focused: boolean; name: string }) => m.focused)?.name;
-      if (active) {
-        cmd.push('-o', active);
-      }
-    } catch (e) {
-      console.error('Failed to get active monitor', e);
-    }
-  } else if (mode === 'slurp') {
-    try {
-      const region = await execAsync('slurp');
-      cmd.push('--geometry', region.trim());
-    } catch (e) {
-      console.warn('Cancelled Slurp', e);
-      execAsync([
-        'notify-send',
-        'Recording cancelled',
-        'Selection was cancelled',
-        '-a',
-        'Recorder',
-      ]).catch(console.error);
-      return;
-    }
+    const bashCmd = cmd.map((c) => (typeof c === 'string' ? `'${c}'` : c)).join(' ');
+    execAsync(['bash', '-c', `${bashCmd} & disown`]).catch(console.error);
+    sendNotification({
+      summary: 'Recording started',
+      body: `Recording to ${fullPath}`,
+      app_name: 'Recorder',
+    });
+    setIsRecording(true);
+  } catch (e) {
+    console.error('Failed to start recording', e);
   }
-
-  const bashCmd = cmd.map((c) => (typeof c === 'string' ? `'${c}'` : c)).join(' ');
-  execAsync(['bash', '-c', `${bashCmd} & disown`]).catch(console.error);
-  execAsync(['notify-send', 'Starting recording', filename, '-a', 'Recorder']).catch(console.error);
-  setIsRecording(true);
 }
 
 export function stopRecord() {
   if (isRecording()) {
     execAsync('pkill wf-recorder').catch(console.error);
-    execAsync(['notify-send', 'Recording Stopped', 'Stopped', '-a', 'Recorder']).catch(
-      console.error,
-    );
+    sendNotification({
+      summary: 'Recording stopped',
+      body: 'Recording has been stopped',
+      app_name: 'Recorder',
+    });
     setIsRecording(false);
   }
 }
