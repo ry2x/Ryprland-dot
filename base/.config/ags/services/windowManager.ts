@@ -29,7 +29,7 @@ type AnimatedWindow = Astal.Window & {
 };
 
 export function focusWindow(className: string) {
-  execAsync(`hyprctl dispatch focuswindow "class:^(${className})$"`).catch(() => {});
+  Hyprland.get_default().dispatch('focuswindow', `class:^(${className})$`);
 }
 
 export function closeAllControlCenters() {
