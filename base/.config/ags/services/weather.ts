@@ -1,5 +1,5 @@
 import { createState } from 'ags';
-import { execAsync } from 'ags/process';
+import { fetch } from 'ags/fetch';
 
 import GLib from 'gi://GLib?version=2.0';
 
@@ -10,7 +10,11 @@ export const LOCATION = appConfig.weather.location;
 export const [weatherJson, setWeatherJson] = createState('{}');
 
 export function refreshWeather() {
-  execAsync(['bash', '-c', `curl -s --max-time 10 'wttr.in/${LOCATION}?format=j1'`])
+  fetch(`https://wttr.in/${LOCATION}?format=j1`)
+    .then((res) => {
+      if (!res.ok) throw new Error(`Weather fetch failed: ${res.status}`);
+      return res.text();
+    })
     .then((out) => {
       if (!out || out.trim() === '') throw new Error('Empty weather response');
       JSON.parse(out);
