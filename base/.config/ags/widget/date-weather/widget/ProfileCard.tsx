@@ -1,15 +1,9 @@
 import { Gtk } from 'ags/gtk4';
-import { execAsync } from 'ags/process';
-import { createPoll } from 'ags/time';
 
 import GLib from 'gi://GLib?version=2.0';
 
 import { appConfig } from '../../../services/config';
-import { getOsInfo, userName } from '../../../services/system';
-
-const uptime = createPoll('0m', 60000, () =>
-  execAsync(['bash', '-c', 'uptime -p']).catch(() => 'up 0 mins'),
-);
+import { getOsInfo, uptime, userName } from '../../../services/system';
 
 const osInfoCache = getOsInfo();
 
