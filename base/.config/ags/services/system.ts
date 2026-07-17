@@ -1,5 +1,6 @@
+import { createState } from 'ags';
 import { execAsync } from 'ags/process';
-import { createPoll } from 'ags/time';
+import { interval } from 'ags/time';
 
 import GLib from 'gi://GLib?version=2.0';
 
@@ -33,46 +34,33 @@ export function openSystemMonitor() {
   execAsync('kitty --title TempTerminal btm').catch(console.error);
 }
 
-export const cpuUsage = createPoll(0, 2000, () =>
-  execAsync(['bash', '-c', "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'"])
-    .then((out) => {
-      const val = parseFloat(out);
-      return isNaN(val) ? 0 : val;
-    })
-    .catch(() => 0),
-);
-
 export interface RamData {
   used: number;
   total: number;
   percent: number;
 }
 
-export const ramUsage = createPoll<RamData>({ used: 0, total: 0, percent: 0 }, 2000, () =>
-  execAsync(['bash', '-c', "free -m | grep Mem | awk '{print $3, $2}'"])
-    .then((out) => {
-      const [usedMiB, totalMiB] = out.split(' ').map(Number);
-      if (isNaN(usedMiB) || isNaN(totalMiB) || totalMiB === 0) {
-        return { used: 0, total: 0, percent: 0 };
-      }
-      return {
-        used: usedMiB / 1024,
-        total: totalMiB / 1024,
-        percent: usedMiB / totalMiB,
-      };
-    })
-    .catch(() => ({ used: 0, total: 0, percent: 0 })),
-);
+export const [cpuUsage, setCpuUsage] = createState(0);
+export const [ramUsage, setRamUsage] = createState<RamData>({ used: 0, total: 0, percent: 0 });
+export const [gpuUsage, setGpuUsage] = createState(0);
+export const [uptime, setUptime] = createState('0m');
 
-export const gpuUsage = createPoll(0, 2000, () =>
-  execAsync([
-    'bash',
-    '-c',
-    'cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | sort -nr | head -n 1',
-  ])
+export const systemPoll = interval(2000, () => {
+  execAsync(['bash', `${GLib.getenv('HOME')}/.config/ags/scripts/system_metrics.sh`])
     .then((out) => {
-      const val = parseFloat(out);
-      return isNaN(val) ? 0 : val;
+      try {
+        const data = JSON.parse(out);
+        setCpuUsage(data.cpu);
+        setRamUsage(data.ram);
+        setGpuUsage(data.gpu);
+        if (data.uptime) {
+          setUptime(data.uptime);
+        }
+      } catch (e) {
+        console.error('Failed to parse system metrics:', e);
+      }
     })
-    .catch(() => 0),
-);
+    .catch((err) => {
+      console.error('system_metrics.sh failed:', err);
+    });
+});
