@@ -1,6 +1,10 @@
 import { createState } from 'ags';
 import { execAsync } from 'ags/process';
 
+import GLib from 'gi://GLib?version=2.0';
+
+const CAFFEINE_REMOTE_FILE = '/tmp/ags_caffeine_remote';
+
 export type CaffeineState = 'disabled' | 'enabled' | 'remote';
 
 export const [caffeineState, setCaffeineStateObj] = createState<CaffeineState>('disabled');
@@ -15,11 +19,21 @@ const IDLE_DAEMONS = ['hypridle', 'swayidle'];
 let activeDaemon = 'hypridle';
 
 function startInhibit() {
-  execAsync(['touch', '/tmp/ags_caffeine_remote']).catch(console.error);
+  const fd = GLib.creat(CAFFEINE_REMOTE_FILE, 0o644);
+  if (fd === -1) {
+    console.error(`Failed to create ${CAFFEINE_REMOTE_FILE}`);
+  } else {
+    GLib.close(fd);
+  }
 }
 
 function stopInhibit() {
-  execAsync(['rm', '-f', '/tmp/ags_caffeine_remote']).catch(() => {});
+  if (
+    GLib.file_test(CAFFEINE_REMOTE_FILE, GLib.FileTest.EXISTS) &&
+    GLib.remove(CAFFEINE_REMOTE_FILE) === -1
+  ) {
+    console.error(`Failed to remove ${CAFFEINE_REMOTE_FILE}`);
+  }
 }
 
 async function startDaemon() {
@@ -48,13 +62,7 @@ async function initCaffeine() {
     }
   }
 
-  let isInhibitRunning = false;
-  try {
-    await execAsync(['test', '-f', '/tmp/ags_caffeine_remote']);
-    isInhibitRunning = true;
-  } catch {
-    // ignore
-  }
+  const isInhibitRunning = GLib.file_test(CAFFEINE_REMOTE_FILE, GLib.FileTest.EXISTS);
 
   if (!isDaemonRunning) {
     setCaffeineState('enabled');
