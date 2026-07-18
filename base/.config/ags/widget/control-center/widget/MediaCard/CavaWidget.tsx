@@ -7,7 +7,7 @@ export default function CavaWidget() {
   if (!cava) return <box visible={false} />;
 
   const area = new Gtk.DrawingArea();
-  area.set_size_request(-1, 160); // 160px fixed height
+  area.set_size_request(-1, 160);
   area.set_hexpand(true);
   area.set_valign(Gtk.Align.END);
 
@@ -23,7 +23,7 @@ export default function CavaWidget() {
   let frameCount = 0;
 
   area.set_draw_func((_area, cr, width, height) => {
-    const vals = cava.values.slice(0, 30); // Reduce bars to 30 to add spacing
+    const vals = cava.values.slice(0, 30);
     if (vals.length === 0) return;
 
     const SENSITIVITY = 1.5;

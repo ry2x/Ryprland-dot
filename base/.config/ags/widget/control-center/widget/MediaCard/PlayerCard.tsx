@@ -9,7 +9,7 @@ import Pango from 'gi://Pango';
 
 import { LucideIcon } from '../../../../lib/lucide';
 import { fetchYouTubeThumbnail } from '../../../../services/mpris';
-import { focusWindow } from '../../../../services/windowManager';
+import { focusWindow,closeAllControlCenters } from '../../../../services/windowManager';
 import CavaWidget from './CavaWidget';
 
 function updatePicture(pic: Gtk.Picture, artUrl: string | null) {
@@ -133,8 +133,6 @@ export default function PlayerCard({
                   }
                   if (player.entry) {
                     focusWindow(player.entry);
-                    const { closeAllControlCenters } =
-                      await import('../../../../services/windowManager');
                     closeAllControlCenters();
                   }
                 }}

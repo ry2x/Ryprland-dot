@@ -1,7 +1,7 @@
 @use 'sass:color';
 @use 'variables' as *;
 
-// ===== Popups & Control Center =====
+// Control Center & DateWeather Styling
 window.ControlCenter,
 window.DateWeatherPopup {
   background: transparent;
@@ -16,8 +16,6 @@ window.DateWeatherPopup {
     border-radius: 0;
     padding: 24px;
     box-shadow: none;
-
-    /* opacity is now controlled via JS css prop */
   }
 
   .cc-container {
@@ -225,7 +223,7 @@ window.DateWeatherPopup {
   color: $text;
 }
 
-// ===== Control Center Dynamic Colors =====
+// System Monitor Styling
 .cpu-progress {
   color: $primary;
 }
@@ -245,7 +243,7 @@ window.DateWeatherPopup {
 
 .icon-btn {
   background: transparent;
-  border: 1px solid transparent; /* Keep border to prevent layout shift on hover if border is added on hover */
+  border: 1px solid transparent;
   border-radius: 50%;
   padding: 8px;
   box-shadow: none;
@@ -330,7 +328,7 @@ levelbar {
   }
 }
 
-// ===== Clock Widget =====
+// Clock
 .clock-time {
   font-size: 3.5em;
   font-weight: 800;
@@ -353,7 +351,7 @@ levelbar {
   color: rgba($text, 0.8);
 }
 
-// ===== Weather Card =====
+// Weather
 .weather-icon {
   color: $primary;
 }
@@ -378,7 +376,7 @@ levelbar {
   color: $secondary;
 }
 
-// ===== Forecast Layout =====
+// Forecast
 .forecast-day {
   font-size: 0.95em;
   font-weight: 800;
@@ -401,7 +399,7 @@ levelbar {
   color: rgba($text, 0.6);
 }
 
-// ===== World Clock Card =====
+// World Clock
 .world-clock-card {
   .world-clock-label {
     font-weight: 700;
@@ -409,7 +407,7 @@ levelbar {
   }
 }
 
-// ===== Clock Card Timezone =====
+// Clock Card Timezone
 .clock-tz {
   font-weight: 700;
   color: $primary;
@@ -499,7 +497,7 @@ levelbar {
   color: $error;
 }
 
-// ===== Profile Card =====
+// Profile Card
 .profile-card {
   padding: 16px;
 

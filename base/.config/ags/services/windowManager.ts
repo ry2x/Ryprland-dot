@@ -80,7 +80,6 @@ export function toggleControlCenter(monitorName?: string | null) {
           activeSidePanel.get().monitor === connector;
         if (isActive) {
           cc.hide_animated?.();
-          // activeSidePanel is cleared inside hide_animated
         } else {
           if (dw && dw.get_visible()) dw.hide_animated?.();
           cc.show_animated?.();
@@ -106,7 +105,6 @@ export function toggleDateWeather(monitorName?: string | null) {
           activeSidePanel.get().monitor === connector;
         if (isActive) {
           dw.hide_animated?.();
-          // activeSidePanel is cleared inside hide_animated
         } else {
           if (cc && cc.get_visible()) cc.hide_animated?.();
           dw.show_animated?.();

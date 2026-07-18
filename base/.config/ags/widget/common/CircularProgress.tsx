@@ -31,7 +31,7 @@ export default function CircularProgress<T>({
 
   area.set_draw_func((_area, cr, width, height) => {
     const ctx = _area.get_style_context();
-    const color = ctx.get_color(); // Automatically fetches the color from CSS
+    const color = ctx.get_color();
     const r = color.red;
     const g = color.green;
     const b = color.blue;

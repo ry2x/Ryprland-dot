@@ -9,7 +9,6 @@ let isSetting = false;
 let pendingTarget: number | null = null;
 let setTimer: ReturnType<typeof setTimeout> | null = null;
 
-// Debounced and queued setter to avoid spamming ddcutil
 function processSet() {
   if (isSetting || pendingTarget === null) return;
 
@@ -22,7 +21,6 @@ function processSet() {
   execAsync([SCRIPT_PATH, '--set', val.toString()])
     .then(() => {
       isSetting = false;
-      // If a new value came in while we were setting, process it
       if (pendingTarget !== null) {
         processSet();
       }
@@ -35,7 +33,6 @@ function processSet() {
 }
 
 export function setBrightness(val: number) {
-  // Update UI immediately
   setBrightnessState(val);
 
   pendingTarget = val;
@@ -45,10 +42,9 @@ export function setBrightness(val: number) {
   // Wait a short moment to debounce the slider
   setTimer = setTimeout(() => {
     processSet();
-  }, 100); // 100ms debounce
+  }, 100);
 }
 
-// Fetch initial brightness
 export function fetchInitialBrightness() {
   execAsync([SCRIPT_PATH, '--get-first'])
     .then((out) => {

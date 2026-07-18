@@ -42,8 +42,6 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const RectangleInt = (Cairo as any).RectangleInt;
             const region = new Region();
-            // We only need the left bar clickable initially,
-            // but the side panels handle their own clicks, so it's fine.
             region.unionRectangle(
               new RectangleInt({ x: 0, y: 0, width: BAR_WIDTH + BORDER_WIDTH, height: 9999 }),
             );

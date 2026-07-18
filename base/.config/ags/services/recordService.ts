@@ -44,7 +44,6 @@ export async function startRecord(mode: 'monitor' | 'slurp') {
       if (appConfig.recorder?.audioSource === 'mic') {
         cmd.push('-a');
       } else {
-        // Default to system
         const speaker = Wp.get_default().audio.get_default_speaker();
         if (speaker) {
           cmd.push(`--audio=${speaker.name?.trim()}.monitor`);
