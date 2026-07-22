@@ -9,7 +9,7 @@ hl.config({
     general = {
         -- Gaps
         gaps_in = 5,
-        gaps_out = { top = 15, right = 14, bottom = 15, left = 60 },
+        gaps_out = { top = 15, right = 14, bottom = 15, left = 10 },
         gaps_workspaces = 50,
 
         -- Borders
