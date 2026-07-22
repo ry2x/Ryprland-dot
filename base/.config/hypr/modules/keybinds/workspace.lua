@@ -5,6 +5,8 @@ local smw = P.smw
 
 local F = require("modules.utils")
 local sendNotification = F.sendNotification
+local saveCSV = F.saveCSV
+local loadCSV = F.loadCSV
 
 for i = 1, 5 do
     local key = tostring(i)
@@ -20,8 +22,7 @@ hl.bind(mod .. "+ CAPS + Up", smw.workspace("-1"), { description = "Switch to -1
 hl.bind(mod .. "+ CAPS + Down", smw.workspace("+1"), { description = "Switch to +1 workspace" })
 
 -- toggle workspace overview
-hl.bind(mod .. " + SHIFT + TAB",
-    function()
+hl.bind(mod .. " + SHIFT + TAB", function()
         if hl.plugin and hl.plugin.scrolloverview then
             hl.plugin.scrolloverview.overview("toggle")
         end
@@ -29,57 +30,60 @@ hl.bind(mod .. " + SHIFT + TAB",
     { description = "Toggle workspace overview" }
 )
 
--- change col size
-local col_state_tb = {}
-local BIG = 1
-local SMALL = 0.5
+-- change layouts per workspaces
+local home = os.getenv("HOME") or "."
+local WS_CACHE_FILE = home .. "/.cache/hyprland/ws_cache.txt"
+local ws_layouts = loadCSV(WS_CACHE_FILE) or {}
 
-local function isExistingInTb(ws)
-    if col_state_tb[ws] ~= nil then
-        return true
-    else
-        return false
-    end
-end
+hl.bind(mod .. "+ CAPS + TAB", function()
+    local layouts = { "scrolling", "dwindle", "master" }
 
-local function setColSizeTb(ws, size, size_str)
-    col_state_tb[ws] = size
-    hl.dispatch(hl.dsp.layout("colresize all " .. size))
-    hl.config({ scrolling = { column_width = size } })
-    sendNotification(P.icon .. "/col_resize_" .. size_str .. ".png", "Column Size: " .. size_str, "")
-end
+    local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
+    if not workspace then return end
 
-hl.bind(mod .. "+ CAPS + TAB",
-    function()
-        local current_ws = hl.get_active_workspace()
-        if not current_ws then
-            return
-        end
-        local ws = current_ws.id
+    local ws_identifier = workspace.special and workspace.name or workspace.id
+    local next_layout = "dwindle"
 
-        if not isExistingInTb(ws) then
-            setColSizeTb(ws, SMALL, "small")
-            return
-        end
-
-        if col_state_tb[ws] - 0.7 > 0 then
-            setColSizeTb(ws, SMALL, "small")
-        else
-            setColSizeTb(ws, BIG, "big")
-        end
-    end,
-    { description = "Change column size(0.5/0.95)" }
-)
-
--- keep col size per workspace
-hl.on("workspace.active",
-    function(current_ws)
-        local ws = current_ws.id
-
-        if not isExistingInTb(ws) then
-            hl.config({ scrolling = { column_width = BIG } })
-        else
-            hl.config({ scrolling = { column_width = col_state_tb[ws] } })
+    for i, layout in ipairs(layouts) do
+        if layout == workspace.tiled_layout then
+            next_layout = layouts[(i % #layouts) + 1]
+            break
         end
     end
-)
+
+    hl.workspace_rule({ workspace = tostring(ws_identifier), layout = next_layout })
+    ws_layouts[tostring(ws_identifier)] = next_layout
+
+    saveCSV(WS_CACHE_FILE, ws_layouts)
+
+    sendNotification(
+        P.icon .. "/layout_" .. next_layout .. ".png",
+        "Current Layout: " .. string.upper(next_layout),
+        "Layout has been changed!"
+    )
+end)
+
+hl.on("workspace.active", function(current_ws)
+    local ws_identifier = current_ws.special and current_ws.name or current_ws.id
+    local saved_layout = ws_layouts[tostring(ws_identifier)]
+
+    if saved_layout then
+        hl.workspace_rule({ workspace = tostring(ws_identifier), layout = saved_layout })
+    end
+end)
+
+hl.on("config.reloaded", function()
+    local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
+    if not workspace then return end
+
+    local ws_identifier = workspace.special and workspace.name or workspace.id
+    local saved_layout = ws_layouts[tostring(ws_identifier)]
+
+    if saved_layout then
+        hl.workspace_rule({ workspace = tostring(ws_identifier), layout = saved_layout })
+    end
+end)
+
+hl.on("hyprland.shutdown", function()
+    os.remove(WS_CACHE_FILE)
+end)
