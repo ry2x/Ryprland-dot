@@ -44,15 +44,7 @@ stow ./nvim-yazi # For neovim and yazi
 
 ## Requirements
 
-Install these packages before using this dotfile setup:
-
-- Core: hyprland, hyprlock, hypridle, stow, awww, imagemagick, jq
-- Hypr ecosystem: hyprbind, hyprcrop, hyprpicker
-- Desktop UI: ags, rofi
-- Configuration Application: waypaper, nwg-look, kvantum, nmgui, pavucontrol
-- CLI Application: bat, cava, cliphist, fastfetch, fish, starship, yazi, fum, yt-x
-- Other application: kitty, pear-desktop, thunar, fcitx5 (with mozc), gnome-keyring, power-profiles-daemon, swayimg
-- AUR/helper: paru, par_tui
+Install these packages before using this dotfile setup: [applist](./applist.md)
 
 > [!NOTE]
 > A separate README is available for the AGS configuration.
