@@ -49,4 +49,42 @@ F.killActiveProcess = function()
     hl.dispatch(hl.dsp.exec_cmd("kill " .. pid))
 end
 
+F.loadCSV = function(filename)
+    local data = {}
+    local file = io.open(filename, "r")
+    if not file then return nil end
+
+    for line in file:lines() do
+        local key, value = line:match("^([^,]+),([^,]+)$")
+        if key and value then
+            data[key] = value
+        end
+    end
+
+    file:close()
+    return data
+end
+
+F.saveCSV = function(filename, data)
+    local file = io.open(filename, "w")
+    if not file then
+        return
+    end
+
+    local keys = {}
+    for key in pairs(data) do
+        table.insert(keys, key)
+    end
+
+    table.sort(keys, function(left, right)
+        return left < right
+    end)
+
+    for _, key in ipairs(keys) do
+        file:write(key .. "," .. data[key] .. "\n")
+    end
+
+    file:close()
+end
+
 return F
