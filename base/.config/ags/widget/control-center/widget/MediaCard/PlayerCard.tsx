@@ -9,7 +9,7 @@ import Pango from 'gi://Pango';
 
 import { LucideIcon } from '../../../../lib/lucide';
 import { fetchYouTubeThumbnail } from '../../../../services/mpris';
-import { focusWindow,closeAllControlCenters } from '../../../../services/windowManager';
+import { closeAllControlCenters, focusWindow } from '../../../../services/windowManager';
 import CavaWidget from './CavaWidget';
 
 function updatePicture(pic: Gtk.Picture, artUrl: string | null) {
