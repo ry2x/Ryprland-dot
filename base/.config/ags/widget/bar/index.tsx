@@ -4,6 +4,7 @@ import app from 'ags/gtk4/app';
 import GLib from 'gi://GLib';
 import Cairo from 'gi://cairo';
 
+import BarReserve from './BarReserve';
 import PanelBackground, { forceRedrawBar } from './PanelBackground';
 import Clock from './widget/Clock';
 import RecordIndicator from './widget/RecordIndicator';
@@ -21,6 +22,8 @@ const BORDER_WIDTH = 3;
 const BAR_WIDTH = 47;
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
+  BarReserve(gdkmonitor);
+
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
   return (
