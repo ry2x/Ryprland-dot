@@ -4,6 +4,9 @@ local M = require("modules.window.floating_helper")
 local withDefaults = M.makeRuleWithDefaults
 local applyWindowRules = M.applyWindowRules
 
+-- Import Matugen Colors
+local matugen = require('matugen.matugen-hyprland')
+
 ---------------------
 -- center floating --
 ---------------------
@@ -85,7 +88,8 @@ hl.window_rule(
         {
             match = { tag = "pin_float_mini" },
             size = { "monitor_w * 0.3", "monitor_h * 0.5" },
-            move = { "monitor_w * 0.35", TOP_GAP }
+            move = { "monitor_w * 0.35", TOP_GAP },
+            border_color = matugen.colors.primary
         }
     )
 )
@@ -147,5 +151,6 @@ hl.window_rule({
     float = true,
     stay_focused = true,
     pin = true,
-    move = { "monitor_w * 0.5 - window_h + 50", "monitor_h - window_h" }
+    move = { "monitor_w * 0.5 - (window_w * 0.5)", "monitor_h - window_h + 5" },
+    border_color = matugen.colors.primary
 })
