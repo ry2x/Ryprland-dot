@@ -10,6 +10,7 @@ hl.window_rule({
     immediate = true,
     workspace = "name:game silent",
     fullscreen = true,
+    render_unfocused = true,
     content = "game"
 })
 
@@ -21,6 +22,7 @@ hl.window_rule({
     size = { "1900", "1046" },
     immediate = true,
     workspace = "name:game silent",
+    render_unfocused = true,
     content = "game"
 })
 
@@ -29,6 +31,7 @@ hl.window_rule({
     match = { tag = "steam" },
     workspace = "name:game silent",
     suppress_event = "activate",
+    fullscreen = true,
     no_initial_focus = true
 })
 
@@ -82,6 +85,10 @@ hl.window_rule({
 -- chill with you (idle game)
 hl.window_rule({
     match = { title = "^(Chill With You)$" },
+    tag = "+float_game"
+})
+hl.window_rule({
+    match = { class = "^(steam_app_3548580)$" },
     tag = "+float_game"
 })
 

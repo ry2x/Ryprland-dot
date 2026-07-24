@@ -46,7 +46,8 @@ local envs = {
     { "GLFW_IM_MODULE",                      "fcitx" },
 
     -- Fix AQUA under RDNA4
-    { "AQ_MGPU_NO_EXPLICIT",                     "1" }
+    -- Disables explicit syncing on mgpu buffers
+    { "AQ_MGPU_NO_EXPLICIT",                 "1" }
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.

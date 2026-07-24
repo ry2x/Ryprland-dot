@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "strict": true,
+    "module": "ES2022",
+    "target": "ES2020",
+    "lib": ["ESNext"],
+    "moduleResolution": "Bundler",
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "ags/gtk4",
+    "skipLibCheck": true
+  }
+}

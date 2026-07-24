@@ -6,7 +6,7 @@
 
 # This script is for backlight control using brightnessctl.
 
-iDIR="$HOME/.config/swaync/icons"
+iDIR="$HOME/.config/hypr/icons"
 
 # Get brightness
 get_backlight() {

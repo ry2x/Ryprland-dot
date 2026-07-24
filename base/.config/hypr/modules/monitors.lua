@@ -21,3 +21,14 @@ hl.monitor({
     sdr_eotf = "gamma22",
     cm = "auto"
 })
+
+hl.monitor({
+    output = "RMT-1",
+    mode = "1920x1080@60",
+    scale = 1,
+    position = "auto"
+})
+
+hl.on("monitor.added", function()
+    hl.dispatch(hl.dsp.exec_cmd(" ~/.config/hypr/scripts/backlight.sh --clear-cache"))
+end)

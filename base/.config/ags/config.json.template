@@ -1,0 +1,11 @@
+{
+  "weather": {
+    "location": "Osaka"
+  },
+  "worldClocks": [
+    { "label": "London", "tz": "Europe/London" },
+    { "label": "Brisbane", "tz": "Australia/Brisbane" },
+    { "label": "New York", "tz": "America/New_York" },
+    { "label": "Los Angeles", "tz": "America/Los_Angeles" }
+  ]
+}

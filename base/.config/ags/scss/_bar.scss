@@ -1,0 +1,214 @@
+@use 'sass:color';
+@use 'variables' as *;
+
+//========================
+// Bar Styling
+//========================
+window.Bar {
+  background: transparent;
+  color: $text;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+
+  // Dummy elements: CSS color → JS/Cairo bridge (read via get_color())
+  .bar-color-bg {
+    color: $bg;
+  }
+  .bar-color-accent {
+    color: $accent;
+  }
+
+  // The main floating bar container
+  .panel {
+    padding: 12px 0px;
+    min-width: 47px;
+
+    .panel-start,
+    .panel-center,
+    .panel-end {
+      padding: 4px 0;
+    }
+  }
+
+  // Separators between modules
+  .sep {
+    background: $border;
+    min-height: 1px;
+    min-width: 12px;
+    margin: 6px 0;
+    border-radius: 2px;
+  }
+
+  // Workspace module
+  .Workspaces {
+    button.workspace {
+      background: $border-light;
+      border-radius: 99px;
+      border: none;
+      padding: 0;
+      min-width: 10px;
+      min-height: 10px;
+      margin: 0;
+      transition: all 300ms cubic-bezier(0.25, 1, 0.5, 1);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: scale(1.3);
+      }
+
+      &.active {
+        background: transparent;
+        transform: scale(1);
+      }
+    }
+
+    .active-indicator {
+      background: $accent;
+      border-radius: 99px;
+      min-width: 14px;
+      min-height: 14px;
+      box-shadow: 0 0 10px $accent-glow;
+      transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+
+  // general styling for bar modules
+  .Volume,
+  .Clock,
+  .SysMetrics,
+  .ScrollerIndicator,
+  .Updates,
+  .Weather,
+  .Wifi,
+  .network-btn {
+    padding: 0 2px;
+    border-radius: 0 8px 8px 0;
+    transition: all 200ms cubic-bezier(0.25, 1, 0.5, 1);
+    min-height: 22px;
+    background: transparent;
+    border: none;
+    box-shadow: inset 0 0 0 transparent;
+
+    > box {
+      transition: transform 200ms ease;
+    }
+
+    &:hover {
+      box-shadow: inset 2px 0 0 $accent;
+
+      > box {
+        transform: translateX(3px);
+      }
+    }
+
+    // Unify all icons
+    image {
+      color: $accent;
+    }
+
+    // Unify all standard labels
+    label {
+      font-size: 0.85em;
+      font-weight: 600;
+      color: $text;
+    }
+  }
+
+  // Clock
+  .Clock {
+    .time {
+      font-weight: 800;
+      color: $on-surface;
+      font-size: 0.95em;
+      margin-left: 4px;
+    }
+    .date {
+      color: $accent;
+    }
+  }
+
+  // Record Indicator
+  .RecordIndicator {
+    background: rgba($error, 0.15);
+    color: $error;
+    animation: pulse-record 2s infinite;
+
+    &:hover {
+      background: rgba($error, 0.25);
+    }
+  }
+
+  @keyframes pulse-record {
+    0% {
+      box-shadow: 0 0 0 0 rgba($error, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 4px rgba($error, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba($error, 0);
+    }
+  }
+
+  .ScrollerIndicator {
+    .separator {
+      background-color: $accent;
+    }
+  }
+
+  // Tray
+  .Tray {
+    .tray-item {
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      padding: 4px 6px;
+      transition: all 200ms ease;
+
+      &:hover {
+        background: $bg-hover;
+      }
+    }
+  }
+}
+
+//========================
+// Tray Popover Styling
+//========================
+popover.tray-menu {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  min-width: 0px;
+  padding: 0px;
+  margin: 0px;
+
+  > contents {
+    background: color.adjust($surface, $alpha: -0.25);
+    border: 1px solid rgba($on-surface, 0.1);
+    border-radius: 20px;
+    padding: 16px;
+    min-width: 0px;
+    box-shadow:
+      0 12px 36px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px rgba($on-surface, 0.1);
+    margin: 0px;
+    margin-top: 6px;
+  }
+
+  .tray-menu-btn {
+    background: rgba($on-surface, 0.04);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba($on-surface, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 200ms;
+    font-weight: 500;
+    font-size: 0.95em;
+    color: $text;
+
+    &:hover {
+      background: rgba($on-surface, 0.08);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+}

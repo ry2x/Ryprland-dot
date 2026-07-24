@@ -20,31 +20,28 @@ local ApplicationBinds = {
     { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
     { "A",
         function()
-            toggleWindowTray("com.github.th_ch.youtube_music", "", "youtube-music " .. electronOptions)
+            toggleWindowTray("com.github.th-ch.youtube-music", "", "youtube-music " .. electronOptions)
         end,
         " Music"
     },
 
     -- Launchers
-    { "R", "walker -t rofi", "󱓞 Launcher" }, -- Currently, I'm working on replacing Rofi with Walker
+    { "R", "ags request toggle-launcher", "󱓞 Launcher" }, -- Currently, I'm working on replacing Rofi with Walker
     { "V", getRofiScript("cliphist.sh"), " ClipBoard" },
     { "Semicolon", getRofiScript("rofiEmoji.sh"), "󰞅 Emoji" },
     { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
     { "SHIFT + R", getRofiScript("launcher-style-changer"), "SwitchLauncher" },
 
-    -- waybar
-    { "ALT + B", "pkill -SIGUSR1 waybar", "KillWaybar" },
-    { "B", getHyprScript("waybarSelect.sh"), "WaybarSelector" },
-    { "SHIFT + B", getHyprScript("waybarRestart.sh"), "RestartWaybar" },
+    -- ags
+    { "SHIFT + B", getHyprScript("restartAgs.sh"), "Restart ags" },
+    { "ALT + B", "ags request reload-css", "Reload ags CSS" },
+    { "N", "ags request toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
     { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
     { "Q", "pkill waypaper || waypaper", "Waypaper" },
     { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
-    { "SHIFT + T", getHyprScript("refresh.sh"), "RefreshTheme" },
-
-    -- Notifications
-    { "N", "swaync-client -t -sw", "󰂞 Notification" },
+    { "SHIFT + T", getHyprScript("matugenMagick.sh"), "RefreshTheme" },
 }
 
 for _, bind in ipairs(ApplicationBinds) do

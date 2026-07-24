@@ -1,0 +1,535 @@
+@use 'sass:color';
+@use 'variables' as *;
+
+// Control Center & DateWeather Styling
+window.ControlCenter,
+window.DateWeatherPopup {
+  background: transparent;
+  color: $text;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+
+  .cc-container,
+  .dw-container {
+    background: transparent;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    padding: 24px;
+    box-shadow: none;
+  }
+
+  .cc-container {
+    min-width: 400px;
+  }
+
+  .dw-container {
+    // 2-column layout width
+    min-width: 830px;
+    min-height: 600px;
+  }
+
+  .left-column {
+    min-width: 320px;
+  }
+
+  .right-column {
+    min-width: 450px;
+  }
+
+  .widget-card {
+    background: rgba($on-surface, 0.04);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba($on-surface, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 200ms;
+    &:hover {
+      background: rgba($on-surface, 0.06);
+    }
+  }
+
+  .calendar-card {
+    padding: 16px;
+    calendar {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      color: $text;
+      font-size: 1.1em;
+
+      header {
+        margin-bottom: 12px;
+        button {
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          border-radius: 50%;
+          min-width: 32px;
+          min-height: 32px;
+          color: $text;
+          transition: all 200ms;
+          &:hover {
+            background: rgba($primary, 0.15);
+            color: $primary;
+          }
+        }
+        label.year,
+        stack.month {
+          font-weight: 800;
+          font-size: 1.1em;
+          color: $primary;
+        }
+      }
+
+      grid {
+        label:nth-child(7n + 1) {
+          color: $error;
+        }
+        label:nth-child(7n) {
+          color: $secondary;
+        }
+
+        label.day-name {
+          font-weight: 700;
+          font-size: 0.9em;
+          margin-bottom: 8px;
+          opacity: 0.7;
+        }
+
+        label.day-number {
+          padding: 5px 0px;
+          border: 1px solid transparent;
+          border-radius: 1em;
+          transition: all 200ms;
+          &:hover {
+            background: rgba($on-surface, 0.1);
+          }
+          &:selected {
+            background: rgba($primary, 0.3);
+            color: $text;
+            border-color: $primary;
+          }
+        }
+
+        label.other-month {
+          opacity: 0.25;
+        }
+
+        label.today {
+          background: $primary;
+          color: $on-primary;
+          font-weight: 800;
+          box-shadow: 0 4px 12px rgba($primary, 0.4);
+          &:hover {
+            background: color.adjust($primary, $lightness: 5%);
+          }
+        }
+      }
+    }
+  }
+
+  .vertical-sep {
+    min-width: 1px;
+    background: $border;
+    margin: 8px 0;
+  }
+
+  .notif-header-btn {
+    background: rgba($on-surface, 0.05);
+    border-radius: 8px;
+    padding: 6px 12px;
+    border: none;
+    transition: all 200ms;
+
+    &.clear-all:hover {
+      background: $error;
+      color: $on-error;
+    }
+
+    &.dnd:hover {
+      background: rgba($on-surface, 0.1);
+    }
+
+    &.dnd.active {
+      background: rgba($primary, 0.15);
+      color: $primary;
+    }
+  }
+
+  .notif-scroll {
+    min-height: 500px;
+  }
+
+  &.urgency-2 {
+    border: 1px solid rgba($error, 0.5);
+    background: rgba($error, 0.05);
+  }
+}
+
+.cc-card {
+  background: rgba($on-surface, 0.04);
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid rgba($on-surface, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 200ms;
+  &:hover {
+    background: rgba($on-surface, 0.06);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.cc-toggle-btn {
+  background: rgba($on-surface, 0.04);
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid rgba($on-surface, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 200ms;
+
+  &.active {
+    background: rgba($primary, 0.15);
+    border-color: rgba($primary, 0.3);
+    .icon,
+    label {
+      color: $primary;
+    }
+    box-shadow: 0 4px 16px rgba($primary, 0.2);
+  }
+  &:hover {
+    background: rgba($on-surface, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    &.active {
+      background: rgba($primary, 0.25);
+    }
+  }
+}
+
+.power-btn {
+  background: rgba($on-surface, 0.04);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba($on-surface, 0.08);
+  transition: all 200ms;
+  &:hover {
+    background: rgba($on-surface, 0.1);
+  }
+}
+
+.cc-title,
+.dw-title {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: $text;
+}
+
+// System Monitor Styling
+.cpu-progress {
+  color: $primary;
+}
+.ram-progress {
+  color: $secondary;
+}
+.gpu-progress {
+  color: $tertiary;
+}
+
+.updates-icon {
+  color: $tertiary;
+}
+.cava-visualizer {
+  color: $primary;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: none;
+  transition: all 200ms;
+  color: $text;
+  &:hover {
+    background: rgba($primary, 0.15);
+    border-color: rgba($primary, 0.3);
+    color: $primary;
+    box-shadow: 0 4px 12px rgba($primary, 0.2);
+  }
+  &:active {
+    background: rgba($primary, 0.25);
+  }
+}
+
+// GTK Scale (Sliders) styling
+.volume-slider,
+.brightness-slider {
+  trough {
+    background: rgba($on-surface, 0.1);
+    border-radius: 4px;
+    min-height: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    highlight,
+    fill {
+      background: $primary;
+      background-color: $primary;
+      border-radius: 4px;
+      box-shadow: 0 0 8px rgba($primary, 0.4);
+    }
+    slider {
+      background-color: $primary;
+      background-image: none;
+      min-width: 14px;
+      min-height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: all 200ms;
+      &:hover {
+        background-color: color.adjust($primary, $lightness: 10%);
+        border-color: #ffffff;
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+}
+
+// LevelBar styling
+levelbar {
+  trough {
+    background: rgba($on-surface, 0.1);
+    border-radius: 4px;
+    min-height: 8px;
+    block.filled {
+      background: $primary;
+      border-radius: 4px;
+    }
+  }
+}
+
+.click-catcher {
+  background-color: rgba(0, 0, 0, 0.01);
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  outline: none;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.01);
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+// Clock
+.clock-time {
+  font-size: 3.5em;
+  font-weight: 800;
+  color: $primary;
+}
+
+.clock-day {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: $text;
+}
+
+.clock-dot {
+  font-size: 1.1em;
+  color: rgba($text, 0.5);
+}
+
+.clock-date {
+  font-size: 1.1em;
+  color: rgba($text, 0.8);
+}
+
+// Weather
+.weather-icon {
+  color: $primary;
+}
+
+.weather-temp {
+  font-size: 2.2em;
+  font-weight: 800;
+  color: $primary;
+}
+
+.weather-desc {
+  font-size: 1.1em;
+  color: rgba($text, 0.7);
+}
+
+.weather-info {
+  color: rgba($text, 0.6);
+  font-size: 0.9em;
+}
+
+.weather-info-icon {
+  color: $secondary;
+}
+
+// Forecast
+.forecast-day {
+  font-size: 0.95em;
+  font-weight: 800;
+  min-width: 45px;
+  color: $text;
+}
+
+.forecast-icon {
+  color: $primary;
+}
+
+.forecast-max {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: $secondary;
+}
+
+.forecast-min {
+  font-size: 0.8em;
+  color: rgba($text, 0.6);
+}
+
+// World Clock
+.world-clock-card {
+  .world-clock-label {
+    font-weight: 700;
+    color: $primary;
+  }
+}
+
+// Clock Card Timezone
+.clock-tz {
+  font-weight: 700;
+  color: $primary;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.cc-split-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transition: all 200ms;
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.cc-split-btn-right {
+  @extend .cc-split-btn;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.cc-split-btn-left {
+  @extend .cc-split-btn;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cc-media-card {
+  @extend .cc-card;
+  padding: 0;
+}
+
+// Screen Capture & Record
+.power-btn.active-record {
+  background: rgba($error, 0.15);
+  border-color: rgba($error, 0.3);
+  box-shadow: 0 4px 16px rgba($error, 0.2);
+  animation: cc-pulse-record 2s infinite;
+
+  image {
+    color: $error;
+  }
+  label {
+    color: $text;
+  }
+
+  &:hover {
+    background: rgba($error, 0.25);
+  }
+}
+
+@keyframes cc-pulse-record {
+  0% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 0 rgba($error, 0.4);
+  }
+  70% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 8px rgba($error, 0);
+  }
+  100% {
+    box-shadow:
+      0 4px 16px rgba($error, 0.2),
+      0 0 0 0 rgba($error, 0);
+  }
+}
+
+.color-primary {
+  color: $primary;
+}
+.color-secondary {
+  color: $secondary;
+}
+.color-tertiary {
+  color: $tertiary;
+}
+.color-error {
+  color: $error;
+}
+
+// Profile Card
+.profile-card {
+  padding: 16px;
+
+  .profile-avatar {
+    border: 2px solid $primary;
+    box-shadow:
+      0 0 8px rgba($primary, 0.8),
+      0 0 16px rgba($primary, 0.4);
+  }
+
+  .profile-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: $primary;
+  }
+
+  .profile-env {
+    font-size: 0.9em;
+    color: rgba($text, 0.7);
+  }
+
+  .profile-uptime {
+    font-size: 0.8em;
+    color: rgba($text, 0.5);
+  }
+}
+
+// Tooltip Styling
+.tooltip {
+  background: rgba($on-surface, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 16px rgba($primary, 0.2);
+  transition: all 200ms;
+}

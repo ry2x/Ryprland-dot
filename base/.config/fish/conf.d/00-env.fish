@@ -81,3 +81,7 @@ set -gx RUSTUP_HOME "$XDG_DATA_HOME/rustup"
 # Go
 set -gx GOBIN "$GOPATH/bin"
 set -gx PATH "$GOBIN:$PATH"
+
+# ollama for RDNA4
+set -gx HIP_VISIBLE_DEVICES 0
+set -gx HSA_OVERRIDE_GFX_VERSION 12.0.0

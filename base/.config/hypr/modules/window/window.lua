@@ -23,3 +23,10 @@ hl.window_rule({
     match = { class = "^(1password)$" },
     tag = "+hide"
 })
+
+-- window.urgent
+hl.on("window.urgent",
+    function(win)
+        hl.dispatch(hl.dsp.focus({ window = win }))
+    end
+)

@@ -1,0 +1,14 @@
+@forward '../themes/matugen';
+@use 'sass:color';
+@use '../themes/matugen' as *;
+
+// Base colors
+$bg: color.adjust($surface, $alpha: -0.25);
+$bg-hover: color.adjust($on-surface, $alpha: -0.92);
+$border: color.adjust($outline, $alpha: -0.8);
+$border-light: color.adjust($outline, $alpha: -0.5);
+
+$text: $on-surface;
+$text-dim: $on-surface-variant;
+$accent: $primary;
+$accent-glow: color.adjust($primary, $alpha: -0.6);
