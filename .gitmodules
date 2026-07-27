@@ -2,3 +2,7 @@
 	path = private-dotfile
 	url = https://github.com/ry2x/private-dotfile.git
 	branch = master
+[submodule "base/.config/ags"]
+	path = base/.config/ags
+	url = https://github.com/ry2x/RyprAGS-shell.git
+    branch = master
