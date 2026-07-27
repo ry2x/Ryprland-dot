@@ -3,7 +3,8 @@ for _, namespace in ipairs({
     "rofi",
     "logout_dialog",
     "hyprcrop-freeze",
-    "gtk4-layer-shell"
+    "gtk4-layer-shell",
+    "rystal-shell"
 }) do
     hl.layer_rule({
         match = { namespace = namespace },
