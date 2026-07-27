@@ -61,21 +61,18 @@ if ! magick "$wallpaper_path" -strip \
     exit 1
 fi
 
-# Create a unique filename for the launcher background to bypass GTK4 texture caching
-RAND=$(date +%s%N)
-NEW_BG="$AGS_ASSETS_DIR/launcher_bg_$RAND.png"
+# Keep a stable path so AGS can replace the shared texture on reload-css.
+NEW_BG="$AGS_ASSETS_DIR/launcher_bg.png"
 
 mkdir -p "$AGS_ASSETS_DIR"
-if ! cp "$IMG_DIR/currentWalQuad.quad" "$NEW_BG"; then
+TEMP_BG="$AGS_ASSETS_DIR/.launcher_bg.png.tmp"
+if ! cp "$IMG_DIR/currentWalQuad.quad" "$TEMP_BG" || ! mv -f "$TEMP_BG" "$NEW_BG"; then
     notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to copy AGS assets" -u critical
     exit 1
 fi
 
-# Clean up old background files
-find "$AGS_ASSETS_DIR" -name "launcher_bg_*.png" -not -name "launcher_bg_$RAND.png" -delete
-
-# Create a SCSS file
-echo "\$launcher_bg: 'file://$NEW_BG';" > "$AGS_ASSETS_DIR/bg.scss"
+# Remove backgrounds from the previous generated-file workflow.
+find "$AGS_ASSETS_DIR" -name "launcher_bg_*.png" -delete
 
 # copy the wallpaper in current-wallpaper file
 mkdir -p "$(dirname "$BG_DIR")"
