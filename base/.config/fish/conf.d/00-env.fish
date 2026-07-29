@@ -70,7 +70,6 @@ set -gx LESS_TERMCAP_se (printf '\e[0m')
 set -gx LESS_TERMCAP_us (printf '\e[1;32m')
 set -gx LESS_TERMCAP_ue (printf '\e[0m')
 set -gx LESSOPEN "| /usr/bin/highlight -O ansi %s 2>/dev/null"
-set -gx QT_QPA_PLATFORMTHEME gtk2
 set -gx MOZ_USE_XINPUT2 1
 set -gx AWT_TOOLKIT "MToolkit wmname LG3D"
 set -gx _JAVA_AWT_WM_NONREPARENTING 1
