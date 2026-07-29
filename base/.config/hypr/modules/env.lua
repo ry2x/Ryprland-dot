@@ -25,7 +25,6 @@ local envs = {
     { "QT_QPA_PLATFORM",                     "wayland" },
     { "QT_QPA_PLATFORMTHEME",                "qt6ct" },
     { "QT_QPA_PLATFORMTHEME",                "qt5ct" },
-    { "QT_STYLE_OVERRIDE",                   "Fusion" },
     { "QT_WAYLAND_DISABLE_WINDOWDECORATION", "1" },
     { "QT_QUICK_CONTROLS_STYLE",             "org.hyprland.style" },
 
