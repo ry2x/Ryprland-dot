@@ -30,5 +30,5 @@ hl.monitor({
 })
 
 hl.on("monitor.added", function()
-    hl.dispatch(hl.dsp.exec_cmd(" ~/.config/hypr/scripts/backlight.sh --clear-cache"))
+    hl.dispatch(hl.dsp.exec_cmd("ags request brightness refresh"))
 end)

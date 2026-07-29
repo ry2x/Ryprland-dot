@@ -14,8 +14,8 @@ local fn_binds = {
     { "XF86AudioMicMute",      getHyprScript("volume.sh --toggle-mic"), "Mic Mute" },
     { "ALT + M",               getHyprScript("volume.sh --mic-inc"),    "Mic Volume Up" },
     { "ALT + SHIFT + M",       getHyprScript("volume.sh --mic-dec"),    "Mic Volume Down" },
-    { "XF86MonBrightnessUp",   getHyprScript("backlight.sh --inc"),     "Brightness Up" },
-    { "XF86MonBrightnessDown", getHyprScript("backlight.sh --dec"),     "Brightness Down" },
+    { "XF86MonBrightnessUp",   "ags request brightness up",     "Brightness Up" },
+    { "XF86MonBrightnessDown", "ags request brightness down",     "Brightness Down" },
 
     -- Media control
     { "XF86AudioNext",         "playerctl next",                        "Play next" },
@@ -39,8 +39,8 @@ hl.bind(mod .. " + F1",
 
 local function_binds = {
     -- brightness F1 F2
-    { "F1",  getHyprScript("backlight.sh --dec"), "Brightness Down" },
-    { "F2",  getHyprScript("backlight.sh --inc"), "Brightness Up" },
+    { "F1",  "ags request brightness down", "Brightness Down" },
+    { "F2",  "ags request brightness up", "Brightness Up" },
 
     -- volume F10 F11 F12
     { "F10", getHyprScript("volume.sh --toggle"), "Volume Mute" },
