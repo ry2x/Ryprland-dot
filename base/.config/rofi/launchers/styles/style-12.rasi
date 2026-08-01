@@ -1,0 +1,144 @@
+configuration {
+    show-icons:                 true;
+    display-drun:               "Apps";
+    drun-display-format:        "{name}\n<span alpha='70%' weight='bold' size='small'>{comment}</span>";
+}
+
+@import "~/.config/rofi/launchers/styles/shared/colors.rasi"
+@import "~/.config/rofi/launchers/styles/shared/fonts.rasi"
+
+* {
+    font:                        "SF Pro 14";
+}
+
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    /* Fixed to the AGS launcher's 1230 × 654px on a 2560 × 1440 display. */
+    width:                       1230px;
+    height:                      654px;
+    padding:                     18px;
+    border:                      3px solid;
+    border-radius:               1em;
+    border-color:                @border-color;
+    background-color:            @background-alpha;
+}
+
+mainbox {
+    spacing:                     0em;
+    padding:                     0em;
+    orientation:                 horizontal;
+    children:                    [ "inputbar", "listbox" ];
+    background-color:            transparent;
+}
+
+/* Wallpaper panel.  The dummy consumes the free space and keeps the search
+ * field anchored to the bottom of the image. */
+inputbar {
+    enabled:                     true;
+    width:                       612px;
+    spacing:                     0em;
+    padding:                     0em;
+    orientation:                 vertical;
+    expand:                      false;
+    children:                    [ "dummy", "entry" ];
+    border-radius:               1em 0em 0em 1em;
+    background-color:            @background-alpha;
+    background-image:            url("~/.config/rofi/images/currentWalQuad.quad", width);
+}
+
+dummy {
+    expand:                      true;
+    background-color:            transparent;
+}
+
+entry {
+    expand:                      false;
+    height:                      52px;
+    margin:                      0px 120px 24px 12px;
+    padding:                     12px 48px;
+    border:                      2px solid;
+    border-radius:               0.5em;
+    border-color:                @border-color;
+    background-color:            @background-alpha;
+    text-color:                  @foreground;
+    placeholder:                 "Search apps...";
+    placeholder-color:           @foreground;
+    cursor:                      text;
+}
+
+listbox {
+    expand:                      true;
+    spacing:                     0em;
+    padding:                     0em;
+    orientation:                 vertical;
+    children:                    [ "listview" ];
+    border-radius:               0em 1em 1em 0em;
+    background-color:            @background-alpha;
+}
+
+listview {
+    expand:                      true;
+    enabled:                     true;
+    columns:                     1;
+    lines:                       8;
+    cycle:                       true;
+    dynamic:                     true;
+    fixed-height:                true;
+    fixed-columns:               true;
+    layout:                      vertical;
+    scrollbar:                   false;
+    spacing:                     2px;
+    padding:                     32px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+
+element {
+    spacing:                     32px;
+    margin:                      1px 0;
+    padding:                     0.7em 0.5em 0.7em 1.2em;
+    border-radius:               0.5em;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+
+element selected.normal {
+    background-color:            @selected;
+    border:                      4px 5px solid;
+    border-color:                @primary-alpha;
+    text-color:                  @selected-text;
+}
+
+element-icon {
+    size:                        40px;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+error-message {
+    padding:                     1em;
+    border-radius:               0.5em;
+    background-color:            @background;
+    text-color:                  @foreground;
+}
+
+textbox {
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+/* This is imported last so it can replace the fallback above with the
+ * wallpaper-derived, left-to-right selection gradient. */
+@import "~/.config/rofi/matugen/style-12.rasi"

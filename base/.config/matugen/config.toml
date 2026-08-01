@@ -29,6 +29,10 @@ post_hook = 'bat cache --build'
 input_path = '~/.config/matugen/templates/matugen-rofi.rasi'
 output_path = '~/.config/rofi/matugen/matugen-rofi.rasi'
 
+[templates.rofi_style12]
+input_path = '~/.config/matugen/templates/matugen-rofi-style-12.rasi'
+output_path = '~/.config/rofi/matugen/style-12.rasi'
+
 # Hyprland (above 0.5.5)
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/matugen-hyprland.lua'

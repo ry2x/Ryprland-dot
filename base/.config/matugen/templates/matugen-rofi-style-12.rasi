@@ -1,0 +1,9 @@
+/* Rofi gradients require literal colors; matugen refreshes this rule for the
+ * active wallpaper before style-12 is launched. */
+element selected.normal {
+    background-image: linear-gradient(
+        to right,
+        {{colors.primary.default.hex}},
+        {{colors.primary.default.rgba | set_alpha: 0.4}}
+    );
+}
