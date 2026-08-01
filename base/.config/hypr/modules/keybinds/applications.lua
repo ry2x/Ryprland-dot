@@ -26,7 +26,7 @@ local ApplicationBinds = {
     },
 
     -- Launchers
-    { "R", "ags request toggle-launcher", "󱓞 Launcher" }, -- Currently, I'm working on replacing Rofi with Walker
+    { "R", getRofiScript("launcher"), "󱓞 Launcher" },
     { "V", getRofiScript("cliphist.sh"), " ClipBoard" },
     { "Semicolon", getRofiScript("rofiEmoji.sh"), "󰞅 Emoji" },
     { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
