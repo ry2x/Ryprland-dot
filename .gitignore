@@ -43,6 +43,7 @@ base/.config/qt6ct/colors/matugen-qt6ct.conf
 
 # rofi
 base/.config/rofi/matugen/matugen-rofi.rasi
+base/.config/rofi/matugen/style-12.rasi
 
 # rofi images
 base/.config/rofi/images/currentWal.sqre
