@@ -8,7 +8,7 @@
 style_dir="$HOME/.config/rofi/launchers/styles"
 
 # Style-theme
-style_theme='style-5'
+style_theme='style-12'
 
 # Run
-pkill rofi || true && rofi -show drun -theme ${style_dir}/${style_theme}.rasi
+rofi -show drun -scroll-method 1 -theme "${style_dir}/${style_theme}.rasi"
