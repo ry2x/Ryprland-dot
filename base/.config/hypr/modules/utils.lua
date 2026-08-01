@@ -28,7 +28,7 @@ F.toggleWindowTray = function(win_class, title, cmd)
 end
 
 F.getRofiScript = function(name)
-    return "pkill rofi || " .. P.rofiScript .. "/" .. name
+    return "pkill -u \"$USER\" -x rofi 2>/dev/null || " .. P.rofiScript .. "/" .. name
 end
 
 F.getHyprScript = function(name)
