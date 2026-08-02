@@ -5,124 +5,210 @@
  *
  */
 
-/* Configuration ---------------------------------------------------- */
 configuration {
     modi:                        "drun";
-    show-icons:                  false;
+    show-icons:                  true;
     drun-display-format:         "{name}";
+    hover-select:                true;
+    me-select-entry:             "MousePrimary";
 }
 
-/* Config and colors ----------------------------------------------- */
 @import '~/.config/rofi/applets/shared/colors.rasi'
 @import '~/.config/rofi/applets/shared/fonts.rasi'
 
-
-/* Main Window ------------------------------------------------ */
+/* Outer dark canvas ------------------------------------------------ */
 window {
     enabled:                     true;
     fullscreen:                  false;
     transparency:                "real";
     cursor:                      "default";
-    background-color:            @background-alpha;
-    spacing:                     0em;
-    border:                      2px solid;
-    border-radius:               15px;
-    border-color:                @border-color;
     width:                       60%;
     height:                      80%;
-    margin:                      0px;
+    background-color:            @background-alpha;
+    border:                      3px solid;
+    border-radius:               1em;
+    border-color:                @border-color;
     padding:                     0px;
 }
 
-/* ----- Main Box ----- */
 mainbox {
     orientation:                 vertical;
-    children:                    [ "inputbar", "textbox-help", "message", "listview" ];
-    background-color:            transparent;
+    children:                    [ "inputbar", "guidebar", "listbox" ];
     spacing:                     16px;
     margin:                      0px;
     padding:                     4% 2%;
+    background-color:            transparent;
 }
 
-/* Inputbar --------------------------------------------------- */
+/* Wallpaper header and floating search ---------------------------- */
 inputbar {
-    children:                    [ "dummy", "entry", "dummy" ];
-    border-radius:               24px;
-    spacing:                     0px;
-    padding:                     128px 64px;
     orientation:                 horizontal;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+    spacing:                     0px;
+    padding:                     86px 380px;
+    border-radius:               16px;
+    border:                      2px solid;
+    border-color:                white/11%;
+    background-color:            transparent;
     background-image:            url("~/.config/rofi/images/currentWal.thumb", width);
 }
 
 dummy {
-  background-color: transparent;
-}
-
-textbox-help {
-    expand: 			 false;
-    content: 			 " [CTRL DEL] Delete 󰆴 \n [ALT DEL] Wipe 󱕖 ";
-    border-radius:               12px;
-    background-color:            white/12%;
-    text-color:                  white;
-    margin:                      0px;
-    padding:                     6px;
-}
-
-textbox-icon {
     expand:                      true;
     background-color:            transparent;
-    text-color:                  inherit;
-    margin: 			 0px 0px 0px 25px;
-    content: 			 "  ";
 }
 
-/* Entry input ------------------------------------------------ */
-entry {
-    cursor:                      inherit;
-    placeholder:                 "Search";
-    placeholder-color:           inherit;
-    border-radius:               12px;
+textbox-prompt-colon {
+    expand:                      false;
+    margin:                      0px;
+    str:                         "";
+    padding:                     19px 8px 19px 18px;
+    border:                      0px;
+    border-radius:               15px 0px 0px 15px;
     background-color:            @background-alpha;
     text-color:                  @foreground;
-    padding:                     16px;
-    margin:                      0px;
+    vertical-align:              0.5;
 }
 
-/* Listview --------------------------------------------------- */
-listview {
+entry {
+    expand:                      true;
+    margin:                      0px;
+    cursor:                      text;
+    placeholder:                 "Search...";
+    placeholder-color:           @foreground;
+    padding:                     19px 18px 19px 10px;
+    border:                      0px;
+    border-radius:               0px 15px 15px 0px;
+    background-color:            @background-alpha;
+    text-color:                  @foreground;
+    font:                        "GeistMono Nerd Font Bold 12";
+
+}
+
+/* Action strip ----------------------------------------------------- */
+guidebar {
+    expand:                      false;
+    orientation:                 horizontal;
+    children:                    [ "textbox-guide-navigate-key", "textbox-guide-navigate-label", "textbox-guide-delete-key", "textbox-guide-delete-label", "textbox-guide-delete-icon", "textbox-guide-wipe-key", "textbox-guide-wipe-label", "textbox-guide-wipe-icon", "textbox-guide-copy-key", "textbox-guide-copy-label", "textbox-guide-close-key", "textbox-guide-close-label", "textbox-guide-spacer" ];
+    spacing:                     10px;
+    padding:                     12px 16px;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               13px;
+    background-color:            white/5%;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-key,
+textbox-guide-delete-key,
+textbox-guide-wipe-key,
+textbox-guide-copy-key,
+textbox-guide-close-key {
+    expand:                      false;
+    content:                     "Ctrl + Del";
+    padding:                     7px 10px;
+    border:                      1px solid;
+    border-color:                @border-color;
+    border-radius:               7px;
+    background-color:            @primary-alpha;
+    text-color:                  @selected;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-key { content: "↑↓"; }
+
+textbox-guide-wipe-key {
+    content:                     "Alt + Del";
+    margin:                      0px 0px 0px 14px;
+}
+
+textbox-guide-copy-key { content: "Enter"; margin: 0px 0px 0px 14px; }
+textbox-guide-close-key { content: "Esc"; margin: 0px 0px 0px 14px; }
+
+textbox-guide-navigate-label,
+textbox-guide-delete-label,
+textbox-guide-wipe-label,
+textbox-guide-copy-label,
+textbox-guide-close-label {
+    font:                        "GeistMono Nerd Font Bold 11";
+}
+
+textbox-guide-navigate-label,
+textbox-guide-delete-label,
+textbox-guide-wipe-label,
+textbox-guide-copy-label,
+textbox-guide-close-label,
+textbox-guide-delete-icon,
+textbox-guide-wipe-icon {
+    expand:                      false;
     background-color:            transparent;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-label { content: "Navigate"; }
+textbox-guide-delete-label { content: "Delete"; }
+textbox-guide-wipe-label { content: "Wipe"; }
+textbox-guide-copy-label { content: "Copy"; }
+textbox-guide-close-label { content: "Close"; }
+textbox-guide-delete-icon { content: "󰆴"; }
+textbox-guide-wipe-icon { content: "󱕖"; }
+
+textbox-guide-spacer {
+    expand:                      true;
+    content:                     "";
+    background-color:            transparent;
+}
+
+/* Two-column clipboard cards -------------------------------------- */
+listbox {
+    expand:                      true;
     orientation:                 vertical;
     children:                    [ "message", "listview" ];
+    spacing:                     14px;
+    padding:                     4px 0px 0px;
+    background-color:            transparent;
 }
 
-/* ---- Listview ---- */
 listview {
-    cursor:                      "default";
+    expand:                      true;
+    border:                      0px;
+    margin:                      0px;
+    padding:                     0px;
     columns:                     2;
+    lines:                       3;
     cycle:                       true;
-    dynamic:                     true;
+    dynamic:                     false;
     scrollbar:                   true;
     layout:                      vertical;
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
+    spacing:                     10px 18px;
     background-color:            transparent;
     text-color:                  @foreground;
-    border:                      0px;
-    spacing:                     12px;
-    margin:                      0px;
-    padding:                     0px;
+    cursor:                      "default";
 }
 
-/* ---- Elements ---- */
 element {
     cursor:                      pointer;
-    border-radius:               10px;
-    background-color:            transparent;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               11px;
+    background-color:            white/5%;
     text-color:                  @foreground;
-    spacing:                     0px;
+    padding:                     15px 18px;
     margin:                      0px;
-    padding:                     12px;
+    spacing:                     12px;
+}
+
+element-icon {
+    size:                        22px;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
 }
 
 element-text {
@@ -134,91 +220,69 @@ element-text {
     horizontal-align:            0.0;
 }
 
-element-icon {
-    background-color:            transparent;
-    text-color:                  inherit;
-    size:                        36px;
-    cursor:                      inherit;
+element normal.normal,
+element alternate.normal {
+    background-color:            white/5%;
+    text-color:                  @foreground;
 }
 
-element normal.normal {
-    background-color:            inherit;
-    text-color:                  @foreground;
+element normal.urgent,
+element alternate.urgent {
+    background-color:            white/5%;
+    text-color:                  @urgent;
 }
-element normal.urgent {
-    background-color:            inherit;
-    text-color:                  @foreground;
+
+element normal.active,
+element alternate.active {
+    background-color:            white/5%;
+    text-color:                  @active;
 }
-element normal.active {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
+
 element selected.normal {
-    background-color:            inherit;
-    text-color:                  @selected;
-    border:                      0px 3px 0px 3px;
+    background-color:            @primary-alpha;
+    text-color:                  @foreground;
+    border:                      2px solid;
     border-color:                @border-color;
 }
+
 element selected.urgent {
-    background-color:            inherit;
+    background-color:            @background-alt;
     text-color:                  @urgent;
-    border:                      0px 3px 0px 3px;
+    border:                      1px solid;
     border-color:                @urgent;
 }
+
 element selected.active {
-    background-color:            inherit;
+    background-color:            @background-alt;
     text-color:                  @active;
-    border:                      0px 3px 0px 3px;
+    border:                      1px solid;
     border-color:                @active;
 }
-element alternate.normal {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element alternate.urgent {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element alternate.active {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
 
-
-@media(max-aspect-ratio: 1.8) {
-    element {
-        orientation:             vertical;
-    }
-}
-
-/* Scrollbar ---------------------------------------------------- */
 scrollbar {
-    margin:                      0px 4px;
-    handle-width:                8px;
-    handle-color:                white;
+    margin:                      0px 0px 0px 4px;
+    handle-width:                7px;
+    handle-color:                @border-color;
     background-color:            white/6%;
     border-radius:               4px;
 }
 
-/* Message ------------------------------------------------------ */
 message {
-    background-color:            white/12%;
-    border:                      1px solid;
-    border-color:                transparent;
-    border-radius:               12px;
-    padding:                     24px;
+    background-color:            transparent;
+    padding:                     0px;
 }
-error-message {
-    padding:                     100px;
-    border:                      0px solid;
-    border-radius:               0px;
-    background-color:            @background-alpha;
-    text-color:                  @urgent;
-}
+
 textbox {
     background-color:            transparent;
     text-color:                  @foreground;
     vertical-align:              0.5;
     horizontal-align:            0.5;
     highlight:                   none;
+}
+
+error-message {
+    padding:                     32px;
+    border-radius:               12px;
+    background-color:            @background-alt;
+    text-color:                  @urgent;
 }
