@@ -81,7 +81,7 @@ entry {
     border-radius:               0px 15px 15px 0px;
     background-color:            @background-alpha;
     text-color:                  @foreground;
-    font:                        "GeistMono Nerd Font Bold 12";
+    font:                        "SF Pro Bold 12";
 
 }
 
@@ -114,6 +114,7 @@ textbox-guide-close-key {
     background-color:            @primary-alpha;
     text-color:                  @selected;
     vertical-align:              0.5;
+    font:                        "SF Pro Bold 11";
 }
 
 textbox-guide-navigate-key { content: "↑↓"; }
