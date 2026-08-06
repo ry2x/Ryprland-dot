@@ -61,6 +61,16 @@ if ! magick "$wallpaper_path" -strip \
     exit 1
 fi
 
+# Keep a stable path so AGS can replace the shared texture on reload-css.
+NEW_BG="$AGS_ASSETS_DIR/launcher_bg.png"
+
+mkdir -p "$AGS_ASSETS_DIR"
+TEMP_BG="$AGS_ASSETS_DIR/.launcher_bg.png.tmp"
+if ! cp "$IMG_DIR/currentWalQuad.quad" "$TEMP_BG" || ! mv -f "$TEMP_BG" "$NEW_BG"; then
+    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick Error" "Failed to copy AGS assets" -u critical
+    exit 1
+fi
+
 # Remove backgrounds from the previous generated-file workflow.
 find "$AGS_ASSETS_DIR" -name "launcher_bg_*.png" -delete
 

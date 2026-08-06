@@ -26,7 +26,7 @@ local ApplicationBinds = {
     },
 
     -- Launchers
-    { "R", getRofiScript("launcher"), "󱓞 Launcher" },
+    { "R", "ags request toggle-launcher", "󱓞 Launcher" },
     { "V", getRofiScript("cliphist.sh"), " ClipBoard" },
     { "Semicolon", getRofiScript("rofiEmoji.sh"), "󰞅 Emoji" },
     { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
