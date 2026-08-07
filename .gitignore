@@ -3,8 +3,8 @@ private-dotfile/*
 # fish_variable
 base/.config/fish/fish_variables
 
-# ags start script
-base/.config/ags/start-ags
+# GTK symbolic
+base/.config/gtk-4.0/assets
 
 #---------------------
 # Matugen Files
