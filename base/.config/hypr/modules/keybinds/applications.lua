@@ -38,7 +38,7 @@ local ApplicationBinds = {
     { "N", "ags request toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
-    { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
+    { "Q", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
     { "SHIFT + Q", "theme-switch.sh random", "RandomWallpaper" },
     { "SHIFT + T", "theme-switch.sh refresh", "RefreshTheme" },
 }
