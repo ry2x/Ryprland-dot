@@ -2,7 +2,18 @@
 -- ┣ ┃┃┃┃  ┃┃┣┫┣┫┃┣┫┣┫┃ ┣ ┗┓
 -- ┗┛┛┗┗┛  ┗┛┛┗┛┗┻┛┗┻┛┗┛┗┛┗┛
 
+local home = os.getenv("HOME") or ""
+local path = os.getenv("PATH") or "/usr/local/bin:/usr/bin"
+local local_bin = home .. "/.local/bin"
+
+if not string.find(":" .. path .. ":", ":" .. local_bin .. ":", 1, true) then
+    path = local_bin .. ":" .. path
+end
+
 local envs = {
+    -- executable search path for Hyprland children
+    { "PATH",                                path },
+
     -- cursor
     { "HYPRCURSOR_THEME",                    "M200" },
     { "HYPRCURSOR_SIZE",                     "24" },

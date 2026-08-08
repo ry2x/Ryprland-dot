@@ -39,9 +39,8 @@ local ApplicationBinds = {
 
     -- Wallpaper
     { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
-    { "Q", "pkill waypaper || waypaper", "Waypaper" },
-    { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
-    { "SHIFT + T", getHyprScript("matugenMagick.sh"), "RefreshTheme" },
+    { "SHIFT + Q", "theme-switch.sh random", "RandomWallpaper" },
+    { "SHIFT + T", "theme-switch.sh refresh", "RefreshTheme" },
 }
 
 for _, bind in ipairs(ApplicationBinds) do

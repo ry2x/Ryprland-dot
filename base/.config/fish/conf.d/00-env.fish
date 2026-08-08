@@ -45,7 +45,7 @@ set -gx MBSYNCRC "$XDG_CONFIG_HOME/mbsync/config"
 set -gx ELECTRUMDIR "$XDG_DATA_HOME/electrum"
 set -gx PYTHONSTARTUP "$XDG_CONFIG_HOME/python/pythonrc"
 set -gx SQLITE_HISTORY "$XDG_DATA_HOME/sqlite_history"
-set -gx PATH "$HOME/.local/share/bin:$PATH"
+set -gx PATH "$HOME/.local/bin:$PATH"
 
 # Fzf options
 set -gx FZF_DEFAULT_OPTS "--style=full --height=90% --pointer '>' --color 'pointer:green:bold,bg+:-1:,fg+:green:bold,info:blue:bold,marker:yellow:bold,hl:gray:bold,hl+:yellow:bold' --input-label ' Search ' --color 'input-border:blue,input-label:blue:bold' --list-label ' Results ' --color 'list-border:green,list-label:green:bold' --preview-label ' Preview ' --color 'preview-border:magenta,preview-label:magenta:bold'"

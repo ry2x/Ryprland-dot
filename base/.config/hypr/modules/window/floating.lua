@@ -143,14 +143,3 @@ hl.window_rule({
     no_initial_focus = true,
     no_focus = true
 })
-
--- waypaper (left bottom)
-hl.window_rule({
-    match = { class = "^(waypaper)$" },
-    animation = "slide bottom",
-    float = true,
-    stay_focused = true,
-    pin = true,
-    move = { "monitor_w * 0.5 - (window_w * 0.5)", "monitor_h - window_h + 5" },
-    border_color = matugen.colors.primary
-})

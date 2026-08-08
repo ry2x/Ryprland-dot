@@ -13,22 +13,22 @@
 # Features:
 #   ✔ Multi-monitor support with scaling
 #   ✔ Auto-updating menu (add/delete wallpapers without restart)
-#   ✔ Parallel image processing (optimized CPU usage)
-#   ✔ XXHash64 checksum verification for cache integrity
-#   ✔ Orphaned cache detection and cleanup
+#   ✔ Background image processing (selector opens without waiting)
+#   ✔ Non-blocking thumbnail cache generation
+#   ✔ Collision-free cache keys for nested directories
 #   ✔ Adaptive icon sizing based on screen resolution
 #   ✔ Lockfile system for safe concurrent operations
 #   ✔ Handle gif files separately
 #   ✔ Rofi integration with theme support
-#   ✔ Lightweight (~2ms overhead on cache hits)
+#   ✔ Cached previews for previously indexed wallpapers
 #
 # Dependencies:
-#   → Core: hyprland, rofi, jq, xxhsum (xxhash)
+#   → Core: hyprland, rofi, jq, sha256sum
 #   → Media: awww, imagemagick
 #   → GNU: findutils, coreutils, bc
 
 # Set dir varialable
-wall_dir="$HOME/Pictures/wallpapers"
+wall_dir="$HOME/Pictures/Wallpapers"
 cacheDir="$HOME/.cache/wallcache"
 
 # Create cache dir if not exists
@@ -55,21 +55,30 @@ get_optimal_jobs() {
 PARALLEL_JOBS=$(get_optimal_jobs)
 
 process_image() {
-    local imagen="$1"
-    local nombre_archivo=$(basename "$imagen")
-    local cache_file="${cacheDir}/${nombre_archivo}"
-    local md5_file="${cacheDir}/.${nombre_archivo}.md5"
-    local lock_file="${cacheDir}/.lock_${nombre_archivo}"
+    local image="$1"
+    local relative_path="${image#"$wall_dir"/}"
+    local cache_key
+    local cache_file
+    local metadata_file
+    local lock_file
+    local current_metadata
 
-    local current_md5=$(xxh64sum "$imagen" | cut -d' ' -f1)
+    cache_key=$(printf '%s' "$relative_path" | sha256sum | cut -d' ' -f1)
+    cache_file="${cacheDir}/${cache_key}.png"
+    metadata_file="${cacheDir}/.${cache_key}.meta"
+    lock_file="${cacheDir}/.lock_${cache_key}"
+    current_metadata=$(stat -Lc '%s:%y' "$image") || return
 
     (
         flock -x 200
-        if [ ! -f "$cache_file" ] || [ ! -f "$md5_file" ] || [ "$current_md5" != "$(cat "$md5_file" 2>/dev/null)" ]; then
-            magick "$imagen" -resize 500x500^ -gravity center -extent 500x500 "$cache_file"
-            echo "$current_md5" >"$md5_file"
+        if [[ ! -f "$cache_file" || ! -f "$metadata_file" || "$current_metadata" != "$(<"$metadata_file")" ]]; then
+            if magick "${image}[0]" -resize 500x500^ -gravity center -extent 500x500 "png:$cache_file.tmp"; then
+                mv -f "$cache_file.tmp" "$cache_file"
+                printf '%s\n' "$current_metadata" >"$metadata_file"
+            else
+                rm -f "$cache_file.tmp"
+            fi
         fi
-        # Clean the lock file after processing
         rm -f "$lock_file"
     ) 200>"$lock_file"
 }
@@ -78,27 +87,9 @@ process_image() {
 export -f process_image
 export wall_dir cacheDir
 
-# Clean old locks before starting
-rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
-
-# Process files in parallel
-find "$wall_dir" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) -print0 |
-    xargs -0 -P "$PARALLEL_JOBS" -I {} bash -c 'process_image "{}"'
-
-# Clean orphaned cache files and their locks
-for cached in "$cacheDir"/*; do
-    [ -f "$cached" ] || continue
-    original="${wall_dir}/$(basename "$cached")"
-    if [ ! -f "$original" ]; then
-        nombre_archivo=$(basename "$cached")
-        rm -f "$cached" \
-            "${cacheDir}/.${nombre_archivo}.md5" \
-            "${cacheDir}/.lock_${nombre_archivo}"
-    fi
-done
-
-# Clean any remaining lock files
-rm -f "${cacheDir}"/.lock_* 2>/dev/null || true
+# Warm missing or stale thumbnails without delaying the selector.
+find "$wall_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print0 |
+    xargs -0 -r -P "$PARALLEL_JOBS" -I {} bash -c 'process_image "$1"' _ {} >/dev/null 2>&1 &
 
 # Check if rofi is already running
 if pidof rofi >/dev/null; then
@@ -106,15 +97,14 @@ if pidof rofi >/dev/null; then
 fi
 
 # Launch rofi
-wall_selection=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print0 |
-    xargs -0 basename -a |
+wall_selection=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -printf '%P\n' |
     LC_ALL=C sort -V |
-    while IFS= read -r A; do
-        if [[ "$A" =~ \.gif$ ]]; then
-            printf "%s\n" "$A" # Handle gifs by showing only file name
-        else
-            printf '%s\x00icon\x1f%s/%s\n' "$A" "${cacheDir}" "$A" # Non-gif files with icon convention
-        fi
+    while IFS= read -r relative_path; do
+        cache_key=$(printf '%s' "$relative_path" | sha256sum | cut -d' ' -f1)
+        cache_file="${cacheDir}/${cache_key}.png"
+        icon_path="$cache_file"
+        [[ -f "$icon_path" ]] || icon_path="${wall_dir}/${relative_path}"
+        printf '%s\x00icon\x1f%s\n' "$relative_path" "$icon_path"
     done | $rofi_command)
 
-[[ -n "$wall_selection" ]] && waypaper --wallpaper "${wall_dir}/${wall_selection}"
+[[ -n "$wall_selection" ]] && theme-switch.sh set "${wall_dir}/${wall_selection}"
