@@ -34,7 +34,7 @@ wallpaper_dir="$HOME/Pictures/Wallpapers"
 cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper-selector"
 rofi_theme="$HOME/.config/rofi/themes/wallpaper-select.rasi"
 
-for command in bc find flock hyprctl jq magick nproc rofi sha256sum stat theme-switch.sh xargs; do
+for command in bc find flock hyprctl jq magick nproc rofi sha256sum stat theme-switch.sh wc xargs; do
     command -v "$command" >/dev/null 2>&1 || {
         printf 'wallpaper-select: required command not found: %s\n' "$command" >&2
         exit 1
@@ -56,9 +56,11 @@ focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
 monitor_width=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .width')
 scale_factor=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | select(.name == $mon) | .scale')
 
-# Calculate icon size
-icon_size=$(echo "scale=2; ($monitor_width * 14) / ($scale_factor * 96)" | bc)
-rofi_override="element-icon{size:${icon_size}px;}"
+# Fill three columns with 640:420 landscape cards.
+icon_size=$(echo "scale=0; ((($monitor_width / $scale_factor) * 0.44 - 108) / 3)" | bc)
+icon_height=$(echo "scale=0; $icon_size * 420 / 640" | bc)
+wallpaper_count=$(find "$wallpaper_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -printf '.' | wc -c)
+rofi_override="element{height:${icon_height}px;}element-icon{size:${icon_height}px;width:${icon_size}px;height:${icon_height}px;}textbox-gallery-count{content:\"${wallpaper_count} items\";}"
 rofi_command=(rofi -i -show -dmenu -theme "$rofi_theme" -theme-str "$rofi_override")
 
 # Detect number of cores and set a sensible number of jobs
@@ -82,12 +84,12 @@ process_image() {
     cache_file="${cache_dir}/${cache_key}.png"
     metadata_file="${cache_dir}/.${cache_key}.meta"
     lock_file="${cache_dir}/.lock_${cache_key}"
-    current_metadata=$(stat -Lc '%s:%y' "$image") || return
+    current_metadata="v6:$(stat -Lc '%s:%y' "$image")" || return
 
     (
         flock -x 200
         if [[ ! -f "$cache_file" || ! -f "$metadata_file" || "$current_metadata" != "$(<"$metadata_file")" ]]; then
-            if magick "${image}[0]" -resize 500x500^ -gravity center -extent 500x500 "png:$cache_file.tmp"; then
+            if magick "${image}[0]" -resize 640x420^ -gravity center -extent 640x420 "png:$cache_file.tmp"; then
                 mv -f "$cache_file.tmp" "$cache_file"
                 printf '%s\n' "$current_metadata" >"$metadata_file"
             else
@@ -111,8 +113,13 @@ wall_selection=$(find "$wallpaper_dir" -type f \( -iname "*.jpg" -o -iname "*.jp
     while IFS= read -r relative_path; do
         cache_key=$(printf '%s' "$relative_path" | sha256sum | cut -d' ' -f1)
         cache_file="${cache_dir}/${cache_key}.png"
-        icon_path="$cache_file"
-        [[ -f "$icon_path" ]] || icon_path="${wallpaper_dir}/${relative_path}"
+        metadata_file="${cache_dir}/.${cache_key}.meta"
+        wallpaper_path="${wallpaper_dir}/${relative_path}"
+        current_metadata="v6:$(stat -Lc '%s:%y' "$wallpaper_path")"
+        icon_path="$wallpaper_path"
+        if [[ -f "$cache_file" && -f "$metadata_file" && "$current_metadata" == "$(<"$metadata_file")" ]]; then
+            icon_path="$cache_file"
+        fi
         printf '%s\x00icon\x1f%s\n' "$relative_path" "$icon_path"
     done | "${rofi_command[@]}") || exit 0
 
