@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+set -uo pipefail
 #  ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
 #  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
 #  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
@@ -11,15 +13,27 @@
 # CTRL Del to delete an entry
 # ALT  Del to wipe clipboard contents
 
+theme="$HOME/.config/rofi/themes/clipboard-history.rasi"
+
+for command in cliphist rofi wl-copy; do
+    command -v "$command" >/dev/null 2>&1 || {
+        printf 'clipboard-history: required command not found: %s\n' "$command" >&2
+        exit 1
+    }
+done
+
 while true; do
     # Run rofi and capture both the result string and its exit status
-    result=$(
+    if result=$(
         rofi -i -dmenu \
             -kb-custom-1 "Control-Delete" \
             -kb-custom-2 "ALT-Delete" \
-            -config ~/.config/rofi/applets/cliphist.rasi < <(cliphist list)
-    )
-    status=$?
+            -config "$theme" < <(cliphist list)
+    ); then
+        status=0
+    else
+        status=$?
+    fi
 
     case "$status" in
     1)

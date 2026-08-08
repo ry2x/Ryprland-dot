@@ -13,8 +13,8 @@ configuration {
     me-select-entry:             "MousePrimary";
 }
 
-@import '~/.config/rofi/applets/shared/colors.rasi'
-@import '~/.config/rofi/applets/shared/fonts.rasi'
+@import '~/.config/rofi/shared/colors.rasi'
+@import '~/.config/rofi/shared/fonts.rasi'
 
 /* Outer dark canvas ------------------------------------------------ */
 window {

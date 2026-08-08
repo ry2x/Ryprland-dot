@@ -114,8 +114,7 @@ generate_assets() {
     temporary=$(mktemp -d "$CACHE_ROOT/.build.XXXXXX") || return 1
     if ! magick "${wallpaper}[0]" -strip \
         \( -clone 0 -thumbnail 1000x1000^ -gravity center -extent 1000 -quality 70 \
-        -write "$temporary/currentWal.thumb" \
-        -blur 0x8 -write "$temporary/currentWalBlur.thumb" +delete \) \
+        -write "$temporary/currentWal.thumb" +delete \) \
         \( -clone 0 -thumbnail 500x500^ -gravity center -extent 500x500 \
         -write "$temporary/currentWal.sqre" \
         \( +clone -fill white -colorize 100 \
@@ -143,9 +142,11 @@ publish_assets() {
     local name
 
     mkdir -p "$ROFI_IMAGE_DIR" "$AGS_ASSET_DIR" "$(dirname "$BACKGROUND_LINK")"
-    for name in currentWal.thumb currentWalBlur.thumb currentWal.sqre currentWalQuad.quad; do
+    for name in currentWal.thumb currentWal.sqre currentWalQuad.quad; do
         atomic_link "$cache_dir/$name" "$ROFI_IMAGE_DIR/$name" || return 1
     done
+    # Remove the legacy blur alias now that no Rofi theme consumes it.
+    rm -f "$ROFI_IMAGE_DIR/currentWalBlur.thumb"
 
     cp "$cache_dir/currentWalQuad.quad" "$AGS_ASSET_DIR/.launcher_bg.png.tmp.$$" || return 1
     mv -f "$AGS_ASSET_DIR/.launcher_bg.png.tmp.$$" "$AGS_ASSET_DIR/launcher_bg.png" || return 1

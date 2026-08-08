@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
+
+set -uo pipefail
 #  ┳┓┏┓┏┓┳  ┏┓┳┳┓┏┓┏┳┳
 #  ┣┫┃┃┣ ┃━━┣ ┃┃┃┃┃ ┃┃
 #  ┛┗┗┛┻ ┻  ┗┛┛ ┗┗┛┗┛┻
 #
+theme="$HOME/.config/rofi/themes/emoji-select.rasi"
 
+for command in awk rofi wl-copy; do
+    command -v "$command" >/dev/null 2>&1 || {
+        printf 'emoji-select: required command not found: %s\n' "$command" >&2
+        exit 1
+    }
+done
 
-if [ $? -eq 0 ]
-then
-    sed '1,/^### DATA ###$/d' $0 | rofi  -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
-else
-    sed '1,/^### DATA ###$/d' $0 | rofi  -dmenu -theme $HOME/.config/rofi/applets/emojiSelector.rasi | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
-fi
-exit
+selection=$(awk '
+    /^### DATA ###$/ { data = 1; next }
+    /^EMOJI_DATA$/ { exit }
+    data { print }
+' "$0" | rofi -dmenu -theme "$theme") || exit 0
+emoji=${selection%% *}
+[[ -n "$emoji" ]] && printf '%s' "$emoji" | wl-copy
+exit 0
+: <<'EMOJI_DATA'
 ### DATA ###
 ¿? question upside down reversed spanish
 ← left arrow
@@ -1876,3 +1887,4 @@ AH↗️HA↘️HA↗️HA↘️HA↗️HA↘️HA↗️HA↘️ pekora arrows h
 🫧 bubbles soap fun carbonation sparkling
 🪪 identification card document
 🟰 heavy equals sign math
+EMOJI_DATA

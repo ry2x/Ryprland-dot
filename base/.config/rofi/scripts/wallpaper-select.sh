@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+set -uo pipefail
 #  ┓ ┏┏┓┓ ┓ ┏┓┏┓┓ ┏┓┏┓┏┳┓
 #  ┃┃┃┣┫┃ ┃ ┗┓┣ ┃ ┣ ┃  ┃
 #  ┗┻┛┛┗┗┛┗┛┗┛┗┛┗┛┗┛┗┛ ┻
@@ -28,11 +30,24 @@
 #   → GNU: findutils, coreutils, bc
 
 # Set dir varialable
-wall_dir="$HOME/Pictures/Wallpapers"
-cacheDir="$HOME/.cache/wallcache"
+wallpaper_dir="$HOME/Pictures/Wallpapers"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper-selector"
+rofi_theme="$HOME/.config/rofi/themes/wallpaper-select.rasi"
+
+for command in bc find flock hyprctl jq magick nproc rofi sha256sum stat theme-switch.sh xargs; do
+    command -v "$command" >/dev/null 2>&1 || {
+        printf 'wallpaper-select: required command not found: %s\n' "$command" >&2
+        exit 1
+    }
+done
+
+[[ -d "$wallpaper_dir" ]] || {
+    printf 'wallpaper-select: wallpaper directory not found: %s\n' "$wallpaper_dir" >&2
+    exit 1
+}
 
 # Create cache dir if not exists
-[ -d "$cacheDir" ] || mkdir -p "$cacheDir"
+mkdir -p "$cache_dir"
 
 # Get focused monitor
 focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
@@ -44,7 +59,7 @@ scale_factor=$(hyprctl monitors -j | jq -r --arg mon "$focused_monitor" '.[] | s
 # Calculate icon size
 icon_size=$(echo "scale=2; ($monitor_width * 14) / ($scale_factor * 96)" | bc)
 rofi_override="element-icon{size:${icon_size}px;}"
-rofi_command="rofi -i -show -dmenu -theme $HOME/.config/rofi/applets/wallSelect.rasi -theme-str $rofi_override"
+rofi_command=(rofi -i -show -dmenu -theme "$rofi_theme" -theme-str "$rofi_override")
 
 # Detect number of cores and set a sensible number of jobs
 get_optimal_jobs() {
@@ -56,7 +71,7 @@ PARALLEL_JOBS=$(get_optimal_jobs)
 
 process_image() {
     local image="$1"
-    local relative_path="${image#"$wall_dir"/}"
+    local relative_path="${image#"$wallpaper_dir"/}"
     local cache_key
     local cache_file
     local metadata_file
@@ -64,9 +79,9 @@ process_image() {
     local current_metadata
 
     cache_key=$(printf '%s' "$relative_path" | sha256sum | cut -d' ' -f1)
-    cache_file="${cacheDir}/${cache_key}.png"
-    metadata_file="${cacheDir}/.${cache_key}.meta"
-    lock_file="${cacheDir}/.lock_${cache_key}"
+    cache_file="${cache_dir}/${cache_key}.png"
+    metadata_file="${cache_dir}/.${cache_key}.meta"
+    lock_file="${cache_dir}/.lock_${cache_key}"
     current_metadata=$(stat -Lc '%s:%y' "$image") || return
 
     (
@@ -79,32 +94,26 @@ process_image() {
                 rm -f "$cache_file.tmp"
             fi
         fi
-        rm -f "$lock_file"
     ) 200>"$lock_file"
 }
 
 # Export variables & functions
 export -f process_image
-export wall_dir cacheDir
+export wallpaper_dir cache_dir
 
 # Warm missing or stale thumbnails without delaying the selector.
-find "$wall_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print0 |
+find "$wallpaper_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print0 |
     xargs -0 -r -P "$PARALLEL_JOBS" -I {} bash -c 'process_image "$1"' _ {} >/dev/null 2>&1 &
 
-# Check if rofi is already running
-if pidof rofi >/dev/null; then
-    pkill rofi
-fi
-
 # Launch rofi
-wall_selection=$(find "${wall_dir}" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -printf '%P\n' |
+wall_selection=$(find "$wallpaper_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -printf '%P\n' |
     LC_ALL=C sort -V |
     while IFS= read -r relative_path; do
         cache_key=$(printf '%s' "$relative_path" | sha256sum | cut -d' ' -f1)
-        cache_file="${cacheDir}/${cache_key}.png"
+        cache_file="${cache_dir}/${cache_key}.png"
         icon_path="$cache_file"
-        [[ -f "$icon_path" ]] || icon_path="${wall_dir}/${relative_path}"
+        [[ -f "$icon_path" ]] || icon_path="${wallpaper_dir}/${relative_path}"
         printf '%s\x00icon\x1f%s\n' "$relative_path" "$icon_path"
-    done | $rofi_command)
+    done | "${rofi_command[@]}") || exit 0
 
-[[ -n "$wall_selection" ]] && theme-switch.sh set "${wall_dir}/${wall_selection}"
+[[ -n "$wall_selection" ]] && theme-switch.sh set "$wallpaper_dir/$wall_selection"
