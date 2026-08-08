@@ -5,184 +5,246 @@
  *
  */
 
-
-/*****----- Configuration -----*****/
 configuration {
-    modi:                       "drun";
-    show-icons:                 false;
+    modi:                        "drun";
+    show-icons:                  false;
+    hover-select:                true;
+    me-select-entry:             "MousePrimary";
 }
 
-/*****----- Global Properties -----*****/
 @import '~/.config/rofi/shared/colors.rasi'
 @import '~/.config/rofi/shared/fonts.rasi'
 
-/*****----- Main Window -----*****/
+/* Outer dark canvas ------------------------------------------------ */
 window {
     enabled:                     true;
     fullscreen:                  false;
     transparency:                "real";
     cursor:                      "default";
-    background-color:            @background-alpha;
-    spacing:                     0em;
-    border:                      2px solid;
-    border-radius:               15px;
-    border-color:                @border-color;
     width:                       60%;
     height:                      80%;
-    margin:                      0px;
+    background-color:            @background-alpha;
+    border:                      3px solid;
+    border-radius:               1em;
+    border-color:                @border-color;
     padding:                     0px;
 }
 
-/*****----- Main Box -----*****/
 mainbox {
-    enabled:                     true;
-    spacing:                     0px;
-    background-color:            transparent;
     orientation:                 vertical;
+    children:                    [ "inputbar", "guidebar", "listbox" ];
+    spacing:                     16px;
+    margin:                      0px;
     padding:                     4% 2%;
-    children:                    [ "inputbar", "listbox" ];
-}
-
-listbox {
-    spacing:                     20px;
-    padding:                     20px;
     background-color:            transparent;
-    orientation:                 vertical;
-    children:                    [ "message", "listview" ];
 }
 
-/*****----- Inputbar -----*****/
+/* Wallpaper header and floating search ---------------------------- */
 inputbar {
-    enabled:                     true;
-    spacing:                     10px;
-    padding:                     128 64px;
+    orientation:                 horizontal;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+    spacing:                     0px;
+    padding:                     86px 380px;
+    border-radius:               16px;
+    border:                      2px solid;
+    border-color:                white/11%;
     background-color:            transparent;
     background-image:            url("~/.config/rofi/images/currentWal.thumb", width);
-    border-radius:               24px;
-    text-color:                  @foreground;
-    orientation:                 horizontal;
-    children:                    [ "dummy", "textbox-prompt-colon", "entry", "dummy" ];
 }
+
 textbox-prompt-colon {
-    enabled:                     true;
     expand:                      false;
-    str:                         "🦊";
-    padding:                     12px;
-    border-radius:               100%;
+    margin:                      0px;
+    str:                         "";
+    padding:                     19px 8px 19px 18px;
+    border:                      0px;
+    border-radius:               15px 0px 0px 15px;
     background-color:            @background-alpha;
-    text-color:                  inherit;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
 }
+
 entry {
-    enabled:                     true;
     expand:                      true;
-    padding:                     12px 16px;
-    border-radius:               100%;
-    background-color:            @background-alpha;
-    text-color:                  inherit;
+    margin:                      0px;
     cursor:                      text;
-    placeholder:                 "Select emoji";
-    placeholder-color:           inherit;
+    placeholder:                 "Search emoji...";
+    placeholder-color:           @foreground;
+    padding:                     19px 18px 19px 10px;
+    border:                      0px;
+    border-radius:               0px 15px 15px 0px;
+    background-color:            @background-alpha;
+    text-color:                  @foreground;
+    font:                        "SF Pro Bold 12";
 }
-dummy {
+
+/* Emoji action guide ---------------------------------------------- */
+guidebar {
+    expand:                      false;
+    orientation:                 horizontal;
+    children:                    [ "textbox-guide-navigate-key", "textbox-guide-navigate-label", "textbox-guide-copy-key", "textbox-guide-copy-label", "textbox-guide-close-key", "textbox-guide-close-label", "textbox-guide-spacer" ];
+    spacing:                     10px;
+    padding:                     12px 16px;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               13px;
+    background-color:            white/5%;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-key,
+textbox-guide-copy-key,
+textbox-guide-close-key {
+    expand:                      false;
+    padding:                     7px 10px;
+    border:                      1px solid;
+    border-color:                @border-color;
+    border-radius:               7px;
+    background-color:            @primary-alpha;
+    text-color:                  @selected;
+    vertical-align:              0.5;
+    font:                        "SF Pro Bold 11";
+}
+
+textbox-guide-navigate-key { content: "↑↓"; }
+textbox-guide-copy-key { content: "Enter"; margin: 0px 0px 0px 14px; }
+textbox-guide-close-key { content: "Esc"; margin: 0px 0px 0px 14px; }
+
+textbox-guide-navigate-label,
+textbox-guide-copy-label,
+textbox-guide-close-label {
+    expand:                      false;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+    font:                        "GeistMono Nerd Font Bold 11";
+}
+
+textbox-guide-navigate-label { content: "Navigate"; }
+textbox-guide-copy-label { content: "Copy"; }
+textbox-guide-close-label { content: "Close"; }
+
+textbox-guide-spacer {
+    expand:                      true;
+    content:                     "";
     background-color:            transparent;
 }
 
+/* Two-column emoji cards ------------------------------------------ */
+listbox {
+    expand:                      true;
+    orientation:                 vertical;
+    children:                    [ "message", "listview" ];
+    spacing:                     14px;
+    padding:                     4px 0px 0px;
+    background-color:            transparent;
+}
 
-/*****----- Listview -----*****/
 listview {
-    enabled:                     true;
+    expand:                      true;
+    border:                      0px;
+    margin:                      0px;
+    padding:                     0px;
     columns:                     2;
     lines:                       5;
     cycle:                       true;
-    dynamic:                     true;
-    scrollbar:                   false;
+    dynamic:                     false;
+    scrollbar:                   true;
     layout:                      vertical;
     reverse:                     false;
-    fixed-height:                false;
-    fixed-columns:               false;
-    spacing:                     6px;
+    fixed-height:                true;
+    fixed-columns:               true;
+    spacing:                     10px 18px;
     background-color:            transparent;
     text-color:                  @foreground;
     cursor:                      "default";
 }
 
-/*****----- Elements -----*****/
 element {
-    enabled:                     true;
-    orientation:                 vertical;
-    spacing:                     10px;
-    padding:                     12px;
-    border-radius:               12px;
-    background-color:            transparent;
-    text-color:                  @foreground;
     cursor:                      pointer;
-}
-element normal.normal {
-    background-color:            inherit;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               11px;
+    background-color:            white/5%;
     text-color:                  @foreground;
+    padding:                     15px 18px;
+    margin:                      0px;
+    spacing:                     12px;
 }
-element normal.urgent {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element normal.active {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element selected.normal {
-    background-color:            inherit;
-    text-color:                  inherit;
-    border:                      0px 3px 0px 3px;
-    border-color:                @border-color;
-}
-element selected.urgent {
-    background-color:            inherit;
-    text-color:                  @urgent;
-    border:                      0px 3px 0px 3px;
-    border-color:                @urgent;
-}
-element selected.active {
-    background-color:            inherit;
-    text-color:                  @active;
-    border:                      0px 3px 0px 3px;
-    border-color:                @active;
-}
-element alternate.normal {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element alternate.urgent {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
-element alternate.active {
-    background-color:            inherit;
-    text-color:                  @foreground;
-}
+
 element-text {
-    enabled:                     true;
     background-color:            transparent;
     text-color:                  inherit;
+    highlight:                   inherit;
     cursor:                      inherit;
     vertical-align:              0.5;
     horizontal-align:            0.0;
 }
 
-/*****----- Message -----*****/
+element normal.normal,
+element alternate.normal {
+    background-color:            white/5%;
+    text-color:                  @foreground;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color:            white/5%;
+    text-color:                  @urgent;
+}
+
+element normal.active,
+element alternate.active {
+    background-color:            white/5%;
+    text-color:                  @active;
+}
+
+element selected.normal {
+    background-color:            @primary-alpha;
+    text-color:                  @foreground;
+    border:                      2px solid;
+    border-color:                @border-color;
+}
+
+element selected.urgent {
+    background-color:            @background-alt;
+    text-color:                  @urgent;
+    border:                      1px solid;
+    border-color:                @urgent;
+}
+
+element selected.active {
+    background-color:            @background-alt;
+    text-color:                  @active;
+    border:                      1px solid;
+    border-color:                @active;
+}
+
+scrollbar {
+    margin:                      0px 0px 0px 4px;
+    handle-width:                7px;
+    handle-color:                @border-color;
+    background-color:            white/6%;
+    border-radius:               4px;
+}
+
 message {
     background-color:            transparent;
+    padding:                     0px;
 }
+
 textbox {
-    padding:                     12px;
-    border-radius:               100%;
-    background-color:            @background-alt;
+    background-color:            transparent;
     text-color:                  @foreground;
     vertical-align:              0.5;
     horizontal-align:            0.5;
+    highlight:                   none;
 }
+
 error-message {
-    padding:                     15px;
-    border-radius:               0px;
-    background-color:            @background;
+    padding:                     32px;
+    border-radius:               12px;
+    background-color:            @background-alt;
     text-color:                  @urgent;
 }
