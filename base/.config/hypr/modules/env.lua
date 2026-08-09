@@ -57,7 +57,11 @@ local envs = {
 
     -- Fix AQUA under RDNA4
     -- Disables explicit syncing on mgpu buffers
-    { "AQ_MGPU_NO_EXPLICIT",                 "1" }
+    { "AQ_MGPU_NO_EXPLICIT",                 "1" },
+
+    -- ROCm/Ollama on RDNA4
+    { "HIP_VISIBLE_DEVICES",                 "0" },
+    { "HSA_OVERRIDE_GFX_VERSION",            "12.0.0" }
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.
