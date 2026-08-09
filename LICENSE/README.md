@@ -29,10 +29,3 @@ next to the listed paths retain their separately documented status.
 
 Rystal-shell is a separately licensed submodule under `GPL-3.0-or-later`, with
 separately licensed Lucide assets.
-
-## Documentation
-
-- [Third-party notices](./THIRD_PARTY_NOTICES.md)
-
-The other files in this directory are preserved license texts for the
-components identified in the third-party notices and audit.
