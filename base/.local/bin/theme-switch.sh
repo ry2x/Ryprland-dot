@@ -298,4 +298,4 @@ prune_cache
 elapsed=$((SECONDS - start_seconds))
 printf '%s success mode=%s seconds=%s wallpaper=%q\n' \
     "$(date --iso-8601=seconds)" "$mode" "$elapsed" "$wallpaper_path" >>"$LOG_FILE"
-notify normal "Theme Switch Complete" "Wallpaper and theme updated in ${elapsed}s" "$cache_dir/currentWal.sqre"
+notify normal "Theme Switch Complete" "Wallpaper: ${wallpaper_path##*/}" "$cache_dir/currentWal.sqre"
