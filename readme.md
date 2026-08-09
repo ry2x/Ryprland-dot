@@ -84,6 +84,10 @@ Original zsh configuration files carrying an SPDX license header are licensed
 under GPL-3.0-or-later. See
 [`LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt`](LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt).
 
+Independently implemented shell scripts carrying a Ry2X SPDX notice are also
+licensed under GPL-3.0-or-later. The GPL v3 text is available at
+[`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt).
+
 Unless a license is explicitly stated for a file or component, no additional
 permission is granted to copy, modify, or redistribute it. See
 [Third-Party Notices](THIRD_PARTY_NOTICES.md) and the

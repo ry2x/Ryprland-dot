@@ -1,29 +1,24 @@
 #!/usr/bin/env bash
 
-############ Variables ############
-enable_battery=false
-battery_charging=false
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
 
-####### Check availability ########
-for battery in /sys/class/power_supply/*BAT*; do
-    if [[ -f "$battery/uevent" ]]; then
-        enable_battery=true
-        if [[ $(cat /sys/class/power_supply/*/status | head -1) == "Charging" ]]; then
-            battery_charging=true
-        fi
-        break
-    fi
+set -uo pipefail
+shopt -s nullglob
+
+for battery in /sys/class/power_supply/BAT*; do
+    [[ -r "$battery/capacity" ]] || continue
+
+    IFS= read -r capacity <"$battery/capacity" || continue
+    status=""
+    [[ -r "$battery/status" ]] && IFS= read -r status <"$battery/status"
+
+    case "$status" in
+    Charging) printf '(+) %s%%\n' "$capacity" ;;
+    Full) printf '%s%%\n' "$capacity" ;;
+    *) printf '%s%% remaining\n' "$capacity" ;;
+    esac
+    exit 0
 done
 
-############# Output #############
-if [[ $enable_battery == true ]]; then
-    if [[ $battery_charging == true ]]; then
-        echo -n "(+) "
-    fi
-    echo -n "$(cat /sys/class/power_supply/*/capacity | head -1)"%
-    if [[ $battery_charging == false ]]; then
-        echo -n " remaining"
-    fi
-fi
-
-echo ''
+printf '\n'

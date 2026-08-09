@@ -334,7 +334,7 @@ files carry explicit Ry2X copyright and `GPL-3.0-or-later` SPDX notices.
 Prioritize substantial executable code and opaque assets:
 
 1. ~~`shebang.sh`~~ (unused; removed 2026-08-09);
-2. any remaining Matuprland-derived shell scripts;
+2. ~~any remaining Matuprland-derived shell scripts~~ (resolved 2026-08-09);
 3. ~~`sysfetch.sh`~~ (unused; removed 2026-08-09);
 4. unknown icons, ASCII art, and images;
 5. remaining Matuprland-derived theme/configuration groups.
@@ -352,20 +352,25 @@ historical counterparts and should still be treated as inherited or derived:
 
 | Ryprland path | Historical Matuprland path | Current relationship |
 | --- | --- | --- |
-| `base/.config/hypr/hyprlock/check-capslock.sh` | `hypr/hyprlock/check-capslock.sh` | Byte-identical |
-| `base/.config/hypr/hyprlock/status.sh` | `hypr/hyprlock/status.sh` | Modified |
+| `base/.config/hypr/hyprlock/check-capslock.sh` | `hypr/hyprlock/check-capslock.sh` | Independently replaced 2026-08-09 |
+| `base/.config/hypr/hyprlock/status.sh` | `hypr/hyprlock/status.sh` | Independently replaced 2026-08-09 |
 | `base/.config/hypr/scripts/wlogout.sh` | `hypr/scripts/wlogout.sh` | Modified JaKooLit GPL-3.0 work |
 | `base/.config/rofi/scripts/clipboard-history.sh` | `rofi/scripts/cliphist.sh` | Modified JaKooLit GPL-3.0 work |
 | `base/.config/rofi/scripts/emoji-select.sh` | `rofi/scripts/rofiEmoji.sh` | Modified JaKooLit GPL-3.0 work; JaKooLit history credits ZaneyOS |
-| `base/.config/rofi/scripts/web-search.sh` | `rofi/scripts/websearch.sh` | Reorganized and substantially rewritten |
+| `base/.config/rofi/scripts/web-search.sh` | `rofi/scripts/websearch.sh` | Independently replaced 2026-08-09 |
 | ~~`base/.local/bin/jpg-to-png.sh`~~ | `bin/jpg-to-png.sh` | Unused; removed 2026-08-09 |
 | ~~`base/.local/bin/png-to-jpg.sh`~~ | `bin/png-to-jpg.sh` | Unused; removed 2026-08-09 |
 | ~~`base/.local/bin/sysmaintainance.sh`~~ | `bin/sysmaintainance.sh` | Unused; removed 2026-08-09 |
 | ~~`base/.local/bin/tty-color-tool.sh`~~ | `bin/tty-color-tool.sh` | Unused; removed 2026-08-09 |
 
-The first six remain connected to active configuration. The four inherited
-scripts under `base/.local/bin/` had no references elsewhere in the repository
-and were confirmed unused, so they were removed on 2026-08-09. Scripts first
+The first six remain connected to active configuration. The three JaKooLit
+works retain their upstream GPL-3.0 status and attribution. The other three
+active scripts were independently replaced on 2026-08-09 and now carry Ry2X
+`GPL-3.0-or-later` SPDX notices. The four inherited scripts under
+`base/.local/bin/` had no references elsewhere in the repository and were
+confirmed unused, so they were removed on 2026-08-09.
+
+This resolves the shell scripts inherited through Matuprland. Scripts first
 added after the initial import are not evidence of a Matuprland relationship
 by repository history alone and require a separate originality or provenance
 review before receiving an SPDX notice.
