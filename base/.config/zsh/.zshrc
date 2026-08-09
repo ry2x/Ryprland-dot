@@ -8,6 +8,7 @@ source "$ZDOTDIR/conf.d/options.zsh"
 source "$ZDOTDIR/conf.d/completion.zsh"
 source "$ZDOTDIR/conf.d/aliases.zsh"
 source "$ZDOTDIR/functions/yy.zsh"
+source "$ZDOTDIR/conf.d/ssh-agent.zsh"
 source "$ZDOTDIR/conf.d/integrations.zsh"
 source "$ZDOTDIR/conf.d/keybindings.zsh"
 
