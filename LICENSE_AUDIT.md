@@ -266,30 +266,33 @@ configuration.
 
 ## Assets and opaque files requiring provenance work
 
-The following are distributed without nearby authorship or license metadata:
+The following retained files are distributed without nearby authorship or
+license metadata:
 
-- `Ryprland.png`;
-- `base/.config/fastfetch/Ascii-Art/` and
-  `base/.config/fastfetch/Images/icon.png`;
+- `base/.config/fastfetch/Images/icon.png`;
 - PNG files under `base/.config/hypr/icons/`;
 - uosc fonts and the `ziggy-*` executables, whose upstream project is known but
   whose bundled revision is not recorded.
+
+`Ryprland.png` is independently authored by Ry2X and licensed under
+`GPL-3.0-or-later`; its adjacent `.license` file records the SPDX metadata.
 
 The wlogout icons were subsequently identified as part of the GPL-3.0
 [JaKooLit Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
 distribution. The obsolete `base/.config/hypr/modules/old.tar.gz`, which held
 an earlier configuration, was removed on 2026-08-09.
 
-Usage review on 2026-08-09 found:
+Usage review and cleanup on 2026-08-09 found:
 
 - `Ryprland.png` is used by `readme.md`;
-- Fastfetch currently uses `Images/icon.png`, while all nine files under
-  `Ascii-Art/` are unreferenced;
+- Fastfetch uses `Images/icon.png`; all nine unreferenced files under
+  `Ascii-Art/` were removed;
 - six Hyprland icons are used by the Lua configuration: `gamemode.png`, both
-  `fn_key_*` icons, and the three `layout_*` icons; the other 22 icons are
-  unreferenced;
-- wlogout CSS uses ten icons; `sleep.png` and `sleep-hover.png` are
-  unreferenced. All twelve remain covered by the JaKooLit GPL-3.0 mapping.
+  `fn_key_*` icons, and the three `layout_*` icons; the other 22 unreferenced
+  icons were removed;
+- wlogout CSS uses ten icons; the unreferenced `sleep.png` and
+  `sleep-hover.png` were removed. The retained wlogout component remains
+  covered by the JaKooLit GPL-3.0 mapping.
 
 Some of the icon files are confirmed as byte-identical to Matuprland, but
 Matuprland does not establish their original license. Binary and visual assets
@@ -299,8 +302,6 @@ Recommended action:
 
 - record author, source URL, source revision, and license for each retained
   asset set;
-- remove redundant archives such as `old.tar.gz` after confirming they are no
-  longer required;
 - prefer package dependencies or reproducible download instructions over
   committing third-party executables;
 - replace unknown images/icons with self-created or clearly licensed assets.

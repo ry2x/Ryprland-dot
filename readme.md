@@ -94,7 +94,8 @@ Ry2X under GPL-3.0-or-later:
 - `nvim-yazi/.config/nvim/`;
 - `base/.config/hypr/hyprland.lua` and Lua files under
   `base/.config/hypr/modules/`;
-- Rasi files under `base/.config/rofi/`.
+- Rasi files under `base/.config/rofi/`;
+- `Ryprland.png`, with SPDX metadata in `Ryprland.png.license`.
 
 Generated files, Git submodules, third-party scripts and assets within or next
 to these paths retain their separately documented status.
