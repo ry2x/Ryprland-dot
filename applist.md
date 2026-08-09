@@ -45,9 +45,19 @@ pear-desktop-bin
 swayimg
 waydroid
 
-## Fish-Aliases-Packages
+## Shell-Packages
 
 fish
+zsh
+zsh-autosuggestions
+zsh-completions
+zsh-syntax-highlighting
+
+Fish remains listed during the staged migration and can be removed after zsh
+has been validated as the login shell.
+
+## Shell-Utilities
+
 bat
 eza
 git

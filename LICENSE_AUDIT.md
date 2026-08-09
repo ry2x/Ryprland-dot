@@ -59,6 +59,17 @@ These additions restore notices for the identified components; they do not
 resolve the unlicensed Matuprland-derived material, unknown asset provenance,
 or exact source revisions noted below.
 
+### Original zsh configuration added on 2026-08-09
+
+An independently implemented zsh configuration was added alongside the
+existing fish and bash configuration. Files carrying the Ry2X SPDX notice are
+licensed under `GPL-3.0-or-later`. The package-managed zsh plugins are runtime
+dependencies and are not vendored into this repository.
+
+The old fish and bash files remain during the staged rollout and retain their
+existing unresolved provenance status until they are removed after login-shell
+validation.
+
 ## Repository-level findings
 
 ### Ryprland-dot
@@ -310,7 +321,7 @@ The complete provenance chain for `sysfetch.sh`, including its earlier
 `u/x_ero` source, is still unresolved; it is intentionally not represented as
 fully remediated by the shared GPL text.
 
-### Phase 3: shell migration
+### Phase 3: shell migration (in progress)
 
 Use the planned zsh migration to retire the inherited fish and bash blocks.
 

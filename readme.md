@@ -80,6 +80,10 @@ repositories.
 
 Rystal-shell is licensed separately under GPL-3.0-or-later.
 
+Original zsh configuration files carrying an SPDX license header are licensed
+under GPL-3.0-or-later. See
+[`LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt`](LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt).
+
 Unless a license is explicitly stated for a file or component, no additional
 permission is granted to copy, modify, or redistribute it. See
 [Third-Party Notices](THIRD_PARTY_NOTICES.md) and the
