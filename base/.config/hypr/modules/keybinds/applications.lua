@@ -37,7 +37,7 @@ local ApplicationBinds = {
     { "N", "ags request toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
-    { "Q", getRofiScript("wallpaper-select.sh"), "WallpaperSelector" },
+    { "Q", "ags request toggle-wallpaper", "WallpaperSelector" },
     { "SHIFT + Q", "theme-switch.sh random", "RandomWallpaper" },
     { "SHIFT + T", "theme-switch.sh refresh", "RefreshTheme" },
 }
