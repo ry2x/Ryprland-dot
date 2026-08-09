@@ -2,12 +2,13 @@
  *    ┳┳┓┏┓┏┳┓┳┳┏┓┏┓┳┓  ┳┓┏┓┏┓┳
  *    ┃┃┃┣┫ ┃ ┃┃┃┓┣ ┃┃━━┣┫┃┃┣ ┃
  *    ┛ ┗┛┗ ┻ ┗┛┗┛┗┛┛┗  ┛┗┗┛┻ ┻
- *                             
+ *
  */
 
 
 * {
     primary: {{colors.primary.default.hex}};
+    primary-alpha: {{colors.primary.default.rgba | set_alpha: 0.4}};
     primary-fixed: {{colors.primary_fixed.default.hex}};
     primary-fixed-alpha: {{colors.primary_fixed.default.rgba | set_alpha: 0.2}};
     primary-fixed-dim: {{colors.primary_fixed_dim.default.hex}};

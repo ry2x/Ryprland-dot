@@ -1,0 +1,289 @@
+/***
+ *    ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
+ *    ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
+ *    ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
+ *
+ */
+
+configuration {
+    modi:                        "drun";
+    show-icons:                  true;
+    drun-display-format:         "{name}";
+    hover-select:                true;
+    me-select-entry:             "MousePrimary";
+}
+
+@import '~/.config/rofi/shared/colors.rasi'
+@import '~/.config/rofi/shared/fonts.rasi'
+
+/* Outer dark canvas ------------------------------------------------ */
+window {
+    enabled:                     true;
+    fullscreen:                  false;
+    transparency:                "real";
+    cursor:                      "default";
+    width:                       60%;
+    height:                      80%;
+    background-color:            @background-alpha;
+    border:                      3px solid;
+    border-radius:               1em;
+    border-color:                @border-color;
+    padding:                     0px;
+}
+
+mainbox {
+    orientation:                 vertical;
+    children:                    [ "inputbar", "guidebar", "listbox" ];
+    spacing:                     16px;
+    margin:                      0px;
+    padding:                     4% 2%;
+    background-color:            transparent;
+}
+
+/* Wallpaper header and floating search ---------------------------- */
+inputbar {
+    orientation:                 horizontal;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+    spacing:                     0px;
+    padding:                     86px 380px;
+    border-radius:               16px;
+    border:                      2px solid;
+    border-color:                white/11%;
+    background-color:            transparent;
+    background-image:            url("~/.config/rofi/images/currentWal.thumb", width);
+}
+
+dummy {
+    expand:                      true;
+    background-color:            transparent;
+}
+
+textbox-prompt-colon {
+    expand:                      false;
+    margin:                      0px;
+    str:                         "";
+    padding:                     19px 8px 19px 18px;
+    border:                      0px;
+    border-radius:               15px 0px 0px 15px;
+    background-color:            @background-alpha;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+entry {
+    expand:                      true;
+    margin:                      0px;
+    cursor:                      text;
+    placeholder:                 "Search...";
+    placeholder-color:           @foreground;
+    padding:                     19px 18px 19px 10px;
+    border:                      0px;
+    border-radius:               0px 15px 15px 0px;
+    background-color:            @background-alpha;
+    text-color:                  @foreground;
+    font:                        "SF Pro Bold 12";
+
+}
+
+/* Action strip ----------------------------------------------------- */
+guidebar {
+    expand:                      false;
+    orientation:                 horizontal;
+    children:                    [ "textbox-guide-navigate-key", "textbox-guide-navigate-label", "textbox-guide-delete-key", "textbox-guide-delete-label", "textbox-guide-delete-icon", "textbox-guide-wipe-key", "textbox-guide-wipe-label", "textbox-guide-wipe-icon", "textbox-guide-copy-key", "textbox-guide-copy-label", "textbox-guide-close-key", "textbox-guide-close-label", "textbox-guide-spacer" ];
+    spacing:                     10px;
+    padding:                     12px 16px;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               13px;
+    background-color:            white/5%;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-key,
+textbox-guide-delete-key,
+textbox-guide-wipe-key,
+textbox-guide-copy-key,
+textbox-guide-close-key {
+    expand:                      false;
+    content:                     "Ctrl + Del";
+    padding:                     7px 10px;
+    border:                      1px solid;
+    border-color:                @border-color;
+    border-radius:               7px;
+    background-color:            @primary-alpha;
+    text-color:                  @selected;
+    vertical-align:              0.5;
+    font:                        "SF Pro Bold 11";
+}
+
+textbox-guide-navigate-key { content: "↑↓"; }
+
+textbox-guide-wipe-key {
+    content:                     "Alt + Del";
+    margin:                      0px 0px 0px 14px;
+}
+
+textbox-guide-copy-key { content: "Enter"; margin: 0px 0px 0px 14px; }
+textbox-guide-close-key { content: "Esc"; margin: 0px 0px 0px 14px; }
+
+textbox-guide-navigate-label,
+textbox-guide-delete-label,
+textbox-guide-wipe-label,
+textbox-guide-copy-label,
+textbox-guide-close-label {
+    font:                        "GeistMono Nerd Font Bold 11";
+}
+
+textbox-guide-navigate-label,
+textbox-guide-delete-label,
+textbox-guide-wipe-label,
+textbox-guide-copy-label,
+textbox-guide-close-label,
+textbox-guide-delete-icon,
+textbox-guide-wipe-icon {
+    expand:                      false;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+}
+
+textbox-guide-navigate-label { content: "Navigate"; }
+textbox-guide-delete-label { content: "Delete"; }
+textbox-guide-wipe-label { content: "Wipe"; }
+textbox-guide-copy-label { content: "Copy"; }
+textbox-guide-close-label { content: "Close"; }
+textbox-guide-delete-icon { content: "󰆴"; }
+textbox-guide-wipe-icon { content: "󱕖"; }
+
+textbox-guide-spacer {
+    expand:                      true;
+    content:                     "";
+    background-color:            transparent;
+}
+
+/* Two-column clipboard cards -------------------------------------- */
+listbox {
+    expand:                      true;
+    orientation:                 vertical;
+    children:                    [ "message", "listview" ];
+    spacing:                     14px;
+    padding:                     4px 0px 0px;
+    background-color:            transparent;
+}
+
+listview {
+    expand:                      true;
+    border:                      0px;
+    margin:                      0px;
+    padding:                     0px;
+    columns:                     2;
+    lines:                       3;
+    cycle:                       true;
+    dynamic:                     false;
+    scrollbar:                   true;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    spacing:                     10px 18px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+
+element {
+    cursor:                      pointer;
+    border:                      2px solid;
+    border-color:                white/11%;
+    border-radius:               11px;
+    background-color:            white/5%;
+    text-color:                  @foreground;
+    padding:                     15px 18px;
+    margin:                      0px;
+    spacing:                     12px;
+}
+
+element-icon {
+    size:                        22px;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+}
+
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color:            white/5%;
+    text-color:                  @foreground;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color:            white/5%;
+    text-color:                  @urgent;
+}
+
+element normal.active,
+element alternate.active {
+    background-color:            white/5%;
+    text-color:                  @active;
+}
+
+element selected.normal {
+    background-color:            @primary-alpha;
+    text-color:                  @foreground;
+    border:                      2px solid;
+    border-color:                @border-color;
+}
+
+element selected.urgent {
+    background-color:            @background-alt;
+    text-color:                  @urgent;
+    border:                      1px solid;
+    border-color:                @urgent;
+}
+
+element selected.active {
+    background-color:            @background-alt;
+    text-color:                  @active;
+    border:                      1px solid;
+    border-color:                @active;
+}
+
+scrollbar {
+    margin:                      0px 0px 0px 4px;
+    handle-width:                7px;
+    handle-color:                @border-color;
+    background-color:            white/6%;
+    border-radius:               4px;
+}
+
+message {
+    background-color:            transparent;
+    padding:                     0px;
+}
+
+textbox {
+    background-color:            transparent;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    highlight:                   none;
+}
+
+error-message {
+    padding:                     32px;
+    border-radius:               12px;
+    background-color:            @background-alt;
+    text-color:                  @urgent;
+}

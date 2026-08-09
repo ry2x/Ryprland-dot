@@ -36,7 +36,7 @@ hl.config({
         -- below is for table see link above for proper variables
         tablet = {
             transform = 0,
-            left_handed = 0,
+            left_handed = false,
         },
 
         sensitivity = 0 -- -1.0 - 1.0, 0 means no modification.

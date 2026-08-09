@@ -2,7 +2,18 @@
 -- ┣ ┃┃┃┃  ┃┃┣┫┣┫┃┣┫┣┫┃ ┣ ┗┓
 -- ┗┛┛┗┗┛  ┗┛┛┗┛┗┻┛┗┻┛┗┛┗┛┗┛
 
+local home = os.getenv("HOME") or ""
+local path = os.getenv("PATH") or "/usr/local/bin:/usr/bin"
+local local_bin = home .. "/.local/bin"
+
+if not string.find(":" .. path .. ":", ":" .. local_bin .. ":", 1, true) then
+    path = local_bin .. ":" .. path
+end
+
 local envs = {
+    -- executable search path for Hyprland children
+    { "PATH",                                path },
+
     -- cursor
     { "HYPRCURSOR_THEME",                    "M200" },
     { "HYPRCURSOR_SIZE",                     "24" },
@@ -25,7 +36,6 @@ local envs = {
     { "QT_QPA_PLATFORM",                     "wayland" },
     { "QT_QPA_PLATFORMTHEME",                "qt6ct" },
     { "QT_QPA_PLATFORMTHEME",                "qt5ct" },
-    { "QT_STYLE_OVERRIDE",                   "Fusion" },
     { "QT_WAYLAND_DISABLE_WINDOWDECORATION", "1" },
     { "QT_QUICK_CONTROLS_STYLE",             "org.hyprland.style" },
 
@@ -47,7 +57,11 @@ local envs = {
 
     -- Fix AQUA under RDNA4
     -- Disables explicit syncing on mgpu buffers
-    { "AQ_MGPU_NO_EXPLICIT",                 "1" }
+    { "AQ_MGPU_NO_EXPLICIT",                 "1" },
+
+    -- ROCm/Ollama on RDNA4
+    { "HIP_VISIBLE_DEVICES",                 "0" },
+    { "HSA_OVERRIDE_GFX_VERSION",            "12.0.0" }
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.

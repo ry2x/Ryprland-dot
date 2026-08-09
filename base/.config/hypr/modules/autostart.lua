@@ -26,7 +26,7 @@ hl.on("hyprland.start",
             "hyprpm reload -n", -- reload hyprland extensions
 
             -- wallpaper
-            "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; waypaper --restore",
+            "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; awww restore",
 
             -- bar & notifications
             "sleep 5; ~/.config/ags/launch.sh",

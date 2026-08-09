@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# Source: https://github.com/JaKooLit/Hyprland-Dots
+# License: GPL-3.0
+# Modified for Ryprland.
+
 A_1080=400
 B_1080=400
 

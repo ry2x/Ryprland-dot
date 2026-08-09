@@ -2,3 +2,11 @@
 	path = private-dotfile
 	url = https://github.com/ry2x/private-dotfile.git
 	branch = master
+[submodule "base/.config/ags"]
+	path = base/.config/ags
+	url = https://github.com/ry2x/Rystal-shell.git
+	branch = main
+[submodule "base/.config/hypr/plugins/split-monitor-workspaces"]
+	path = base/.config/hypr/plugins/split-monitor-workspaces
+	url = https://github.com/zjeffer/split-monitor-workspaces.git
+	branch = main

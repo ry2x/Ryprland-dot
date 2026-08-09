@@ -26,11 +26,10 @@ local ApplicationBinds = {
     },
 
     -- Launchers
-    { "R", "ags request toggle-launcher", "󱓞 Launcher" }, -- Currently, I'm working on replacing Rofi with Walker
-    { "V", getRofiScript("cliphist.sh"), " ClipBoard" },
-    { "Semicolon", getRofiScript("rofiEmoji.sh"), "󰞅 Emoji" },
-    { "SHIFT + W", getRofiScript("websearch.sh"), " WebSearch" },
-    { "SHIFT + R", getRofiScript("launcher-style-changer"), "SwitchLauncher" },
+    { "R", "ags request toggle-launcher", "󱓞 Launcher" },
+    { "V", getRofiScript("clipboard-history.sh"), " ClipBoard" },
+    { "Semicolon", getRofiScript("emoji-select.sh"), "󰞅 Emoji" },
+    { "SHIFT + W", getRofiScript("web-search.sh"), " WebSearch" },
 
     -- ags
     { "SHIFT + B", getHyprScript("restartAgs.sh"), "Restart ags" },
@@ -38,10 +37,9 @@ local ApplicationBinds = {
     { "N", "ags request toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
-    { "ALT + W", getHyprScript("wallSelect.sh"), "WallpaperSelector" },
-    { "Q", "pkill waypaper || waypaper", "Waypaper" },
-    { "SHIFT + Q", "waypaper --random", "RandomWallpaper" },
-    { "SHIFT + T", getHyprScript("matugenMagick.sh"), "RefreshTheme" },
+    { "Q", "ags request toggle-wallpaper", "WallpaperSelector" },
+    { "SHIFT + Q", "theme-switch.sh random", "RandomWallpaper" },
+    { "SHIFT + T", "theme-switch.sh refresh", "RefreshTheme" },
 }
 
 for _, bind in ipairs(ApplicationBinds) do

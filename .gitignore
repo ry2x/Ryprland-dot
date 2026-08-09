@@ -3,8 +3,8 @@ private-dotfile/*
 # fish_variable
 base/.config/fish/fish_variables
 
-# ags start script
-base/.config/ags/start-ags
+# GTK symbolic
+base/.config/gtk-4.0/assets
 
 #---------------------
 # Matugen Files
@@ -43,6 +43,7 @@ base/.config/qt6ct/colors/matugen-qt6ct.conf
 
 # rofi
 base/.config/rofi/matugen/matugen-rofi.rasi
+base/.config/rofi/matugen/style-12.rasi
 
 # rofi images
 base/.config/rofi/images/currentWal.sqre

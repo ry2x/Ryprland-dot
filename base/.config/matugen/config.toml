@@ -11,13 +11,11 @@ version_check = false
 [templates.kitty]
 input_path = '~/.config/matugen/templates/matugen-kitty.conf'
 output_path = '~/.config/kitty/matugen/colors-matugen.conf'
-post_hook = 'kill -SIGUSR1 $(pgrep kitty)'
 
 # Bat
 [templates.bat]
 input_path = '~/.config/matugen/templates/matugen-bat-colors.tmTheme'
 output_path = '~/.config/bat/themes/matugen-bat-colors.tmTheme'
-post_hook = 'bat cache --build'
 
 # Spicetify
 #[templates.spicetify]
@@ -98,8 +96,3 @@ output_path = '~/.config/ags/themes/matugen.scss'
 [templates.wlogout]
 input_path = '~/.config/matugen/templates/matugen-wlogout.css'
 output_path = '~/.config/wlogout/matugen-wlogout.css'
-
-# waypaper
-[templates.waypaper]
-input_path = '~/.config/matugen/templates/matugen-gtk.css'
-output_path = '~/.config/waypaper/matugen.css'
