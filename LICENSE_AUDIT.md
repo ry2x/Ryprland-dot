@@ -41,11 +41,10 @@ The most practical policy for now is:
 5. Add an explicit license only to newly written or independently rewritten
    files whose provenance is known.
 
-The planned move away from the inherited fish/bash setup is a good opportunity
-to replace a significant coherent block with independently authored zsh
-configuration. Reimplementation should start from written requirements and
-official documentation, rather than by mechanically rearranging an existing
-file.
+The inherited fish/bash setup was replaced with independently authored zsh
+configuration. The replacement was implemented from written requirements and
+official documentation rather than by mechanically rearranging the inherited
+files.
 
 ### Remediation recorded on 2026-08-09
 
@@ -61,14 +60,15 @@ or exact source revisions noted below.
 
 ### Original zsh configuration added on 2026-08-09
 
-An independently implemented zsh configuration was added alongside the
-existing fish and bash configuration. Files carrying the Ry2X SPDX notice are
-licensed under `GPL-3.0-or-later`. The package-managed zsh plugins are runtime
-dependencies and are not vendored into this repository.
+An independently implemented zsh configuration was added and validated as the
+login shell. Files carrying the Ry2X SPDX notice are licensed under
+`GPL-3.0-or-later`. The package-managed zsh plugins are runtime dependencies
+and are not vendored into this repository.
 
-The old fish and bash files remain during the staged rollout and retain their
-existing unresolved provenance status until they are removed after login-shell
-validation.
+After successful login-shell validation, the inherited `base/.bashrc`,
+`base/.config/bashrc/`, and `base/.config/fish/` files were removed. Their
+historical provenance remains documented below, but they are no longer part of
+the distributed tree.
 
 ## Repository-level findings
 
@@ -85,10 +85,10 @@ validation.
 - Ryprland's initial commit (`8d242da`, 2025-10-21) was compared with that
   historical Matuprland tree. Of 218 files with a direct path mapping, 170
   were byte-for-byte identical.
-- In the current tree, 65 files still have a direct path counterpart in that
-  historical Matuprland revision; 35 remain byte-for-byte identical. This is
-  a lower bound and excludes renamed, reorganized, converted, and subsequently
-  modified files.
+- At the initial audit, before the shell cleanup, 65 files had a direct path
+  counterpart in that historical Matuprland revision and 35 remained
+  byte-for-byte identical. This was a lower bound and excluded renamed,
+  reorganized, converted, and subsequently modified files.
 
 Conclusion: a blanket MIT, GPL, or other license cannot safely be applied by
 the Ryprland maintainer to the whole repository. Matuprland itself also
@@ -110,8 +110,6 @@ from the Matuprland maintainer alone may not resolve every file's provenance.
 The following current groups contain files that are identical to, modified
 from, or structurally descended from the historical Matuprland tree:
 
-- `base/.config/fish/`
-- `base/.bashrc` and `base/.config/bashrc/`
 - substantial portions of `base/.config/hypr/`
 - `base/.config/matugen/`
 - `base/.config/Kvantum/`
@@ -120,11 +118,10 @@ from, or structurally descended from the historical Matuprland tree:
 - portions of `base/.config/rofi/`, `fastfetch/`, and `wlogout/`
 - several files under `base/.local/bin/`
 
-All 11 current fish files have a direct historical Matuprland counterpart.
-They have been edited to varying degrees, but should still be treated as
-derived for provenance purposes. Merely changing order, whitespace, function
-boundaries, or variable names is not a reliable way to turn them into
-independent work.
+At the initial audit, all 11 fish files had a direct historical Matuprland
+counterpart. They were removed after the independently implemented zsh setup
+was validated. The same replacement approach should be used for other
+substantial inherited components instead of relying on mechanical edits.
 
 Examples among the 35 current byte-identical files include:
 
@@ -321,26 +318,11 @@ The complete provenance chain for `sysfetch.sh`, including its earlier
 `u/x_ero` source, is still unresolved; it is intentionally not represented as
 fully remediated by the shared GPL text.
 
-### Phase 3: shell migration (in progress)
+### Phase 3: shell migration (completed 2026-08-09)
 
-Use the planned zsh migration to retire the inherited fish and bash blocks.
-
-Suggested process:
-
-1. Write a behavior-only requirements list: environment variables, path
-   entries, aliases, key bindings, prompt initialization, and autostart rules.
-2. Use zsh and tool documentation as the implementation sources.
-3. Implement in new empty files without translating the fish files line by
-   line.
-4. Use original naming, grouping, comments, and error handling.
-5. Record the documentation URLs used and the implementation date.
-6. Add an SPDX identifier only after confirming that no protected expression
-   was copied from an incompatible or unlicensed source.
-
-Short, functional statements that have only one or a few natural forms are
-less likely to contain protectable expression, but this should not be used as
-a blanket assumption for longer functions or a distinctive selection and
-arrangement of settings.
+The independently implemented zsh configuration was validated as the login
+shell. The inherited fish and bash configuration was then removed. The new zsh
+files carry explicit Ry2X copyright and `GPL-3.0-or-later` SPDX notices.
 
 ### Phase 4: replace unlicensed and unknown material
 
