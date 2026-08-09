@@ -88,6 +88,17 @@ Independently implemented shell scripts carrying a Ry2X SPDX notice are also
 licensed under GPL-3.0-or-later. The GPL v3 text is available at
 [`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt).
 
+The following independently authored configuration components are licensed by
+Ry2X under GPL-3.0-or-later:
+
+- `nvim-yazi/.config/nvim/`;
+- `base/.config/hypr/hyprland.lua` and Lua files under
+  `base/.config/hypr/modules/`;
+- Rasi files under `base/.config/rofi/`.
+
+Generated files, Git submodules, third-party scripts and assets within or next
+to these paths retain their separately documented status.
+
 Unless a license is explicitly stated for a file or component, no additional
 permission is granted to copy, modify, or redistribute it. See
 [Third-Party Notices](THIRD_PARTY_NOTICES.md) and the

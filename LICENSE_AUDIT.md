@@ -173,11 +173,13 @@ present, and the full MPL-2.0 text is now preserved as
 and says `License: GPLv3`. The upstream GPL v3 text is now preserved as
 `LICENSES/GPL-3.0.txt`.
 
+`base/.config/kitty/utils/scroll_mark.py` is from the same
+kitty-kitten-search project and is covered by its GPL-3.0 terms. The remaining
+Kitty configuration files were inherited from Matuprland and remain outside
+this confirmed GPL mapping.
+
 Recommended action: retain the source comment and record the source revision
 from which the local modifications were made.
-
-`base/.config/kitty/utils/scroll_mark.py` is byte-identical to the historical
-Matuprland copy, but its original upstream was not established by this audit.
 
 ### Cava shaders
 
@@ -257,15 +259,10 @@ each plugin's license with its files when updating or reorganizing them.
 
 ### Neovim configuration
 
-The initial repository contained an NvChad-derived Neovim configuration and
-an Unlicense text. The current files entered their present path during the
-2026-04-29 repository restructuring, but this audit did not establish whether
-they are completely independent replacements or descendants of that earlier
+The current `nvim-yazi/.config/nvim/` configuration is confirmed by its author
+as a complete, independent replacement. It is licensed by Ry2X under
+`GPL-3.0-or-later`; this does not change the licenses of plugins fetched by the
 configuration.
-
-Recommended action: review the pre-restructure path history before assigning a
-license to `nvim-yazi/.config/nvim/`. If substantive NvChad-derived content
-remains, restore the relevant provenance and license notice.
 
 ## Assets and opaque files requiring provenance work
 
@@ -275,10 +272,24 @@ The following are distributed without nearby authorship or license metadata:
 - `base/.config/fastfetch/Ascii-Art/` and
   `base/.config/fastfetch/Images/icon.png`;
 - PNG files under `base/.config/hypr/icons/`;
-- PNG files under `base/.config/wlogout/icons/`;
-- `base/.config/hypr/modules/old.tar.gz`;
 - uosc fonts and the `ziggy-*` executables, whose upstream project is known but
   whose bundled revision is not recorded.
+
+The wlogout icons were subsequently identified as part of the GPL-3.0
+[JaKooLit Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
+distribution. The obsolete `base/.config/hypr/modules/old.tar.gz`, which held
+an earlier configuration, was removed on 2026-08-09.
+
+Usage review on 2026-08-09 found:
+
+- `Ryprland.png` is used by `readme.md`;
+- Fastfetch currently uses `Images/icon.png`, while all nine files under
+  `Ascii-Art/` are unreferenced;
+- six Hyprland icons are used by the Lua configuration: `gamemode.png`, both
+  `fn_key_*` icons, and the three `layout_*` icons; the other 22 icons are
+  unreferenced;
+- wlogout CSS uses ten icons; `sleep.png` and `sleep-hover.png` are
+  unreferenced. All twelve remain covered by the JaKooLit GPL-3.0 mapping.
 
 Some of the icon files are confirmed as byte-identical to Matuprland, but
 Matuprland does not establish their original license. Binary and visual assets
@@ -374,6 +385,28 @@ This resolves the shell scripts inherited through Matuprland. Scripts first
 added after the initial import are not evidence of a Matuprland relationship
 by repository history alone and require a separate originality or provenance
 review before receiving an SPDX notice.
+
+#### Configuration classification confirmed on 2026-08-09
+
+- `nvim-yazi/.config/nvim/` is independently authored and licensed by Ry2X
+  under `GPL-3.0-or-later`.
+- `base/.config/hypr/hyprland.lua` and Lua files under
+  `base/.config/hypr/modules/` are independent replacements licensed by Ry2X
+  under `GPL-3.0-or-later`. This does not include the separately licensed
+  split-monitor-workspaces submodule, generated Matugen output, icons,
+  `hypridle.conf`, or `hyprlock.conf`.
+- Rasi files under `base/.config/rofi/` no longer retain substantive
+  Matuprland material and are licensed by Ry2X under `GPL-3.0-or-later`.
+- `base/.config/wlogout/` originates from JaKooLit Hyprland-Dots and remains
+  under GPL-3.0.
+- `base/.config/kitty/common.conf`, `dev.conf`, and `kitty.conf` remain
+  Matuprland-derived. The two files under `kitty/utils/` are instead mapped to
+  kitty-kitten-search GPL-3.0 above.
+- The Fastfetch configuration remains Matuprland-derived. Its images and ASCII
+  art require separate provenance checks.
+- Most Matugen templates are original Matuprland material with no further
+  upstream identified. The exceptions still need to be classified file by
+  file before this directory can receive a coherent license declaration.
 
 ### Phase 5: license original work
 

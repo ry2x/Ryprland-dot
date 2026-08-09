@@ -34,11 +34,13 @@ effect alongside the uosc license.
 
 - Upstream:
   [trygveaa/kitty-kitten-search](https://github.com/trygveaa/kitty-kitten-search)
-- Local path: `base/.config/kitty/utils/search.py`
+- Local paths:
+  - `base/.config/kitty/utils/search.py`
+  - `base/.config/kitty/utils/scroll_mark.py`
 - License: GNU General Public License v3.0
 - License text: [`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt)
-- Local status: modified; the exact upstream revision has not yet been
-  established
+- Local status: inherited through Matuprland; local modifications and exact
+  upstream revisions have not yet been fully recorded
 
 ## Cava shaders
 
@@ -60,18 +62,20 @@ effect alongside the uosc license.
 - Local status: historical copies vendored through the Matuprland-derived
   configuration
 
-## JaKooLit shell scripts
+## JaKooLit Hyprland-Dots components
 
 - Upstream:
   [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
 - Local paths:
+  - `base/.config/wlogout/`
   - `base/.config/hypr/scripts/wlogout.sh`
   - `base/.config/rofi/scripts/clipboard-history.sh`
   - `base/.config/rofi/scripts/emoji-select.sh`
 - License: GNU General Public License v3.0
 - License text: [`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt)
-- Local status: modified and inherited through Matuprland; source and
-  modification notices are retained in each script
+- Local status: inherited through Matuprland. The scripts are modified and
+  carry source and modification notices; wlogout is recorded as a component
+  mapping here
 
 ## Separately licensed directories
 
