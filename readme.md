@@ -7,7 +7,10 @@ This configurations are heavily based on [Matuprland](https://github.com/Abhra00
 I think Matuprland is a great dotfile, but I want to make it use my own style and preferences, so I forked it and made several changes.
 
 > [!IMPORTANT]
-> I'll try to keep it up to date with the latest changes in Hyprland, but I won't be able to provide support for it. If you want to use it, you can fork it and make your own changes.
+> I'll try to keep it up to date with the latest changes in Hyprland, but I won't be able to provide support for it.
+> Before copying, modifying, or redistributing any part of this repository,
+> review the [Licensing](#licensing) section. Public availability does not mean
+> that every included file is offered under the same reuse terms.
 
 ## How to use
 
@@ -64,3 +67,20 @@ fcitx5-mozc-ut を使う場合は、先に mozc-ut をインストールして�
 
 多くの人は fcitx5 <-> mozc の切り替えで入力していると思いますが、私は mozc(Direct) <-> mozc(Hiragana) の切り替えで運用しています。
 設定方法は [Zennの記事](https://zenn.dev/ry2x/scraps/451ecfdc0a5c07) にまとめています。
+
+## Licensing
+
+This repository does not currently have a single project-wide license.
+
+It contains original configuration, files derived from third-party dotfile
+projects, separately licensed scripts and assets, and Git submodules. Files
+that include their own copyright or license notices remain subject to those
+terms. Submodules are governed by the licenses of their respective
+repositories.
+
+Rystal-shell is licensed separately under GPL-3.0-or-later.
+
+Unless a license is explicitly stated for a file or component, no additional
+permission is granted to copy, modify, or redistribute it. See
+[Third-Party Notices](THIRD_PARTY_NOTICES.md) and the
+[license audit](LICENSE_AUDIT.md) for details.
