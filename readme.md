@@ -70,37 +70,6 @@ fcitx5-mozc-ut を使う場合は、先に mozc-ut をインストールして�
 
 ## Licensing
 
-This repository does not currently have a single project-wide license.
-
-It contains original configuration, files derived from third-party dotfile
-projects, separately licensed scripts and assets, and Git submodules. Files
-that include their own copyright or license notices remain subject to those
-terms. Submodules are governed by the licenses of their respective
-repositories.
-
-Rystal-shell is licensed separately under GPL-3.0-or-later.
-
-Original zsh configuration files carrying an SPDX license header are licensed
-under GPL-3.0-or-later. See
-[`LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt`](LICENSES/Ryprland-zsh-GPL-3.0-or-later.txt).
-
-Independently implemented shell scripts carrying a Ry2X SPDX notice are also
-licensed under GPL-3.0-or-later. The GPL v3 text is available at
-[`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt).
-
-The following independently authored configuration components are licensed by
-Ry2X under GPL-3.0-or-later:
-
-- `nvim-yazi/.config/nvim/`;
-- `base/.config/hypr/hyprland.lua` and Lua files under
-  `base/.config/hypr/modules/`;
-- Rasi files under `base/.config/rofi/`;
-- `Ryprland.png`, with SPDX metadata in `Ryprland.png.license`.
-
-Generated files, Git submodules, third-party scripts and assets within or next
-to these paths retain their separately documented status.
-
-Unless a license is explicitly stated for a file or component, no additional
-permission is granted to copy, modify, or redistribute it. See
-[Third-Party Notices](THIRD_PARTY_NOTICES.md) and the
-[license audit](LICENSE_AUDIT.md) for details.
+This repository is an aggregate and does not currently have a single
+project-wide license. See the [license documentation](LICENSE/README.md) for
+component licenses, third-party notices, and the remaining audit work.

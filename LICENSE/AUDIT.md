@@ -48,7 +48,7 @@ files.
 
 ### Remediation recorded on 2026-08-09
 
-Following the initial audit, Ryprland added `THIRD_PARTY_NOTICES.md` and local
+Following the initial audit, Ryprland added `LICENSE/THIRD_PARTY_NOTICES.md` and local
 copies of the confirmed license texts for uosc, thumbfast,
 kitty-kitten-search, Cava, Catppuccin Kvantum, and the JaKooLit clipboard
 script. The root README now states explicitly that the repository has no
@@ -75,7 +75,8 @@ the distributed tree.
 ### Ryprland-dot
 
 - No umbrella `LICENSE` applies to the repository. Confirmed third-party terms
-  are collected under `LICENSES/` and indexed by `THIRD_PARTY_NOTICES.md`.
+  are collected under `LICENSE/` and indexed by
+  `LICENSE/THIRD_PARTY_NOTICES.md`.
 - `readme.md` explicitly says that the configuration is heavily based on
   [Matuprland](https://github.com/Abhra00/Matuprland).
 - Matuprland had no repository license at commit
@@ -146,7 +147,7 @@ byte-identical. The current `main.lua` blob occurs in upstream history around
 the uosc 5.12.0 release (2025-09-13).
 
 Upstream changed to **LGPL-2.1** in 2023 and ships `LICENSE.LGPL`. A copy is
-now preserved as `LICENSES/uosc-LGPL-2.1.txt` and linked from the third-party
+now preserved as `LICENSE/uosc-LGPL-2.1.txt` and linked from the third-party
 notice.
 
 Recommended action:
@@ -164,14 +165,14 @@ notice must remain intact.
 `base/.config/mpv/scripts/thumbfast.lua` identifies itself as MPL-2.0 and
 contains the standard source notice with a link to the license. The notice is
 present, and the full MPL-2.0 text is now preserved as
-`LICENSES/MPL-2.0.txt`. The exact upstream revision remains to be recorded.
+`LICENSE/MPL-2.0.txt`. The exact upstream revision remains to be recorded.
 
 ### Kitty kitten search
 
 `base/.config/kitty/utils/search.py` identifies
 [trygveaa/kitty-kitten-search](https://github.com/trygveaa/kitty-kitten-search)
 and says `License: GPLv3`. The upstream GPL v3 text is now preserved as
-`LICENSES/GPL-3.0.txt`.
+`LICENSE/GPL-3.0.txt`.
 
 `base/.config/kitty/utils/scroll_mark.py` is from the same
 kitty-kitten-search project and is covered by its GPL-3.0 terms. The remaining
@@ -187,7 +188,7 @@ The tracked shaders under `base/.config/cava/shaders/` correspond to Cava's
 upstream shader collection. The official
 [karlstav/cava](https://github.com/karlstav/cava) repository is MIT-licensed.
 The Cava copyright and MIT permission notice is now preserved as
-`LICENSES/cava-MIT.txt`.
+`LICENSE/cava-MIT.txt`.
 
 Recommended action: retain the license text and directory mapping in the
 third-party notice when the shaders are updated.
@@ -199,7 +200,7 @@ The Catppuccin-named files under `base/.config/Kvantum/` correspond to the
 MIT-licensed. The current upstream files have changed, while the Ryprland
 copies are byte-identical to the historical Matuprland copies. Ryprland does
 now preserve Catppuccin's MIT notice as
-`LICENSES/catppuccin-kvantum-MIT.txt`.
+`LICENSE/catppuccin-kvantum-MIT.txt`.
 
 Recommended action: determine the closest Catppuccin revision if practical,
 and retain the existing MIT notice and attribution. Do not replace the
@@ -216,7 +217,7 @@ and were inherited through Matuprland:
 - `base/.config/rofi/scripts/emoji-select.sh`.
 
 JaKooLit Hyprland-Dots distributes these scripts under GPL-3.0. The GPL v3
-text is preserved as `LICENSES/GPL-3.0.txt`, and each local script records its
+text is preserved as `LICENSE/GPL-3.0.txt`, and each local script records its
 source and modified status. The JaKooLit history notes an earlier ZaneyOS
 source for the emoji script; this attribution chain should be retained if a
 more exact source revision is later recorded.
@@ -314,9 +315,9 @@ The README now explains that Ryprland has no single project-wide license,
 per-file notices take precedence, and submodules have their own licenses. It
 does not grant unrestricted permission to reuse the whole repository.
 
-A root `THIRD_PARTY_NOTICES.md` now contains the confirmed entries. License
-history was checked to confirm that the recorded terms predate the relevant
-imports.
+A centralized `LICENSE/THIRD_PARTY_NOTICES.md` contains the confirmed entries.
+License history was checked to confirm that the recorded terms predate the
+relevant imports.
 
 ### Phase 2: restore known license material (completed 2026-08-09)
 
@@ -328,8 +329,8 @@ In priority order:
 4. JaKooLit GPL-3.0 notice;
 5. local MPL-2.0 text for thumbfast.
 
-The listed license texts and component mappings are now present in
-`LICENSES/` and `THIRD_PARTY_NOTICES.md`. This improves compliance without
+The listed license texts and component mappings are now present in `LICENSE/`
+and `LICENSE/THIRD_PARTY_NOTICES.md`. This improves compliance without
 attempting to relicense any file. Exact upstream revision identification and
 the uosc executable/source correspondence remain open follow-up work.
 The unresolved `sysfetch.sh` provenance did not require further remediation
@@ -403,8 +404,9 @@ review before receiving an SPDX notice.
 - `base/.config/kitty/common.conf`, `dev.conf`, and `kitty.conf` remain
   Matuprland-derived. The two files under `kitty/utils/` are instead mapped to
   kitty-kitten-search GPL-3.0 above.
-- The Fastfetch configuration remains Matuprland-derived. Its images and ASCII
-  art require separate provenance checks.
+- The Fastfetch configuration remains Matuprland-derived. Its retained
+  `Images/icon.png` requires a separate provenance check; the unused ASCII art
+  was removed.
 - Most Matugen templates are original Matuprland material with no further
   upstream identified. The exceptions still need to be classified file by
   file before this directory can receive a coherent license declaration.
