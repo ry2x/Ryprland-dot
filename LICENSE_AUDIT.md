@@ -215,26 +215,23 @@ and do not relabel the modified local script as independently authored.
 
 ### sysfetch
 
-`base/.local/bin/sysfetch.sh` credits `u/x_ero` and says it was modified by
-`gh0stzk`. The inspected
+The former `base/.local/bin/sysfetch.sh` credited `u/x_ero` and said it was
+modified by `gh0stzk`. The inspected
 [gh0stzk/dotfiles](https://github.com/gh0stzk/dotfiles) repository is
-GPL-3.0. The current Ryprland copy differs substantially from the current
-upstream file, but the explicit provenance remains.
+GPL-3.0. The former Ryprland copy differed substantially from the current
+upstream file, but the former local copy retained the explicit provenance.
 
-Recommended action: retain both existing credits, determine the source
-revision if possible, and include the applicable GPL-3.0 text. If the earlier
-`u/x_ero` source cannot be licensed confidently, replace this script through
-independent implementation or remove it.
+Resolution: the script was unused and was removed on 2026-08-09. No copy is
+distributed by the current repository.
 
 ### shebang.sh
 
-`base/.local/bin/shebang.sh` credits `steampunknyanja` and an old CrunchBang
-forum URL, but contains no license. No permission could be confirmed during
-this audit.
+The former `base/.local/bin/shebang.sh` credited `steampunknyanja` and an old
+CrunchBang forum URL, but contained no license. No permission could be
+confirmed during this audit.
 
-Recommended action: treat as unlicensed; remove or independently replace it.
-This is a higher-priority replacement because the file is a substantial
-script rather than a few inevitable configuration statements.
+Resolution: the script was unused and was removed on 2026-08-09. No copy is
+distributed by the current repository.
 
 ### Yazi plugins
 
@@ -314,9 +311,8 @@ The listed license texts and component mappings are now present in
 `LICENSES/` and `THIRD_PARTY_NOTICES.md`. This improves compliance without
 attempting to relicense any file. Exact upstream revision identification and
 the uosc executable/source correspondence remain open follow-up work.
-The complete provenance chain for `sysfetch.sh`, including its earlier
-`u/x_ero` source, is still unresolved; it is intentionally not represented as
-fully remediated by the shared GPL text.
+The unresolved `sysfetch.sh` provenance did not require further remediation
+because the unused script was removed in Phase 4.
 
 ### Phase 3: shell migration (completed 2026-08-09)
 
@@ -324,13 +320,13 @@ The independently implemented zsh configuration was validated as the login
 shell. The inherited fish and bash configuration was then removed. The new zsh
 files carry explicit Ry2X copyright and `GPL-3.0-or-later` SPDX notices.
 
-### Phase 4: replace unlicensed and unknown material
+### Phase 4: replace unlicensed and unknown material (in progress)
 
 Prioritize substantial executable code and opaque assets:
 
-1. `shebang.sh`;
+1. ~~`shebang.sh`~~ (unused; removed 2026-08-09);
 2. any remaining Matuprland-derived shell scripts;
-3. `sysfetch.sh` if its complete license chain cannot be established;
+3. ~~`sysfetch.sh`~~ (unused; removed 2026-08-09);
 4. unknown icons, ASCII art, and images;
 5. remaining Matuprland-derived theme/configuration groups.
 
