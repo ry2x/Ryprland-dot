@@ -33,7 +33,6 @@ separately licensed Lucide assets.
 ## Documentation
 
 - [Third-party notices](THIRD_PARTY_NOTICES.md)
-- [License audit and remaining work](AUDIT.md)
 
 The other files in this directory are preserved license texts for the
 components identified in the third-party notices and audit.
