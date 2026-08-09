@@ -349,17 +349,17 @@ historical counterparts and should still be treated as inherited or derived:
 | `base/.config/rofi/scripts/clipboard-history.sh` | `rofi/scripts/cliphist.sh` | Modified; retains JaKooLit attribution |
 | `base/.config/rofi/scripts/emoji-select.sh` | `rofi/scripts/rofiEmoji.sh` | Modified; embedded data also requires provenance review |
 | `base/.config/rofi/scripts/web-search.sh` | `rofi/scripts/websearch.sh` | Reorganized and substantially rewritten |
-| `base/.local/bin/jpg-to-png.sh` | `bin/jpg-to-png.sh` | Minimally modified |
-| `base/.local/bin/png-to-jpg.sh` | `bin/png-to-jpg.sh` | Minimally modified |
-| `base/.local/bin/sysmaintainance.sh` | `bin/sysmaintainance.sh` | Modified |
-| `base/.local/bin/tty-color-tool.sh` | `bin/tty-color-tool.sh` | Modified |
+| ~~`base/.local/bin/jpg-to-png.sh`~~ | `bin/jpg-to-png.sh` | Unused; removed 2026-08-09 |
+| ~~`base/.local/bin/png-to-jpg.sh`~~ | `bin/png-to-jpg.sh` | Unused; removed 2026-08-09 |
+| ~~`base/.local/bin/sysmaintainance.sh`~~ | `bin/sysmaintainance.sh` | Unused; removed 2026-08-09 |
+| ~~`base/.local/bin/tty-color-tool.sh`~~ | `bin/tty-color-tool.sh` | Unused; removed 2026-08-09 |
 
-The first six remain connected to active configuration. The four scripts
-under `base/.local/bin/` have no references elsewhere in the repository, but
-may still be invoked manually; their necessity should be confirmed before
-removal. Scripts first added after the initial import are not evidence of a
-Matuprland relationship by repository history alone and require a separate
-originality or provenance review before receiving an SPDX notice.
+The first six remain connected to active configuration. The four inherited
+scripts under `base/.local/bin/` had no references elsewhere in the repository
+and were confirmed unused, so they were removed on 2026-08-09. Scripts first
+added after the initial import are not evidence of a Matuprland relationship
+by repository history alone and require a separate originality or provenance
+review before receiving an SPDX notice.
 
 ### Phase 5: license original work
 
