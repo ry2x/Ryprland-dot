@@ -72,4 +72,4 @@ fcitx5-mozc-ut を使う場合は、先に mozc-ut をインストールして�
 
 This repository is an aggregate and does not currently have a single
 project-wide license. See the [license documentation](LICENSE/README.md) for
-component licenses, third-party notices, and the remaining audit work.
+component licenses and third-party notices.
