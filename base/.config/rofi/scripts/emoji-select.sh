@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Source: https://github.com/JaKooLit/Hyprland-Dots
+# License: GPL-3.0
+# Modified for Ryprland.
+
 set -uo pipefail
 #  ┳┓┏┓┏┓┳  ┏┓┳┳┓┏┓┏┳┳
 #  ┣┫┃┃┣ ┃━━┣ ┃┃┃┃┃ ┃┃

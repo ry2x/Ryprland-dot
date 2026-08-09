@@ -203,15 +203,24 @@ Recommended action: determine the closest Catppuccin revision if practical,
 and retain the existing MIT notice and attribution. Do not replace the
 copyright holder with the Ryprland or Matuprland author.
 
-### JaKooLit clipboard script
+### JaKooLit shell scripts
 
-`base/.config/rofi/scripts/clipboard-history.sh` contains an explicit
-JaKooLit attribution. The corresponding
+The following scripts originate from
 [JaKooLit Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots) repository
-is GPL-3.0. The GPL v3 text is now preserved as `LICENSES/GPL-3.0.txt`.
+and were inherited through Matuprland:
 
-Recommended action: preserve the attribution, identify the source revision,
-and do not relabel the modified local script as independently authored.
+- `base/.config/hypr/scripts/wlogout.sh`;
+- `base/.config/rofi/scripts/clipboard-history.sh`;
+- `base/.config/rofi/scripts/emoji-select.sh`.
+
+JaKooLit Hyprland-Dots distributes these scripts under GPL-3.0. The GPL v3
+text is preserved as `LICENSES/GPL-3.0.txt`, and each local script records its
+source and modified status. The JaKooLit history notes an earlier ZaneyOS
+source for the emoji script; this attribution chain should be retained if a
+more exact source revision is later recorded.
+
+Recommended action: identify the closest source revisions when practical and
+do not relabel the modified local scripts as independently authored.
 
 ### sysfetch
 
@@ -345,9 +354,9 @@ historical counterparts and should still be treated as inherited or derived:
 | --- | --- | --- |
 | `base/.config/hypr/hyprlock/check-capslock.sh` | `hypr/hyprlock/check-capslock.sh` | Byte-identical |
 | `base/.config/hypr/hyprlock/status.sh` | `hypr/hyprlock/status.sh` | Modified |
-| `base/.config/hypr/scripts/wlogout.sh` | `hypr/scripts/wlogout.sh` | Modified |
-| `base/.config/rofi/scripts/clipboard-history.sh` | `rofi/scripts/cliphist.sh` | Modified; retains JaKooLit attribution |
-| `base/.config/rofi/scripts/emoji-select.sh` | `rofi/scripts/rofiEmoji.sh` | Modified; embedded data also requires provenance review |
+| `base/.config/hypr/scripts/wlogout.sh` | `hypr/scripts/wlogout.sh` | Modified JaKooLit GPL-3.0 work |
+| `base/.config/rofi/scripts/clipboard-history.sh` | `rofi/scripts/cliphist.sh` | Modified JaKooLit GPL-3.0 work |
+| `base/.config/rofi/scripts/emoji-select.sh` | `rofi/scripts/rofiEmoji.sh` | Modified JaKooLit GPL-3.0 work; JaKooLit history credits ZaneyOS |
 | `base/.config/rofi/scripts/web-search.sh` | `rofi/scripts/websearch.sh` | Reorganized and substantially rewritten |
 | ~~`base/.local/bin/jpg-to-png.sh`~~ | `bin/jpg-to-png.sh` | Unused; removed 2026-08-09 |
 | ~~`base/.local/bin/png-to-jpg.sh`~~ | `bin/png-to-jpg.sh` | Unused; removed 2026-08-09 |

@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
+# Source: https://github.com/JaKooLit/Hyprland-Dots
+# License: GPL-3.0
+# Modified for Ryprland.
+
 set -uo pipefail
 #  ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
 #  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
 #  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
 #
 
-## /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
 # Clipboard Manager. This script uses cliphist, rofi, and wl-copy.
 
 # Actions:

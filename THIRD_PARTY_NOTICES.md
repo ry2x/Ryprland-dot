@@ -60,15 +60,18 @@ effect alongside the uosc license.
 - Local status: historical copies vendored through the Matuprland-derived
   configuration
 
-## JaKooLit clipboard script
+## JaKooLit shell scripts
 
 - Upstream:
   [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
-- Local path: `base/.config/rofi/scripts/clipboard-history.sh`
+- Local paths:
+  - `base/.config/hypr/scripts/wlogout.sh`
+  - `base/.config/rofi/scripts/clipboard-history.sh`
+  - `base/.config/rofi/scripts/emoji-select.sh`
 - License: GNU General Public License v3.0
 - License text: [`LICENSES/GPL-3.0.txt`](LICENSES/GPL-3.0.txt)
-- Local status: modified and inherited through Matuprland; the existing source
-  attribution is retained in the script
+- Local status: modified and inherited through Matuprland; source and
+  modification notices are retained in each script
 
 ## Separately licensed directories
 
