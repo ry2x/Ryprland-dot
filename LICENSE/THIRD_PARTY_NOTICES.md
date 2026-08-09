@@ -35,8 +35,8 @@ effect alongside the uosc license.
 - Upstream:
   [trygveaa/kitty-kitten-search](https://github.com/trygveaa/kitty-kitten-search)
 - Local paths:
-  - `base/.config/kitty/utils/search.py`
-  - `base/.config/kitty/utils/scroll_mark.py`
+    - `base/.config/kitty/utils/search.py`
+    - `base/.config/kitty/utils/scroll_mark.py`
 - License: GNU General Public License v3.0
 - License text: [`GPL-3.0.txt`](GPL-3.0.txt)
 - Local status: inherited through Matuprland; local modifications and exact
@@ -67,10 +67,10 @@ effect alongside the uosc license.
 - Upstream:
   [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
 - Local paths:
-  - `base/.config/wlogout/`
-  - `base/.config/hypr/scripts/wlogout.sh`
-  - `base/.config/rofi/scripts/clipboard-history.sh`
-  - `base/.config/rofi/scripts/emoji-select.sh`
+    - `base/.config/wlogout/`
+    - `base/.config/hypr/scripts/wlogout.sh`
+    - `base/.config/rofi/scripts/clipboard-history.sh`
+    - `base/.config/rofi/scripts/emoji-select.sh`
 - License: GNU General Public License v3.0
 - License text: [`GPL-3.0.txt`](GPL-3.0.txt)
 - Local status: inherited through Matuprland. The scripts are modified and
@@ -89,11 +89,3 @@ covered by a Ryprland-wide license:
 - `nvim-yazi/.config/yazi/plugins/git.yazi/`: MIT
 - `nvim-yazi/.config/yazi/plugins/lazygit.yazi/`: MIT
 - `nvim-yazi/.config/yazi/plugins/smart-enter.yazi/`: MIT
-
-## Unresolved provenance
-
-Not every third-party file in Ryprland has been identified or cleared. In
-particular, parts inherited from the unlicensed Matuprland repository and
-several scripts and visual assets still require investigation or replacement.
-See [`AUDIT.md`](AUDIT.md) for the current findings and cleanup
-plan.
