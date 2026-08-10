@@ -1,4 +1,10 @@
 #!/bin/bash
+# ┳┳┏┓┳┓┏┓┏┳┓┏┓  ┳┳┓┳┳┓┳┓┏┓┳┓
+# ┃┃┃┃┃┃┣┫ ┃ ┣   ┃┃┃┃┣┫┣┫┃┃┣┫
+# ┗┛┣┛┻┛┛┗ ┻ ┗┛  ┛ ┗┻┛┗┛┗┗┛┛┗
+
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 # Update CachyOS mirrorlist using rate-mirrors
 # This script must be run as root

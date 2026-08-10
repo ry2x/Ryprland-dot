@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-
-set -euo pipefail
-
 # ┳┓┏┓┳┳┓┏┓┏┳┓┏┓  ┳┓┏┓┏┓┓┏┓┏┳┓┏┓┏┓
 # ┣┫┣ ┃┃┃┃┃ ┃ ┣   ┃┃┣ ┗┓┃┫  ┃ ┃┃┃┃
 # ┛┗┗┛┛ ┗┗┛ ┻ ┗┛  ┻┛┗┛┗┛┛┗┛ ┻ ┗┛┣┛
+
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+set -euo pipefail
 
 OUTPUT_NAME="RMT-1"
 OUTPUT_MODE="1920x1080@60"

@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
+#  ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
+#  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
+#  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
 
 # Source: https://github.com/JaKooLit/Hyprland-Dots
 # License: GPL-3.0
 # Modified for Ryprland.
-
-set -uo pipefail
-#  ┏┓┓ ┳┏┓┓┏┳┏┓┏┳┓
-#  ┃ ┃ ┃┃┃┣┫┃┗┓ ┃
-#  ┗┛┗┛┻┣┛┛┗┻┗┛ ┻
-#
 
 # Clipboard Manager. This script uses cliphist, rofi, and wl-copy.
 
 # Actions:
 # CTRL Del to delete an entry
 # ALT  Del to wipe clipboard contents
+
+set -uo pipefail
 
 theme="$HOME/.config/rofi/themes/clipboard-history.rasi"
 

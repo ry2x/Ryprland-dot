@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
+#  ┳┓┏┓┏┓┳  ┏┓┳┳┓┏┓┏┳┳
+#  ┣┫┃┃┣ ┃━━┣ ┃┃┃┃┃ ┃┃
+#  ┛┗┗┛┻ ┻  ┗┛┛ ┗┗┛┗┛┻
 
 # Source: https://github.com/JaKooLit/Hyprland-Dots
 # License: GPL-3.0
 # Modified for Ryprland.
 
 set -uo pipefail
-#  ┳┓┏┓┏┓┳  ┏┓┳┳┓┏┓┏┳┳
-#  ┣┫┃┃┣ ┃━━┣ ┃┃┃┃┃ ┃┃
-#  ┛┗┗┛┻ ┻  ┗┛┛ ┗┗┛┗┛┻
-#
+
 theme="$HOME/.config/rofi/themes/emoji-select.rasi"
 
 for command in awk rofi wl-copy; do

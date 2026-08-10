@@ -1,6 +1,10 @@
 #!/bin/bash
-# Suspend wrapper for hypridle.
-# Prevents system suspension if AGS Caffeine is in Remote mode.
+# ┏┓┳┳┏┓┏┓┏┓┳┓┳┓
+# ┗┓┃┃┗┓┃┃┣ ┃┃┃┃
+# ┗┛┗┛┗┛┣┛┗┛┛┗┻┛
+
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 if [ -f /tmp/ags_caffeine_remote ]; then
     echo "Suspend prevented by AGS Caffeine (Remote mode)"
