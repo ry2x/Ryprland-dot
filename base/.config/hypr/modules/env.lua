@@ -22,7 +22,7 @@ local envs = {
 
     -- toolkit
     { "CLUTTER_BACKEND",                     "wayland" },
-    { "GDK_BACKEND",                         "wayland",           "x11", "*" },
+    { "GDK_BACKEND",                         "wayland",                     "x11", "*" },
     { "GDK_SCALE",                           "1" },
 
     -- XDG
@@ -61,7 +61,11 @@ local envs = {
 
     -- ROCm/Ollama on RDNA4
     { "HIP_VISIBLE_DEVICES",                 "0" },
-    { "HSA_OVERRIDE_GFX_VERSION",            "12.0.0" }
+    { "HSA_OVERRIDE_GFX_VERSION",            "12.0.0" },
+
+    -- Ryprland Env
+    { "RYPRLAND_WALLPAPER_DIR",              home .. "/Pictures/Wallpapers" },
+    { "RYPRLAND_CACHE_DIR",                  home .. "/.cache/ryprland" },
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.

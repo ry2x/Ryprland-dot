@@ -51,7 +51,7 @@ notify() {
     local title="$2"
     local body="$3"
     local icon="${4:-}"
-    local args=(-e -h string:x-canonical-private-synchronous:matugen_notif -u "$urgency")
+    local args=(-e -h string:x-canonical-private-synchronous:matugen_notif -u "$urgency" -a "Rystal Shell")
 
     command -v notify-send >/dev/null 2>&1 || return 0
     [[ -n "$icon" && -f "$icon" ]] && args+=(-n "$icon")
