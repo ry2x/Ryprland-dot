@@ -18,12 +18,22 @@ ROFI_IMAGE_DIR="$HOME/.config/rofi/images"
 AGS_ASSET_DIR="$HOME/.config/ags/assets"
 # Stable symlink to the currently selected source wallpaper.
 BACKGROUND_LINK="$HOME/.local/share/bg"
+# Shared Ryprland directory roots exported by Hyprland.
+RYPRLAND_CACHE_ROOT="${RYPRLAND_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/ryprland}"
+RYPRLAND_STATE_ROOT="${RYPRLAND_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/ryprland}"
+if [[ -n "${RYPRLAND_RUNTIME_DIR:-}" ]]; then
+    RYPRLAND_RUNTIME_ROOT="$RYPRLAND_RUNTIME_DIR"
+elif [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
+    RYPRLAND_RUNTIME_ROOT="$XDG_RUNTIME_DIR/ryprland"
+else
+    RYPRLAND_RUNTIME_ROOT="/tmp/ryprland-$UID"
+fi
 # Persistent state and timing-log directory.
-STATE_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/ryprland/theme"
+STATE_ROOT="$RYPRLAND_STATE_ROOT/theme"
 # Root directory for wallpaper-derived image caches.
-CACHE_ROOT="${XDG_CACHE_HOME:-$HOME/.cache}/ryprland/wallpapers"
+CACHE_ROOT="$RYPRLAND_CACHE_ROOT/wallpapers"
 # Per-session directory used for request coordination and locking.
-RUNTIME_ROOT="${XDG_RUNTIME_DIR:-/tmp}/ryprland-theme-$UID"
+RUNTIME_ROOT="$RYPRLAND_RUNTIME_ROOT/theme"
 # Latest queued theme request shared by concurrent invocations.
 REQUEST_FILE="$RUNTIME_ROOT/request"
 # Identifier of the most recently completed request.

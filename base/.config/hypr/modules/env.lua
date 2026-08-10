@@ -5,6 +5,15 @@
 local home = os.getenv("HOME") or ""
 local path = os.getenv("PATH") or "/usr/local/bin:/usr/bin"
 local local_bin = home .. "/.local/bin"
+local cache_home = os.getenv("XDG_CACHE_HOME") or home .. "/.cache"
+local state_home = os.getenv("XDG_STATE_HOME") or home .. "/.local/state"
+local runtime_home = os.getenv("XDG_RUNTIME_DIR")
+
+if not runtime_home or runtime_home == "" then
+    runtime_home = "/tmp/ryprland-" .. (os.getenv("USER") or "user")
+else
+    runtime_home = runtime_home .. "/ryprland"
+end
 
 if not string.find(":" .. path .. ":", ":" .. local_bin .. ":", 1, true) then
     path = local_bin .. ":" .. path
@@ -65,7 +74,9 @@ local envs = {
 
     -- Ryprland Env
     { "RYPRLAND_WALLPAPER_DIR",              home .. "/Pictures/Wallpapers" },
-    { "RYPRLAND_CACHE_DIR",                  home .. "/.cache/ryprland" },
+    { "RYPRLAND_CACHE_DIR",                  cache_home .. "/ryprland" },
+    { "RYPRLAND_STATE_DIR",                  state_home .. "/ryprland" },
+    { "RYPRLAND_RUNTIME_DIR",                runtime_home },
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.
