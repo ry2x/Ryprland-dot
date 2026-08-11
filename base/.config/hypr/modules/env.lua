@@ -5,6 +5,8 @@
 local home = os.getenv("HOME") or ""
 local path = os.getenv("PATH") or "/usr/local/bin:/usr/bin"
 local local_bin = home .. "/.local/bin"
+local config_home = os.getenv("XDG_CONFIG_HOME") or home .. "/.config"
+local data_home = os.getenv("XDG_DATA_HOME") or home .. "/.local/share"
 local cache_home = os.getenv("XDG_CACHE_HOME") or home .. "/.cache"
 local state_home = os.getenv("XDG_STATE_HOME") or home .. "/.local/state"
 local runtime_home = os.getenv("XDG_RUNTIME_DIR")
@@ -77,6 +79,11 @@ local envs = {
     { "RYPRLAND_CACHE_DIR",                  cache_home .. "/ryprland" },
     { "RYPRLAND_STATE_DIR",                  state_home .. "/ryprland" },
     { "RYPRLAND_RUNTIME_DIR",                runtime_home },
+
+    -- Rystal-shell Env
+    { "RYSTAL_SHELL_CONFIG_DIR",             config_home .. "/rystal-shell" },
+    { "RYSTAL_SHELL_DATA_DIR",               data_home .. "/rystal-shell" },
+    { "RYSTAL_SHELL_INSTANCE",               "rystal-shell" },
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.
