@@ -14,7 +14,7 @@ WALLPAPER_ROOT="${RYPRLAND_WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
 MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 # Stable image paths consumed by the Rofi themes.
 ROFI_IMAGE_DIR="$HOME/.config/rofi/images"
-# Directory containing the launcher background consumed by AGS.
+# Directory containing the launcher background consumed by Rystal-shell (AGS instance).
 AGS_ASSET_DIR="${RYSTAL_SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rystal-shell}/assets"
 AGS_INSTANCE="${RYSTAL_SHELL_INSTANCE:-rystal-shell}"
 # Stable symlink to the currently selected source wallpaper.
