@@ -8,9 +8,6 @@ I think Matuprland is a great dotfile, but I want to make it use my own style an
 
 > [!IMPORTANT]
 > I'll try to keep it up to date with the latest changes in Hyprland, but I won't be able to provide support for it.
-> Before copying, modifying, or redistributing any part of this repository,
-> review the [Licensing](#licensing) section. Public availability does not mean
-> that every included file is offered under the same reuse terms.
 
 ## How to use
 
