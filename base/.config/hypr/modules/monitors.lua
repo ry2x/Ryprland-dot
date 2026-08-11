@@ -30,5 +30,5 @@ hl.monitor({
 })
 
 hl.on("monitor.added", function()
-    hl.dispatch(hl.dsp.exec_cmd("ags request brightness refresh"))
+    hl.dispatch(hl.dsp.exec_cmd("ags request -i rystal-shell brightness refresh"))
 end)

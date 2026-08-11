@@ -112,7 +112,7 @@ effect alongside the uosc license.
 The following directories carry their own license information and are not
 covered by a Ryprland-wide license:
 
-- `base/.config/ags/`: Rystal-shell, GPL-3.0-or-later, with separately licensed
+- `lib/rystal-shell/`: Rystal-shell, GPL-3.0-or-later, with separately licensed
   Lucide assets
 - `base/.config/hypr/plugins/split-monitor-workspaces/`: BSD-3-Clause
 - `nvim-yazi/.config/yazi/plugins/full-border.yazi/`: MIT

@@ -26,18 +26,18 @@ local ApplicationBinds = {
     },
 
     -- Launchers
-    { "R", "ags request toggle-launcher", "󱓞 Launcher" },
+    { "R", "ags request -i rystal-shell toggle-launcher", "󱓞 Launcher" },
     { "V", getRofiScript("clipboard-history.sh"), " ClipBoard" },
     { "Semicolon", getRofiScript("emoji-select.sh"), "󰞅 Emoji" },
     { "SHIFT + W", getRofiScript("web-search.sh"), " WebSearch" },
 
     -- ags
     { "SHIFT + B", getHyprScript("restartAgs.sh"), "Restart ags" },
-    { "ALT + B", "ags request reload-css", "Reload ags CSS" },
-    { "N", "ags request toggle-notif", "󰂞 Notification" },
+    { "ALT + B", "ags request -i rystal-shell reload-css", "Reload ags CSS" },
+    { "N", "ags request -i rystal-shell toggle-notif", "󰂞 Notification" },
 
     -- Wallpaper
-    { "Q", "ags request toggle-wallpaper", "WallpaperSelector" },
+    { "Q", "ags request -i rystal-shell toggle-wallpaper", "WallpaperSelector" },
     { "SHIFT + Q", "theme-switch.sh random", "RandomWallpaper" },
     { "SHIFT + T", "theme-switch.sh refresh", "RefreshTheme" },
 }

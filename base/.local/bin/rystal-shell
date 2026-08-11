@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+data_dir="${RYSTAL_SHELL_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/rystal-shell}"
+entrypoint="$data_dir/start-ags"
+
+if [[ ! -x "$entrypoint" ]]; then
+    printf 'Rystal-shell is not deployed: %s\n' "$entrypoint" >&2
+    printf 'Run deploy-rystal-shell from the Ryprland-dot checkout.\n' >&2
+    exit 1
+fi
+
+export GSK_RENDERER="${GSK_RENDERER:-vulkan}"
+exec "$entrypoint" "$@"

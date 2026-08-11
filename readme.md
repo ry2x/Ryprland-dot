@@ -23,6 +23,7 @@ I think Matuprland is a great dotfile, but I want to make it use my own style an
 ```bash
 git clone https://github.com/ry2x/Ryprland-dot
 cd ./Ryprland-dot
+git submodule update --init --recursive
 ```
 
 2. Stow the configuration files to your home directory.
@@ -34,13 +35,20 @@ stow ./base
 stow ./nvim-yazi # For neovim and yazi
 ```
 
-3. Re-login to apply the changes.
+3. Build and deploy Rystal-shell.
 
-4. Enjoy your new Hyprland configuration!
+```bash
+deploy-rystal-shell
+```
+
+4. Re-login to apply the changes.
+
+5. Enjoy your new Hyprland configuration!
 
 ## Directory structure
 
 - `base/`: Contains the base configuration files that are common for both desktop and laptop.
+- `lib/rystal-shell/`: Rystal-shell source code, included as a Git submodule.
 - `nvim-yazi/`: Contains the configuration files for neovim and yazi.
 - `private-dotfile/`: Not publicly available, contains my private information.
 - `README.md`: This file.
@@ -50,8 +58,8 @@ stow ./nvim-yazi # For neovim and yazi
 Install these packages before using this dotfile setup: [applist](./applist.md)
 
 > [!NOTE]
-> A separate README is available for the AGS configuration.
-> You can access it here: [AGS README](./base/.config/ags/README.md)
+> A separate README is available for Rystal-shell development and deployment.
+> You can access it here: [Rystal-shell README](./lib/rystal-shell/README.md)
 
 ### Fonts
 
