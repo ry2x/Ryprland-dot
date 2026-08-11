@@ -14,8 +14,9 @@ WALLPAPER_ROOT="${RYPRLAND_WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
 MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 # Stable image paths consumed by the Rofi themes.
 ROFI_IMAGE_DIR="$HOME/.config/rofi/images"
-# Directory containing the launcher background consumed by AGS.
-AGS_ASSET_DIR="$HOME/.config/ags/assets"
+# Directory containing the launcher background consumed by Rystal-shell (AGS instance).
+AGS_ASSET_DIR="${RYSTAL_SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rystal-shell}/assets"
+AGS_INSTANCE="${RYSTAL_SHELL_INSTANCE:-rystal-shell}"
 # Stable symlink to the currently selected source wallpaper.
 BACKGROUND_LINK="$HOME/.local/share/bg"
 # Shared Ryprland directory roots exported by Hyprland.
@@ -302,8 +303,8 @@ fi
 publish_assets "$cache_dir" "$wallpaper_path" || die "Failed to publish generated image assets"
 
 pkill -USR1 -u "$USER" -x kitty 2>/dev/null || true
-if command -v ags >/dev/null 2>&1 && pgrep -u "$USER" -f 'start-ags|app\.ts' >/dev/null 2>&1; then
-    ags request reload-css >/dev/null || die "AGS failed to reload its stylesheet"
+if command -v ags >/dev/null 2>&1 && ags list | grep -Fxq "$AGS_INSTANCE"; then
+    ags request -i "$AGS_INSTANCE" reload-css >/dev/null || die "AGS failed to reload its stylesheet"
 fi
 command -v bat >/dev/null 2>&1 && bat cache --build >/dev/null 2>&1 &
 

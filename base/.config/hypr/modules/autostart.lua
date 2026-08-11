@@ -29,7 +29,7 @@ hl.on("hyprland.start",
             "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; awww restore",
 
             -- bar & notifications
-            "sleep 5; ~/.config/ags/launch.sh",
+            "sleep 5; rystal-shell",
             "sleep 10; blueman-applet",
             "fcitx5 -d",
             "sleep 2; discord --start-minimized"

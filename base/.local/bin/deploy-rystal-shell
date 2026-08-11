@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# ┳┓┓┏┏┓┏┳┓┏┓┓   ┏┓┓┏┏┓┓ ┓   ┳┓┏┓┏┓┓ ┏┓┓┏
+# ┣┫┗┫┗┓ ┃ ┣┫┃ ━━┗┓┣┫┣ ┃ ┃ ━━┃┃┣ ┃┃┃ ┃┃┗┫
+# ┛┗┗┛┗┛ ┻ ┛┗┗┛  ┗┛┛┗┗┛┗┛┗┛  ┻┛┗┛┣┛┗┛┗┛┗┛
+
+set -euo pipefail
+
+script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
+repo_dir="$(cd "$(dirname "$script_path")/../../.." && pwd)"
+source_dir="$repo_dir/lib/rystal-shell"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/rystal-shell"
+legacy_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ags"
+
+if [[ ! -f "$source_dir/package.json" ]]; then
+    printf 'Rystal-shell submodule is unavailable: %s\n' "$source_dir" >&2
+    printf 'Run: git submodule update --init --recursive\n' >&2
+    exit 1
+fi
+
+mkdir -p "$config_dir/assets"
+
+copy_if_missing() {
+    local source=$1 destination=$2
+    if [[ -f "$source" && ! -e "$destination" ]]; then
+        cp -p -- "$source" "$destination"
+        printf 'Migrated %s\n' "$destination"
+    fi
+}
+
+copy_if_missing "$legacy_config_dir/config.json" "$config_dir/config.json"
+copy_if_missing "$source_dir/config.json" "$config_dir/config.json"
+copy_if_missing "$legacy_config_dir/themes/matugen.scss" "$config_dir/theme.scss"
+copy_if_missing "$source_dir/themes/matugen.scss" "$config_dir/theme.scss"
+copy_if_missing "$legacy_config_dir/assets/launcher_bg.png" "$config_dir/assets/launcher_bg.png"
+copy_if_missing "$source_dir/assets/launcher_bg.png" "$config_dir/assets/launcher_bg.png"
+
+cd "$source_dir"
+exec pnpm deploy:user

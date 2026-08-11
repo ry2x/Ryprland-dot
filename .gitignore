@@ -52,8 +52,8 @@ base/.config/rofi/images/currentWalBlur.thumb
 base/.config/rofi/images/currentWalQuad.quad
 
 # ags
-base/.config/ags/assets/launcher_bg_*.png
-base/.config/ags/assets/bg.scss
+base/.config/rystal-shell/assets/launcher_bg_*.png
+base/.config/rystal-shell/assets/bg.scss
 
 # wlogout
 base/.config/wlogout/matugen-wlogout.css

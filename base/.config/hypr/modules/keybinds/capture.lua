@@ -9,7 +9,7 @@ local captures = {
     { "Print",             "hyprcrop all",        "Capture area" },
 
     -- record screen
-    { mod .. "+ALT + R",   "ags request record ", "Record region (no sound)" },
+    { mod .. "+ALT + R",   "ags request -i rystal-shell record ", "Record region (no sound)" },
 }
 
 for _, capture in ipairs(captures) do
