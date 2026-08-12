@@ -91,8 +91,3 @@ output_path = '~/.config/hyprcrop/config.toml'
 [templates.ags]
 input_path = '~/.config/matugen/templates/matugen-ags.scss'
 output_path = '~/.config/rystal-shell/theme.scss'
-
-# wlogout
-[templates.wlogout]
-input_path = '~/.config/matugen/templates/matugen-wlogout.css'
-output_path = '~/.config/wlogout/matugen-wlogout.css'
