@@ -1,0 +1,26 @@
+# ReGreet configuration
+
+[commands]
+reboot = ["systemctl", "reboot"]
+poweroff = ["systemctl", "poweroff"]
+
+[GTK]
+application_prefer_dark_theme = true
+cursor_theme_name = "M200"
+cursor_blink = true
+font_name = "Adwaita Sans 16"
+icon_theme_name = "Ars-Dark-Icons"
+theme_name = "Material-Black-Blueberry"
+
+[appearance]
+greeting_msg = "Hello Master!"
+
+[widget.clock]
+format = "%a %H:%M"
+resolution = "500ms"
+timezone = "Asia/Tokyo"
+label_width = 150
+
+[background]
+path = "/usr/share/backgrounds/greeter.png"
+fit = "Cover"

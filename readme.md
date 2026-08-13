@@ -42,6 +42,29 @@ deploy-rystal-shell
 
 5. Enjoy your new Hyprland configuration!
 
+### greetd / ReGreet
+
+The login screen is managed separately from the HOME-based `base` Stow package.
+The files under `system/` mirror `/etc` and `/usr` paths. This includes systemd
+units and root-managed executables.
+Apply them with:
+
+```bash
+sudo system/install.sh
+```
+
+The greetd session uses the Lua configuration at
+`/etc/greetd/hyprland.lua`; ReGreet uses `/etc/greetd/regreet.toml`.
+The login screen background is installed at `/usr/share/backgrounds/greeter.png`.
+
+The installer runs `systemctl daemon-reload`, but it does not enable or start
+any service automatically. Enable only the services you want, for example:
+
+```bash
+sudo systemctl enable --now cachyos-mirrorlist.timer
+sudo systemctl enable --now rkhunter.timer
+```
+
 ## Directory structure
 
 - `base/`: Contains the base configuration files that are common for both desktop and laptop.

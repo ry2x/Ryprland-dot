@@ -10,6 +10,8 @@ bottom
 cliphist
 fastfetch
 gnome-keyring
+greetd
+greetd-regreet
 hyprcrop-git
 hypridle
 hyprland
