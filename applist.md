@@ -3,11 +3,13 @@
 ## Core-Packages
 
 awww
-aylurs-gtk-shell
+aylurs-gtk-shell-git
 blueman
 bluez-utils
 bottom
+brightnessctl
 cliphist
+dart-sass
 fastfetch
 gnome-keyring
 greetd
@@ -22,11 +24,14 @@ imagemagick
 jq
 kitty
 kvantum
+libastal-meta
 matugen
 networkmanager
 nmgui-bin
 pavucontrol
 pipewire-pulse
+playerctl
+pnpm
 rofi
 slurp
 starship

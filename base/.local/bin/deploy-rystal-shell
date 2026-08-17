@@ -35,4 +35,5 @@ copy_if_missing "$legacy_config_dir/assets/launcher_bg.png" "$config_dir/assets/
 copy_if_missing "$source_dir/assets/launcher_bg.png" "$config_dir/assets/launcher_bg.png"
 
 cd "$source_dir"
+pnpm install:launcher
 exec pnpm deploy:user

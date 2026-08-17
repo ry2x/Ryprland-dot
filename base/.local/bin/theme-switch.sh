@@ -9,32 +9,32 @@
 set -uo pipefail
 
 # Directory searched by the random command for supported wallpapers.
-WALLPAPER_ROOT="${RYPRLAND_WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
+WALLPAPER_ROOT="${RYSTAL_SHELL_WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
 # Matugen template configuration used to render application themes.
-MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
+MATUGEN_CONFIG="${MATUGEN_CONFIG:-$HOME/.config/matugen/config.toml}"
 # Stable image paths consumed by the Rofi themes.
-ROFI_IMAGE_DIR="$HOME/.config/rofi/images"
+ROFI_IMAGE_DIR="${ROFI_IMAGE_DIR:-$HOME/.config/rofi/images}"
 # Directory containing the launcher background consumed by Rystal-shell (AGS instance).
 AGS_ASSET_DIR="${RYSTAL_SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rystal-shell}/assets"
 AGS_INSTANCE="${RYSTAL_SHELL_INSTANCE:-rystal-shell}"
 # Stable symlink to the currently selected source wallpaper.
 BACKGROUND_LINK="$HOME/.local/share/bg"
-# Shared Ryprland directory roots exported by Hyprland.
-RYPRLAND_CACHE_ROOT="${RYPRLAND_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/ryprland}"
-RYPRLAND_STATE_ROOT="${RYPRLAND_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/ryprland}"
-if [[ -n "${RYPRLAND_RUNTIME_DIR:-}" ]]; then
-    RYPRLAND_RUNTIME_ROOT="$RYPRLAND_RUNTIME_DIR"
+# Shared directory roots.
+RYSTAL_CACHE_ROOT="${RYSTAL_SHELL_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/rystal-shell}"
+RYSTAL_STATE_ROOT="${RYSTAL_SHELL_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/rystal-shell}"
+if [[ -n "${RYSTAL_SHELL_RUNTIME_DIR:-}" ]]; then
+    RYSTAL_RUNTIME_ROOT="$RYSTAL_SHELL_RUNTIME_DIR"
 elif [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
-    RYPRLAND_RUNTIME_ROOT="$XDG_RUNTIME_DIR/ryprland"
+    RYSTAL_RUNTIME_ROOT="$XDG_RUNTIME_DIR/rystal-shell"
 else
-    RYPRLAND_RUNTIME_ROOT="/tmp/ryprland-$UID"
+    RYSTAL_RUNTIME_ROOT="/tmp/rystal-shell-$UID"
 fi
 # Persistent state and timing-log directory.
-STATE_ROOT="$RYPRLAND_STATE_ROOT/theme"
+STATE_ROOT="$RYSTAL_STATE_ROOT/theme"
 # Root directory for wallpaper-derived image caches.
-CACHE_ROOT="$RYPRLAND_CACHE_ROOT/wallpapers"
+CACHE_ROOT="$RYSTAL_CACHE_ROOT/wallpapers"
 # Per-session directory used for request coordination and locking.
-RUNTIME_ROOT="$RYPRLAND_RUNTIME_ROOT/theme"
+RUNTIME_ROOT="$RYSTAL_RUNTIME_ROOT/theme"
 # Latest queued theme request shared by concurrent invocations.
 REQUEST_FILE="$RUNTIME_ROOT/request"
 # Identifier of the most recently completed request.

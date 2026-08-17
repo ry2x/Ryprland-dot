@@ -12,9 +12,9 @@ local state_home = os.getenv("XDG_STATE_HOME") or home .. "/.local/state"
 local runtime_home = os.getenv("XDG_RUNTIME_DIR")
 
 if not runtime_home or runtime_home == "" then
-    runtime_home = "/tmp/ryprland-" .. (os.getenv("USER") or "user")
+    runtime_home = "/tmp/rystal-shell-" .. (os.getenv("USER") or "user")
 else
-    runtime_home = runtime_home .. "/ryprland"
+    runtime_home = runtime_home .. "/rystal-shell"
 end
 
 if not string.find(":" .. path .. ":", ":" .. local_bin .. ":", 1, true) then
@@ -74,16 +74,14 @@ local envs = {
     { "HIP_VISIBLE_DEVICES",                 "0" },
     { "HSA_OVERRIDE_GFX_VERSION",            "12.0.0" },
 
-    -- Ryprland Env
-    { "RYPRLAND_WALLPAPER_DIR",              home .. "/Pictures/Wallpapers" },
-    { "RYPRLAND_CACHE_DIR",                  cache_home .. "/ryprland" },
-    { "RYPRLAND_STATE_DIR",                  state_home .. "/ryprland" },
-    { "RYPRLAND_RUNTIME_DIR",                runtime_home },
-
     -- Rystal-shell Env
     { "RYSTAL_SHELL_CONFIG_DIR",             config_home .. "/rystal-shell" },
     { "RYSTAL_SHELL_DATA_DIR",               data_home .. "/rystal-shell" },
     { "RYSTAL_SHELL_INSTANCE",               "rystal-shell" },
+    { "RYSTAL_SHELL_WALLPAPER_DIR",          home .. "/Pictures/Wallpapers" },
+    { "RYSTAL_SHELL_CACHE_DIR",              cache_home .. "/rystal-shell" },
+    { "RYSTAL_SHELL_STATE_DIR",              state_home .. "/rystal-shell" },
+    { "RYSTAL_SHELL_RUNTIME_DIR",            runtime_home },
 
     -- sdl2 apps
     -- Run SDL2 applications on Wayland.
