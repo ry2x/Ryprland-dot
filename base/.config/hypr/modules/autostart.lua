@@ -12,11 +12,6 @@ hl.on("hyprland.start",
             "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
             "systemctl --user start hyprland-session.target",
 
-            -- authentication agent
-            "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
-            "/usr/lib/hyprpolkitagent/hyprpolkitagent",
-            "/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg",
-
             -- clipboard manager
             "wl-paste --type text --watch cliphist store",  --text data
             "wl-paste --type image --watch cliphist store", -- image data
@@ -29,10 +24,10 @@ hl.on("hyprland.start",
             "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; awww restore",
 
             -- bar & notifications
-            "sleep 5; rystal-shell",
-            "sleep 10; blueman-applet",
+            "rystal-shell",
+            "blueman-applet",
             "fcitx5 -d",
-            "sleep 2; discord --start-minimized"
+            "sleep 4;discord --start-minimized"
         }
 
         for _, app in ipairs(autostart) do
