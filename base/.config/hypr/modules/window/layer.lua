@@ -9,7 +9,8 @@ for _, namespace in ipairs({
     hl.layer_rule({
         match = { namespace = namespace },
         blur = true,
-        ignore_alpha = 0.5
+        blur_popups = true,
+        ignore_alpha = 0.58
     })
 end
 
