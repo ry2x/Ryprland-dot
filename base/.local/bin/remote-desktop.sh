@@ -10,6 +10,7 @@ set -euo pipefail
 
 OUTPUT_NAME="RMT-1"
 OUTPUT_MODE="1920x1080@60"
+SUNSHINE_SERVICE="app-dev.lizardbyte.app.Sunshine.service"
 
 help() {
     echo "Usage: $0 [OPTIONS]"
@@ -34,7 +35,7 @@ output_exists() {
 }
 
 is_running() {
-    pgrep -x sunshine >/dev/null
+    systemctl --user is-active --quiet "$SUNSHINE_SERVICE" || pgrep -x sunshine >/dev/null
 }
 
 reload_ags() {
@@ -59,7 +60,7 @@ start() {
     echo "Headless output ${OUTPUT_NAME} is configured."
 
     if ! is_running; then
-        hyprctl dispatch "hl.dsp.exec_cmd(\"sunshine\")"
+        systemctl --user start "$SUNSHINE_SERVICE"
         echo "Remote desktop application started."
     else
         echo "Remote desktop application is already running."
@@ -75,7 +76,8 @@ stop() {
     require_cmd systemctl
 
     if is_running; then
-        pkill -x sunshine
+        systemctl --user stop "$SUNSHINE_SERVICE"
+        pkill -x sunshine 2>/dev/null || true
         echo "Remote desktop application stopped."
     else
         echo "Remote desktop application is already stopped."
