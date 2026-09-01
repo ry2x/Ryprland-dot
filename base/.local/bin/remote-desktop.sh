@@ -39,7 +39,7 @@ is_running() {
 }
 
 reload_ags() {
-    ~/.config/hypr/scripts/restartAgs.sh >/dev/null 2>&1
+    ~/.config/hypr/scripts/restartRystalShell.sh >/dev/null 2>&1
 }
 
 start() {
