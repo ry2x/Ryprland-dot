@@ -32,7 +32,7 @@ local ApplicationBinds = {
     { "SHIFT + W", getRofiScript("web-search.sh"), " WebSearch" },
 
     -- ags
-    { "SHIFT + B", getHyprScript("restartAgs.sh"), "Restart ags" },
+    { "SHIFT + B", getHyprScript("restartRystalShell.sh"), "Restart ags" },
     { "ALT + B", "ags request -i rystal-shell reload-css", "Reload ags CSS" },
     { "N", "ags request -i rystal-shell toggle-notif", "󰂞 Notification" },
 
