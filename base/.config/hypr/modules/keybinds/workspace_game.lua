@@ -11,7 +11,7 @@ local W = require("modules.wallpaper")
 local wp_timer = W.timer
 
 local ws_nm = "game"
-local dp_nm = "DP-2"
+local dp_nm = "DP-1"
 
 -- move focused window to game workspace
 hl.bind(mod .. " + SHIFT + G", smw.move_to_workspace_silent("name:" .. ws_nm),
