@@ -21,3 +21,9 @@ if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
 
     unset _ryprland_agent_file _ryprland_agent_socket
 fi
+
+# Automatically add the default identity if not already loaded
+if ! ssh-add -l &>/dev/null; then
+    [[ -f "$HOME/.ssh/id_ed25519" ]] && ssh-add -q "$HOME/.ssh/id_ed25519" 2>/dev/null
+    [[ -f "$HOME/.ssh/aur" ]] && ssh-add -q "$HOME/.ssh/aur" 2>/dev/null
+fi
