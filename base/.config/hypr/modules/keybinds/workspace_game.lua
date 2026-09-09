@@ -1,7 +1,6 @@
 local P = require("modules.constants")
 local mod = P.mod
 local smw = P.smw
-local electronOptions = P.electronOptions
 
 local F = require("modules.utils")
 local sendNotification = F.sendNotification
@@ -115,9 +114,9 @@ hl.define_submap("gaming",
         )
         hl.bind(mod .. " + A",
             function()
-                toggleWindowTray("com.github.th_ch.youtube_music", "", "youtube-music " .. electronOptions)
+                toggleWindowTray("sonora", "", "sonora")
             end,
-            { description = "Toggle Youtube Music" }
+            { description = "Toggle Sonora" }
         )
 
         -- toggle fullscreen

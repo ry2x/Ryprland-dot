@@ -33,7 +33,7 @@ local envs = {
 
     -- toolkit
     { "CLUTTER_BACKEND",                     "wayland" },
-    { "GDK_BACKEND",                         "wayland",                     "x11", "*" },
+    { "GDK_BACKEND",                         "wayland",                     "x11", "false" },
     { "GDK_SCALE",                           "1" },
 
     -- XDG

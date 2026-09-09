@@ -78,6 +78,12 @@ hl.window_rule({
     tag = "+game"
 })
 
+-- prism launcher
+hl.window_rule({
+    match = { class = "^(org.prismlauncher.PrismLauncher)$" },
+    tag = "+steam"
+})
+
 --------------------
 -- Specific games --
 --------------------
@@ -90,6 +96,11 @@ hl.window_rule({
 hl.window_rule({
     match = { class = "^(steam_app_3548580)$" },
     tag = "+float_game"
+})
+
+hl.window_rule({
+    match = { class = "FTB StoneBlock 4" },
+    tag = "+game"
 })
 
 -- mate engine x86_64 (desktop mascot)

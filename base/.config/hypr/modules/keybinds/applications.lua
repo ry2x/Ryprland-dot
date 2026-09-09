@@ -1,6 +1,5 @@
 -- Keybinds for applications and launchers
 local P = require("modules.constants")
-local electronOptions = P.electronOptions
 
 local F = require("modules.utils")
 local toggleWindowTray = F.toggleWindowTray
@@ -20,7 +19,7 @@ local ApplicationBinds = {
     { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
     { "A",
         function()
-            toggleWindowTray("com.github.th-ch.youtube-music", "", "youtube-music " .. electronOptions)
+            toggleWindowTray("sonora", "", "sonora")
         end,
         " Music"
     },

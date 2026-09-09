@@ -96,18 +96,18 @@ hl.window_rule(
 
 local pinFloating = {
     -- toggle applications
-    { { class = "^(com.github.th-ch.youtube-music)$" }, "pin_float_big" },
-    { { class = "^(discord)$" },                        "pin_float_big" },
+    { { class = "^(sonora)$" },                     "pin_float_big" },
+    { { class = "^(discord)$" },                    "pin_float_big" },
     -- xdg-desktop-portal dialogs
-    { { class = "^(xdg-desktop-portal-gtk)$" },         "pin_float_big" },
-    { { class = "^(xdg-desktop-portal-kde)$" },         "pin_float_big" },
+    { { class = "^(xdg-desktop-portal-gtk)$" },     "pin_float_big" },
+    { { class = "^(xdg-desktop-portal-kde)$" },     "pin_float_big" },
     -- share picker
-    { { class = "^(hyprland-share-picker)$" },          "pin_float_big" },
+    { { class = "^(hyprland-share-picker)$" },      "pin_float_big" },
     -- setting apps
-    { { class = "^(org.pulseaudio.pavucontrol)$" },     "pin_float_mini" },
-    { { class = "^(blueman-manager)$" },                "pin_float_mini" },
-    { { class = "^(com.network.manager)$" },            "pin_float_mini" },
-    { { class = "^(nz.co.mega.megasync)$" },            "pin_float_mini" }
+    { { class = "^(org.pulseaudio.pavucontrol)$" }, "pin_float_mini" },
+    { { class = "^(blueman-manager)$" },            "pin_float_mini" },
+    { { class = "^(com.network.manager)$" },        "pin_float_mini" },
+    { { class = "^(nz.co.mega.megasync)$" },        "pin_float_mini" }
 }
 
 applyWindowRules(pinFloating)
