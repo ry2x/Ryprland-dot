@@ -40,6 +40,13 @@ cd Ryprland-dot
 git submodule update --init --recursive
 ```
 
+> [!NOTE]
+> Maintainer memo: initialize `private-dotfile/` explicitly with:
+>
+> ```bash
+> git submodule update --init --recursive --checkout -- private-dotfile
+> ```
+
 ### 2. Stow configurations into `$HOME`
 
 Preview the symlinks first with dry-run (`-n`):

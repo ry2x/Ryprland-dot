@@ -2,6 +2,7 @@
 	path = private-dotfile
 	url = https://github.com/ry2x/private-dotfile.git
 	branch = master
+	update = none
 [submodule "lib/rystal-shell"]
 	path = lib/rystal-shell
 	url = https://github.com/ry2x/Rystal-shell.git
