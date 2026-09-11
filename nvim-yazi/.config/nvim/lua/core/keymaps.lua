@@ -1,40 +1,35 @@
--- keymap
 local keymap = vim.keymap
 
-keymap.set({ 'n', 't' }, '<C-;>', function()
-  local cwd = vim.fn.getcwd()
-  vim.fn.jobstart(string.format("kitty -d '%s' --title TempTerminal", cwd), {
-    detach = true
-  })
-end, { desc = "Spawn Floating Kitty on top" })
+keymap.set({ "n", "t" }, "<C-;>", function()
+    local cwd = vim.fn.getcwd()
+    vim.fn.jobstart({ "kitty", "-d", cwd, "--title", "TempTerminal" }, {
+        detach = true,
+    })
+end, { desc = "Spawn floating Kitty" })
 
--- ファイルツリーの開閉 (Space + e)
-keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { silent = true })
+keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { desc = "Open file explorer" })
 
--- 1. ウィンドウ間の移動を Ctrl + h/j/k/l で行う (Treeからエディタへ戻るのもこれ)
-keymap.set('n', '<C-h>', '<C-w>h', { desc = "Go to Left Window" })
-keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to Right Window" })
-keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to Lower Window" })
-keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to Upper Window" })
+keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 
--- 2. タブ（バッファ）の切り替え
--- Alt + Tab は端末で奪われることが多いため、 Shift + h / l に割り当てると高速です
-keymap.set('n', '<S-l>', ':bnext<CR>', { silent = true, desc = "Next Tab" })
-keymap.set('n', '<S-h>', ':bprev<CR>', { silent = true, desc = "Previous Tab" })
+keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+keymap.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Delete current buffer" })
 
--- 2. タブ（バッファ）の切り替え
--- Alt + Tab は端末で奪われることが多いため、 Shift + h / l に割り当てると高速です
-keymap.set('n', '<S-l>', ':bnext<CR>', { silent = true, desc = "Next Tab" })
-keymap.set('n', '<S-h>', ':bprev<CR>', { silent = true, desc = "Previous Tab" })
+keymap.set({ "n", "i", "v" }, "<C-s>", "<Esc><cmd>write<cr>", { desc = "Save file" })
+keymap.set("n", "<leader>q", "<cmd>xitall<cr>", { desc = "Save all and quit" })
+keymap.set("n", "<leader>k", vim.diagnostic.open_float, { desc = "Show diagnostic" })
 
--- 3. 開いているタブを閉じる
-keymap.set('n', '<leader>x', ':Bdelete<CR>', { desc = "Close Current Tab" })
+keymap.set("i", "<Tab>", function()
+    return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+end, { expr = true, desc = "Select next completion item" })
 
--- Ctrl + s で保存 (Insertモード、Normalモード両方)
-keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<Esc>:w<CR>', { desc = "Save file" })
+keymap.set("i", "<S-Tab>", function()
+    return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+end, { expr = true, desc = "Select previous completion item" })
 
--- Space + q で「全てのファイルを保存して終了」
-keymap.set('n', '<leader>q', ':xa<CR>', { desc = "Save all and Quit Neovim" })
-
--- スペース + k で診断情報を表示する
-keymap.set('n', '<space>k', vim.diagnostic.open_float)
+keymap.set("i", "<CR>", function()
+    return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>"
+end, { expr = true, desc = "Confirm completion item" })

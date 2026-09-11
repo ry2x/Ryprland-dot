@@ -1,11 +1,8 @@
-local modules = { "ui", "explorer", "finder", "editing", "lsp", "misc" }
+local modules = { "ui", "finder", "editing", "lsp", "formatting" }
 
 local plugins = {}
 for _, m in ipairs(modules) do
-  local ok, p = pcall(require, "plugins." .. m)
-  if ok and type(p) == "table" then
-    for _, v in ipairs(p) do table.insert(plugins, v) end
-  end
+    vim.list_extend(plugins, require("plugins." .. m))
 end
 
 return plugins
