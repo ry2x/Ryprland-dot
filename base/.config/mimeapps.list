@@ -1,0 +1,129 @@
+[Default Applications]
+# Web Browser & HTML
+x-scheme-handler/http=zen.desktop
+x-scheme-handler/https=zen.desktop
+x-scheme-handler/chrome=zen.desktop
+x-scheme-handler/about=zen.desktop
+x-scheme-handler/unknown=zen.desktop
+text/html=zen.desktop
+application/xhtml+xml=zen.desktop
+application/x-extension-htm=zen.desktop
+application/x-extension-html=zen.desktop
+application/x-extension-shtml=zen.desktop
+application/x-extension-xhtml=zen.desktop
+application/x-extension-xht=zen.desktop
+
+# File Manager / Directories
+inode/directory=thunar.desktop
+
+# Plain Text & Source Code (Neovim in Kitty)
+text/plain=nvim.desktop
+text/markdown=nvim.desktop
+text/x-shellscript=nvim.desktop
+text/x-python=nvim.desktop
+text/x-c=nvim.desktop
+text/x-c++=nvim.desktop
+text/x-makefile=nvim.desktop
+text/x-lua=nvim.desktop
+text/xml=nvim.desktop
+text/yaml=nvim.desktop
+application/json=nvim.desktop
+application/xml=nvim.desktop
+application/x-yaml=nvim.desktop
+application/toml=nvim.desktop
+application/x-desktop=nvim.desktop
+application/octet-stream=nvim.desktop
+application/x-bat=nvim.desktop
+application/x-executable=code.desktop
+
+# Documents & PDF
+application/pdf=zen.desktop
+application/epub+zip=zen.desktop
+
+# Images
+image/jpeg=swayimg.desktop
+image/jpg=swayimg.desktop
+image/png=swayimg.desktop
+image/gif=swayimg.desktop
+image/webp=swayimg.desktop
+image/bmp=swayimg.desktop
+image/tiff=swayimg.desktop
+image/svg+xml=swayimg.desktop
+image/vnd.microsoft.icon=swayimg.desktop
+image/x-icon=swayimg.desktop
+image/avif=swayimg.desktop
+image/heif=swayimg.desktop
+image/heic=swayimg.desktop
+
+# Video
+video/mp4=mpv.desktop
+video/mkv=mpv.desktop
+video/webm=mpv.desktop
+video/x-matroska=mpv.desktop
+video/x-msvideo=mpv.desktop
+video/quicktime=mpv.desktop
+video/ogg=mpv.desktop
+video/x-flv=mpv.desktop
+
+# Audio
+audio/mpeg=mpv.desktop
+audio/mp3=mpv.desktop
+audio/flac=mpv.desktop
+audio/ogg=mpv.desktop
+audio/wav=mpv.desktop
+audio/x-wav=mpv.desktop
+audio/aac=mpv.desktop
+audio/m4a=mpv.desktop
+audio/x-m4a=mpv.desktop
+
+# Archives / Compression
+application/zip=org.gnome.FileRoller.desktop
+application/x-tar=org.gnome.FileRoller.desktop
+application/x-gzip=org.gnome.FileRoller.desktop
+application/x-bzip2=org.gnome.FileRoller.desktop
+application/x-xz=org.gnome.FileRoller.desktop
+application/x-7z-compressed=org.gnome.FileRoller.desktop
+application/x-rar=org.gnome.FileRoller.desktop
+application/x-rar-compressed=org.gnome.FileRoller.desktop
+application/vnd.rar=org.gnome.FileRoller.desktop
+application/gzip=org.gnome.FileRoller.desktop
+
+# Custom URL Schemes
+x-scheme-handler/discord=discord.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/codex=chatgpt.desktop
+
+# Windows Executables
+application/x-msdownload=wine.desktop
+application/x-ms-dos-executable=wine.desktop
+application/vnd.microsoft.portable-executable=wine.desktop
+
+[Added Associations]
+x-scheme-handler/http=zen.desktop;
+x-scheme-handler/https=zen.desktop;
+x-scheme-handler/chrome=zen.desktop;
+text/html=zen.desktop;
+application/x-extension-htm=zen.desktop;
+application/x-extension-html=zen.desktop;
+application/x-extension-shtml=zen.desktop;
+application/xhtml+xml=zen.desktop;
+application/x-extension-xhtml=zen.desktop;
+application/x-extension-xht=zen.desktop;
+inode/directory=thunar.desktop;
+image/jpeg=swayimg.desktop;
+image/png=swayimg.desktop;
+image/gif=swayimg.desktop;
+image/webp=swayimg.desktop;
+image/svg+xml=swayimg.desktop;
+image/vnd.microsoft.icon=swayimg.desktop;
+text/plain=nvim.desktop;code.desktop;org.gnome.gedit.desktop;
+text/markdown=nvim.desktop;obsidian.desktop;code.desktop;
+text/x-shellscript=nvim.desktop;code.desktop;org.gnome.gedit.desktop;
+application/json=nvim.desktop;code.desktop;org.gnome.gedit.desktop;
+application/octet-stream=nvim.desktop;code.desktop;org.gnome.gedit.desktop;
+application/vnd.microsoft.portable-executable=wine.desktop;protontricks-launch.desktop;
+application/x-msdownload=wine.desktop;
+video/mp4=mpv.desktop;
+video/mkv=mpv.desktop;
+audio/mpeg=mpv.desktop;
+application/zip=org.gnome.FileRoller.desktop;
