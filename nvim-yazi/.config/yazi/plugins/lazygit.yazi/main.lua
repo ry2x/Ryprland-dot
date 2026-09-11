@@ -9,23 +9,11 @@ return {
                 timeout = 5,
             })
         else
-            permit = ya.hide()
-            local output, err_code = Command("lazygit"):stderr(Command.PIPED):output()
-            if err_code ~= nil then
-                ya.notify({
-                    title = "Failed to run lazygit command",
-                    content = "Status: " .. err_code,
-                    level = "error",
-                    timeout = 5,
-                })
-            elseif not output.status.success then
-                ya.notify({
-                    title = "lazygit in" .. cwd .. "failed, exit code " .. output.status.code,
-                    content = output.stderr,
-                    level = "error",
-                    timeout = 5,
-                })
-            end
+            ya.emit("shell", {
+              "lazygit",
+              block = true,
+              confirm = false,
+            })
         end
     end,
 }
