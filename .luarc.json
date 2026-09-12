@@ -1,8 +1,36 @@
 {
+    "runtime": {
+        "path": [
+            "?.lua",
+            "?/init.lua",
+            "nvim-yazi/.config/yazi/plugins/?.yazi/main.lua"
+        ]
+    },
     "workspace": {
-        "library": ["/usr/share/hypr/stubs", "/usr/share/swayimg/swayimg.lua"]
+        "library": [
+            "/usr/share/hypr/stubs",
+            "/usr/share/swayimg/swayimg.lua",
+            "/usr/share/nvim/runtime/lua",
+            "nvim-yazi/.config/yazi/plugins"
+        ]
     },
     "diagnostics": {
-        "globals": ["hl", "swayimg"]
+        "globals": [
+            "hl",
+            "swayimg",
+            "vim",
+            "ya",
+            "ui",
+            "fs",
+            "ps",
+            "rt",
+            "th",
+            "cx",
+            "Tab",
+            "Command",
+            "Url",
+            "Job",
+            "File"
+        ]
     }
 }
