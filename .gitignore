@@ -34,6 +34,7 @@ base/.config/kitty/matugen/colors-matugen.conf
 
 # Kvantum
 base/.config/Kvantum/matugen/matugen.kvconfig
+base/.config/Kvantum/matugen-generated/
 
 # qt5
 base/.config/qt5ct/colors/matugen-qt5ct.conf

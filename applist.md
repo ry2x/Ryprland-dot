@@ -8,6 +8,7 @@ blueman
 bluez-utils
 bottom
 brightnessctl
+breeze-icons
 cliphist
 dart-sass
 fastfetch
@@ -32,6 +33,7 @@ pavucontrol
 pipewire-pulse
 playerctl
 pnpm
+qt6ct
 rofi
 slurp
 starship
@@ -39,6 +41,7 @@ stow
 thunar
 wf-recorder
 wlogout
+xdg-desktop-portal-gtk
 
 ## Optional-Packages
 
