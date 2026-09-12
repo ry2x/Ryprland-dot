@@ -21,7 +21,7 @@ hl.on("hyprland.start",
             "hyprpm reload -n", -- reload hyprland extensions
 
             -- wallpaper
-            "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; awww restore",
+            "killall -q awww-daemon awww; sleep 0.5; awww-daemon --format xrgb & sleep 1; awww restore; theme-switch.sh refresh",
 
             -- bar & notifications
             "rystal-shell",

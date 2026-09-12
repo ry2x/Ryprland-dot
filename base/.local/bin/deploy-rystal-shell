@@ -36,4 +36,21 @@ copy_if_missing "$source_dir/assets/launcher_bg.png" "$config_dir/assets/launche
 
 cd "$source_dir"
 pnpm install:launcher
-exec pnpm deploy:user
+
+shell_was_running=false
+if command -v ags >/dev/null 2>&1 && ags list 2>/dev/null | grep -Fxq rystal-shell; then
+    shell_was_running=true
+fi
+
+pnpm deploy:user
+
+if "$shell_was_running"; then
+    ags quit -i rystal-shell 2>/dev/null || true
+    sleep 0.1
+
+    if command -v hyprctl >/dev/null 2>&1 && hyprctl status >/dev/null 2>&1; then
+        hyprctl dispatch 'hl.dsp.exec_cmd("rystal-shell")' >/dev/null
+    else
+        rystal-shell >/dev/null 2>&1 &
+    fi
+fi

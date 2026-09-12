@@ -41,8 +41,12 @@ REQUEST_FILE="$RUNTIME_ROOT/request"
 PROCESSED_FILE="$RUNTIME_ROOT/processed"
 # Advisory lock that serializes Matugen and asset generation.
 LOCK_FILE="$RUNTIME_ROOT/lock"
+# Short-lived lock that serializes request creation and relative mode changes.
+REQUEST_LOCK_FILE="$RUNTIME_ROOT/request-lock"
 # Persistent record of the current wallpaper path.
 CURRENT_FILE="$STATE_ROOT/current-wallpaper"
+# Persistent record of the selected light or dark mode.
+MODE_FILE="$STATE_ROOT/mode"
 # Append-only timing and stale-request log.
 LOG_FILE="$STATE_ROOT/history.log"
 # Maximum number of wallpaper asset caches retained by LRU pruning.
@@ -54,6 +58,9 @@ Usage:
   theme-switch.sh [--dark|--light] set FILE
   theme-switch.sh [--dark|--light] random
   theme-switch.sh [--dark|--light] refresh
+  theme-switch.sh mode {dark|light}
+  theme-switch.sh toggle
+  theme-switch.sh status
 EOF
 }
 
@@ -85,6 +92,66 @@ atomic_write() {
     local temporary="${destination}.tmp.$$"
 
     printf '%s\n' "$value" >"$temporary" && mv -f "$temporary" "$destination"
+}
+
+read_saved_mode() {
+    local saved_mode=""
+
+    if [[ -s "$MODE_FILE" ]]; then
+        IFS= read -r saved_mode <"$MODE_FILE"
+    fi
+
+    case "$saved_mode" in
+    dark | light) printf '%s\n' "$saved_mode" ;;
+    "") printf 'dark\n' ;;
+    *)
+        printf 'theme-switch: Invalid saved mode %q; using dark\n' "$saved_mode" >&2
+        printf 'dark\n'
+        ;;
+    esac
+}
+
+read_current_wallpaper() {
+    if [[ -s "$CURRENT_FILE" ]]; then
+        IFS= read -r wallpaper_path <"$CURRENT_FILE"
+    elif [[ -L "$BACKGROUND_LINK" ]]; then
+        wallpaper_path=$(readlink -f -- "$BACKGROUND_LINK") || die "Cannot resolve the current wallpaper link"
+        atomic_write "$CURRENT_FILE" "$wallpaper_path" || die "Failed to migrate the current wallpaper state"
+    else
+        die "No current wallpaper has been recorded"
+    fi
+}
+
+read_effective_mode() {
+    local queued_record=""
+    local queued_mode=""
+
+    if [[ -s "$REQUEST_FILE" ]]; then
+        IFS= read -r queued_record <"$REQUEST_FILE"
+        queued_record="${queued_record#*$'\t'}"
+        queued_mode="${queued_record%%$'\t'*}"
+    fi
+
+    case "$queued_mode" in
+    dark | light) printf '%s\n' "$queued_mode" ;;
+    *) read_saved_mode ;;
+    esac
+}
+
+apply_gtk_mode() {
+    local color_scheme="prefer-dark"
+    local gtk_theme="Adwaita-dark"
+    local icon_theme="breeze-dark"
+
+    if [[ "$1" == light ]]; then
+        color_scheme="prefer-light"
+        gtk_theme="Adwaita"
+        icon_theme="breeze"
+    fi
+
+    gsettings set org.gnome.desktop.interface color-scheme "$color_scheme" &&
+        gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme" &&
+        gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
 }
 
 atomic_link() {
@@ -187,14 +254,18 @@ prune_cache() {
     done
 }
 
-mode=dark
+mode=""
+mode_explicit=false
 command_name=""
-wallpaper_arg=""
+command_arg=""
 
 while (($# > 0)); do
     case "$1" in
-    --dark | --light) mode="${1#--}" ;;
-    set | random | refresh)
+    --dark | --light)
+        mode="${1#--}"
+        mode_explicit=true
+        ;;
+    set | random | refresh | mode | toggle | status)
         [[ -z "$command_name" ]] || die "Only one command may be specified"
         command_name="$1"
         ;;
@@ -205,14 +276,14 @@ while (($# > 0)); do
     --)
         shift
         (($# == 1)) || die "-- must be followed by exactly one wallpaper path"
-        wallpaper_arg="$1"
+        command_arg="$1"
         shift
         break
         ;;
     -*) die "Unknown option: $1" ;;
     *)
-        [[ -z "$wallpaper_arg" ]] || die "Unexpected argument: $1"
-        wallpaper_arg="$1"
+        [[ -z "$command_arg" ]] || die "Unexpected argument: $1"
+        command_arg="$1"
         ;;
     esac
     shift
@@ -223,32 +294,51 @@ done
     exit 2
 }
 
+case "$command_name" in
+status)
+    ! $mode_explicit || die "status does not accept --dark or --light"
+    [[ -z "$command_arg" ]] || die "status does not accept arguments"
+    read_saved_mode
+    exit 0
+    ;;
+mode)
+    ! $mode_explicit || die "mode does not accept --dark or --light"
+    case "$command_arg" in
+    dark | light) mode="$command_arg" ;;
+    *) die "mode requires exactly one value: dark or light" ;;
+    esac
+    ;;
+toggle)
+    ! $mode_explicit || die "toggle does not accept --dark or --light"
+    [[ -z "$command_arg" ]] || die "toggle does not accept arguments"
+    ;;
+set | random | refresh)
+    :
+    ;;
+esac
+
 mkdir -p "$STATE_ROOT" "$CACHE_ROOT" "$RUNTIME_ROOT"
-require_command awww
 require_command flock
+require_command gsettings
 require_command magick
 require_command matugen
 require_command sha256sum
+if [[ "$command_name" == set || "$command_name" == random ]]; then
+    require_command awww
+fi
 
 case "$command_name" in
 set)
-    [[ -n "$wallpaper_arg" ]] || die "set requires a wallpaper path"
-    wallpaper_path=$(readlink -f -- "$wallpaper_arg") || die "Cannot resolve wallpaper: $wallpaper_arg"
+    [[ -n "$command_arg" ]] || die "set requires a wallpaper path"
+    wallpaper_path=$(readlink -f -- "$command_arg") || die "Cannot resolve wallpaper: $command_arg"
     ;;
 random)
-    [[ -z "$wallpaper_arg" ]] || die "random does not accept a wallpaper path"
+    [[ -z "$command_arg" ]] || die "random does not accept a wallpaper path"
     wallpaper_path=$(choose_random_wallpaper)
     ;;
-refresh)
-    [[ -z "$wallpaper_arg" ]] || die "refresh does not accept a wallpaper path"
-    if [[ -s "$CURRENT_FILE" ]]; then
-        IFS= read -r wallpaper_path <"$CURRENT_FILE"
-    elif [[ -L "$BACKGROUND_LINK" ]]; then
-        wallpaper_path=$(readlink -f -- "$BACKGROUND_LINK") || die "Cannot resolve the current wallpaper link"
-        atomic_write "$CURRENT_FILE" "$wallpaper_path" || die "Failed to migrate the current wallpaper state"
-    else
-        die "No current wallpaper has been recorded"
-    fi
+refresh | mode | toggle)
+    [[ -z "$command_arg" || "$command_name" == mode ]] || die "$command_name does not accept arguments"
+    read_current_wallpaper
     ;;
 esac
 
@@ -256,15 +346,28 @@ esac
 is_supported_wallpaper "$wallpaper_path" || die "Unsupported wallpaper format: $wallpaper_path"
 [[ "$wallpaper_path" != *$'\n'* && "$wallpaper_path" != *$'\t'* ]] || die "Tabs and newlines are not supported in wallpaper paths"
 
-if [[ "$command_name" != refresh ]]; then
+if [[ "$command_name" == set || "$command_name" == random ]]; then
     awww img --resize crop --transition-type random --transition-duration 2 \
         --transition-fps 60 --transition-step 5 "$wallpaper_path" || die "awww failed to set the wallpaper"
     atomic_write "$CURRENT_FILE" "$wallpaper_path" || die "Failed to save the current wallpaper"
 fi
 
+exec 8>"$REQUEST_LOCK_FILE"
+flock 8
+case "$command_name" in
+toggle)
+    mode=$(read_effective_mode)
+    [[ "$mode" == dark ]] && mode=light || mode=dark
+    ;;
+set | random | refresh)
+    $mode_explicit || mode=$(read_effective_mode)
+    ;;
+esac
+
 request_id="$(date +%s%N)-$$-$RANDOM"
 request_value="$request_id"$'\t'"$mode"$'\t'"$wallpaper_path"
 atomic_write "$REQUEST_FILE" "$request_value" || die "Failed to queue the theme request"
+flock -u 8
 
 exec 9>"$LOCK_FILE"
 flock 9
@@ -301,6 +404,8 @@ if [[ "$latest_id" != "$active_id" ]]; then
 fi
 
 publish_assets "$cache_dir" "$wallpaper_path" || die "Failed to publish generated image assets"
+apply_gtk_mode "$mode" || die "Failed to apply GTK settings for: $mode"
+atomic_write "$MODE_FILE" "$mode" || die "Failed to save the current theme mode"
 
 pkill -USR1 -u "$USER" -x kitty 2>/dev/null || true
 if command -v ags >/dev/null 2>&1 && ags list | grep -Fxq "$AGS_INSTANCE"; then
