@@ -55,11 +55,11 @@ output_path = '~/.config/gtk-4.0/gtk.css'
 # Kvantum
 [templates.kvantum]
 input_path = '~/.config/matugen/templates/matugen.kvconfig'
-output_path = '~/.config/Kvantum/matugen-generated/matugen-generated.kvconfig'
+output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 
 [templates.kvantum-svg]
 input_path = '~/.config/matugen/templates/matugen.svg'
-output_path = '~/.config/Kvantum/matugen-generated/matugen-generated.svg'
+output_path = '~/.config/Kvantum/matugen/matugen.svg'
 
 # Cava
 [templates.cava]
