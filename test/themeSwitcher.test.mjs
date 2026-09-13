@@ -210,8 +210,8 @@ printf 'gsettings %s\\n' "$*" >>"$TEST_COMMAND_LOG"
                 .slice(-3),
             [
                 "gsettings set org.gnome.desktop.interface color-scheme prefer-light",
-                "gsettings set org.gnome.desktop.interface gtk-theme Adwaita",
-                "gsettings set org.gnome.desktop.interface icon-theme breeze"
+                "gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3",
+                "gsettings set org.gnome.desktop.interface icon-theme Ars-Light-Icons"
             ]
         );
     });
