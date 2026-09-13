@@ -43,24 +43,36 @@
 @define-color sidebar_backdrop_color @sidebar_bg_color;
 @define-color secondary_sidebar_backdrop_color @sidebar_bg_color;
 
+/* GTK 3 Adwaita still consumes the legacy theme palette names. */
+@define-color theme_bg_color @window_bg_color;
+@define-color theme_fg_color @window_fg_color;
+@define-color theme_base_color @view_bg_color;
+@define-color theme_text_color @view_fg_color;
+@define-color theme_selected_bg_color @accent_bg_color;
+@define-color theme_selected_fg_color @accent_fg_color;
+@define-color insensitive_bg_color {{colors.surface_container.default.hex}};
+@define-color insensitive_fg_color {{colors.on_surface_variant.default.hex}};
+@define-color borders {{colors.outline_variant.default.hex}};
+@define-color unfocused_borders {{colors.surface_variant.default.hex}};
+
 .navigation-sidebar {
-	background-color: @sidebar_bg_color;
-	color: @window_fg_color;
+    background-color: @sidebar_bg_color;
+    color: @window_fg_color;
 }
 
 
 headerbar.default-decoration {
-  /* You may need to tweak these values depending on your GTK theme */
-  margin-bottom: 50px;
-  margin-top: -100px;
+    /* You may need to tweak these values depending on your GTK theme */
+    margin-bottom: 50px;
+    margin-top: -100px;
 }
 
 /* rm -rf window shadows */
 window.csd,             /* gtk4? */
 window.csd decoration { /* gtk3 */
-  box-shadow: none;
+    box-shadow: none;
 }
 
 window {
-  background-color: alpha({{ colors.background.default.hex }}, 0.85);
+    background-color: alpha({{ colors.background.default.hex }}, 0.85);
 }

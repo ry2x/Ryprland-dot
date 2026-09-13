@@ -140,13 +140,13 @@ read_effective_mode() {
 
 apply_gtk_mode() {
     local color_scheme="prefer-dark"
-    local gtk_theme="Adwaita-dark"
-    local icon_theme="breeze-dark"
+    local gtk_theme="adw-gtk3-dark"
+    local icon_theme="Ars-Dark-Icons"
 
     if [[ "$1" == light ]]; then
         color_scheme="prefer-light"
-        gtk_theme="Adwaita"
-        icon_theme="breeze"
+        gtk_theme="adw-gtk3"
+        icon_theme="Ars-Light-Icons"
     fi
 
     gsettings set org.gnome.desktop.interface color-scheme "$color_scheme" &&
