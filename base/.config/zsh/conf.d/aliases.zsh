@@ -24,6 +24,7 @@ alias reload='exec zsh'
 alias grep='grep --color=auto'
 alias wget='wget -c'
 alias icat='kitten icat'
+alias cat='bat --theme=matugen-bat-colors'
 
 # Git
 alias g='git'
