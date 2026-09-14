@@ -1,0 +1,15 @@
+[Unit]
+Description=Clean system caches, journals, and temporary files
+Documentation=file:/usr/bin/system-maintenance.sh
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/system-maintenance.sh --execute
+Nice=19
+IOSchedulingClass=idle
+ProtectHome=true
+ProtectSystem=full
+NoNewPrivileges=true
+LockPersonality=true
+RestrictRealtime=true
