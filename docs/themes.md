@@ -33,13 +33,21 @@ mode as successfully applied.
 ## GTK integration
 
 The extended switcher also updates `org.gnome.desktop.interface` for GTK and the Settings portal.
-Light mode uses `prefer-light`, `WhiteSur-Light-nord`, and `Ars-Light-Icons`; dark mode uses
-`prefer-dark`, `WhiteSur-Dark-nord`, and `Ars-Dark-Icons`.
+Light mode uses `prefer-light`, `Materia-light`, and `Ars-Light-Icons`; dark mode uses
+`prefer-dark`, `Materia-dark`, and `Ars-Dark-Icons`.
+
+On Arch Linux / CachyOS, install both GTK theme variants with:
+
+```bash
+sudo pacman -S materia-gtk-theme
+```
+
+Run `theme-switch.sh refresh` to apply the themes using the saved mode and current wallpaper.
 
 The Matugen-generated `gtk.css` supplies the matching dynamic surface and accent colors. Running GTK applications may receive the preference change live, but
 should be restarted when they do not reload the generated CSS completely. `xdg-desktop-portal-gtk`
-must be installed, and the WhiteSur themes must be available below the user or system theme data
-directory. The Ars icon themes must be available below the corresponding icon data directory;
+must be installed; `materia-gtk-theme` provides the GTK themes under `/usr/share/themes`.
+The Ars icon themes must be available below the corresponding icon data directory;
 `Ars-Dark-Icons` uses Breeze as a fallback.
 
 ## Qt integration

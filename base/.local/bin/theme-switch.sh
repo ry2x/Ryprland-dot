@@ -140,12 +140,12 @@ read_effective_mode() {
 
 apply_gtk_mode() {
     local color_scheme="prefer-dark"
-    local gtk_theme="WhiteSur-Dark-nord"
+    local gtk_theme="Materia-dark"
     local icon_theme="Ars-Dark-Icons"
 
     if [[ "$1" == light ]]; then
         color_scheme="prefer-light"
-        gtk_theme="WhiteSur-Light-nord"
+        gtk_theme="Materia-light"
         icon_theme="Ars-Light-Icons"
     fi
 

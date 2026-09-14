@@ -32,6 +32,7 @@ See [Rystal-shell](./lib/rystal-shell/README.md) for its build and runtime requi
 | `kitty`                                                 | Default terminal and terminal-based shortcuts           |
 | `awww`, `matugen`                                       | Wallpaper daemon and generated application themes       |
 | `glib2`, `util-linux`                                   | `gsettings` and `flock`, required by the theme switcher |
+| `materia-gtk-theme`                                     | Materia light and dark GTK themes                       |
 | `jq`                                                    | JSON processing in desktop helpers                      |
 | `psmisc`                                                | `killall`, used when restarting the wallpaper daemon    |
 | `rofi`, `cliphist`, `wl-clipboard`                      | Menus and clipboard history; `wl-paste` starts at login |
@@ -141,7 +142,7 @@ These are theme or font names, not necessarily package names:
 
 | Asset                  | Configured names                                                        |
 | ---------------------- | ----------------------------------------------------------------------- |
-| GTK themes             | `WhiteSur-Light-nord`, `WhiteSur-Dark-nord`                             |
+| GTK themes             | `Materia-light`, `Materia-dark` (`materia-gtk-theme`)                   |
 | Icon themes            | `Ars-Light-Icons`, `Ars-Dark-Icons`                                     |
 | Cursor theme           | `M200`                                                                  |
 | GTK font               | SF Pro Regular 11 (`apple-fonts` is listed as an optional font package) |
