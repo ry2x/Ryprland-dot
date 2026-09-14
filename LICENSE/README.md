@@ -80,18 +80,6 @@ effect alongside the uosc license.
 - License text: [`cava-MIT.txt`](cava-MIT.txt)
 - Local status: vendored through the Matuprland-derived configuration
 
-### Catppuccin Kvantum themes
-
-- Upstream: [catppuccin/Kvantum](https://github.com/catppuccin/Kvantum)
-- Local paths:
-    - `base/.config/Kvantum/catppuccin-latte-blue/`
-    - `base/.config/Kvantum/catppuccin-mocha-blue/`
-- License: MIT
-- License text:
-  [`catppuccin-kvantum-MIT.txt`](catppuccin-kvantum-MIT.txt)
-- Local status: historical copies vendored through the Matuprland-derived
-  configuration
-
 ### JaKooLit Hyprland-Dots components
 
 - Upstream:
