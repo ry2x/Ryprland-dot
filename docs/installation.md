@@ -78,7 +78,16 @@ System-level files under `system/` mirror `/etc` and `/usr` paths (including gre
 sudo system/install.sh
 ```
 
-The installer copies the files and reloads systemd. It does not enable services or timers.
+The installer copies the files and reloads systemd and udev rules. It does not enable
+services or timers, or restart greetd. An existing `/etc/greetd/config.toml` is preserved,
+including any autologin setting; the remote-login configuration is staged separately.
+The updated greeter is used the next time the login screen starts (including after logout).
+
+Install the remote-login dependencies in [applist.md](../applist.md) before running the
+installer. It grants `greeter` GPU render-node access and access to `/dev/uinput` through
+a dedicated group, without granting access to physical input devices.
+Follow [Remote login](./remote-login.md) to pair Moonlight, test without a physical display,
+and explicitly disable autologin after validation.
 
 #### Optional timers
 

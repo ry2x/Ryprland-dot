@@ -115,11 +115,13 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 | Feature                   | Packages                               |
 | ------------------------- | -------------------------------------- |
 | Login screen              | `greetd`, `greetd-regreet`             |
+| Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux` |
 | CachyOS mirror-list timer | `rate-mirrors`                         |
 | Rootkit check timer       | `rkhunter`                             |
 | Package-cache cleanup     | `pacman-contrib` (provides `paccache`) |
 
 See [System-level setup](./docs/installation.md#4-optional-system-level-setup).
+See [Remote login](./docs/remote-login.md) for the greeter's separate Sunshine host and staged activation.
 The cleanup script skips package-cache cleanup when `paccache` is unavailable.
 
 ### Other optional applications
@@ -138,7 +140,7 @@ Select these for the games and compatibility tools you use; the desktop does not
 
 ## Appearance assets
 
-These are theme or font names, not necessarily package names:
+These are desktop theme or font names, not necessarily package names:
 
 | Asset                  | Configured names                                                        |
 | ---------------------- | ----------------------------------------------------------------------- |
@@ -148,5 +150,16 @@ These are theme or font names, not necessarily package names:
 | GTK font               | SF Pro Regular 11 (`apple-fonts` is listed as an optional font package) |
 | Qt font                | Noto Sans CJK JP 12                                                     |
 | Terminal / coding font | SF Pro Text 12                                                          |
+
+The ReGreet login screen uses separate appearance settings:
+
+| Asset        | Configured name |
+| ------------ | --------------- |
+| GTK theme    | `Materia-dark` (`materia-gtk-theme`) |
+| Icon theme   | `breeze-dark` (`breeze-icons`) |
+| Cursor theme | `Adwaita` |
+| GTK font     | Adwaita Sans 16 |
+
+See [ReGreet configuration](./system/etc/greetd/regreet.toml) for the login screen settings.
 
 See [Themes and wallpapers](./docs/themes.md) for theme locations and GTK/Qt integration.

@@ -12,6 +12,7 @@ This repository contains my personal desktop configuration with [Hyprland](https
 - [Installation](./docs/installation.md): requirements, fonts, and setup
 - [Package list](./applist.md): core and optional packages
 - [Themes and wallpapers](./docs/themes.md): commands and GTK/Qt integration
+- [Remote login](./docs/remote-login.md): Moonlight access before login without a physical display
 - [日本語入力と Mozc 辞書](./docs/japanese-input.md)
 - [Repository structure](./docs/structure.md): directories and Rystal-shell development
 - [Rystal-shell documentation](https://github.com/ry2x/Rystal-shell/blob/main/README.md)
