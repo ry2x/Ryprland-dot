@@ -1,9 +1,12 @@
 # Packages for Ryprland-dot
 
 This list describes the packages used by this repository on Arch Linux / CachyOS.
-Install the base requirements, then select the features you use. Packages pulled in
-as dependencies do not need to be installed twice. A working systemd-based Wayland
-system, graphics drivers, and standard command-line tools are assumed.
+
+> [!IMPORTANT]
+> Install the base requirements, then select the features you use. A working systemd-based
+> Wayland system, graphics drivers, and standard command-line tools are assumed.
+
+Packages pulled in as dependencies do not need to be installed twice.
 
 See [Installation](./docs/installation.md) for setup commands. This is a dependency
 guide, not a complete export of the maintainer's installed packages.
@@ -55,9 +58,11 @@ The GTK themes, icon themes, and fonts are listed under [Appearance assets](#app
 
 ## Feature-specific packages
 
-These are required only for the corresponding feature. Some are referenced by the
-shipped autostart entries or shortcuts; remove or change those entries when omitting
-the application. Installing a package alone does not configure its system service.
+These are required only for the corresponding feature.
+
+> [!IMPORTANT]
+> When omitting an application, remove or update its autostart entries and shortcuts.
+> Installing a package alone does not configure its system service.
 
 ### Desktop controls and capture
 
@@ -112,17 +117,18 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 
 ### System services and timers
 
-| Feature                   | Packages                               |
-| ------------------------- | -------------------------------------- |
-| Login screen              | `greetd`, `greetd-regreet`             |
+| Feature                   | Packages                                                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| Login screen              | `greetd`, `greetd-regreet`                                                                      |
 | Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux` |
-| CachyOS mirror-list timer | `rate-mirrors`                         |
-| Rootkit check timer       | `rkhunter`                             |
-| Package-cache cleanup     | `pacman-contrib` (provides `paccache`) |
+| CachyOS mirror-list timer | `rate-mirrors`                                                                                  |
+| Rootkit check timer       | `rkhunter`                                                                                      |
+| Package-cache cleanup     | `pacman-contrib` (provides `paccache`)                                                          |
 
 See [System-level setup](./docs/installation.md#4-optional-system-level-setup).
 See [Remote login](./docs/remote-login.md) for the greeter's separate Sunshine host and staged activation.
-The cleanup script skips package-cache cleanup when `paccache` is unavailable.
+> [!NOTE]
+> The cleanup script skips package-cache cleanup when `paccache` is unavailable.
 
 ### Other optional applications
 
@@ -140,7 +146,8 @@ Select these for the games and compatibility tools you use; the desktop does not
 
 ## Appearance assets
 
-These are desktop theme or font names, not necessarily package names:
+> [!NOTE]
+> The names below are desktop themes and fonts, not necessarily package names.
 
 | Asset                  | Configured names                                                        |
 | ---------------------- | ----------------------------------------------------------------------- |
@@ -153,12 +160,12 @@ These are desktop theme or font names, not necessarily package names:
 
 The ReGreet login screen uses separate appearance settings:
 
-| Asset        | Configured name |
-| ------------ | --------------- |
+| Asset        | Configured name                      |
+| ------------ | ------------------------------------ |
 | GTK theme    | `Materia-dark` (`materia-gtk-theme`) |
-| Icon theme   | `breeze-dark` (`breeze-icons`) |
-| Cursor theme | `Adwaita` |
-| GTK font     | Adwaita Sans 16 |
+| Icon theme   | `breeze-dark` (`breeze-icons`)       |
+| Cursor theme | `Adwaita`                            |
+| GTK font     | Adwaita Sans 16                      |
 
 See [ReGreet configuration](./system/etc/greetd/regreet.toml) for the login screen settings.
 

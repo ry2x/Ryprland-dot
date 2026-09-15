@@ -1,9 +1,9 @@
 # Installation
 
-This guide covers initial setup, from installing dependencies to enabling optional
-system services and checking their operation.
+This guide covers initial setup, from installing dependencies to enabling optional system services and checking their operation.
 
-After cloning, run the remaining commands from the repository root.
+> [!IMPORTANT]
+> After cloning, run the remaining commands from the repository root.
 
 ## Requirements
 
@@ -20,10 +20,10 @@ Before installing, install the required packages:
 - **GTK UI**: SF Pro Regular 11
 - **Qt UI**: SF Pro Text 12
 
-## Installation & Setup
+> [!NOTE]
+> For Arch users, `SF Pro` is provided by apple-fonts AUR package.
 
-> [!WARNING]
-> GNU Stow creates symlinks directly into your `$HOME`. Backup existing configurations in `~/.config/` before stowing.
+## Installation & Setup
 
 ### 1. Clone the repository & submodules
 
@@ -42,7 +42,9 @@ git submodule update --init --recursive
 
 ### 2. Stow configurations into `$HOME`
 
-Preview the symlinks first with dry-run (`-n`):
+> [!WARNING]
+> GNU Stow creates symlinks in your `$HOME`. Back up existing configurations in
+> `~/.config/` and review the dry-run (`-n`) output before applying the links.
 
 ```bash
 # Preview
@@ -64,7 +66,8 @@ Once `base` is stowed, the `deploy-rystal-shell` helper is available in your `PA
 deploy-rystal-shell
 ```
 
-If Rystal-shell is already running, the helper restarts it after replacing the deployed files.
+> [!NOTE]
+> If Rystal-shell is already running, the helper restarts it after replacing the deployed files.
 
 This installs the Rystal-shell-owned launcher, compiles the TypeScript shell from
 `lib/rystal-shell/`, and atomically deploys the bundle, assets, and theme stylesheets into
@@ -74,20 +77,16 @@ This installs the Rystal-shell-owned launcher, compiles the TypeScript shell fro
 
 System-level files under `system/` mirror `/etc` and `/usr` paths (including greetd, ReGreet, systemd timers, and backgrounds):
 
+> [!IMPORTANT]
+> Install the dependencies in [applist.md](../applist.md) first.
+> See [Remote login](./remote-login.md) for setup and validation.
+
 ```bash
 sudo system/install.sh
 ```
 
-The installer copies the files and reloads systemd and udev rules. It does not enable
-services or timers, or restart greetd. An existing `/etc/greetd/config.toml` is preserved,
-including any autologin setting; the remote-login configuration is staged separately.
-The updated greeter is used the next time the login screen starts (including after logout).
-
-Install the remote-login dependencies in [applist.md](../applist.md) before running the
-installer. It grants `greeter` GPU render-node access and access to `/dev/uinput` through
-a dedicated group, without granting access to physical input devices.
-Follow [Remote login](./remote-login.md) to pair Moonlight, test without a physical display,
-and explicitly disable autologin after validation.
+The installer backs up the existing greetd config, installs files, and reloads systemd
+and udev rules without enabling services or restarting greetd.
 
 #### Optional timers
 
@@ -99,19 +98,8 @@ Each timer runs weekly. Enable only the tasks you want:
 | `rkhunter.timer`           | Run a Rootkit Hunter check (requires `rkhunter`)        |
 | `system-maintenance.timer` | Clean package caches, old journals, and temporary files |
 
-Cleanup retains two cached versions of installed packages, removes cached packages
-that are no longer installed, deletes archived journals older than 30 days, and
-applies the system's `tmpfiles.d` age rules. It only reports orphaned packages and
-failed units; it leaves user caches and trash untouched. Package-cache cleanup
-requires `pacman-contrib`; that step is skipped when it is unavailable.
-
-Preview cleanup before enabling its timer:
-
-```bash
-sudo system-maintenance.sh --dry-run
-```
-
-Run the corresponding commands for the timers you selected:
+> [!IMPORTANT]
+> Run only the commands for the timers you selected. `--now` also starts each timer immediately.
 
 ```bash
 sudo systemctl enable --now cachyos-mirrorlist.timer
@@ -119,9 +107,14 @@ sudo systemctl enable --now rkhunter.timer
 sudo systemctl enable --now system-maintenance.timer
 ```
 
-To run cleanup manually after reviewing the preview:
+> [!CAUTION]
+> `--execute` deletes eligible files. Review the `--dry-run` output before running cleanup.
 
 ```bash
+# Run preview before cleanup
+sudo system-maintenance.sh --dry-run
+
+# Execute cleanup
 sudo system-maintenance.sh --execute
 ```
 

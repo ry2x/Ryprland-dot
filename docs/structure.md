@@ -19,7 +19,9 @@ Ryprland-dot/
 
 While `Ryprland-dot` integrates tightly with `rystal-shell`, **Rystal-shell itself is designed to run independently using environment variables and standard XDG directory fallbacks**.
 
-Standalone installation does not require Ryprland, but the current implementation uses Hyprland APIs.
+> [!IMPORTANT]
+> Standalone installation does not require Ryprland, but the current implementation uses Hyprland APIs.
+
 See the standalone guide for requirements and the development guide for environment setup:
 
 - Documentation & Configuration: [lib/rystal-shell/README.md](../lib/rystal-shell/README.md)

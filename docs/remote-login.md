@@ -11,8 +11,13 @@ Both use `capture = wlr` to capture a headless Wayland output. When a physical d
 is attached, the largest physical display is the ReGreet output and `RMT-LOGIN` mirrors
 it for streaming. With no physical display, ReGreet runs directly on `RMT-LOGIN`.
 No dummy plug is required by the configuration.
-The login streamer uses VA-API, matching this machine's AMD GPU. Login ends that stream;
-reconnect to the desktop entry in Moonlight. Logging out restores the login host.
+The login streamer uses VA-API, matching this machine's AMD GPU.
+
+> [!IMPORTANT]
+> Pair the login and desktop hosts separately. After login, reconnect to the desktop
+> entry in Moonlight. Logging out restores the login host.
+
+### How the login session is isolated
 
 The greeter has separate keys, pairing state and Web UI credentials in
 `/var/lib/ryprland-login` (mode `0700`, owner `greeter`). Never copy the desktop's credentials
@@ -39,22 +44,27 @@ systemctl --user daemon-reload
 sudo system/install.sh
 ```
 
-The installer keeps an existing `/etc/greetd/config.toml`. The final configuration without
-autologin is staged at `/etc/greetd/config.remote-login.toml`. The greeter helper and its
-Hyprland configuration are updated immediately on disk and used at the next logout.
-There is no automatic restart, firewall change, UPnP enablement or network exposure change.
+> [!NOTE]
+> The installer keeps an existing `/etc/greetd/config.toml` and stages the final configuration
+> at `/etc/greetd/config.remote-login.toml`. The updated greeter is used at the next logout.
+> It does not restart the session or change firewall rules, UPnP, or network exposure.
 
 The dedicated `ryprland-sunshine.service` prepares `RMT-1` before each start and forces
 `wlr` capture of that output. Hyprland imports its socket environment and starts the service
 at login; shutdown requests service termination. `remote-desktop.sh --start` and `--stop`
-remain available; `--prepare` is the internal service hook. Do not stop the service during
-your only remote connection.
+remain available; `--prepare` is the internal service hook.
 
 ## 2. Pair and test while autologin remains enabled
 
-Perform the first test with local access or a working SSH recovery connection. Save work,
-then log out normally. greetd's initial autologin occurs only once per boot; logout enters
+> [!WARNING]
+> Before logging out, save your work and ensure you have local access or a working SSH
+> recovery connection. Stopping the desktop stream disconnects Moonlight. The installer
+> does not install or configure SSH; recovery access must already work independently.
+
+Log out normally. greetd's initial autologin occurs only once per boot; logout enters
 the default ReGreet session. This exercises the new greeter without removing boot autologin.
+
+### Open the login Web UI
 
 The login Web UI accepts connections only from the PC running ReGreet. To open it
 from another device, create an SSH tunnel. Run the following command in a terminal
@@ -71,21 +81,26 @@ ssh -N -L 127.0.0.1:48090:127.0.0.1:48090 SSH_USER@HOST
 - `-L 127.0.0.1:48090:127.0.0.1:48090`: forward port `48090` on your browser device's
   loopback interface to port `48090` on the remote PC's loopback interface.
 
-Keep the terminal open; the command normally waits without showing a shell prompt.
-Open `https://127.0.0.1:48090` in a browser **on the same device where you ran SSH**,
-create unique Web UI credentials, and use the PIN page to enter the PIN shown by
-Moonlight. The Moonlight client can be on a different device. When finished, press
-`Ctrl+C` in the SSH terminal to close the tunnel.
+> [!TIP]
+> Keep the SSH terminal open; waiting without a shell prompt is normal.
+> Open `https://127.0.0.1:48090` in a browser **on the same device where you ran SSH**.
+> The Moonlight client can be on a different device. Press `Ctrl+C` when finished to close the tunnel.
+
+Create unique Web UI credentials, and use the PIN page to enter the PIN shown by Moonlight.
 
 Alternatively, use a browser on the PC running ReGreet from a
 separate local session; do not add a browser or shell to the greeter's application list.
-SSH recovery must already work independently of the graphical session; this installer
-does not install or reconfigure SSH.
+
+### Add the login host in Moonlight
 
 On iPhone / iPad / Apple TV, keep the existing desktop entry, press **Add PC**, and manually
-add `HOST:48089` while the machine is displaying ReGreet. The login host is intentionally
-offline while the user desktop is running, so it cannot be added before logout. Current
-Apple clients support Sunshine port families and store hosts by the UUID returned by each
+add `HOST:48089` while the machine is displaying ReGreet.
+
+> [!IMPORTANT]
+> The login host is offline while the desktop is running. Add it while ReGreet is visible,
+> and keep the existing desktop entry for reconnecting after authentication.
+
+Current Apple clients support Sunshine port families and store hosts by the UUID returned by each
 Sunshine instance; the separate state files therefore keep the login and desktop entries
 independent. Historical Apple clients before the alternate-port fix do not work here.
 
@@ -100,7 +115,7 @@ The login stream uses TCP `48084`, `48089`, `48110` and UDP `48098`–`48100`;
 `48090` is the management UI. Any existing firewall / VPN must allow streaming from the
 intended client. Keep management access through localhost and do not add WAN forwarding.
 
-Verify all of these before the final switch:
+### Verify before switching
 
 - Both Moonlight entries can be paired and retained independently.
 - With monitors unplugged, the login host shows ReGreet and accepts keyboard / pointer input.
@@ -113,6 +128,10 @@ Verify all of these before the final switch:
 
 ## 3. Disable autologin after the tests pass
 
+> [!WARNING]
+> Complete the checks above before disabling autologin. Keep local or SSH recovery access
+> available until the final cold-boot test succeeds.
+
 ```bash
 sudo system/install.sh --enable-remote-login
 ```
@@ -121,14 +140,14 @@ This saves the previous config as `/etc/greetd/config.toml.backup.XXXXXX` and in
 the configuration with no `initial_session`. Record the backup path printed by the installer.
 It does not restart greetd. Reboot at a suitable time, then test remote wake / boot with
 physical monitors unplugged, authenticate through `Ryprland Login`, and reconnect to the
-desktop. Leave recovery access available until this cold-boot test succeeds.
+desktop.
 
 ## Recovery and diagnostics
 
-Each installer run with `--enable-remote-login` backs up the configuration present at
-that time. To restore autologin, select the backup from before autologin was disabled
-and confirm that it contains the original `[initial_session]` section with the correct
-user and session command. A backup from a later run may already have autologin disabled.
+> [!IMPORTANT]
+> Choose a backup from **before autologin was disabled**. Confirm that it contains the original
+> `[initial_session]` section with the correct user and session command. Each installer run
+> backs up the configuration present at that time, so a later backup may already have autologin disabled.
 
 From an existing SSH connection or a local TTY, restore that verified backup (replace
 the placeholder below), then reboot when work has been saved:
@@ -137,8 +156,11 @@ the placeholder below), then reboot when work has been saved:
 sudo cp /etc/greetd/config.toml.backup.XXXXXX /etc/greetd/config.toml
 ```
 
-Restoring the pre-switch config restores boot autologin. Restarting greetd also terminates the current
-graphical session; do not do that during unsaved work or through your only remote channel.
+> [!CAUTION]
+> Restarting greetd terminates the current graphical session. Save your work first and
+> avoid restarting it through your only remote connection.
+
+Inspect logs and device permissions:
 
 ```bash
 sudo journalctl -u greetd -b
