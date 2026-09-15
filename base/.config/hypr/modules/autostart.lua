@@ -9,8 +9,7 @@ hl.on("hyprland.start",
             -- XDPH
             "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
             "dbus-update-activation-environment --systemd --all",
-            "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
-            "systemctl --user start hyprland-session.target",
+            "systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hyprland-session.target && remote-desktop.sh --start",
 
             -- clipboard manager
             "wl-paste --type text --watch cliphist store",  --text data
@@ -35,3 +34,7 @@ hl.on("hyprland.start",
         end
     end
 )
+
+hl.on("hyprland.shutdown", function()
+    hl.exec_cmd("systemctl --user --no-block stop ryprland-sunshine.service")
+end)
