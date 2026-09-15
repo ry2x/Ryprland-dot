@@ -6,11 +6,11 @@ poweroff = ["systemctl", "poweroff"]
 
 [GTK]
 application_prefer_dark_theme = true
-cursor_theme_name = "M200"
+cursor_theme_name = "Adwaita"
 cursor_blink = true
 font_name = "Adwaita Sans 16"
-icon_theme_name = "Ars-Dark-Icons"
-theme_name = "Material-Black-Blueberry"
+icon_theme_name = "breeze-dark"
+theme_name = "Materia-dark"
 
 [appearance]
 greeting_msg = "Hello Master!"

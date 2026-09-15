@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Run inside the greeter's process group and private D-Bus session.
+set -euo pipefail
+umask 077
+
+: "${XDG_RUNTIME_DIR:?A greeter runtime directory is required}"
+audio_dir=$(mktemp -d "$XDG_RUNTIME_DIR/login-audio.XXXXXX")
+export PIPEWIRE_RUNTIME_DIR="$audio_dir"
+export PULSE_RUNTIME_PATH="$audio_dir/pulse"
+export PULSE_SERVER="unix:$PULSE_RUNTIME_PATH/native"
+mkdir -m 0700 "$PULSE_RUNTIME_PATH"
+pids=()
+
+cleanup() {
+    trap - EXIT HUP INT TERM
+    if ((${#pids[@]})); then
+        kill "${pids[@]}" 2>/dev/null || true
+        sleep 0.2
+        kill -KILL "${pids[@]}" 2>/dev/null || true
+        wait 2>/dev/null || true
+    fi
+    rm -rf -- "$audio_dir"
+}
+trap cleanup EXIT
+trap 'exit 0' HUP INT TERM
+
+pipewire &
+pids+=("$!")
+pipewire-pulse &
+pids+=("$!")
+# Only policy and stream routing: never enumerate microphones, speakers or cameras.
+WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber XDG_STATE_HOME="$audio_dir/state" \
+    wireplumber --profile policy &
+pids+=("$!")
+ready=false
+for ((attempt = 0; attempt < 50; attempt++)); do
+    if pactl info >/dev/null 2>&1; then
+        ready=true
+        break
+    fi
+    sleep 0.1
+done
+if [[ "$ready" != true ]]; then
+    printf 'Private login audio server did not become ready.\n' >&2
+    exit 1
+fi
+pactl load-module module-null-sink sink_name=login-silence >/dev/null
+ready=false
+for ((attempt = 0; attempt < 50; attempt++)); do
+    if pactl set-default-sink login-silence 2>/dev/null; then
+        ready=true
+        break
+    fi
+    sleep 0.1
+done
+[[ "$ready" == true ]] || { printf 'Login audio policy did not become ready.\n' >&2; exit 1; }
+
+# No KMS privileges are required for wlr capture. Also suppress any file
+# capabilities on a locally installed Sunshine binary.
+while true; do
+    setpriv --no-new-privs sunshine /etc/greetd/sunshine.conf &
+    sunshine_pid=$!
+    pids+=("$sunshine_pid")
+    wait "$sunshine_pid" || true
+    unset 'pids[-1]'
+    sleep 3
+done

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Own only the processes started for this greeter session.
+set -uo pipefail
+umask 077
+
+# greetd gives the greeter user / as its passwd home. GTK, Mesa, PipeWire and
+# Sunshine still need writable XDG directories even when all persistent
+# Sunshine paths are configured explicitly.
+export HOME=/var/lib/ryprland-login
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+mkdir -p "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"
+
+# greetd does not reliably retain greeter-session output in the journal.
+exec >>/var/lib/ryprland-login/greeter.log 2>&1
+printf '\n[%(%Y-%m-%dT%H:%M:%S%z)T] Starting greeter session\n' -1
+
+stream_pid=""
+regreet_pid=""
+
+cleanup() {
+    trap - EXIT HUP INT TERM
+    for pid in "$stream_pid" "$regreet_pid"; do
+        [[ -n "$pid" ]] && kill -TERM -- "-$pid" 2>/dev/null || true
+    done
+    # Allow children to clean up, then bound shutdown even if a child hangs.
+    sleep 0.5
+    for pid in "$stream_pid" "$regreet_pid"; do
+        [[ -n "$pid" ]] && kill -KILL -- "-$pid" 2>/dev/null || true
+    done
+    wait 2>/dev/null || true
+    hyprctl dispatch 'hl.dsp.exit()' >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+trap 'exit 0' HUP INT TERM
+
+if hyprctl output create headless RMT-LOGIN; then
+    output_ready=false
+    for ((attempt = 0; attempt < 50; attempt++)); do
+        if hyprctl -j monitors all | jq -e '.[] | select(.name == "RMT-LOGIN" and .width > 0)' >/dev/null; then
+            output_ready=true
+            # ReGreet is a normal GTK window. Use the largest independent
+            # physical output when available, otherwise use the remote output.
+            login_output=$(hyprctl -j monitors all | jq -r '
+                [.[] | select(.name != "RMT-LOGIN" and .mirrorOf == "none")]
+                | max_by(.width * .height).name // "RMT-LOGIN"')
+            hyprctl dispatch focusmonitor "$login_output" >/dev/null
+            hyprctl dispatch workspace 1 >/dev/null
+            break
+        fi
+        sleep 0.1
+    done
+    if [[ "$output_ready" != true ]]; then
+        printf 'RMT-LOGIN was not reported ready before timeout; starting the retrying stream anyway.\n' >&2
+        hyprctl -j monitors all >&2 || true
+    fi
+    setsid /usr/bin/ryprland-login-stream &
+    stream_pid=$!
+fi
+if [[ -z "$stream_pid" ]]; then
+    printf 'Login stream unavailable; continuing with local ReGreet.\n' >&2
+fi
+
+setsid regreet --config /etc/greetd/regreet.toml &
+regreet_pid=$!
+wait "$regreet_pid"

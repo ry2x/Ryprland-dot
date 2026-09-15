@@ -1,0 +1,9 @@
+{
+    "env": {},
+    "apps": [
+        {
+            "name": "Login",
+            "image-path": "desktop.png"
+        }
+    ]
+}
