@@ -99,7 +99,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    match = { class = "FTB StoneBlock 4" },
+    match = { class = "com.mojang.minecraft.java-edition" },
     tag = "+game"
 })
 
