@@ -1,0 +1,11 @@
+[Unit]
+Description=Sunshine for the Ryprland remote desktop
+After=graphical-session.target xdg-desktop-portal.service
+PartOf=graphical-session.target
+
+[Service]
+ExecStartPre=%h/.local/bin/remote-desktop.sh --prepare
+ExecStart=/usr/bin/sunshine output_name=RMT-1 capture=wlr
+Restart=on-failure
+RestartSec=5s
+
