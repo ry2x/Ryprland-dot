@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # Perform conservative, recurring maintenance for an Arch/CachyOS system.
+# Keep two cached package versions; remove uninstalled-package caches (requires pacman-contrib).
+# Remove archived journals older than 30 days and apply tmpfiles.d age rules.
+# Report orphans and failed units only; leave user caches and trash untouched.
 
 set -euo pipefail
 
