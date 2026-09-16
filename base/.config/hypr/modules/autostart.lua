@@ -10,9 +10,8 @@ hl.on("hyprland.start",
             "systemctl --user start gcr-ssh-agent.socket",
 
             -- XDPH
-            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
-            "dbus-update-activation-environment --systemd --all",
-            "systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hyprland-session.target && remote-desktop.sh --start",
+            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP",
+            "systemctl --user start hyprland-session.target && remote-desktop.sh --start",
 
             -- clipboard manager
             "wl-paste --type text --watch cliphist store",  --text data
