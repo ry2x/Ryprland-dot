@@ -9,7 +9,8 @@ local config_home = os.getenv("XDG_CONFIG_HOME") or home .. "/.config"
 local data_home = os.getenv("XDG_DATA_HOME") or home .. "/.local/share"
 local cache_home = os.getenv("XDG_CACHE_HOME") or home .. "/.cache"
 local state_home = os.getenv("XDG_STATE_HOME") or home .. "/.local/state"
-local runtime_home = os.getenv("XDG_RUNTIME_DIR")
+local session_runtime_home = os.getenv("XDG_RUNTIME_DIR")
+local runtime_home = session_runtime_home
 
 if not runtime_home or runtime_home == "" then
     runtime_home = "/tmp/rystal-shell-" .. (os.getenv("USER") or "user")
@@ -88,6 +89,10 @@ local envs = {
     -- Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
     -- { "SDL_VIDEODRIVER",                     "wayland" },
 }
+
+if session_runtime_home and session_runtime_home ~= "" then
+    table.insert(envs, { "SSH_AUTH_SOCK", session_runtime_home .. "/gcr/ssh" })
+end
 
 for _, env in ipairs(envs) do
     hl.env(table.unpack(env))
