@@ -30,17 +30,17 @@ hl.curve("close", {
     points = { { 0, 0.95 }, { 0.77, 0.98 } }
 })
 
-hl.curve("move", {
-    type = "bezier",
-    points = { { 1, 0.9 }, { 0.22, 0.94 } }
+hl.curve("window_move", {
+    type = "spring",
+    mass = 1,
+    stiffness = 340,
+    dampening = 32
 })
 
 -- animations
 local anims = {
     { "windowsIn",        3,  "open",    "popin 50%" },
     { "windowsOut",       3,  "close",   "popin 60%" },
-    { "windowsMove",      3,  "move",    "slide" },
-
     { "global",           5,  "bubbles", "" },
     { "border",           1,  "liner",   "" },
     { "borderangle",      30, "liner",   "loop" },
@@ -64,3 +64,11 @@ for _, anim in ipairs(anims) do
         style = anim[4]
     })
 end
+
+hl.animation({
+    leaf = "windowsMove",
+    enabled = true,
+    speed = 5,
+    spring = "window_move",
+    style = "slide"
+})
