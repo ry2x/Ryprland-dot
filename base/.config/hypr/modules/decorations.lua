@@ -52,12 +52,17 @@ hl.config({
             vibrancy_darkness = 0.63
         },
 
+        motion_blur = {
+            enabled = true,
+            samples = 5
+        },
+
         shadow = {
             enabled = true,
             sharp = false,
-            range = 30,
+            range = 18,
             offset = { 0, 2 },
-            render_power = 4,
+            render_power = 3,
             color = "rgba(171717aa)",
             color_inactive = "rgba(101010aa)"
         },
@@ -66,6 +71,7 @@ hl.config({
         dim_special = 0.3,
 
         rounding = 10,
+        rounding_power = 3.0,
 
         active_opacity = 1.0,
         inactive_opacity = 1.0
