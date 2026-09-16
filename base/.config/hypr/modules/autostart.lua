@@ -6,6 +6,9 @@ hl.on("hyprland.start",
     function()
         -- Autostart applications
         local autostart = {
+            -- SSH agent (keys are unlocked lazily through a GCR prompt)
+            "systemctl --user start gcr-ssh-agent.socket",
+
             -- XDPH
             "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
             "dbus-update-activation-environment --systemd --all",
