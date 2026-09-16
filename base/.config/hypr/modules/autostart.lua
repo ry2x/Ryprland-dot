@@ -26,7 +26,7 @@ hl.on("hyprland.start",
             "rystal-shell",
             "blueman-applet",
             "fcitx5 -d",
-            "sleep 4;discord --start-minimized"
+            "discord --start-minimized"
         }
 
         for _, app in ipairs(autostart) do
