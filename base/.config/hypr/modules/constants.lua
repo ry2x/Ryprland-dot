@@ -20,6 +20,9 @@ M.updater = "kitty --title PacUpdate par_tui"
 
 M.mod = "SUPER"
 
+M.primaryMonitor = "DP-1"
+M.secondaryMonitor = "HDMI-A-1"
+
 M.smw = smw
 
 return M

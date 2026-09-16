@@ -2,8 +2,10 @@
 -- ┃┃┃┃┃┃┃┃ ┃ ┃┃┣┫┗┓
 -- ┛ ┗┗┛┛┗┻ ┻ ┗┛┛┗┗┛
 
+local P = require("modules.constants")
+
 hl.monitor({
-    output = "DP-2",
+    output = P.primaryMonitor,
     scale = "1",
     mode = "2560x1440@100",
     position = "1920x0",
@@ -13,7 +15,7 @@ hl.monitor({
 })
 
 hl.monitor({
-    output = "HDMI-A-1",
+    output = P.secondaryMonitor,
     scale = "1",
     mode = "1920x1080@60",
     position = "0x0",

@@ -1,5 +1,7 @@
 -- Window rules for games and game-related applications
 
+local P = require("modules.constants")
+
 ---------------------
 -- tag definitions --
 ---------------------
@@ -39,7 +41,7 @@ hl.window_rule({
 hl.workspace_rule({
     workspace = "name:game",
     layout = "master",
-    monitor = "DP-2",
+    monitor = P.primaryMonitor,
     no_border = true,
     no_shadow = true,
     no_rounding = true,

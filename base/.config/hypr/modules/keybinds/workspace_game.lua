@@ -10,7 +10,7 @@ local W = require("modules.wallpaper")
 local wp_timer = W.timer
 
 local ws_nm = "game"
-local dp_nm = "DP-1"
+local dp_nm = P.primaryMonitor
 
 -- move focused window to game workspace
 hl.bind(mod .. " + SHIFT + G", smw.move_to_workspace_silent("name:" .. ws_nm),
@@ -40,7 +40,7 @@ local function startGaming()
         return
     end
 
-    -- get DP-2 monitor and workspace
+    -- get primary monitor and workspace
     local dp = hl.get_monitor(dp_nm)
     if not dp then
         return
