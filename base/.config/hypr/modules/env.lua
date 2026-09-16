@@ -34,7 +34,7 @@ local envs = {
 
     -- toolkit
     { "CLUTTER_BACKEND",                     "wayland" },
-    { "GDK_BACKEND",                         "wayland",                     "x11", "false" },
+    { "GDK_BACKEND",                         "wayland,x11,*" },
     { "GDK_SCALE",                           "1" },
 
     -- XDG
@@ -45,7 +45,7 @@ local envs = {
     -- QT
     { "QT_AUTO_SCREEN_SCALE_FACTOR",         "1" },
     { "QT_SCALE_FACTOR",                     "1" },
-    { "QT_QPA_PLATFORM",                     "wayland" },
+    { "QT_QPA_PLATFORM",                     "wayland;xcb" },
     { "QT_QPA_PLATFORMTHEME",                "qt6ct" },
     { "QT_STYLE_OVERRIDE",                   "kvantum" },
     { "QT_WAYLAND_DISABLE_WINDOWDECORATION", "1" },
