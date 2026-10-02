@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ComfyUI
+Comment=Local image generation with ComfyUI
+TryExec=comfyui-local
+Exec=kitty --title ComfyUI -e comfyui-local --auto-launch
+Icon=applications-graphics
+Terminal=false
+Categories=Graphics;
+StartupNotify=false

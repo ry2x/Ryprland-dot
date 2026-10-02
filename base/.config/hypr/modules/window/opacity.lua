@@ -39,8 +39,7 @@ for _, class in ipairs({
     "^(com.github.unrud.VideoDownloader)$",
     "^(io.gitlab.adhami3310.Impression)$",
     "^(io.github.flattool.Warehouse)$",
-    "^(gcr-prompter)$",
-    "^(sonora)$"
+    "^(gcr-prompter)$"
 }) do
     hl.window_rule({
         match = { class = class },
