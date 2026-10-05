@@ -54,6 +54,6 @@ hl.window_rule({
 
 -- VSCode
 hl.window_rule({
-    match = { class = "^([Cc]ode.*)$" },
+    match = { class = "^([Cc]ode.*)$||^(com.microsoft.VSCode)$" },
     opacity = "0.95 0.95 1"
 })
