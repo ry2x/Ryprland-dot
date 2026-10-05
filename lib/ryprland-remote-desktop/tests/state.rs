@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use anyhow::{Result, bail};
-use remote_desktop::desktop::{Backend, Desktop, Monitor, OUTPUT, Position, remote_options};
-use remote_desktop::supervisor::Streaming;
+use ryprland_remote_desktop::desktop::{
+    Backend, Desktop, Monitor, OUTPUT, Position, remote_options,
+};
+use ryprland_remote_desktop::supervisor::Streaming;
 use serde_json::{Value, json};
 use std::cell::RefCell;
 use std::collections::BTreeMap;

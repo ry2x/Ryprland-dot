@@ -121,7 +121,7 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 | ------------------------- | ----------------------------------------------------------------------------------------------- |
 | Login screen              | `greetd`, `greetd-regreet`                                                                      |
 | Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux` |
-| Desktop remote controller | `rust` (build only; deploy with `deploy-remote-desktop`)                               |
+| Desktop remote controller | `rust` (build only; deploy with `deploy-ryprland-remote-desktop`)                               |
 | CachyOS mirror-list timer | `rate-mirrors`                                                                                  |
 | Rootkit check timer       | `rkhunter`                                                                                      |
 | Package-cache cleanup     | `pacman-contrib` (provides `paccache`)                                                          |

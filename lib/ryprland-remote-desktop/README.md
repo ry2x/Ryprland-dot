@@ -1,4 +1,4 @@
-# Remote desktop controller
+# Ryprland Remote Desktop
 
 A small Rust supervisor for Sunshine and the Hyprland `RMT-1` output. It runs on one
 thread, saves/restores local display state, observes the last streaming session ending,
@@ -10,26 +10,26 @@ existing `remote-desktop.sh` commands. Runtime hooks do not start a Python inter
 Rust 1.89 or newer is required to build. From the repository root:
 
 ```bash
-base/.local/bin/deploy-remote-desktop
+base/.local/bin/deploy-ryprland-remote-desktop
 ```
 
 The helper builds with `Cargo.lock`, installs the release binary atomically into
-`${XDG_DATA_HOME:-$HOME/.local/share}/remote-desktop/remote-desktop`, and restarts an
+`${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-remote-desktop/ryprland-remote-desktop`, and restarts an
 already running `ryprland-sunshine.service`. Use `--no-restart` to defer that restart.
-Cargo build output stays in the ignored `lib/remote-desktop/target/` directory.
+Cargo build output stays in the ignored `lib/ryprland-remote-desktop/target/` directory.
 Stow installs the deployment helper and the command wrapper; it does not compile Rust.
 
-`REMOTE_DESKTOP_BIN=/absolute/path/to/remote-desktop` selects another controller binary
+`REMOTE_DESKTOP_BIN=/absolute/path/to/ryprland-remote-desktop` selects another controller binary
 for development and integration tests. The wrapper passes its canonical path as
 `REMOTE_DESKTOP_HOOK` so Sunshine preparation hooks use the same command entry point.
 
 ## Verify
 
 ```bash
-cargo fmt --manifest-path lib/remote-desktop/Cargo.toml --check
-cargo clippy --locked --manifest-path lib/remote-desktop/Cargo.toml --all-targets -- -D warnings
-cargo test --locked --manifest-path lib/remote-desktop/Cargo.toml
-PYTHONDONTWRITEBYTECODE=1 python3 -B lib/remote-desktop/tests/remote_desktop_integration.py
+cargo fmt --manifest-path lib/ryprland-remote-desktop/Cargo.toml --check
+cargo clippy --locked --manifest-path lib/ryprland-remote-desktop/Cargo.toml --all-targets -- -D warnings
+cargo test --locked --manifest-path lib/ryprland-remote-desktop/Cargo.toml
+PYTHONDONTWRITEBYTECODE=1 python3 -B lib/ryprland-remote-desktop/tests/remote_desktop_integration.py
 ```
 
 Rust regression tests cover saved state, repeated entry, multiple streams, reconnection,

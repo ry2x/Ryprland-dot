@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use anyhow::{Result, bail};
-use remote_desktop::desktop::Desktop;
-use remote_desktop::supervisor;
+use ryprland_remote_desktop::desktop::Desktop;
+use ryprland_remote_desktop::supervisor;
 use std::env;
 use std::io;
 

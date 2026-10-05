@@ -40,7 +40,7 @@ sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewir
 pacman -Q sunshine
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
-deploy-remote-desktop
+deploy-ryprland-remote-desktop
 systemctl --user daemon-reload
 sudo system/install.sh
 ```
@@ -81,8 +81,8 @@ excluding global preparation commands are isolated when their stream-start event
 Hyprland imports its socket environment and starts the service at login; shutdown requests
 service termination. Runtime hooks use the compiled Rust controller and `hyprctl`;
 Python is only needed for the optional native integration test. Build the controller with
-`deploy-remote-desktop` after Stow; its source and tests live in `lib/remote-desktop/`.
-The helper installs it atomically under `${XDG_DATA_HOME:-$HOME/.local/share}/remote-desktop/`
+`deploy-ryprland-remote-desktop` after Stow; its source and tests live in `lib/ryprland-remote-desktop/`.
+The helper installs it atomically under `${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-remote-desktop/`
 and restarts Sunshine if it is already running. `--no-restart` installs without restarting.
 The controller runs one thread, without an asynchronous runtime, and bounds partial log
 lines to 64 KiB to keep memory usage small even if Sunshine emits malformed output.
@@ -105,7 +105,7 @@ configuration (Stow may report conflicts with regular files):
 ```bash
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
-deploy-remote-desktop --no-restart
+deploy-ryprland-remote-desktop --no-restart
 systemctl --user daemon-reload
 hyprctl reload config-only
 pkill -x hypridle
@@ -124,9 +124,9 @@ network timeout, reconnect, service stop and configuration reload while streamin
 Automated regression checks and the optional nested-session integration test:
 
 ```bash
-cargo test --locked --manifest-path lib/remote-desktop/Cargo.toml
-cargo clippy --locked --manifest-path lib/remote-desktop/Cargo.toml --all-targets -- -D warnings
-PYTHONDONTWRITEBYTECODE=1 python3 -B lib/remote-desktop/tests/remote_desktop_integration.py
+cargo test --locked --manifest-path lib/ryprland-remote-desktop/Cargo.toml
+cargo clippy --locked --manifest-path lib/ryprland-remote-desktop/Cargo.toml --all-targets -- -D warnings
+PYTHONDONTWRITEBYTECODE=1 python3 -B lib/ryprland-remote-desktop/tests/remote_desktop_integration.py
 ```
 
 The integration test requires a deployed controller, a running Hyprland session, Python 3

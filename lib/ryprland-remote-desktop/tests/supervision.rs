@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use anyhow::{Result, bail};
-use remote_desktop::{
+use ryprland_remote_desktop::{
     desktop::lua,
     process::run_with_timeout,
     supervisor::{self, Lifecycle, LogBuffer},
