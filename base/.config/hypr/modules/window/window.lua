@@ -30,3 +30,9 @@ hl.on("window.urgent",
         hl.dispatch(hl.dsp.focus({ window = win }))
     end
 )
+
+-- Render all windows unfocused by default
+hl.window_rule({
+    match = { class = ".*" },
+    render_unfocused = true,
+})
