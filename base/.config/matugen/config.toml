@@ -22,6 +22,11 @@ output_path = '~/.config/bat/themes/matugen-bat-colors.tmTheme'
 #input_path = '~/.config/matugen/templates/spotify-colors.ini'
 #output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
 
+# Sonora
+[templates.sonora]
+input_path = '~/.config/matugen/templates/matugen-sonora.json'
+output_path = '~/.config/sonora/themes/matugen.json'
+
 # Rofi
 [templates.rofi]
 input_path = '~/.config/matugen/templates/matugen-rofi.rasi'
