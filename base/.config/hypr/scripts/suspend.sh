@@ -15,8 +15,17 @@ else
 fi
 
 if [[ -f "$runtime_root/caffeine-remote" ]]; then
-    echo "Suspend prevented by AGS Caffeine (Remote mode)"
+    notify-send -a "Ryprland" -i system-suspend "Suspend prevented" \
+        "Caffeine remote mode is enabled." || true
     exit 0
 fi
 
+notify-send -a "Ryprland" -i system-suspend "Suspending" \
+    "Requesting system suspend." || true
 systemctl suspend
+suspend_status=$?
+if (( suspend_status != 0 )); then
+    notify-send -a "Ryprland" -i system-suspend -u critical "Suspend failed" \
+        "systemctl suspend failed (exit code: $suspend_status)." || true
+fi
+exit "$suspend_status"
