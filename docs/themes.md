@@ -50,4 +50,20 @@ The `theme-switch.sh` also updates the Qt platform theme with Kvantum widget sty
 > [!TIP]
 > Restart open Qt applications if the new theme does not appear.
 
+## Sonora integration
+
+Sonora 0.41.0 or newer supports custom theme files. Matugen generates
+`~/.config/sonora/themes/matugen.json` from the active wallpaper and light/dark mode.
+
+Run `theme-switch.sh refresh` once to generate the file, then open Sonora's
+Settings > Appearance, disable **Adaptive theme**, and select **Matugen** as the theme.
+Sonora watches the theme file and applies subsequent wallpaper and mode changes
+without a restart.
+
+The generated file contains only theme colors; Sonora's `settings.json` remains
+managed by the application. If you previously set colors in
+`appearance.theme_overrides`, clear those overrides to use the generated colors.
+Font size, rounding, transparency, and other appearance options stay configurable
+in Sonora.
+
 [Back to the project overview](../readme.md)
