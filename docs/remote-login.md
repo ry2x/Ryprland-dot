@@ -36,10 +36,11 @@ prevent local login. No desktop keyring, audio session or home directory is shar
 Install the dependencies (Sunshine uses the package source already configured on this host):
 
 ```bash
-sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewire-pulse wireplumber libpulse jq dbus util-linux
+sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewire-pulse wireplumber libpulse jq dbus util-linux rust
 pacman -Q sunshine
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
+deploy-remote-desktop
 systemctl --user daemon-reload
 sudo system/install.sh
 ```
@@ -78,7 +79,13 @@ are retained; their configuration and pairing state are not rewritten. Apps expl
 excluding global preparation commands are isolated when their stream-start event arrives.
 
 Hyprland imports its socket environment and starts the service at login; shutdown requests
-service termination. Runtime hooks use Python 3's standard library in addition to `hyprctl`.
+service termination. Runtime hooks use the compiled Rust controller and `hyprctl`;
+Python is only needed for the optional native integration test. Build the controller with
+`deploy-remote-desktop` after Stow; its source and tests live in `lib/remote-desktop/`.
+The helper installs it atomically under `${XDG_DATA_HOME:-$HOME/.local/share}/remote-desktop/`
+and restarts Sunshine if it is already running. `--no-restart` installs without restarting.
+The controller runs one thread, without an asynchronous runtime, and bounds partial log
+lines to 64 KiB to keep memory usage small even if Sunshine emits malformed output.
 Local and remote input still share one cursor; this is display isolation, not a separate seat.
 
 ```bash
@@ -98,6 +105,7 @@ configuration (Stow may report conflicts with regular files):
 ```bash
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
+deploy-remote-desktop --no-restart
 systemctl --user daemon-reload
 hyprctl reload config-only
 pkill -x hypridle
@@ -116,12 +124,13 @@ network timeout, reconnect, service stop and configuration reload while streamin
 Automated regression checks and the optional nested-session integration test:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s lib/remote-desktop/tests -p 'remote_desktop_test.py' -v
+cargo test --locked --manifest-path lib/remote-desktop/Cargo.toml
+cargo clippy --locked --manifest-path lib/remote-desktop/Cargo.toml --all-targets -- -D warnings
 PYTHONDONTWRITEBYTECODE=1 python3 -B lib/remote-desktop/tests/remote_desktop_integration.py
 ```
 
-The integration test requires a running Hyprland session and `openssl`. It creates a
-temporary nested compositor and a loopback-only Sunshine host on ports `51084` / `51110`,
+The integration test requires a deployed controller, a running Hyprland session, Python 3
+and `openssl`. It creates a temporary nested compositor and a loopback-only Sunshine host on ports `51084` / `51110`,
 with temporary client certificates and pairing files. It checks layout clamping, DPMS,
 focus/cursor restoration, real GameStream launch/cancel, multiple streams, timeouts,
 reconnect, supervisor termination and log redaction. Test logs are kept in the printed

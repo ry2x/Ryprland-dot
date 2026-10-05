@@ -1,0 +1,21 @@
+[package]
+name = "remote-desktop"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+license = "GPL-3.0-or-later"
+description = "Sunshine supervision and reversible Hyprland display isolation"
+
+[dependencies]
+anyhow = "1"
+nix = { version = "0.31", features = ["fs", "poll", "signal", "time"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+signal-hook = { version = "0.4", default-features = false }
+tempfile = "3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "s"

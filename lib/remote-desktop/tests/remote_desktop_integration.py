@@ -13,7 +13,8 @@ import time
 
 script = str(Path(__file__).resolve().parents[3] / 'base/.local/bin/remote-desktop.sh')
 parent = os.environ.copy()
-root = Path(tempfile.mkdtemp(prefix='ryprland-remote-integration-'))
+# Leave room for Hyprland's instance signature in Unix socket paths (107 bytes).
+root = Path(tempfile.mkdtemp(prefix='rd-'))
 runtime = root / 'runtime'
 runtime.mkdir(mode=0o700)
 config = root / 'hyprland.lua'

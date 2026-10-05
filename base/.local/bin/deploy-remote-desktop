@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+set -euo pipefail
+
+restart_service=true
+case "${1:-}" in
+    --no-restart) restart_service=false ;;
+    "") ;;
+    -h|--help)
+        echo "Usage: deploy-remote-desktop [--no-restart]"
+        echo "Build and install the Rust controller; restart Sunshine if already running."
+        exit 0
+        ;;
+    *)
+        echo "Usage: deploy-remote-desktop [--no-restart]" >&2
+        exit 1
+        ;;
+esac
+if (( $# > 1 )); then
+    echo "Expected at most one option." >&2
+    exit 1
+fi
+
+script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
+repo_dir="$(cd "$(dirname "$script_path")/../../.." && pwd)"
+source_dir="$repo_dir/lib/remote-desktop"
+destination_dir="${XDG_DATA_HOME:-$HOME/.local/share}/remote-desktop"
+
+# Fix the output location even if the caller configured CARGO_TARGET_DIR.
+cargo build --locked --release --manifest-path "$source_dir/Cargo.toml" --target-dir "$source_dir/target"
+mkdir -p -- "$destination_dir"
+temporary_binary="$(mktemp "$destination_dir/.remote-desktop.XXXXXX")"
+trap 'rm -f -- "$temporary_binary"' EXIT
+install -m 755 -- "$source_dir/target/release/remote-desktop" "$temporary_binary"
+mv -f -- "$temporary_binary" "$destination_dir/remote-desktop"
+echo "Installed remote-desktop to $destination_dir/remote-desktop"
+
+if "$restart_service" && systemctl --user is-active --quiet ryprland-sunshine.service; then
+    systemctl --user restart ryprland-sunshine.service
+    echo "Restarted Sunshine with the updated controller."
+fi

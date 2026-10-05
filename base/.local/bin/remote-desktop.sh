@@ -10,6 +10,8 @@ set -euo pipefail
 
 SUNSHINE_SERVICE="ryprland-sunshine.service"
 SCRIPT_DIR="$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")"
+CONTROLLER="${REMOTE_DESKTOP_BIN:-${XDG_DATA_HOME:-$HOME/.local/share}/remote-desktop/remote-desktop}"
+export REMOTE_DESKTOP_HOOK="$SCRIPT_DIR/remote-desktop.sh"
 
 help() {
     echo "Usage: $0 [OPTIONS]"
@@ -25,7 +27,7 @@ help() {
 }
 
 controller() {
-    python3 "$SCRIPT_DIR/remote-desktop.py" "$@"
+    "$CONTROLLER" "$@"
 }
 
 case "${1:-}" in
@@ -46,7 +48,11 @@ case "${1:-}" in
         echo "Remote desktop stopped; local displays restored."
         ;;
     --prepare|--serve|--enter|--release|--restore|--sync|--status|--wake|--idle-off|--idle-dim|--idle-brightness|--idle-suspend|--remove-output)
-        exec python3 "$SCRIPT_DIR/remote-desktop.py" "$1"
+        if [[ ! -x "$CONTROLLER" ]]; then
+            echo "Remote desktop controller is unavailable. Run deploy-remote-desktop first." >&2
+            exit 1
+        fi
+        exec "$CONTROLLER" "$1"
         ;;
     *)
         help >&2
