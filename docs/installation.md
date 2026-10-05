@@ -17,8 +17,9 @@ Before installing, install the required packages:
 
 ### Recommended fonts
 
-- **GTK UI**: SF Pro Regular 11
-- **Qt UI**: SF Pro Text 12
+- **GTK / Qt UI**: SF Pro Regular 11
+- **Rystal-shell / Hyprlock / ReGreet / Rofi UI**: SF Pro (sizes vary by component)
+- **Terminal / coding font**: Firple 12
 
 > [!NOTE]
 > For Arch users, `SF Pro` is provided by apple-fonts AUR package.

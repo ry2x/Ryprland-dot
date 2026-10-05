@@ -150,6 +150,7 @@ apply_gtk_mode() {
     fi
 
     gsettings set org.gnome.desktop.interface color-scheme "$color_scheme" &&
+        gsettings set org.gnome.desktop.interface font-name "SF Pro 11" &&
         gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme" &&
         gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
 }

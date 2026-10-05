@@ -8,7 +8,7 @@ poweroff = ["systemctl", "poweroff"]
 application_prefer_dark_theme = true
 cursor_theme_name = "Adwaita"
 cursor_blink = true
-font_name = "Adwaita Sans 16"
+font_name = "SF Pro 16"
 icon_theme_name = "breeze-dark"
 theme_name = "Materia-dark"
 

@@ -127,6 +127,7 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 
 See [System-level setup](./docs/installation.md#4-optional-system-level-setup).
 See [Remote login](./docs/remote-login.md) for the greeter's separate Sunshine host and staged activation.
+
 > [!NOTE]
 > The cleanup script skips package-cache cleanup when `paccache` is unavailable.
 
@@ -149,14 +150,15 @@ Select these for the games and compatibility tools you use; the desktop does not
 > [!NOTE]
 > The names below are desktop themes and fonts, not necessarily package names.
 
-| Asset                  | Configured names                                                        |
-| ---------------------- | ----------------------------------------------------------------------- |
-| GTK themes             | `Materia-light`, `Materia-dark` (`materia-gtk-theme`)                   |
-| Icon themes            | `Ars-Light-Icons`, `Ars-Dark-Icons`                                     |
-| Cursor theme           | `M200`                                                                  |
-| GTK font               | SF Pro Regular 11 (`apple-fonts` is listed as an optional font package) |
-| Qt font                | Noto Sans CJK JP 12                                                     |
-| Terminal / coding font | SF Pro Text 12                                                          |
+| Asset                    | Configured names                                                        |
+| ------------------------ | ----------------------------------------------------------------------- |
+| GTK themes               | `Materia-light`, `Materia-dark` (`materia-gtk-theme`)                   |
+| Icon themes              | `Ars-Light-Icons`, `Ars-Dark-Icons`                                     |
+| Cursor theme             | `M200`                                                                  |
+| GTK font                 | SF Pro Regular 11 (`apple-fonts` is listed as an optional font package) |
+| Qt font                  | SF Pro Regular 11                                                       |
+| Shell / lock / Rofi font | SF Pro (sizes vary by component)                                        |
+| Terminal / coding font   | Firple 12                                                               |
 
 The ReGreet login screen uses separate appearance settings:
 
@@ -165,7 +167,7 @@ The ReGreet login screen uses separate appearance settings:
 | GTK theme    | `Materia-dark` (`materia-gtk-theme`) |
 | Icon theme   | `breeze-dark` (`breeze-icons`)       |
 | Cursor theme | `Adwaita`                            |
-| GTK font     | Adwaita Sans 16                      |
+| GTK font     | SF Pro 16                            |
 
 See [ReGreet configuration](./system/etc/greetd/regreet.toml) for the login screen settings.
 

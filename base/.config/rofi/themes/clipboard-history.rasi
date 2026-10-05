@@ -132,7 +132,7 @@ textbox-guide-delete-label,
 textbox-guide-wipe-label,
 textbox-guide-copy-label,
 textbox-guide-close-label {
-    font:                        "GeistMono Nerd Font Bold 11";
+    font:                        "SF Pro Bold 11";
 }
 
 textbox-guide-navigate-label,

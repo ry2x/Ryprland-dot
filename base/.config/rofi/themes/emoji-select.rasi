@@ -118,7 +118,7 @@ textbox-guide-close-label {
     background-color:            transparent;
     text-color:                  @foreground;
     vertical-align:              0.5;
-    font:                        "GeistMono Nerd Font Bold 11";
+    font:                        "SF Pro Bold 11";
 }
 
 textbox-guide-navigate-label { content: "Navigate"; }
