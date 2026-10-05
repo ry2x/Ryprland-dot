@@ -63,7 +63,7 @@ applyWindowRules(centerFloating)
 -------------------------
 -- top pinned floating --
 -------------------------
-local TOP_GAP = "3"
+local TOP_GAP = "13"
 local PINNED_TOP_BASE = {
     float = true,
     animation = "slide top",
