@@ -4,8 +4,9 @@ After=graphical-session.target xdg-desktop-portal.service
 PartOf=graphical-session.target
 
 [Service]
+ExecStartPre=%h/.local/bin/remote-desktop.sh --restore
 ExecStartPre=%h/.local/bin/remote-desktop.sh --prepare
-ExecStart=/usr/bin/sunshine output_name=RMT-1 capture=wlr
+ExecStart=%h/.local/bin/remote-desktop.sh --serve
+ExecStopPost=%h/.local/bin/remote-desktop.sh --restore
 Restart=on-failure
 RestartSec=5s
-

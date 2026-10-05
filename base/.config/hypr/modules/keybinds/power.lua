@@ -5,3 +5,5 @@ local mod = P.mod
 hl.bind(mod .. " + X", hl.dsp.exec_cmd("ags request -i rystal-shell toggle-power-menu"), { description = "⏻ PowerMenu" })
 hl.bind(mod .. " + L", hl.dsp.exec_cmd("hyprlock"), { description = " Lock screen" })
 hl.bind("CTRL + ALT + Delete", hl.dsp.exit(0), { description = "⏻ Exit Hyprland" })
+hl.bind(mod .. " + CTRL + Escape", hl.dsp.exec_cmd("remote-desktop.sh --stop"),
+    { description = "Stop remote desktop and restore local displays" })

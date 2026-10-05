@@ -28,7 +28,8 @@ hl.monitor({
     output = "RMT-1",
     mode = "1920x1080@60",
     scale = 1,
-    position = "auto"
+    -- Keep the remote desktop outside the physical monitors' pointer edges.
+    position = "10000x10000"
 })
 
 hl.on("monitor.added", function()

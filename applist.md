@@ -117,13 +117,13 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 
 ### System services and timers
 
-| Feature                   | Packages                                                                                        |
-| ------------------------- | ----------------------------------------------------------------------------------------------- |
-| Login screen              | `greetd`, `greetd-regreet`                                                                      |
-| Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux` |
-| CachyOS mirror-list timer | `rate-mirrors`                                                                                  |
-| Rootkit check timer       | `rkhunter`                                                                                      |
-| Package-cache cleanup     | `pacman-contrib` (provides `paccache`)                                                          |
+| Feature                   | Packages                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Login screen              | `greetd`, `greetd-regreet`                                                                                |
+| Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux`, `python` |
+| CachyOS mirror-list timer | `rate-mirrors`                                                                                            |
+| Rootkit check timer       | `rkhunter`                                                                                                |
+| Package-cache cleanup     | `pacman-contrib` (provides `paccache`)                                                                    |
 
 See [System-level setup](./docs/installation.md#4-optional-system-level-setup).
 See [Remote login](./docs/remote-login.md) for the greeter's separate Sunshine host and staged activation.

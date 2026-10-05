@@ -49,10 +49,83 @@ sudo system/install.sh
 > at `/etc/greetd/config.remote-login.toml`. The updated greeter is used at the next logout.
 > It does not restart the session or change firewall rules, UPnP, or network exposure.
 
-The dedicated `ryprland-sunshine.service` prepares `RMT-1` before each start and forces
-`wlr` capture of that output. Hyprland imports its socket environment and starts the service
-at login; shutdown requests service termination. `remote-desktop.sh --start` and `--stop`
-remain available; `--prepare` is the internal service hook.
+The dedicated `ryprland-sunshine.service` keeps Sunshine ready throughout the Hyprland
+session and forces `wlr` capture of `RMT-1`. The virtual output remains enabled at
+`10000x10000`, separated from both physical displays so ordinary relative pointer motion
+does not cross between them. Keeping it available also lets Sunshine probe its encoder
+while the physical monitors are asleep; Sunshine probes before application preparation
+commands, including on reconnect.
+
+At stream launch, a preparation command saves the local DPMS states, cursor position,
+focused monitor and automatic wake/warp settings. It then focuses `RMT-1`, switches off
+the other outputs and suppresses automatic wake and cursor warps. Directional focus
+fallback to another monitor is suppressed too. The hypridle hooks honor this mode:
+remote activity cannot wake the physical screens, and an idle stream does not switch off
+the virtual output or suspend the machine. Normal screen locking is still enabled.
+
+The supervisor restores the saved local state after the last streaming session ends,
+including a network timeout; an application left running in Moonlight does not keep the
+local displays in remote mode. Multiple streams share one saved state. Preparation
+failure, Sunshine exit and service termination also restore it. Newly attached displays
+are switched off while streaming and included in restoration. Remote windows stay on
+`RMT-1` between connections.
+
+Sunshine's debug-level session-end event is needed to observe timeouts and failed
+streams accurately. The supervisor discards debug/verbose output and disables Sunshine's
+file log, so request parameters and pairing/input keys are not persisted. Info and higher
+messages remain available in the user service journal. Existing `global_prep_cmd` hooks
+are retained; their configuration and pairing state are not rewritten. Apps explicitly
+excluding global preparation commands are isolated when their stream-start event arrives.
+
+Hyprland imports its socket environment and starts the service at login; shutdown requests
+service termination. Runtime hooks use Python 3's standard library in addition to `hyprctl`.
+Local and remote input still share one cursor; this is display isolation, not a separate seat.
+
+```bash
+remote-desktop.sh --start     # start or retain the standby service
+remote-desktop.sh --status    # standby/streaming and active stream count
+remote-desktop.sh --stop      # stop the desktop host and restore local displays
+remote-desktop.sh --restore   # local takeover while Sunshine stays running
+```
+
+`SUPER + CTRL + Escape` stops the desktop host and restores local control. The separate
+login-screen streamer is unaffected. `--stop` removes `RMT-1` if another output is attached;
+with no other output, it retains the compositor's only display.
+
+After updating existing installations, apply the changed Hyprland modules and hypridle
+configuration (Stow may report conflicts with regular files):
+
+```bash
+stow -n -v -t "$HOME" base
+stow -t "$HOME" base
+systemctl --user daemon-reload
+hyprctl reload config-only
+pkill -x hypridle
+hypridle &
+remote-desktop.sh --start
+```
+
+Restart `ryprland-sunshine.service` instead of `--start` if an older version is already
+running; this interrupts its stream. Reconnect from Moonlight after restarting.
+
+Check with one stream and then a second stream: physical screens remain off during
+remote mouse/keyboard input and `remote-desktop.sh --wake`, `RMT-1` remains enabled,
+and local settings are restored only after the last stream disconnects. Also test a
+network timeout, reconnect, service stop and configuration reload while streaming.
+
+Automated regression checks and the optional nested-session integration test:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s lib/remote-desktop/tests -p 'remote_desktop_test.py' -v
+PYTHONDONTWRITEBYTECODE=1 python3 -B lib/remote-desktop/tests/remote_desktop_integration.py
+```
+
+The integration test requires a running Hyprland session and `openssl`. It creates a
+temporary nested compositor and a loopback-only Sunshine host on ports `51084` / `51110`,
+with temporary client certificates and pairing files. It checks layout clamping, DPMS,
+focus/cursor restoration, real GameStream launch/cancel, multiple streams, timeouts,
+reconnect, supervisor termination and log redaction. Test logs are kept in the printed
+temporary directory; the test compositor and Sunshine process are terminated on exit.
 
 ## 2. Pair and test while autologin remains enabled
 

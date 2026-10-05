@@ -48,3 +48,8 @@ hl.config({
         -- commit_timing_enabled = false
     }
 })
+
+-- Reapply streaming-only overrides after reloading the local configuration.
+hl.on("config.reloaded", function()
+    hl.exec_cmd("remote-desktop.sh --sync")
+end)
