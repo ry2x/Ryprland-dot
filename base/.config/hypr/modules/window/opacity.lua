@@ -14,6 +14,7 @@ for _, class in ipairs({
     "^(org.freedesktop.impl.portal.desktop.gtk)$",
     "^(org.freedesktop.impl.portal.desktop.hyprland)$",
     "^(com.github.th_ch.youtube_music)$",
+    "^(spotifast)$",
     "^(blueman-manager)$",
     "^(wofi)$",
     "^([Rr]ofi)$",
