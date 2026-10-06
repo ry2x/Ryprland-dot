@@ -23,7 +23,9 @@ def check_streams(root, env, script, run, monitors):
     identity = str(uuid.uuid4())
     (cfg / 'sunshine_state.json').write_text(json.dumps({'root': {'uniqueid': str(uuid.uuid4()), 'named_devices': [{'name': 'Test client', 'uuid': identity, 'enabled': True, 'cert': cert.read_text()}]}}))
     (cfg / 'apps.json').write_text(json.dumps({'env': {}, 'apps': [{'name': 'Desktop'}]}))
-    (cfg / 'sunshine.conf').write_text('port = 51089\nbind_address = 127.0.0.1\nping_timeout = 2000\nlan_encryption_mode = 0\nsunshine_name = Ryprland Test\nsystem_tray = disabled\n')
+    # The service must override the normal tray default itself; hiding it here
+    # previously missed Qt/portal deadlocks in production stream startup/teardown.
+    (cfg / 'sunshine.conf').write_text('port = 51089\nbind_address = 127.0.0.1\nping_timeout = 2000\nlan_encryption_mode = 0\nsunshine_name = Ryprland Test\nsystem_tray = enabled\n')
     run(script, '--prepare')
     before = {m['name']: m['dpmsStatus'] for m in monitors()}
     context = ssl._create_unverified_context()
@@ -79,6 +81,7 @@ def check_streams(root, env, script, run, monitors):
             except (ConnectionRefusedError, OSError):
                 return False
         wait(ready, 'Waiting for Sunshine readiness', timeout=30)
+        assert 'System tray created' not in (root / 'sunshine.log').read_text()
         appid = request('/applist').findtext('.//App/ID')
         assert appid
         launched = request('/launch', {**args, 'appid': appid})

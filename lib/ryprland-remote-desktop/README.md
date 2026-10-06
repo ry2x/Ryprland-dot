@@ -4,6 +4,8 @@ A small Rust supervisor for Sunshine and the Hyprland `RMT-1` output. It runs on
 thread, saves/restores local display state, observes the last streaming session ending,
 and keeps remote input from waking physical monitors. The shell wrapper retains the
 existing `remote-desktop.sh` commands. Runtime hooks do not start a Python interpreter.
+The service disables Sunshine's Qt system tray to avoid portal notification waits
+blocking RTSP session startup or shutdown. Management remains available in the Web UI.
 
 ## Build and deploy
 

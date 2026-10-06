@@ -57,6 +57,20 @@ fn existing_preparation_hooks_and_shell_quoting_are_preserved() {
 }
 
 #[test]
+fn service_disables_tray_even_when_user_config_enables_it() {
+    let command =
+        supervisor::command_for_config("system_tray = enabled\n", Path::new("/tmp/hook.sh"))
+            .unwrap();
+    let args: Vec<_> = command
+        .get_args()
+        .map(|value| value.to_str().unwrap())
+        .collect();
+    assert!(args.contains(&"system_tray=disabled"));
+    assert!(args.contains(&"capture=wlr"));
+    assert!(args.contains(&"log_path=/dev/null"));
+}
+
+#[test]
 fn real_child_exit_restores_state_and_does_not_persist_keys() {
     let desktop = FakeDesktop::default();
     let mut command = Command::new("sh");

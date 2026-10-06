@@ -124,13 +124,20 @@ pub fn sunshine_command() -> Result<Command> {
     let hook = env::var_os("REMOTE_DESKTOP_HOOK")
         .map(Into::into)
         .unwrap_or(home()?.join(".local/bin/remote-desktop.sh"));
+    command_for_config(&config, &hook)
+}
+
+pub fn command_for_config(config: &str, hook: &Path) -> Result<Command> {
     let mut command = Command::new("/usr/bin/sunshine");
     command.args([
         format!("output_name={OUTPUT}"),
         "capture=wlr".to_owned(),
         "min_log_level=debug".to_owned(),
         "log_path=/dev/null".to_owned(),
-        format!("global_prep_cmd={}", preparation_commands(&config, &hook)?),
+        // Tray callbacks synchronously enter Qt and can block RTSP
+        // startup/teardown while waiting for the desktop portal.
+        "system_tray=disabled".to_owned(),
+        format!("global_prep_cmd={}", preparation_commands(config, hook)?),
     ]);
     Ok(command)
 }

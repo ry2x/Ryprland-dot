@@ -56,6 +56,10 @@ does not cross between them. Keeping it available also lets Sunshine probe its e
 while the physical monitors are asleep; Sunshine probes before application preparation
 commands, including on reconnect.
 
+The supervisor disables Sunshine's system tray even if it is enabled in the user's
+configuration. Qt tray/portal notifications can block RTSP session startup or shutdown;
+the service uses Sunshine's Web UI for management instead.
+
 At stream launch, a preparation command saves the local DPMS states, cursor position,
 focused monitor and automatic wake/warp settings. It then focuses `RMT-1`, switches off
 the other outputs and suppresses automatic wake and cursor warps. Directional focus
