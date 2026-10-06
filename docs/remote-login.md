@@ -258,6 +258,21 @@ ls -l /dev/uinput /dev/dri/renderD*
 
 Never publish pairing state, keys, or Web UI credentials with diagnostic logs.
 
+For Tailscale clients, distinguish traffic inside `tailscale0` from Tailscale's UDP
+transport on the physical network interface. Allowing `tailscale0` alone may still
+leave direct LAN connections blocked by the host firewall. Confirm the configured
+transport port (normally UDP `41641`) and, when needed, permit it from the trusted
+LAN on the appropriate interface. Use `tailscale ping <client>` to check the selected
+endpoint; clients on the same LAN should be able to use a LAN address directly.
+See [Tailscale firewall ports](https://tailscale.com/docs/reference/faq/firewall-ports).
+
+If a stream connects successfully but then terminates, compare simultaneous pings
+to the gateway, the client's LAN address and its Tailscale address during streaming.
+Delays that also affect the gateway point to the underlying network connection.
+For Wi-Fi, check power saving: NetworkManager's `802-11-wireless.powersave` value
+`2` disables it for a connection profile. Reactivate that connection to apply the
+change, then test multiple reconnects. See [NetworkManager Wi-Fi settings](https://www.networkmanager.dev/docs/api/latest/settings-802-11-wireless.html).
+
 ## Configuration checks
 
 Repository checks (these do not operate the active seat):
