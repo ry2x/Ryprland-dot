@@ -19,7 +19,7 @@ local ApplicationBinds = {
     { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
     { "A",
         function()
-            toggleWindowTray("sonora", "", "sonora")
+            toggleWindowTray("spotifast", "", "spotifast")
         end,
         " Music"
     },

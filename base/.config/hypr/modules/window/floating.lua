@@ -98,6 +98,7 @@ local pinFloating = {
     -- toggle applications
     { { class = "^(sonora)$" },                     "pin_float_big" },
     { { class = "^(discord)$" },                    "pin_float_big" },
+    { { class = "^(spotifast)$" },                  "pin_float_big" },
     -- xdg-desktop-portal dialogs
     { { class = "^(xdg-desktop-portal-gtk)$" },     "pin_float_big" },
     { { class = "^(xdg-desktop-portal-kde)$" },     "pin_float_big" },
