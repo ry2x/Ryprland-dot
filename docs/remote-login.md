@@ -33,11 +33,10 @@ prevent local login. No desktop keyring, audio session or home directory is shar
 
 ## 1. Stage the installation
 
-Install the dependencies (Sunshine uses the package source already configured on this host):
+Install the dependencies:
 
 ```bash
-sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewire-pulse wireplumber libpulse jq dbus util-linux rust
-pacman -Q sunshine
+sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewire-pulse wireplumber libpulse jq dbus util-linux rust sunshine
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
 ryprland deploy remote-desktop

@@ -130,7 +130,8 @@ See [System-level setup](./docs/installation.md#4-optional-system-level-setup).
 See [Remote login](./docs/remote-login.md) for the greeter's separate Sunshine host and staged activation.
 
 > [!NOTE]
-> The cleanup script skips package-cache cleanup when `paccache` is unavailable.
+> `sunshine` is not on the default repository and you need to add its repo manually.
+> See the Sunshine documentation for instructions on adding its [repository](https://github.com/LizardByte/pacman-repo).
 
 ### Other optional applications
 
