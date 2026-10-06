@@ -14,16 +14,35 @@ CONTROLLER="${REMOTE_DESKTOP_BIN:-${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-
 export REMOTE_DESKTOP_HOOK="$SCRIPT_DIR/remote-desktop.sh"
 
 help() {
-    echo "Usage: $0 [OPTIONS]"
-    echo "Keep Sunshine ready and isolate its remote display while streaming."
-    echo "Options:"
-    echo "  -h, --help     Show this help message"
-    echo "  -s, --start    Start Sunshine in standby mode"
-    echo "  -t, --stop     Stop Sunshine and restore local displays"
-    echo "  --status       Show standby/streaming state"
-    echo "  --restore      Restore local displays without stopping Sunshine"
-    echo "Internal hooks: --prepare, --serve, --enter, --release, --sync,"
-    echo "                --wake, --idle-off, --idle-dim, --idle-brightness, --idle-suspend, --remove-output"
+    local title_color='' reset_color=''
+    if [[ -t 1 && -z ${NO_COLOR+x} && ${TERM:-} != dumb ]]; then
+        title_color=$'\033[1;34m'
+        reset_color=$'\033[0m'
+    fi
+
+    printf '%s' "$title_color"
+    cat <<'EOF'
+
+▗▄▄▖     ▗▄▄▄▖    ▗▖  ▗▖     ▗▄▖     ▗▄▄▄▖    ▗▄▄▄▖        ▗▄▄▄      ▗▄▄▄▖     ▗▄▄▖    ▗▖ ▗▖    ▗▄▄▄▖     ▗▄▖     ▗▄▄▖
+▐▌ ▐▌    ▐▌       ▐▛▚▞▜▌    ▐▌ ▐▌      █      ▐▌           ▐▌  █     ▐▌       ▐▌       ▐▌▗▞▘      █      ▐▌ ▐▌    ▐▌ ▐▌
+▐▛▀▚▖    ▐▛▀▀▘    ▐▌  ▐▌    ▐▌ ▐▌      █      ▐▛▀▀▘        ▐▌  █     ▐▛▀▀▘     ▝▀▚▖    ▐▛▚▖       █      ▐▌ ▐▌    ▐▛▀▘
+▐▌ ▐▌    ▐▙▄▄▖    ▐▌  ▐▌    ▝▚▄▞▘      █      ▐▙▄▄▖        ▐▙▄▄▀     ▐▙▄▄▖    ▗▄▄▞▘    ▐▌ ▐▌      █      ▝▚▄▞▘    ▐▌
+EOF
+    printf '%s' "$reset_color"
+    cat <<'EOF'
+
+Usage: remote-desktop.sh [options]
+
+Options:
+  -h, --help     Show this help message
+  -s, --start    Start Sunshine in standby mode
+  -t, --stop     Stop Sunshine and restore local displays
+  --status       Show standby/streaming state
+  --restore      Restore local displays without stopping Sunshine
+
+  Internal hook options:
+  --prepare, --serve, --enter, --release, --sync, --wake, --idle-off, --idle-dim, --idle-brightness, --idle-suspend, --remove-output
+EOF
 }
 
 controller() {
