@@ -27,7 +27,7 @@ for _, class in ipairs({
     "^(hu.kramo.Cartridges)$",
     "^(com.obsproject.Studio)$",
     "^(gnome-boxes)$",
-    "^(vesktop)$",
+    --"^(vesktop)$",
     "^(discord)$",
     "^(WebCord)$",
     "^(ArmCord)$",

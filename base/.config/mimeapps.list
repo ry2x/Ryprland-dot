@@ -89,7 +89,7 @@ application/vnd.rar=org.gnome.FileRoller.desktop
 application/gzip=org.gnome.FileRoller.desktop
 
 # Custom URL Schemes
-x-scheme-handler/discord=discord.desktop
+x-scheme-handler/discord=vesktop.desktop
 x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/codex=chatgpt.desktop
 

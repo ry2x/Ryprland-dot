@@ -16,7 +16,7 @@ local ApplicationBinds = {
     { "W", P.browser, " Browser" },
     { "SHIFT + V", "pkill pavucontrol || pavucontrol", " VolumeControl" },
     { "SHIFT + U", P.updater, "󰏔 UpdatePackages" },
-    { "D", function() toggleWindowTray("discord", "", "discord") end, " Discord" },
+    { "D", function() toggleWindowTray("vesktop", "", "vesktop") end, " Vesktop" },
     { "A",
         function()
             toggleWindowTray("spotifast", "", "spotifast")

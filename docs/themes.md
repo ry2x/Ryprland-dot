@@ -78,4 +78,14 @@ managed by the application. If you previously set colors in
 Font size, rounding, transparency, and other appearance options stay configurable
 in Sonora.
 
+## Vesktop integration
+
+Run `theme-switch.sh refresh`, then enable **Custom CSS** and **Enable Window
+Transparency** in Settings > Vencord. Restart Vesktop after enabling transparency;
+later wallpaper and mode changes apply automatically through QuickCSS.
+
+Customize colors and `--matugen-background-opacity` in the
+[Vesktop template](../base/.config/matugen/templates/matugen-vesktop.css).
+Generated QuickCSS is overwritten on each theme switch.
+
 [Back to the project overview](../readme.md)

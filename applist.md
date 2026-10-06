@@ -87,7 +87,7 @@ These are required only for the corresponding feature.
 | File manager                   | `thunar`                                                                                    |
 | Browser shortcut               | `zen-browser-bin` (provides `zen-browser`)                                                  |
 | Package updater shortcut       | `par_tui`                                                                                   |
-| Discord autostart and shortcut | `discord`                                                                                   |
+| Vesktop autostart and shortcut | `vesktop-bin` (provides `vesktop`)                                                           |
 | Music shortcut                 | `sonora-bin` (provides `sonora`)                                                            |
 | Rofi web menu                  | `yt-x`, `pear-desktop-bin` (provides `youtube-music`), and an application providing `brave` |
 

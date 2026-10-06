@@ -105,12 +105,12 @@ hl.define_submap("gaming",
         hl.bind(mod .. "+SHIFT + S", hl.dsp.exec_cmd("hyprcrop freeze"), { description = "Clipping screen" })
         hl.bind("Print", hl.dsp.exec_cmd("hyprcrop all"), { description = "Capture area" })
 
-        -- discord and youtube music
+        -- vesktop and music
         hl.bind(mod .. " + D",
             function()
-                toggleWindowTray("discord", "", "discord")
+                toggleWindowTray("vesktop", "", "vesktop")
             end,
-            { description = "Toggle Discord" }
+            { description = "Toggle Vesktop" }
         )
         hl.bind(mod .. " + A",
             function()

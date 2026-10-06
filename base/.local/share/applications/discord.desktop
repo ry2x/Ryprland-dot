@@ -1,10 +1,14 @@
 [Desktop Entry]
-Name=Discord
-StartupWMClass=discord
-Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
+Name=Vesktop
+StartupWMClass=vesktop
+Comment=Discord client with Vencord built in.
 GenericName=Internet Messenger
-Exec=discord
-Icon=discord
+Exec=vesktop %U
+Icon=vesktop
+Terminal=false
+# Keep existing Discord launcher references working; use the packaged Vesktop entry in menus.
+NoDisplay=true
+MimeType=x-scheme-handler/discord;
 Type=Application
 Categories=Network;InstantMessaging;
 Path=/usr/bin

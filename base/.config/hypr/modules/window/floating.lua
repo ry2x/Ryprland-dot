@@ -97,7 +97,7 @@ hl.window_rule(
 local pinFloating = {
     -- toggle applications
     { { class = "^(sonora)$" },                     "pin_float_big" },
-    { { class = "^(discord)$" },                    "pin_float_big" },
+    { { class = "^(vesktop)$" },                    "pin_float_big" },
     { { class = "^(spotifast)$" },                  "pin_float_big" },
     -- xdg-desktop-portal dialogs
     { { class = "^(xdg-desktop-portal-gtk)$" },     "pin_float_big" },

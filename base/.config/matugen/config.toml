@@ -32,6 +32,11 @@ output_path = '~/.config/sonora/themes/matugen.json'
 input_path = '~/.config/matugen/templates/matugen-spotifast.json'
 output_path = '~/.config/spotifast/themes/Matugen.json'
 
+# Vesktop / Vencord QuickCSS (automatically reloaded by Vencord)
+[templates.vesktop]
+input_path = '~/.config/matugen/templates/matugen-vesktop.css'
+output_path = '~/.config/vesktop/settings/quickCss.css'
+
 # Rofi
 [templates.rofi]
 input_path = '~/.config/matugen/templates/matugen-rofi.rasi'
