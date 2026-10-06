@@ -34,6 +34,18 @@ theme-switch.sh --light set /path/to/wallpaper.jpg
 > `${RYSTAL_SHELL_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/rystal-shell}/mode`.
 > The default is `dark` if no saved mode exists.
 
+## Login screen background
+
+Choose a background for the system ReGreet login screen through `ryprland`:
+
+```bash
+ryprland set greeter-background /path/to/image.jpg
+```
+
+The command converts the image to PNG with ImageMagick and uses `sudo` when needed
+to replace `/usr/share/backgrounds/greeter.png`. It takes effect when ReGreet next
+starts, and `ryprland setup system` preserves the selected background.
+
 ## GTK integration
 
 The `theme-switch.sh` also updates `org.gnome.desktop.interface` for GTK and the Settings portal.

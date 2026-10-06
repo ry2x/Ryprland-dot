@@ -77,7 +77,11 @@ install -m 0644 "$source_dir/etc/greetd/hyprland.lua" /etc/greetd/hyprland.lua
 install -m 0644 "$source_dir/etc/greetd/sunshine.conf" /etc/greetd/sunshine.conf
 install -m 0644 "$source_dir/etc/greetd/sunshine-apps.json" /etc/greetd/sunshine-apps.json
 install -m 0644 "$source_dir/etc/udev/rules.d/70-ryprland-login.rules" /etc/udev/rules.d/70-ryprland-login.rules
-install -m 0644 "$source_dir/usr/share/backgrounds/greeter.png" /usr/share/backgrounds/greeter.png
+if [[ ! -e /usr/share/backgrounds/greeter.png && ! -L /usr/share/backgrounds/greeter.png ]]; then
+    install -m 0644 "$source_dir/usr/share/backgrounds/greeter.png" /usr/share/backgrounds/greeter.png
+else
+    printf 'Kept existing login screen background. Use ryprland set greeter-background to change it.\n'
+fi
 
 for unit in "$source_dir"/etc/systemd/system/*; do
     install -m 0644 "$unit" "/etc/systemd/system/$(basename "$unit")"

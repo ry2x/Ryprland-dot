@@ -68,6 +68,7 @@ ryprland --help
 ryprland deploy rystal-shell
 ryprland deploy remote-desktop --no-restart
 ryprland setup system --help
+ryprland set greeter-background /path/to/image.jpg
 ```
 
 When upgrading from the separate `deploy-rystal-shell` and
@@ -114,6 +115,17 @@ ryprland setup system
 The setup script preserves the existing greetd config unless `--enable-remote-login`
 is passed, copies files, and reloads systemd and udev rules without enabling
 services or restarting greetd.
+
+To choose a ReGreet login screen background:
+
+```bash
+ryprland set greeter-background /path/to/image.jpg
+```
+
+The command uses ImageMagick (`imagemagick`) to convert the first frame to PNG,
+then uses `sudo` when needed to atomically replace `/usr/share/backgrounds/greeter.png`.
+The new background appears when ReGreet next starts. Subsequent system setup runs
+preserve the selected image; the bundled background is copied only when none exists.
 
 #### Optional timers
 

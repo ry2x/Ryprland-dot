@@ -26,6 +26,7 @@ Commands:
     deploy rystal-shell                  Build, deploy, and restart Rystal-shell
     deploy remote-desktop [--no-restart]  Build and deploy the remote desktop controller
     setup system [--enable-remote-login]  Apply system configuration (uses sudo)
+    set greeter-background IMAGE         Change the login screen background (uses sudo)
 
 Run a command with --help for details.
 EOF
@@ -55,6 +56,9 @@ case "$command $target" in
         ;;
     "deploy remote-desktop")
         exec bash "$repo_dir/scripts/deploy-remote-desktop.sh" "$@"
+        ;;
+    "set greeter-background")
+        exec bash "$repo_dir/scripts/set-greeter-background.sh" "$@"
         ;;
     "setup system")
         # Show help and reject invalid options before requesting root privileges.

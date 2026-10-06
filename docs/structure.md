@@ -20,6 +20,8 @@ The `ryprland` Bash entry point resolves its Stow symlink back to this checkout.
 `ryprland deploy rystal-shell` and `ryprland deploy remote-desktop` invoke scripts
 under `scripts/`; `ryprland setup system` invokes `scripts/setup-system.sh` with `sudo`
 when needed. Options are forwarded to each script.
+`ryprland set greeter-background IMAGE` calls `scripts/set-greeter-background.sh`
+to convert and apply the system login screen background.
 
 ## Rystal-shell Standalone Usage
 

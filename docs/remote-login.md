@@ -260,7 +260,7 @@ Never publish pairing state, keys, or Web UI credentials with diagnostic logs.
 Repository checks (these do not operate the active seat):
 
 ```bash
-bash -n base/.local/bin/ryprland scripts/deploy-rystal-shell.sh scripts/deploy-remote-desktop.sh scripts/setup-system.sh system/usr/bin/ryprland-greeter system/usr/bin/ryprland-login-stream base/.local/bin/remote-desktop.sh
+bash -n base/.local/bin/ryprland scripts/deploy-rystal-shell.sh scripts/deploy-remote-desktop.sh scripts/setup-system.sh scripts/set-greeter-background.sh system/usr/bin/ryprland-greeter system/usr/bin/ryprland-login-stream base/.local/bin/remote-desktop.sh
 Hyprland --verify-config -c "$PWD/system/etc/greetd/hyprland.lua"
 ```
 
