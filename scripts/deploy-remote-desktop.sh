@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# ┳┓┏┓┳┳┓┏┓┏┳┓┏┓  ┳┓┏┓┏┓┓┏┓┏┳┓┏┓┏┓  ┳┓┏┓┏┓┓ ┏┓┓┏
+# ┣┫┣ ┃┃┃┃┃ ┃ ┣ ━━┃┃┣ ┗┓┃┫  ┃ ┃┃┃┃━━┃┃┣ ┃┃┃ ┃┃┗┫
+# ┛┗┗┛┛ ┗┗┛ ┻ ┗┛  ┻┛┗┛┗┛┛┗┛ ┻ ┗┛┣┛  ┻┛┗┛┣┛┗┛┗┛┗┛
+
 # SPDX-FileCopyrightText: 2026 Ry2X
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -9,12 +14,12 @@ case "${1:-}" in
     --no-restart) restart_service=false ;;
     "") ;;
     -h|--help)
-        echo "Usage: deploy-ryprland-remote-desktop [--no-restart]"
+        echo "Usage: ryprland deploy remote-desktop [--no-restart]"
         echo "Build and install the Rust controller; restart Sunshine if already running."
         exit 0
         ;;
     *)
-        echo "Usage: deploy-ryprland-remote-desktop [--no-restart]" >&2
+        echo "Usage: ryprland deploy remote-desktop [--no-restart]" >&2
         exit 1
         ;;
 esac
@@ -24,7 +29,7 @@ if (( $# > 1 )); then
 fi
 
 script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
-repo_dir="$(cd "$(dirname "$script_path")/../../.." && pwd)"
+repo_dir="$(cd "$(dirname "$script_path")/.." && pwd)"
 source_dir="$repo_dir/lib/ryprland-remote-desktop"
 destination_dir="${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-remote-desktop"
 

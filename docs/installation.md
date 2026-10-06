@@ -49,22 +49,46 @@ git submodule update --init --recursive
 
 ```bash
 # Preview
-stow -n -v base
+stow -n -v -t "$HOME" base
 
 # Apply
-stow base
+stow -t "$HOME" base
 
 # (Optional) Preview and apply Neovim and Yazi configurations
-stow -n -v nvim-yazi
-stow nvim-yazi
+stow -n -v -t "$HOME" nvim-yazi
+stow -t "$HOME" nvim-yazi
+```
+
+Once `base` is stowed, `~/.local/bin/ryprland` provides the repository's deployment
+and setup commands. It resolves its Stow symlink to find scripts in this checkout,
+so commands work from any directory:
+
+```bash
+ryprland --help
+ryprland deploy rystal-shell
+ryprland deploy remote-desktop --no-restart
+ryprland setup system --help
+```
+
+When upgrading from the separate `deploy-rystal-shell` and
+`deploy-ryprland-remote-desktop` helpers, Stow may leave their old symlinks behind.
+After applying the new links, remove only dangling symlinks for those helpers:
+
+```bash
+for helper in deploy-rystal-shell deploy-ryprland-remote-desktop; do
+    link="$HOME/.local/bin/$helper"
+    if [[ -L "$link" && ! -e "$link" ]]; then
+        unlink "$link"
+    fi
+done
 ```
 
 ### 3. Build and deploy Rystal-shell
 
-Once `base` is stowed, the `deploy-rystal-shell` helper is available in your `PATH` (at `~/.local/bin/deploy-rystal-shell`):
+Build and deploy through the `ryprland` entry point:
 
 ```bash
-deploy-rystal-shell
+ryprland deploy rystal-shell
 ```
 
 > [!NOTE]
@@ -83,11 +107,13 @@ System-level files under `system/` mirror `/etc` and `/usr` paths (including gre
 > See [Remote login](./remote-login.md) for setup and validation.
 
 ```bash
-sudo system/install.sh
+ryprland setup system
 ```
 
-The installer backs up the existing greetd config, installs files, and reloads systemd
-and udev rules without enabling services or restarting greetd.
+`ryprland setup system` invokes `scripts/setup-system.sh` using `sudo` when needed.
+The setup script preserves the existing greetd config unless `--enable-remote-login`
+is passed, copies files, and reloads systemd and udev rules without enabling
+services or restarting greetd.
 
 #### Optional timers
 

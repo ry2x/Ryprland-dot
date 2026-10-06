@@ -10,14 +10,14 @@ existing `remote-desktop.sh` commands. Runtime hooks do not start a Python inter
 Rust 1.89 or newer is required to build. From the repository root:
 
 ```bash
-base/.local/bin/deploy-ryprland-remote-desktop
+base/.local/bin/ryprland deploy remote-desktop
 ```
 
 The helper builds with `Cargo.lock`, installs the release binary atomically into
 `${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-remote-desktop/ryprland-remote-desktop`, and restarts an
 already running `ryprland-sunshine.service`. Use `--no-restart` to defer that restart.
 Cargo build output stays in the ignored `lib/ryprland-remote-desktop/target/` directory.
-Stow installs the deployment helper and the command wrapper; it does not compile Rust.
+Stow installs the `ryprland` entry point and the runtime command wrapper; it does not compile Rust.
 
 `REMOTE_DESKTOP_BIN=/absolute/path/to/ryprland-remote-desktop` selects another controller binary
 for development and integration tests. The wrapper passes its canonical path as

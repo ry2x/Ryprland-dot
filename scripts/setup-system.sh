@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# ┏┓┏┓┏┳┓┳┳┏┓  ┏┓┓┏┏┓┏┳┓┏┓┳┳┓
+# ┗┓┣  ┃ ┃┃┃┃━━┗┓┗┫┗┓ ┃ ┣ ┃┃┃
+# ┗┛┗┛ ┻ ┗┛┣┛  ┗┛┗┛┗┛ ┻ ┗┛┛ ┗
+
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 set -euo pipefail
 
 script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
@@ -7,18 +14,23 @@ repo_dir="$(cd "$(dirname "$script_path")/.." && pwd)"
 source_dir="$repo_dir/system"
 
 enable_remote_login=false
+if (($# > 1)); then
+    printf 'Only one setup option is accepted.\n' >&2
+    exit 1
+fi
 case "${1:-}" in
     "") ;;
     --enable-remote-login) enable_remote_login=true ;;
+    -h|--help)
+        printf 'Usage: ryprland setup system [--enable-remote-login]\n'
+        printf 'Apply system configuration; optionally replace greetd config to enable remote login.\n'
+        exit 0
+        ;;
     *)
-        printf 'Usage: %s [--enable-remote-login]\n' "$0" >&2
+        printf 'Usage: ryprland setup system [--enable-remote-login]\n' >&2
         exit 1
         ;;
 esac
-if (($# > 1)); then
-    printf 'Only one installation option is accepted.\n' >&2
-    exit 1
-fi
 
 if [[ "${EUID}" -ne 0 ]]; then
     printf 'Run this command as root, for example: sudo %s\n' "$script_path" >&2
@@ -79,6 +91,6 @@ systemctl daemon-reload
 udevadm control --reload-rules
 udevadm trigger --subsystem-match=misc --sysname-match=uinput
 
-printf 'Installed system configuration, systemd units, and system executables.\n'
+printf 'Applied system configuration, systemd units, and system executables.\n'
 printf 'Review the files, then enable desired services manually.\n'
 printf 'greetd was not restarted. Complete docs/remote-login.md before disabling autologin.\n'

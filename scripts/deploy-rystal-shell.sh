@@ -1,12 +1,26 @@
 #!/usr/bin/env bash
+
 # ┳┓┓┏┏┓┏┳┓┏┓┓   ┏┓┓┏┏┓┓ ┓   ┳┓┏┓┏┓┓ ┏┓┓┏
 # ┣┫┗┫┗┓ ┃ ┣┫┃ ━━┗┓┣┫┣ ┃ ┃ ━━┃┃┣ ┃┃┃ ┃┃┗┫
 # ┛┗┗┛┗┛ ┻ ┛┗┗┛  ┗┛┛┗┗┛┗┛┗┛  ┻┛┗┛┣┛┗┛┗┛┗┛
 
+# SPDX-FileCopyrightText: 2026 Ry2X
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 set -euo pipefail
 
+if (( $# > 0 )); then
+    if (( $# == 1 )) && [[ "$1" == -h || "$1" == --help ]]; then
+        printf 'Usage: ryprland deploy rystal-shell\n'
+        printf 'Build and deploy Rystal-shell; restart it if already running.\n'
+        exit 0
+    fi
+    printf 'Usage: ryprland deploy rystal-shell\n' >&2
+    exit 1
+fi
+
 script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
-repo_dir="$(cd "$(dirname "$script_path")/../../.." && pwd)"
+repo_dir="$(cd "$(dirname "$script_path")/.." && pwd)"
 source_dir="$repo_dir/lib/rystal-shell"
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/rystal-shell"
 legacy_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ags"

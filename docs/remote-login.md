@@ -40,13 +40,13 @@ sudo pacman -S --needed greetd greetd-regreet materia-gtk-theme pipewire pipewir
 pacman -Q sunshine
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
-deploy-ryprland-remote-desktop
+ryprland deploy remote-desktop
 systemctl --user daemon-reload
-sudo system/install.sh
+ryprland setup system
 ```
 
 > [!NOTE]
-> The installer keeps an existing `/etc/greetd/config.toml` and stages the final configuration
+> The setup script keeps an existing `/etc/greetd/config.toml` and stages the final configuration
 > at `/etc/greetd/config.remote-login.toml`. The updated greeter is used at the next logout.
 > It does not restart the session or change firewall rules, UPnP, or network exposure.
 
@@ -81,7 +81,7 @@ excluding global preparation commands are isolated when their stream-start event
 Hyprland imports its socket environment and starts the service at login; shutdown requests
 service termination. Runtime hooks use the compiled Rust controller and `hyprctl`;
 Python is only needed for the optional native integration test. Build the controller with
-`deploy-ryprland-remote-desktop` after Stow; its source and tests live in `lib/ryprland-remote-desktop/`.
+`ryprland deploy remote-desktop` after Stow; its source and tests live in `lib/ryprland-remote-desktop/`.
 The helper installs it atomically under `${XDG_DATA_HOME:-$HOME/.local/share}/ryprland-remote-desktop/`
 and restarts Sunshine if it is already running. `--no-restart` installs without restarting.
 The controller runs one thread, without an asynchronous runtime, and bounds partial log
@@ -105,7 +105,7 @@ configuration (Stow may report conflicts with regular files):
 ```bash
 stow -n -v -t "$HOME" base
 stow -t "$HOME" base
-deploy-ryprland-remote-desktop --no-restart
+ryprland deploy remote-desktop --no-restart
 systemctl --user daemon-reload
 hyprctl reload config-only
 pkill -x hypridle
@@ -140,7 +140,7 @@ temporary directory; the test compositor and Sunshine process are terminated on 
 
 > [!WARNING]
 > Before logging out, save your work and ensure you have local access or a working SSH
-> recovery connection. Stopping the desktop stream disconnects Moonlight. The installer
+> recovery connection. Stopping the desktop stream disconnects Moonlight. The setup script
 > does not install or configure SSH; recovery access must already work independently.
 
 Log out normally. greetd's initial autologin occurs only once per boot; logout enters
@@ -215,11 +215,11 @@ intended client. Keep management access through localhost and do not add WAN for
 > available until the final cold-boot test succeeds.
 
 ```bash
-sudo system/install.sh --enable-remote-login
+ryprland setup system --enable-remote-login
 ```
 
 This saves the previous config as `/etc/greetd/config.toml.backup.XXXXXX` and installs
-the configuration with no `initial_session`. Record the backup path printed by the installer.
+the configuration with no `initial_session`. Record the backup path printed by the setup script.
 It does not restart greetd. Reboot at a suitable time, then test remote wake / boot with
 physical monitors unplugged, authenticate through `Ryprland Login`, and reconnect to the
 desktop.
@@ -228,7 +228,7 @@ desktop.
 
 > [!IMPORTANT]
 > Choose a backup from **before autologin was disabled**. Confirm that it contains the original
-> `[initial_session]` section with the correct user and session command. Each installer run
+> `[initial_session]` section with the correct user and session command. Each setup run
 > backs up the configuration present at that time, so a later backup may already have autologin disabled.
 
 From an existing SSH connection or a local TTY, restore that verified backup (replace
@@ -260,7 +260,7 @@ Never publish pairing state, keys, or Web UI credentials with diagnostic logs.
 Repository checks (these do not operate the active seat):
 
 ```bash
-bash -n system/install.sh system/usr/bin/ryprland-greeter system/usr/bin/ryprland-login-stream base/.local/bin/remote-desktop.sh
+bash -n base/.local/bin/ryprland scripts/deploy-rystal-shell.sh scripts/deploy-remote-desktop.sh scripts/setup-system.sh system/usr/bin/ryprland-greeter system/usr/bin/ryprland-login-stream base/.local/bin/remote-desktop.sh
 Hyprland --verify-config -c "$PWD/system/etc/greetd/hyprland.lua"
 ```
 

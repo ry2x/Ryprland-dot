@@ -15,14 +15,14 @@ guide, not a complete export of the maintainer's installed packages.
 
 ### Installation and Rystal-shell
 
-| Packages                                      | Purpose                                                       |
-| --------------------------------------------- | ------------------------------------------------------------- |
-| `git`, `stow`                                 | Clone submodules and link dotfiles                            |
-| `sudo` or `sudo-rs`                           | Run the optional system installer and administrative commands |
-| `nodejs`, `pnpm`                              | Build Rystal-shell; Node.js 24 or later is required           |
-| `aylurs-gtk-shell-git`, `libastal-meta`       | AGS and Astal runtime                                         |
-| `dart-sass`                                   | Compile shell styles                                          |
-| `imagemagick`, `webp-pixbuf-loader`, `gsound` | Image processing, WebP loading, and shell sounds              |
+| Packages                                      | Purpose                                                   |
+| --------------------------------------------- | --------------------------------------------------------- |
+| `git`, `stow`                                 | Clone submodules and link dotfiles                        |
+| `sudo` or `sudo-rs`                           | Run the optional system setup and administrative commands |
+| `nodejs`, `pnpm`                              | Build Rystal-shell; Node.js 24 or later is required       |
+| `aylurs-gtk-shell-git`, `libastal-meta`       | AGS and Astal runtime                                     |
+| `dart-sass`                                   | Compile shell styles                                      |
+| `imagemagick`, `webp-pixbuf-loader`, `gsound` | Image processing, WebP loading, and shell sounds          |
 
 The JavaScript dependencies belong to the submodule and are managed by `pnpm`.
 See [Rystal-shell](./lib/rystal-shell/README.md) for its build and runtime requirements.
@@ -121,7 +121,7 @@ See [Japanese input](./docs/japanese-input.md) for dictionary alternatives and i
 | ------------------------- | ----------------------------------------------------------------------------------------------- |
 | Login screen              | `greetd`, `greetd-regreet`                                                                      |
 | Remote login screen       | `sunshine`, `pipewire`, `pipewire-pulse`, `wireplumber`, `libpulse`, `jq`, `dbus`, `util-linux` |
-| Desktop remote controller | `rust` (build only; deploy with `deploy-ryprland-remote-desktop`)                               |
+| Desktop remote controller | `rust` (build only; deploy with `ryprland deploy remote-desktop`)                               |
 | CachyOS mirror-list timer | `rate-mirrors`                                                                                  |
 | Rootkit check timer       | `rkhunter`                                                                                      |
 | Package-cache cleanup     | `pacman-contrib` (provides `paccache`)                                                          |

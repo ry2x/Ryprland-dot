@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    local title_color='' reset_color=''
+    if [[ -t 1 && -z ${NO_COLOR+x} && ${TERM:-} != dumb ]]; then
+        title_color=$'\033[1;34m'
+        reset_color=$'\033[0m'
+    fi
+
+    printf '%s' "$title_color"
+    cat <<'EOF'
+
+▗▄▄▖     ▗▖  ▗▖    ▗▄▄▖     ▗▄▄▖     ▗▖        ▗▄▖     ▗▖  ▗▖    ▗▄▄▄
+▐▌ ▐▌     ▝▚▞▘     ▐▌ ▐▌    ▐▌ ▐▌    ▐▌       ▐▌ ▐▌    ▐▛▚▖▐▌    ▐▌  █
+▐▛▀▚▖      ▐▌      ▐▛▀▘     ▐▛▀▚▖    ▐▌       ▐▛▀▜▌    ▐▌ ▝▜▌    ▐▌  █
+▐▌ ▐▌      ▐▌      ▐▌       ▐▌ ▐▌    ▐▙▄▄▖    ▐▌ ▐▌    ▐▌  ▐▌    ▐▙▄▄▀
+EOF
+    printf '%s' "$reset_color"
+    cat <<'EOF'
+
+Usage: ryprland <command> <target> [options]
+
+Commands:
+    deploy rystal-shell                  Build, deploy, and restart Rystal-shell
+    deploy remote-desktop [--no-restart]  Build and deploy the remote desktop controller
+    setup system [--enable-remote-login]  Apply system configuration (uses sudo)
+
+Run a command with --help for details.
+EOF
+}
+
+case "${1:-}" in
+    ""|-h|--help)
+        usage
+        exit 0
+        ;;
+esac
+
+if (( $# < 2 )); then
+    usage >&2
+    exit 1
+fi
+
+script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
+repo_dir="$(cd "$(dirname "$script_path")/../../.." && pwd)"
+command=$1
+target=$2
+shift 2
+
+case "$command $target" in
+    "deploy rystal-shell")
+        exec bash "$repo_dir/scripts/deploy-rystal-shell.sh" "$@"
+        ;;
+    "deploy remote-desktop")
+        exec bash "$repo_dir/scripts/deploy-remote-desktop.sh" "$@"
+        ;;
+    "setup system")
+        # Show help and reject invalid options before requesting root privileges.
+        if (( $# > 1 )); then
+            exec bash "$repo_dir/scripts/setup-system.sh" "$@"
+        fi
+        case "${1:-}" in
+            ""|--enable-remote-login) ;;
+            *) exec bash "$repo_dir/scripts/setup-system.sh" "$@" ;;
+        esac
+        if (( EUID != 0 )); then
+            exec sudo bash "$repo_dir/scripts/setup-system.sh" "$@"
+        fi
+        exec bash "$repo_dir/scripts/setup-system.sh" "$@"
+        ;;
+    *)
+        printf 'Unknown command: %s %s\n' "$command" "$target" >&2
+        usage >&2
+        exit 1
+        ;;
+esac

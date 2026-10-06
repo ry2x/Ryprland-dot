@@ -49,7 +49,7 @@ case "${1:-}" in
         ;;
     --prepare|--serve|--enter|--release|--restore|--sync|--status|--wake|--idle-off|--idle-dim|--idle-brightness|--idle-suspend|--remove-output)
         if [[ ! -x "$CONTROLLER" ]]; then
-            echo "Remote desktop controller is unavailable. Run deploy-ryprland-remote-desktop first." >&2
+            echo "Remote desktop controller is unavailable. Run ryprland deploy remote-desktop first." >&2
             exit 1
         fi
         exec "$CONTROLLER" "$1"

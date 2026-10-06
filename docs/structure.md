@@ -4,16 +4,22 @@
 Ryprland-dot/
 ├── base/                  # Main user configurations symlinked to $HOME by GNU Stow
 │   ├── .config/           # Hyprland (modular Lua), kitty, matugen, rofi, etc.
-│   └── .local/bin/        # Ryprland helpers and its extended theme-switch.sh
+│   └── .local/bin/        # ryprland entry point, runtime helpers, and theme-switch.sh
 ├── docs/                  # Setup and usage guides
 ├── lib/
 │   └── rystal-shell/      # Rystal-shell source code (TypeScript / Astal / AGS submodule)
 ├── nvim-yazi/             # Optional package for Neovim and Yazi configurations
+├── scripts/               # Deployment and setup scripts called by ryprland
 ├── system/                # System-level configurations mirroring /etc and /usr
 ├── private-dotfile/       # Optional private configuration submodule
 ├── applist.md             # Required and optional package list
 └── readme.md              # Project documentation
 ```
+
+The `ryprland` Bash entry point resolves its Stow symlink back to this checkout.
+`ryprland deploy rystal-shell` and `ryprland deploy remote-desktop` invoke scripts
+under `scripts/`; `ryprland setup system` invokes `scripts/setup-system.sh` with `sudo`
+when needed. Options are forwarded to each script.
 
 ## Rystal-shell Standalone Usage
 
