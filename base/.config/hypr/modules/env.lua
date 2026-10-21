@@ -36,6 +36,8 @@ local envs = {
     { "CLUTTER_BACKEND",                     "wayland" },
     { "GDK_BACKEND",                         "wayland,x11,*" },
     { "GDK_SCALE",                           "1" },
+    -- Temporary GTK4 4.24 workaround: keep Hyprland blur rules in control for Rystal-shell
+    { "GDK_WAYLAND_DISABLE",                 "ext_background_effect_manager_v1" },
 
     -- XDG
     { "XDG_CURRENT_DESKTOP",                 "Hyprland" },
