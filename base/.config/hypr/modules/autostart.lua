@@ -10,7 +10,7 @@ hl.on("hyprland.start",
             "systemctl --user start gcr-ssh-agent.socket",
 
             -- XDPH
-            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP",
+            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP GDK_WAYLAND_DISABLE",
             "systemctl --user start hyprland-session.target && remote-desktop.sh --start",
 
             -- clipboard manager
@@ -31,8 +31,8 @@ hl.on("hyprland.start",
             "vesktop --start-minimized"
         }
 
-        for _, app in ipairs(autostart) do
-            hl.exec_cmd(app)
+        for _, cmd in ipairs(autostart) do
+            hl.exec_cmd(cmd)
         end
     end
 )
