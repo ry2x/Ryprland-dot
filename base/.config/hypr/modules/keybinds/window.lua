@@ -31,8 +31,8 @@ hl.bind(mod .. " + mouse_up", hl.dsp.focus({ direction = "right" }),
     { description = "Switch to workspace -1" })
 
 -- swap columns
-hl.bind(mod .. "+ CAPS + Left", hl.dsp.window.swap({ direction = "l" }), { description = "Swap column left" })
-hl.bind(mod .. "+ CAPS + Right", hl.dsp.window.swap({ direction = "r" }), { description = "Swap column right" })
+hl.bind(mod .. "+ MOD3 + Left", hl.dsp.window.swap({ direction = "l" }), { description = "Swap column left" })
+hl.bind(mod .. "+ MOD3 + Right", hl.dsp.window.swap({ direction = "r" }), { description = "Swap column right" })
 
 -- cycle windows
 hl.bind(mod .. "+ TAB", hl.dsp.window.cycle_next(), { description = "Cycle windows" })

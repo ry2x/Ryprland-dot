@@ -18,8 +18,8 @@ for i = 1, 5 do
         { description = "Move window to workspace " .. key })
 end
 
-hl.bind(mod .. "+ CAPS + Up", smw.workspace("-1"), { description = "Switch to -1 workspace" })
-hl.bind(mod .. "+ CAPS + Down", smw.workspace("+1"), { description = "Switch to +1 workspace" })
+hl.bind(mod .. "+ MOD3 + Up", smw.workspace("-1"), { description = "Switch to -1 workspace" })
+hl.bind(mod .. "+ MOD3 + Down", smw.workspace("+1"), { description = "Switch to +1 workspace" })
 
 -- toggle workspace overview
 hl.bind(mod .. " + SHIFT + TAB", function()
@@ -35,7 +35,7 @@ local home = os.getenv("HOME") or "."
 local WS_CACHE_FILE = home .. "/.cache/hyprland/ws_cache.txt"
 local ws_layouts = loadCSV(WS_CACHE_FILE) or {}
 
-hl.bind(mod .. "+ CAPS + TAB", function()
+hl.bind(mod .. "+ MOD3 + TAB", function()
     local layouts = { "scrolling", "dwindle", "master" }
 
     local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
