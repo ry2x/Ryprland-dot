@@ -80,12 +80,6 @@ hl.window_rule({
     tag = "+game"
 })
 
--- prism launcher
-hl.window_rule({
-    match = { class = "^(org.prismlauncher.PrismLauncher)$" },
-    tag = "+steam"
-})
-
 --------------------
 -- Specific games --
 --------------------
