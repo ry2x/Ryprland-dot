@@ -2,9 +2,6 @@
 -- ┃┃┣ ┃┃┃┃ ┣ ┗┓
 -- ┻┛┗┛┗┛┻┗┛┗┛┗┛
 
--- To set keymap for X11 sessions, use the following command:
--- sudo localectl set-x11-keymap us,jp pc105 ,dvorak caps:ctrl_modifier,grp:alt_space_toggle,caps:super,altwin:swap_lalt_lwin
-
 hl.device({
     name = "keychron-keychron-k3",
     kb_layout = "us",
@@ -27,4 +24,16 @@ hl.device({
     name = "logitech-pro-gaming-keyboard-1",
     kb_layout = "jp",
     kb_model = "pc106"
+})
+
+hl.device({
+    name = "sonix-aula-f75max",
+    kb_layout = "us",
+    kb_model = "pc104"
+})
+
+hl.device({
+    name = "sonix-aula-f75max-keyboard",
+    kb_layout = "us",
+    kb_model = "pc104"
 })

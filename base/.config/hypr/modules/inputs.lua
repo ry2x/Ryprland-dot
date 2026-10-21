@@ -5,9 +5,9 @@
 hl.config({
     input = {
         -- xkb_* variables are for keyboard, see https://wiki.archlinux.org/title/Xorg/Keyboard_configuration
-        kb_layout = "us,jp",
+        kb_layout = "us",
         kb_variant = "",
-        kb_options = "caps:hyper,altwin:swap_alt_win,grp:alt_space_toggle",
+        kb_options = "caps:hyper,altwin:swap_alt_win",
         kb_rules = "",
 
         repeat_rate = 50,
